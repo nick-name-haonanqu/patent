@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全球七局专利申请官费预算模型 (多页面专业版)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #f8fafc;
+        }
+        /* 美化滚动条 */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* 滑动轨道优化 */
+        .scroll-container::-webkit-scrollbar {
+            height: 4px;
+        }
+        /* 范围滑块美化 */
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #4f46e5;
+            cursor: pointer;
+            border: 2px solid #ffffff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+            transition: all 0.15s ease;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+            background: #4338ca;
+        }
+        /* 工具类：用于发明/外观切换时的行显示与隐藏 */
+        .utility-only-row, .design-only-row {
+            transition: all 0.2s ease-in-out;
+        }
+        .hidden-row {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen flex flex-col md:flex-row antialiased">
+
+    <!-- 侧边栏导航 (Desktop) / 顶部导航 (Mobile) -->
+    <aside class="w-full md:w-64 bg-slate-900 text-white shrink-0 md:sticky md:top-0 md:h-screen flex flex-col justify-between border-r border-indigo-950 z-20">
+        <div>
+            <!-- Logo及系统标识 -->
+            <div class="p-6 border-b border-slate-800/60 flex items-center gap-3">
+                <div class="bg-indigo-600/30 p-2 rounded-lg border border-indigo-500/30 flex items-center justify-center">
+                    <i class="fa-solid fa-earth-asia text-xl text-emerald-400 animate-pulse"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-black tracking-tight bg-gradient-to-r from-white via-slate-100 to-indigo-200 bg-clip-text text-transparent">GlobalPatentFee™</h1>
+                    <p class="text-[9px] text-slate-400">2026 Premium • 独立分项版</p>
+                </div>
+            </div>
+
+            <!-- 导航菜单 -->
+            <nav class="p-4 space-y-1">
+                <p class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">主控制台</p>
+                <button onclick="navigateTo('global')" id="nav-global" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all bg-indigo-600 text-white">
+                    <i class="fa-solid fa-sliders text-sm"></i> <span>基础规格与汇率</span>
+                </button>
+
+                <p class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-5 mb-2">国家及地区专属页面</p>
+                <div class="space-y-1">
+                    <button onclick="navigateTo('uspto')" id="nav-uspto" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-white hover:bg-slate-800/40">
+                        <img src="https://placehold.co/16x12/1a365d/ffffff?text=US" class="rounded-sm" alt="US"> <span>美国 (USPTO)</span>
+                    </button>
+                    <button onclick="navigateTo('epo')" id="nav-epo" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-white hover:bg-slate-800/40">
+                        <img src="https://placehold.co/16x12/003399/ffffff?text=EU" class="rounded-sm" alt="EU"> <span id="label-nav-epo">欧洲 (EPO)</span>
+                    </button>
+                    <button onclick="navigateTo('jpo')" id="nav-jpo" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-white hover:bg-slate-800/40">
+                        <img src="https://placehold.co/16x12/c8102e/ffffff?text=JP" class="rounded-sm" alt="JP"> <span>日本 (JPO)</span>
+                    </button>
+                    <button onclick="navigateTo('kipo')" id="nav-kipo" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-white hover:bg-slate-800/40">
+                        <img src="https://placehold.co/16x12/034ea2/ffffff?text=KR" class="rounded-sm" alt="KR"> <span>韩国 (KIPO)</span>
+                    </button>
+                    <button onclick="navigateTo('eapo')" id="nav-eapo" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-white hover:bg-slate-800/40">
+                        <img src="https://placehold.co/16x12/002d62/ffffff?text=EA" class="rounded-sm" alt="EA"> <span>欧亚 (EAPO)</span>
+                    </button>
+                    <button onclick="navigateTo('myipo')" id="nav-myipo" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-white hover:bg-slate-800/40">
+                        <img src="https://placehold.co/16x12/1c355e/ffffff?text=MY" class="rounded-sm" alt="MY"> <span>马来西亚 (MyIPO)</span>
+                    </button>
+                    <button onclick="navigateTo('uae')" id="nav-uae" class="w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-white hover:bg-slate-800/40">
+                        <img src="https://placehold.co/16x12/00732f/ffffff?text=AE" class="rounded-sm" alt="AE"> <span>阿联酋 (UAE)</span>
+                    </button>
+                </div>
+
+                <p class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-5 mb-2">报告与输出</p>
+                <button onclick="navigateTo('compare')" id="nav-compare" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all text-indigo-400 hover:text-indigo-200 hover:bg-slate-800/40">
+                    <i class="fa-solid fa-chart-simple text-sm"></i> <span>统一分析对比看板</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- 底部快速导出 -->
+        <div class="p-4 border-t border-slate-800/60">
+            <button onclick="exportAllToCSV()" class="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 transition-all py-2 rounded-xl font-bold text-[11px] flex items-center justify-center gap-1.5 shadow-lg shadow-emerald-950/20">
+                <i class="fa-solid fa-cloud-arrow-down"></i> 导出完整 Excel (CSV)
+            </button>
+        </div>
+    </aside>
+
+    <!-- 主展示区域 -->
+    <div class="flex-grow flex flex-col min-w-0">
+        
+        <!-- 响应式顶部状态栏 -->
+        <header class="bg-white border-b border-slate-200/80 px-6 py-4 flex flex-col sm:flex-row justify-between sm:items-center gap-3 sticky top-0 z-10 shadow-sm/50">
+            <div>
+                <h2 class="text-sm font-bold text-slate-900 flex items-center gap-2">
+                    <span id="header-page-title">基础规格与汇率设置</span>
+                </h2>
+                <p class="text-[11px] text-slate-400 mt-0.5" id="header-page-desc">配置核心专利规格、基准结算外币汇率以联动全局数据</p>
+            </div>
+            <!-- 专利规格简述，点击可快速跳转回设置 -->
+            <div onclick="navigateTo('global')" class="bg-slate-50 hover:bg-indigo-50 border border-slate-200/60 hover:border-indigo-200 transition-all rounded-xl px-4 py-2 cursor-pointer text-right flex items-center gap-3 shrink-0 self-start sm:self-center">
+                <div class="text-left">
+                    <div class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">当前基础规格</div>
+                    <div class="text-xs font-bold text-indigo-600 mt-0.5" id="header-spec-summary">20项权利要求 | 30页</div>
+                </div>
+                <i class="fa-solid fa-pen-to-square text-indigo-500 text-xs"></i>
+            </div>
+        </header>
+
+        <!-- 主体多页面内容区 -->
+        <main class="flex-grow p-6 md:p-8 max-w-6xl w-full mx-auto space-y-6">
+
+            <!-- ================== PAGE 1: GLOBAL SETUP ================== -->
+            <section id="page-global" class="space-y-6">
+                <!-- 专利类型选择 & 基础规格参数 -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- 左侧：类型与核心规格 -->
+                    <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm space-y-6">
+                        <!-- 专利类型选择器 -->
+                        <div class="border-b border-slate-100 pb-4">
+                            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-2.5">请选择专利申请类型</label>
+                            <div class="bg-slate-100 p-1 rounded-xl flex gap-1 w-full sm:w-80">
+                                <button onclick="setPatentType('utility')" id="btn-type-utility" class="flex-1 py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all text-center">
+                                    <i class="fa-solid fa-gears mr-1"></i> 发明专利 (Utility)
+                                </button>
+                                <button onclick="setPatentType('design')" id="btn-type-design" class="flex-1 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all text-center">
+                                    <i class="fa-solid fa-palette mr-1"></i> 外观设计 (Design)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 规格参数区 (发明专利专用) -->
+                        <div id="wrapper-spec-utility" class="space-y-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-file-invoice text-indigo-500"></i>
+                                <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">设定发明专利基础规格参数 (Base Specifications)</h3>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                                <!-- 权利要求总数 -->
+                                <div class="bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="text-xs font-bold text-slate-500 uppercase">权利要求总数</label>
+                                        <span class="text-[11px] bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded font-bold" id="val-disp-claims">20 项</span>
+                                    </div>
+                                    <div class="relative rounded-lg shadow-sm">
+                                        <input type="number" id="param-claims" value="20" min="1" max="150" oninput="calculateAll()"
+                                               class="w-full pl-3 pr-8 py-1.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs font-bold">
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 text-[10px]">项</div>
+                                    </div>
+                                    <input type="range" id="slider-claims" min="1" max="100" value="20" oninput="syncSlider('claims')" class="w-full mt-3 accent-indigo-600 bg-slate-200 h-1 rounded-lg appearance-none cursor-pointer">
+                                </div>
+
+                                <!-- 独立权利要求数 -->
+                                <div class="bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="text-xs font-bold text-slate-500 uppercase">独立权利要求数</label>
+                                        <span class="text-[11px] bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded font-bold" id="val-disp-indClaims">3 项</span>
+                                    </div>
+                                    <div class="relative rounded-lg shadow-sm">
+                                        <input type="number" id="param-indClaims" value="3" min="1" max="20" oninput="calculateAll()"
+                                               class="w-full pl-3 pr-8 py-1.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs font-bold">
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 text-[10px]">项</div>
+                                    </div>
+                                    <input type="range" id="slider-indClaims" min="1" max="15" value="3" oninput="syncSlider('indClaims')" class="w-full mt-3 accent-indigo-600 bg-slate-200 h-1 rounded-lg appearance-none cursor-pointer">
+                                </div>
+
+                                <!-- 说明书总页数 -->
+                                <div class="bg-slate-50/50 p-4 rounded-xl border border-slate-100">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <label class="text-xs font-bold text-slate-500 uppercase">说明书总页数</label>
+                                        <span class="text-[11px] bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded font-bold" id="val-disp-pages">30 页</span>
+                                    </div>
+                                    <div class="relative rounded-lg shadow-sm">
+                                        <input type="number" id="param-pages" value="30" min="1" max="500" oninput="calculateAll()"
+                                               class="w-full pl-3 pr-8 py-1.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none text-xs font-bold">
+                                        <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 text-[10px]">页</div>
+                                    </div>
+                                    <input type="range" id="slider-pages" min="1" max="150" value="30" oninput="syncSlider('pages')" class="w-full mt-3 accent-indigo-600 bg-slate-200 h-1 rounded-lg appearance-none cursor-pointer">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 规格参数区 (外观设计专利专用) -->
+                        <div id="wrapper-spec-design" class="hidden space-y-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-bezier-curve text-rose-500"></i>
+                                <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">设定外观设计专利基础规格</h3>
+                            </div>
+                            <div class="bg-rose-50/30 p-5 rounded-2xl border border-rose-100/60 max-w-lg">
+                                <div class="flex justify-between items-center mb-3">
+                                    <div>
+                                        <label class="text-xs font-bold text-slate-700 block">外观设计项数 (Multiple Designs)</label>
+                                        <p class="text-[10px] text-slate-400 mt-0.5">欧洲/欧亚等局支持在单件申请中打包多个相关设计项目并给予梯度优惠</p>
+                                    </div>
+                                    <span class="text-xs bg-rose-100 text-rose-700 px-2.5 py-1 rounded-lg font-bold shrink-0" id="val-disp-designs">1 项设计</span>
+                                </div>
+                                <div class="relative rounded-lg shadow-sm w-48">
+                                    <input type="number" id="param-designs" value="1" min="1" max="50" oninput="calculateAll()"
+                                           class="w-full pl-3 pr-8 py-1.5 border border-slate-200 rounded-lg focus:ring-2 focus:ring-rose-500 focus:outline-none text-xs font-bold">
+                                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 text-[10px]">项</div>
+                                </div>
+                                <input type="range" id="slider-designs" min="1" max="30" value="1" oninput="syncSlider('designs')" class="w-full mt-4 accent-rose-600 bg-slate-200 h-1 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 汇率管理器 -->
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center gap-2 mb-4 border-b border-slate-100 pb-3">
+                                <i class="fa-solid fa-coins text-emerald-500"></i>
+                                <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">实时外币结算汇率 (CNY)</h3>
+                            </div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1 font-semibold">USD 美元</label>
+                                    <input type="number" id="rate-usd-cny" value="7.25" step="0.01" oninput="calculateAll()"
+                                           class="w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:ring-1 focus:ring-indigo-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1 font-semibold">EUR 欧元</label>
+                                    <input type="number" id="rate-eur-cny" value="7.85" step="0.01" oninput="calculateAll()"
+                                           class="w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:ring-1 focus:ring-indigo-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1 font-semibold">100 JPY 日元</label>
+                                    <input type="number" id="rate-jpy-cny" value="4.80" step="0.01" oninput="calculateAll()"
+                                           class="w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:ring-1 focus:ring-indigo-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1 font-semibold">1k KRW 韩元</label>
+                                    <input type="number" id="rate-krw-cny" value="5.35" step="0.01" oninput="calculateAll()"
+                                           class="w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:ring-1 focus:ring-indigo-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1 font-semibold">100 RUB 卢布</label>
+                                    <input type="number" id="rate-rub-cny" value="7.80" step="0.01" oninput="calculateAll()"
+                                           class="w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:ring-1 focus:ring-indigo-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1 font-semibold">MYR 林吉特</label>
+                                    <input type="number" id="rate-myr-cny" value="1.62" step="0.01" oninput="calculateAll()"
+                                           class="w-full px-2 py-1.5 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 focus:ring-1 focus:ring-indigo-500 focus:outline-none">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+                            <span>AED 阿联酋迪拉姆</span>
+                            <input type="number" id="rate-aed-cny" value="1.97" step="0.01" oninput="calculateAll()"
+                                   class="w-24 px-2 py-1 border border-slate-200 rounded-lg text-xs font-bold text-slate-700 text-right focus:ring-1 focus:ring-indigo-500 focus:outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 迷你国家预算快速预览卡片组 (Dashboard Grid) -->
+                <div class="space-y-3">
+                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">实时入场总成本概览 (CNY 换算)</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div onclick="navigateTo('uspto')" class="bg-white p-4 rounded-xl border border-slate-200/60 hover:border-indigo-500 hover:shadow-md transition-all cursor-pointer group">
+                            <div class="flex justify-between items-center text-slate-400 text-[10px] font-bold">
+                                <span>美国 (USPTO)</span>
+                                <i class="fa-solid fa-angle-right group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                            <div class="text-lg font-extrabold text-slate-900 mt-2" id="dash-us-total">¥0.00</div>
+                        </div>
+                        <div onclick="navigateTo('epo')" class="bg-white p-4 rounded-xl border border-slate-200/60 hover:border-indigo-500 hover:shadow-md transition-all cursor-pointer group">
+                            <div class="flex justify-between items-center text-slate-400 text-[10px] font-bold">
+                                <span id="dash-label-epo">欧洲 (EPO)</span>
+                                <i class="fa-solid fa-angle-right group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                            <div class="text-lg font-extrabold text-slate-900 mt-2" id="dash-ep-total">¥0.00</div>
+                        </div>
+                        <div onclick="navigateTo('jpo')" class="bg-white p-4 rounded-xl border border-slate-200/60 hover:border-indigo-500 hover:shadow-md transition-all cursor-pointer group">
+                            <div class="flex justify-between items-center text-slate-400 text-[10px] font-bold">
+                                <span>日本 (JPO)</span>
+                                <i class="fa-solid fa-angle-right group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                            <div class="text-lg font-extrabold text-slate-900 mt-2" id="dash-jp-total">¥0.00</div>
+                        </div>
+                        <div onclick="navigateTo('kipo')" class="bg-white p-4 rounded-xl border border-slate-200/60 hover:border-indigo-500 hover:shadow-md transition-all cursor-pointer group">
+                            <div class="flex justify-between items-center text-slate-400 text-[10px] font-bold">
+                                <span>韩国 (KIPO)</span>
+                                <i class="fa-solid fa-angle-right group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                            <div class="text-lg font-extrabold text-slate-900 mt-2" id="dash-kr-total">¥0.00</div>
+                        </div>
+                        <div onclick="navigateTo('eapo')" class="bg-white p-4 rounded-xl border border-slate-200/60 hover:border-indigo-500 hover:shadow-md transition-all cursor-pointer group">
+                            <div class="flex justify-between items-center text-slate-400 text-[10px] font-bold">
+                                <span>欧亚 (EAPO)</span>
+                                <i class="fa-solid fa-angle-right group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                            <div class="text-lg font-extrabold text-slate-900 mt-2" id="dash-ea-total">¥0.00</div>
+                        </div>
+                        <div onclick="navigateTo('myipo')" class="bg-white p-4 rounded-xl border border-slate-200/60 hover:border-indigo-500 hover:shadow-md transition-all cursor-pointer group">
+                            <div class="flex justify-between items-center text-slate-400 text-[10px] font-bold">
+                                <span>马来西亚 (MyIPO)</span>
+                                <i class="fa-solid fa-angle-right group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                            <div class="text-lg font-extrabold text-slate-900 mt-2" id="dash-my-total">¥0.00</div>
+                        </div>
+                        <div onclick="navigateTo('uae')" class="bg-white p-4 rounded-xl border border-slate-200/60 hover:border-indigo-500 hover:shadow-md transition-all cursor-pointer group col-span-2">
+                            <div class="flex justify-between items-center text-slate-400 text-[10px] font-bold">
+                                <span>阿联酋 (UAE)</span>
+                                <i class="fa-solid fa-angle-right group-hover:translate-x-1 transition-transform"></i>
+                            </div>
+                            <div class="text-lg font-extrabold text-slate-900 mt-2" id="dash-ae-total">¥0.00</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================== PAGE 2: UNITED STATES (USPTO) ================== -->
+            <section id="page-uspto" class="hidden space-y-6">
+                <!-- 美国局特有配置面板 -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <div class="lg:col-span-2 bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">美国局或有程序配置 (Contingent Programs)</h3>
+                            <span class="text-[9px] bg-amber-50 text-amber-800 px-2 py-0.5 rounded border border-amber-200/50">联动实体级别系数</span>
+                        </div>
+                        <!-- 提示：外观专利不常使用发明特定程序 -->
+                        <div class="design-only-row hidden-row text-xs text-amber-600 bg-amber-50 p-3 rounded-lg font-medium">
+                            <i class="fa-solid fa-circle-info mr-1.5"></i> 注意：美国外观设计专利不适用RCE（继续审查请求）等发明特定法律程序。以下配置项将在测算中自动归零。
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 utility-only-row">
+                            <label class="relative flex items-start p-3 rounded-xl border border-slate-100 cursor-pointer select-none hover:bg-slate-50 transition-colors">
+                                <div class="flex items-center h-5">
+                                    <input type="checkbox" id="opt-us-rce" onchange="calculateAll()" class="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300">
+                                </div>
+                                <div class="ml-3 text-[11px]">
+                                    <span class="block font-bold text-slate-800">1. 继续审查请求 (RCE)</span>
+                                    <span class="text-slate-400 block mt-0.5">代码 1801 (原价 $1,500)</span>
+                                </div>
+                            </label>
+                            <label class="relative flex items-start p-3 rounded-xl border border-slate-100 cursor-pointer select-none hover:bg-slate-50 transition-colors">
+                                <div class="flex items-center h-5">
+                                    <input type="checkbox" id="opt-us-advisory" onchange="calculateAll()" class="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300">
+                                </div>
+                                <div class="ml-3 text-[11px]">
+                                    <span class="block font-bold text-slate-800">2. 延期提交 (1个月)</span>
+                                    <span class="text-slate-400 block mt-0.5">代码 1251 (原价 $235)</span>
+                                </div>
+                            </label>
+                            <label class="relative flex items-start p-3 rounded-xl border border-slate-100 cursor-pointer select-none hover:bg-slate-50 transition-colors">
+                                <div class="flex items-center h-5">
+                                    <input type="checkbox" id="opt-us-appeal" onchange="calculateAll()" class="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300">
+                                </div>
+                                <div class="ml-3 text-[11px]">
+                                    <span class="block font-bold text-slate-800">3. 启动上诉通知书</span>
+                                    <span class="text-slate-400 block mt-0.5">代码 1401 (原价 $1,000)</span>
+                                </div>
+                            </label>
+                            <label class="relative flex items-start p-3 rounded-xl border border-slate-100 cursor-pointer select-none hover:bg-slate-50 transition-colors">
+                                <div class="flex items-center h-5">
+                                    <input type="checkbox" id="opt-us-correct" onchange="calculateAll()" class="h-4 w-4 rounded text-indigo-600 focus:ring-indigo-500 border-slate-300">
+                                </div>
+                                <div class="ml-3 text-[11px]">
+                                    <span class="block font-bold text-slate-800">4. 宣誓书/绘图补正费</span>
+                                    <span class="text-slate-400 block mt-0.5">代码 1201 (原价 $170)</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider border-b border-slate-100 pb-3">实体等级选择</h3>
+                            <p class="text-[11px] text-slate-400 leading-relaxed">美国局向符合标准的组织或个人提供高达80%的规费减免折扣。</p>
+                        </div>
+                        <div class="bg-slate-50 p-1.5 rounded-xl flex flex-col gap-1 mt-4">
+                            <button onclick="setUsptoEntity('large')" id="btn-us-large" class="w-full py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all">大实体 (Large) - 无减免</button>
+                            <button onclick="setUsptoEntity('small')" id="btn-us-small" class="w-full py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all">小实体 (Small Entity) - 减免60%</button>
+                            <button onclick="setUsptoEntity('micro')" id="btn-us-micro" class="w-full py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all">微实体 (Micro Entity) - 减免80%</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 美国表 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-50/80 text-slate-500 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
+                                    <th class="py-3 px-4 w-1/12">代码</th>
+                                    <th class="py-3 px-4 w-5/12">规费项目名称</th>
+                                    <th class="py-3 px-4 w-2/12 text-right" id="us-th-raw-title">基础大实体价 (USD)</th>
+                                    <th class="py-3 px-4 w-2/12 text-right text-indigo-600 font-bold bg-indigo-50/10">所选实体折扣价 (USD)</th>
+                                    <th class="py-3 px-4 w-2/12 text-right">折合人民币 (CNY)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 font-medium">
+                                <tr class="hover:bg-slate-50/50"><td class="py-3.5 px-4 font-mono text-slate-400" id="us-code-filing">1011</td><td class="py-3.5 px-4" id="us-lbl-filing">基础申请费 (Basic Filing)</td><td class="py-3.5 px-4 text-right text-slate-500" id="us-fee-filing-base">$350.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="us-fee-filing">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="us-fee-filing-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50"><td class="py-3.5 px-4 font-mono text-slate-400" id="us-code-search">1111</td><td class="py-3.5 px-4" id="us-lbl-search">检索费 (Patent Search)</td><td class="py-3.5 px-4 text-right text-slate-500" id="us-fee-search-base">$770.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="us-fee-search">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="us-fee-search-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50"><td class="py-3.5 px-4 font-mono text-slate-400" id="us-code-exam">1311</td><td class="py-3.5 px-4" id="us-lbl-exam">审查费 (Patent Examination)</td><td class="py-3.5 px-4 text-right text-slate-500" id="us-fee-exam-base">$880.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="us-fee-exam">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="us-fee-exam-cny">-</td></tr>
+                                
+                                <!-- 以下行为发明专利专用超项超页行 -->
+                                <tr class="hover:bg-slate-50/50 bg-amber-50/10 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">1201</td><td class="py-3.5 px-4 text-amber-900">独立权利要求超项费 (&gt;3项, 当前: <span id="us-lbl-excess-ind" class="font-bold">0</span> 项)</td><td class="py-3.5 px-4 text-right text-slate-500">$600.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="us-fee-exind">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="us-fee-exind-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50 bg-amber-50/10 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">1202</td><td class="py-3.5 px-4 text-amber-900">总权利要求超项费 (&gt;20项, 当前: <span id="us-lbl-excess-claims" class="font-bold">0</span> 项)</td><td class="py-3.5 px-4 text-right text-slate-500">$200.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="us-fee-excl">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="us-fee-excl-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50 bg-amber-50/10 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">1081</td><td class="py-3.5 px-4 text-amber-900">说明书超页附加费 (每多50页且超过100页, 当前: <span id="us-lbl-excess-pages" class="font-bold">0</span> 模块)</td><td class="py-3.5 px-4 text-right text-slate-500">$450.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="us-fee-expg">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="us-fee-expg-cny">-</td></tr>
+                                
+                                <tr class="hover:bg-slate-50/50"><td class="py-3.5 px-4 font-mono text-slate-400" id="us-code-issue">1501</td><td class="py-3.5 px-4" id="us-lbl-issue">专利授权登记费 (Issue Fee)</td><td class="py-3.5 px-4 text-right text-slate-500" id="us-fee-issue-base">$1,290.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="us-fee-issue">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="us-fee-issue-cny">-</td></tr>
+                                
+                                <!-- 维持费：外观专利没有维持费，所以此行仅在发明下显示 -->
+                                <tr class="hover:bg-slate-50/50 bg-emerald-50/10 utility-only-row"><td class="py-3.5 px-4 font-mono text-emerald-800">1551</td><td class="py-3.5 px-4 text-emerald-900 font-semibold">首次维持年费 (第3.5年缴费) <span class="bg-emerald-100 text-emerald-800 text-[9px] px-1.5 py-0.5 rounded-md font-normal">仅限首期</span></td><td class="py-3.5 px-4 text-right text-slate-500">$2,150.00</td><td class="py-3.5 px-4 text-right text-emerald-600 bg-emerald-50/30" id="us-fee-maint3">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="us-fee-maint3-cny">-</td></tr>
+                                
+                                <!-- 或有程序明细行 (发明下勾选可见) -->
+                                <tr id="row-us-contingent" class="bg-amber-50/5 hidden-row"><td class="py-3.5 px-4 font-mono text-amber-600">或有</td><td class="py-3.5 px-4 text-amber-900 font-medium">所选“或有程序”规费总额</td><td class="py-3.5 px-4 text-right text-slate-500" id="us-contingent-raw">-</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="us-contingent-calc">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="us-contingent-cny">-</td></tr>
+                                
+                                <tr class="bg-slate-900 text-white font-extrabold text-xs">
+                                    <td class="py-3.5 px-4 text-indigo-300">Total</td>
+                                    <td class="py-3.5 px-4 text-left" id="us-tot-desc">总计预算 (递交+首次实审授权+第3.5年首期维持+或有程序)</td>
+                                    <td class="py-3.5 px-4 text-right text-slate-300" id="us-tot-raw">-</td>
+                                    <td class="py-3.5 px-4 text-right text-emerald-400 bg-indigo-950/50" id="us-tot-calc">-</td>
+                                    <td class="py-3.5 px-4 text-right text-emerald-200" id="us-tot-cny">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================== PAGE 3: EUROPE (EPO / EUIPO) ================== -->
+            <section id="page-epo" class="hidden space-y-6">
+                <!-- 欧洲局特有配置面板 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="space-y-1">
+                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider" id="epo-panel-title">EPO 费率版本选择</h3>
+                        <p class="text-[11px] text-slate-400" id="epo-panel-desc">默认采用 **2026年最新生效的费率**。对各项官费进行了自适应微调。</p>
+                    </div>
+                    <div class="bg-slate-100 p-1.5 rounded-xl flex gap-1 utility-only-row">
+                        <button onclick="setEpoVersion('current')" id="btn-ep-current" class="px-4 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all">原费率 (2026年前)</button>
+                        <button onclick="setEpoVersion('new')" id="btn-ep-new" class="px-4 py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all">新费率 (2026年4月起)</button>
+                    </div>
+                    <!-- 外观专用提示 -->
+                    <div class="design-only-row hidden-row text-xs text-indigo-700 font-bold bg-indigo-50 p-3 rounded-lg border border-indigo-100">
+                        <i class="fa-solid fa-compass-drafting mr-1"></i> 欧洲外观设计采用欧盟知识产权局 (EUIPO) 标准，支持单件多项申请，不区分费率版本。
+                    </div>
+                </div>
+
+                <!-- 欧洲表 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-50/80 text-slate-500 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
+                                    <th class="py-3 px-4 w-1/12" id="ep-th-code">规费代码</th>
+                                    <th class="py-3 px-4 w-5/12" id="ep-th-name">EPO 规费中文名称</th>
+                                    <th class="py-3 px-4 w-2/12 text-right" id="ep-th-raw">基础大实体价 (EUR)</th>
+                                    <th class="py-3 px-4 w-2/12 text-right text-indigo-600 font-bold bg-indigo-50/10" id="ep-th-calc">新费率结算价 (EUR)</th>
+                                    <th class="py-3 px-4 w-2/12 text-right">折合人民币 (CNY)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 font-medium">
+                                <tr class="hover:bg-slate-50/50"><td class="py-3.5 px-4 font-mono text-slate-400" id="ep-code-filing">020</td><td class="py-3.5 px-4" id="ep-lbl-filing">在线递交基础申请规费 (Filing fee)</td><td class="py-3.5 px-4 text-right text-slate-500" id="ep-fee-filing-base">€135.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ep-fee-filing">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="ep-fee-filing-cny">-</td></tr>
+                                
+                                <!-- 以下发明专用行 -->
+                                <tr class="hover:bg-slate-50/50 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">003</td><td class="py-3.5 px-4">检索规费 (European Search Fee)</td><td class="py-3.5 px-4 text-right text-slate-500">€1,520.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ep-fee-search">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="ep-fee-search-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">005</td><td class="py-3.5 px-4">指定规费 (Designation Fee)</td><td class="py-3.5 px-4 text-right text-slate-500">€685.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ep-fee-designation">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="ep-fee-designation-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">021</td><td class="py-3.5 px-4">实审请求规费 (Examination Fee)</td><td class="py-3.5 px-4 text-right text-slate-500">€1,915.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ep-fee-exam">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="ep-fee-exam-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50 bg-amber-50/10 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">033</td><td class="py-3.5 px-4 text-amber-900">16-50项权利要求超项费 (当前: <span id="ep-lbl-excess1" class="font-bold">0</span> 项)</td><td class="py-3.5 px-4 text-right text-slate-500">€275.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ep-fee-exclaims1">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="ep-fee-exclaims1-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50 bg-amber-50/10 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">033</td><td class="py-3.5 px-4 text-amber-900">51项以上权利要求超项费 (当前: <span id="ep-lbl-excess2" class="font-bold">0</span> 项)</td><td class="py-3.5 px-4 text-right text-slate-500">€685.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ep-fee-exclaims2">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="ep-fee-exclaims2-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50 bg-amber-50/10 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">520</td><td class="py-3.5 px-4 text-amber-900">说明书超页规费 (第36页起计费, 当前: <span id="ep-lbl-excess-pages" class="font-bold">0</span> 页)</td><td class="py-3.5 px-4 text-right text-slate-500">€17.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ep-fee-expages">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="ep-fee-expages-cny">-</td></tr>
+                                
+                                <tr class="hover:bg-slate-50/50 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">007</td><td class="py-3.5 px-4">授权与公告规费 (Grant & Publication)</td><td class="py-3.5 px-4 text-right text-slate-500">€1,080.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ep-fee-grant">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="ep-fee-grant-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50 bg-emerald-50/10"><td class="py-3.5 px-4 font-mono text-emerald-800" id="ep-code-maint">033</td><td class="py-3.5 px-4 text-emerald-900 font-semibold" id="ep-lbl-maint">首次年费 (第 3 年维持年费) <span class="bg-emerald-100 text-emerald-800 text-[9px] px-1.5 py-0.5 rounded-md font-normal">仅限首期</span></td><td class="py-3.5 px-4 text-right text-slate-500" id="ep-fee-ren3-base">€690.00</td><td class="py-3.5 px-4 text-right text-emerald-600 bg-emerald-50/30" id="ep-fee-ren3">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="ep-fee-ren3-cny">-</td></tr>
+                                
+                                <tr class="bg-slate-900 text-white font-extrabold text-xs">
+                                    <td class="py-3.5 px-4 text-indigo-300">Total</td>
+                                    <td class="py-3.5 px-4 text-left" id="ep-tot-desc">总计预算 (检索+实审+授权+第3年维持规费)</td>
+                                    <td class="py-3.5 px-4 text-right text-slate-300" id="ep-tot-raw">-</td>
+                                    <td class="py-3.5 px-4 text-right text-emerald-400 bg-slate-900" id="ep-tot-calc">-</td>
+                                    <td class="py-3.5 px-4 text-right text-emerald-200" id="ep-tot-cny">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================== PAGE 4: JAPAN (JPO) ================== -->
+            <section id="page-jpo" class="hidden space-y-6">
+                <!-- 日本特许厅特有配置面板 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="space-y-1">
+                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">JPO 实体等级减免设置</h3>
+                        <p class="text-[11px] text-slate-400">日本对中小企业和个人提供极高比例（多至75%）的实审费和年费减免折扣。</p>
+                    </div>
+                    <div class="bg-slate-100 p-1.5 rounded-xl flex flex-col sm:flex-row gap-1 w-full sm:w-auto">
+                        <button onclick="setJpoEntity('none')" id="btn-jp-none" class="px-4 py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all text-center">标准无减免</button>
+                        <button onclick="setJpoEntity('sme')" id="btn-jp-sme" class="px-4 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all text-center">中小企业 (-2/3)</button>
+                        <button onclick="setJpoEntity('micro')" id="btn-jp-micro" class="px-4 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all text-center">微创/个人 (-3/4)</button>
+                    </div>
+                </div>
+
+                <!-- 日本表 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-50/80 text-slate-500 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
+                                    <th class="py-3 px-4 w-1/12">费用阶段</th>
+                                    <th class="py-3 px-4 w-5/12">JPO 费用名称</th>
+                                    <th class="py-3 px-4 w-2/12 text-right">法定大企业全价 (JPY)</th>
+                                    <th class="py-3 px-4 w-2/12 text-right text-indigo-600 font-bold bg-indigo-50/10">所选实体价 (JPY)</th>
+                                    <th class="py-3 px-4 w-2/12 text-right">折合人民币 (CNY)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 font-medium">
+                                <tr class="hover:bg-slate-50/50"><td class="py-3.5 px-4 font-mono text-slate-400" id="jp-code-filing">申请阶段</td><td class="py-3.5 px-4" id="jp-lbl-filing">专利申请递交官费 (Basic Filing)</td><td class="py-3.5 px-4 text-right text-slate-500" id="jp-fee-filing-base">¥14,000</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="jp-fee-filing">¥14,000</td><td class="py-3.5 px-4 text-right text-slate-500" id="jp-fee-filing-cny">-</td></tr>
+                                
+                                <!-- 发明专用实审行 -->
+                                <tr class="hover:bg-slate-50/50 bg-amber-50/10 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">实审请求</td><td class="py-3.5 px-4">实质审查请求官费 <div class="text-[10px] text-slate-400 font-normal mt-0.5">算法：¥138,000 + (权利要求数量 * ¥4,000)</div></td><td class="py-3.5 px-4 text-right text-slate-500" id="jp-fee-exam-base">-</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="jp-fee-exam">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="jp-fee-exam-cny">-</td></tr>
+                                
+                                <tr class="hover:bg-slate-50/50 bg-emerald-50/10"><td class="py-3.5 px-4 font-mono text-emerald-800" id="jp-code-maint">首期维持</td><td class="py-3.5 px-4 text-emerald-950 font-semibold" id="jp-lbl-maint">授权登记首期捆绑1-3年年费总额 <div class="text-[10px] text-emerald-800 font-normal mt-0.5">单年算法：(¥4,300 + 权利要求数 * ¥300)，此处预缴并乘以3年</div></td><td class="py-3.5 px-4 text-right text-slate-500" id="jp-fee-annuity3-base">-</td><td class="py-3.5 px-4 text-right text-emerald-600 bg-emerald-50/30" id="jp-fee-annuity3">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="jp-fee-annuity3-cny">-</td></tr>
+                                
+                                <tr class="bg-slate-900 text-white font-extrabold text-xs">
+                                    <td class="py-3.5 px-4 text-indigo-300">Total</td>
+                                    <td class="py-3.5 px-4 text-left" id="jp-tot-desc">总计预算 (申请递交+实审请求+1-3年合缴首期年费)</td>
+                                    <td class="py-3.5 px-4 text-right text-slate-300" id="jp-tot-raw">-</td>
+                                    <td class="py-3.5 px-4 text-right text-emerald-400 bg-slate-900" id="jp-tot-calc">-</td>
+                                    <td class="py-3.5 px-4 text-right text-emerald-200" id="jp-tot-cny">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================== PAGE 5: SOUTH KOREA (KIPO) ================== -->
+            <section id="page-kipo" class="hidden space-y-6">
+                <!-- 韩国特许厅特有配置面板 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="space-y-1">
+                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">KIPO 实体等级减免设置</h3>
+                        <p class="text-[11px] text-slate-400">韩国在专利注册及前段审查中为中小企业和个人提供最高70%的官费折扣。</p>
+                    </div>
+                    <div class="bg-slate-100 p-1.5 rounded-xl flex flex-col sm:flex-row gap-1 w-full sm:w-auto">
+                        <button onclick="setKipoEntity('large')" id="btn-kr-large" class="px-4 py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all text-center">大企业/标准</button>
+                        <button onclick="setKipoEntity('sme')" id="btn-kr-sme" class="px-4 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all text-center">中小企业 (-50%)</button>
+                        <button onclick="setKipoEntity('micro')" id="btn-kr-micro" class="px-4 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all text-center">个人/微型实体 (-70%)</button>
+                    </div>
+                </div>
+
+                <!-- 韩国表 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-50/80 text-slate-500 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
+                                    <th class="py-3 px-4 w-1/12">阶段</th>
+                                    <th class="py-3 px-4 w-5/12">KIPO 规费中文名称</th>
+                                    <th class="py-3 px-4 w-2/12 text-right">基础大实体全价 (KRW)</th>
+                                    <th class="py-3 px-4 w-2/12 text-right text-indigo-600 font-bold bg-indigo-50/10">所选实体折扣价 (KRW)</th>
+                                    <th class="py-3 px-4 w-2/12 text-right">折合人民币 (CNY)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 font-medium">
+                                <tr class="hover:bg-slate-50/50"><td class="py-3.5 px-4 font-mono text-slate-400" id="kr-code-filing">申请阶段</td><td class="py-3.5 px-4" id="kr-lbl-filing">电子递交发明专利申请规费 (Electronic Filing)</td><td class="py-3.5 px-4 text-right text-slate-500" id="kr-fee-filing-base">₩46,000</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="kr-fee-filing">₩46,000</td><td class="py-3.5 px-4 text-right text-slate-500" id="kr-fee-filing-cny">-</td></tr>
+                                
+                                <!-- 发明专用行 -->
+                                <tr class="hover:bg-slate-50/50 bg-amber-50/10 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">实审阶段</td><td class="py-3.5 px-4">审查请求请求费 <div class="text-[10px] text-slate-400 font-normal mt-0.5">算法：₩166,000 + (权利要求数量 * ₩51,000)</div></td><td class="py-3.5 px-4 text-right text-slate-500" id="kr-fee-exam-base">-</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="kr-fee-exam">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="kr-fee-exam-cny">-</td></tr>
+                                
+                                <tr class="hover:bg-slate-50/50 bg-emerald-50/10"><td class="py-3.5 px-4 font-mono text-emerald-800" id="kr-code-maint">首期年费</td><td class="py-3.5 px-4 text-emerald-950 font-semibold" id="kr-lbl-maint">授权前 1-3 年年费首期合缴总额 <div class="text-[10px] text-emerald-800 font-normal mt-0.5">单年算法：3年 * (₩13,000基本费/年 + ₩12,000超项/年)</div></td><td class="py-3.5 px-4 text-right text-slate-500" id="kr-fee-ann3-base">-</td><td class="py-3.5 px-4 text-right text-emerald-600 bg-emerald-50/30" id="kr-fee-ann3">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="kr-fee-ann3-cny">-</td></tr>
+                                
+                                <tr class="bg-slate-900 text-white font-extrabold text-xs">
+                                    <td class="py-3.5 px-4 text-indigo-300">Total</td>
+                                    <td class="py-3.5 px-4 text-left" id="kr-tot-desc">总计预算 (申请递交+实审请求+1-3年合缴首期年费)</td>
+                                    <td class="py-3.5 px-4 text-right text-slate-300" id="kr-tot-raw">-</td>
+                                    <td class="py-3.5 px-4 text-right text-emerald-400 bg-slate-900" id="kr-tot-calc">-</td>
+                                    <td class="py-3.5 px-4 text-right text-emerald-200" id="kr-tot-cny">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================== PAGE 6: EURASIAN (EAPO) ================== -->
+            <section id="page-eapo" class="hidden space-y-6">
+                <!-- 欧亚专利局特有配置面板 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="space-y-1">
+                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">EAPO 申请人类别设定</h3>
+                        <p class="text-[11px] text-slate-400">适用于 2026 年最新卢布计费。对以个人自然人身份提起的申请，规费提供减半政策。</p>
+                    </div>
+                    <div class="bg-slate-100 p-1.5 rounded-xl flex gap-1 w-full md:w-auto">
+                        <button onclick="setEapoEntity('large')" id="btn-ea-large" class="w-1/2 md:w-auto px-4 py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all text-center">大实体/标准</button>
+                        <button onclick="setEapoEntity('natural')" id="btn-ea-natural" class="w-1/2 md:w-auto px-4 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all text-center">自然人申请 (-50%)</button>
+                    </div>
+                </div>
+
+                <!-- 欧亚表 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-50/80 text-slate-500 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
+                                    <th class="py-3 px-4 w-1/12">科目</th>
+                                    <th class="py-3 px-4 w-5/12">EAPO 费用中文名称</th>
+                                    <th class="py-3 px-4 w-2/12 text-right">大实体官费 (RUB)</th>
+                                    <th class="py-3 px-4 w-2/12 text-right text-indigo-600 font-bold bg-indigo-50/10">所选实体折扣价 (RUB)</th>
+                                    <th class="py-3 px-4 w-2/12 text-right">折合人民币 (CNY)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 font-medium">
+                                <tr class="hover:bg-slate-50/50"><td class="py-3.5 px-4 font-mono text-slate-400" id="ea-code-filing">单一程序</td><td class="py-3.5 px-4" id="ea-lbl-filing">电子递交单一程序规费 (包含前5项Claims)</td><td class="py-3.5 px-4 text-right text-slate-500" id="ea-fee-filing-base">₽70,000</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ea-fee-filing">₽70,000</td><td class="py-3.5 px-4 text-right text-slate-500" id="ea-fee-filing-cny">-</td></tr>
+                                
+                                <!-- 发明专用行 -->
+                                <tr class="hover:bg-slate-50/50 bg-amber-50/10 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">权利超项</td><td class="py-3.5 px-4 text-amber-900">权利要求超项附加费 (超过5项部分阶梯计费, 当前: <span id="ea-lbl-excess" class="font-bold">0</span> 项)</td><td class="py-3.5 px-4 text-right text-slate-500" id="ea-fee-excess-base">-</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ea-fee-excess">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="ea-fee-excess-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">实质审查</td><td class="py-3.5 px-4">实质审查请求官费 (根据本项独权数: <span id="ea-lbl-ind" class="font-bold">1</span> 项)</td><td class="py-3.5 px-4 text-right text-slate-500" id="ea-fee-exam-base">-</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ea-fee-exam">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="ea-fee-exam-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50 bg-amber-50/10 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">超页及授权</td><td class="py-3.5 px-4 text-amber-900">授权公告印刷附加费 (超过35页部分, 当前: <span id="ea-lbl-pages" class="font-bold">0</span> 页)</td><td class="py-3.5 px-4 text-right text-slate-500" id="ea-fee-grant-base">-</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ea-fee-grant">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="ea-fee-grant-cny">-</td></tr>
+                                
+                                <!-- 外观专用行 -->
+                                <tr class="hover:bg-slate-50/50 bg-amber-50/10 design-only-row hidden-row"><td class="py-3.5 px-4 font-mono text-slate-400">授权登记</td><td class="py-3.5 px-4 text-amber-900">外观设计授权登记与证书费 (包含首期公告)</td><td class="py-3.5 px-4 text-right text-slate-500" id="ea-fee-grant-base-design">₽40,000</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ea-fee-grant-design">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="ea-fee-grant-design-cny">-</td></tr>
+
+                                <tr class="hover:bg-slate-50/50 bg-emerald-50/10"><td class="py-3.5 px-4 font-mono text-emerald-800" id="ea-code-maint">首期年费</td><td class="py-3.5 px-4 text-emerald-900 font-semibold" id="ea-lbl-maint">首次年费 (第 3 年度单年维持费) <span class="bg-emerald-100 text-emerald-800 text-[9px] px-1.5 py-0.5 rounded-md font-normal">仅限首期</span></td><td class="py-3.5 px-4 text-right text-slate-500" id="ea-fee-maint-base">₽15,000</td><td class="py-3.5 px-4 text-right text-emerald-600 bg-emerald-50/30" id="ea-fee-maint">₽15,000</td><td class="py-3.5 px-4 text-right text-slate-500" id="ea-fee-maint-cny">-</td></tr>
+                                
+                                <tr class="bg-slate-900 text-white font-extrabold text-xs">
+                                    <td class="py-3.5 px-4 text-indigo-300">Total</td>
+                                    <td class="py-3.5 px-4 text-left" id="ea-tot-desc">总计预算 (单一程序+超项超页+实审授权+第3年维持)</td>
+                                    <td class="py-3.5 px-4 text-right text-slate-300" id="ea-tot-raw">-</td>
+                                    <td class="py-3.5 px-4 text-right text-emerald-400 bg-slate-900" id="ea-tot-calc">-</td>
+                                    <td class="py-3.5 px-4 text-right text-emerald-200" id="ea-tot-cny">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================== PAGE 7: MALAYSIA (MyIPO) ================== -->
+            <section id="page-myipo" class="hidden space-y-6">
+                <div class="bg-white p-5 rounded-xl border border-slate-200/60 text-slate-500 text-xs leading-relaxed">
+                    <i class="fa-solid fa-circle-info text-indigo-500 mr-1.5"></i> 马来西亚 (MyIPO) 的官费对国内外企业均适用统一的大实体标准，无针对小微实体的阶梯折扣。
+                </div>
+                <!-- 马来西亚表 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-50/80 text-slate-500 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
+                                    <th class="py-3 px-4 w-1/12">费用阶段</th>
+                                    <th class="py-3 px-4 w-5/12">MyIPO 规费中文名称</th>
+                                    <th class="py-3 px-4 w-2/12 text-right" id="my-th-raw">基础大实体价 (MYR)</th>
+                                    <th class="py-3 px-4 w-2/12 text-right text-indigo-600 font-bold bg-indigo-50/10" id="my-th-calc">适用结算价 (MYR)</th>
+                                    <th class="py-3 px-4 w-2/12 text-right">折合人民币 (CNY)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 font-medium">
+                                <tr class="hover:bg-slate-50/50"><td class="py-3.5 px-4 font-mono text-slate-400" id="my-code-filing">申请递交</td><td class="py-3.5 px-4" id="my-lbl-filing">电子递交基础发明专利申请费 (Electronic Filing)</td><td class="py-3.5 px-4 text-right text-slate-500" id="my-fee-filing-base">RM 290.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="my-fee-filing">RM 290.00</td><td class="py-3.5 px-4 text-right text-slate-500" id="my-fee-filing-cny">-</td></tr>
+                                
+                                <!-- 发明专用行 -->
+                                <tr class="hover:bg-slate-50/50 bg-amber-50/10 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">权利超项</td><td class="py-3.5 px-4 text-amber-900">第11项起权利要求超项费 (当前: <span id="my-lbl-excess" class="font-bold">0</span> 项)</td><td class="py-3.5 px-4 text-right text-slate-500" id="my-fee-excess-base">-</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="my-fee-excess">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="my-fee-excess-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">实质审查</td><td class="py-3.5 px-4">实质审查请求规费 (Form 5)</td><td class="py-3.5 px-4 text-right text-slate-500">RM 950.00</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="my-fee-exam">RM 950.00</td><td class="py-3.5 px-4 text-right text-slate-500" id="my-fee-exam-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50 bg-emerald-50/10 utility-only-row"><td class="py-3.5 px-4 font-mono text-emerald-800">首期年费</td><td class="py-3.5 px-4 text-emerald-900 font-semibold">首次维持费 (第 2 年度维持年费) <span class="bg-emerald-100 text-emerald-800 text-[9px] px-1.5 py-0.5 rounded-md font-normal">仅限首期</span></td><td class="py-3.5 px-4 text-right text-slate-500">RM 290.00</td><td class="py-3.5 px-4 text-right text-emerald-600 bg-emerald-50/30" id="my-fee-maint">RM 290.00</td><td class="py-3.5 px-4 text-right text-slate-500" id="my-fee-maint-cny">-</td></tr>
+                                
+                                <tr class="bg-slate-900 text-white font-extrabold text-xs">
+                                    <td class="py-3.5 px-4 text-indigo-300">Total</td>
+                                    <td class="py-3.5 px-4 text-left" id="my-tot-desc">总计预算 (递交+超项+实审请求+第2年单年年费)</td>
+                                    <td class="py-3.5 px-4 text-right text-slate-300" id="my-tot-raw">-</td>
+                                    <td class="py-3.5 px-4 text-right text-emerald-400 bg-slate-900" id="my-tot-calc">-</td>
+                                    <td class="py-3.5 px-4 text-right text-emerald-200" id="my-tot-cny">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================== PAGE 8: UNITED ARAB EMIRATES (UAE) ================== -->
+            <section id="page-uae" class="hidden space-y-6">
+                <!-- 阿联酋经济部特有配置面板 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div class="space-y-1">
+                        <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider">阿联酋实体类型选择</h3>
+                        <p class="text-[11px] text-slate-400">阿联酋官方规费处于全球高位。对认定为中小企业（SME）或学术机构的，提供高达50%的减税让步。</p>
+                    </div>
+                    <div class="bg-slate-100 p-1.5 rounded-xl flex gap-1 w-full md:w-auto">
+                        <button onclick="setUaeEntity('company')" id="btn-ae-company" class="w-1/2 md:w-auto px-4 py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all text-center">法人/大企业 (Corporate)</button>
+                        <button onclick="setUaeEntity('sme')" id="btn-ae-sme" class="w-1/2 md:w-auto px-4 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all text-center">中小企业/学术 (SME)</button>
+                    </div>
+                </div>
+
+                <!-- 阿联酋表 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200/60 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-slate-50/80 text-slate-500 uppercase text-[10px] font-bold tracking-wider border-b border-slate-200">
+                                    <th class="py-3 px-4 w-1/12">阶段</th>
+                                    <th class="py-3 px-4 w-5/12">UAE 规费名称</th>
+                                    <th class="py-3 px-4 w-2/12 text-right">大企业标准全价 (AED)</th>
+                                    <th class="py-3 px-4 w-2/12 text-right text-indigo-600 font-bold bg-indigo-50/10">所选实体优惠价 (AED)</th>
+                                    <th class="py-3 px-4 w-2/12 text-right">折合人民币 (CNY)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100 font-medium">
+                                <tr class="hover:bg-slate-50/50"><td class="py-3.5 px-4 font-mono text-slate-400" id="ae-code-filing">递交阶段</td><td class="py-3.5 px-4" id="ae-lbl-filing">电子申请递交官费 (Patent Application Filing)</td><td class="py-3.5 px-4 text-right text-slate-500" id="ae-fee-filing-base">AED 2,000</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ae-fee-filing">AED 2,000</td><td class="py-3.5 px-4 text-right text-slate-500" id="ae-fee-filing-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">形式审查</td><td class="py-3.5 px-4">形式审查官费 (Formality Review Fee)</td><td class="py-3.5 px-4 text-right text-slate-500">AED 400</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20">AED 400</td><td class="py-3.5 px-4 text-right text-slate-500" id="ae-fee-formality-cny">-</td></tr>
+                                
+                                <!-- 发明专用实审 -->
+                                <tr class="hover:bg-slate-50/50 bg-amber-50/10 utility-only-row"><td class="py-3.5 px-4 font-mono text-slate-400">实质审查</td><td class="py-3.5 px-4 text-amber-900">首轮实审官费 (根据当前权利要求总数: <span id="ae-lbl-claims" class="font-bold">20</span> 项)</td><td class="py-3.5 px-4 text-right text-slate-500" id="ae-fee-exam-base">-</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ae-fee-exam">-</td><td class="py-3.5 px-4 text-right text-slate-500" id="ae-fee-exam-cny">-</td></tr>
+                                
+                                <tr class="hover:bg-slate-50/50"><td class="py-3.5 px-4 font-mono text-slate-400" id="ae-code-grant">授权登记</td><td class="py-3.5 px-4 font-semibold" id="ae-lbl-grant">专利授权及证书打印官费 (含公告)</td><td class="py-3.5 px-4 text-right text-slate-500" id="ae-fee-grant-base">AED 800</td><td class="py-3.5 px-4 text-right text-indigo-600 bg-indigo-50/20" id="ae-fee-grant">AED 800</td><td class="py-3.5 px-4 text-right text-slate-500" id="ae-fee-grant-cny">-</td></tr>
+                                <tr class="hover:bg-slate-50/50 bg-emerald-50/10"><td class="py-3.5 px-4 font-mono text-emerald-800" id="ae-code-maint">首期年费</td><td class="py-3.5 px-4 text-emerald-900 font-semibold" id="ae-lbl-maint">首次年费 (第 1 年度维持费) <span class="bg-emerald-100 text-emerald-800 text-[9px] px-1.5 py-0.5 rounded-md font-normal">仅限首期</span></td><td class="py-3.5 px-4 text-right text-slate-500" id="ae-fee-maint-base">AED 800</td><td class="py-3.5 px-4 text-right text-emerald-600 bg-emerald-50/30" id="ae-fee-maint">AED 800</td><td class="py-3.5 px-4 text-right text-slate-500" id="ae-fee-maint-cny">-</td></tr>
+                                
+                                <tr class="bg-slate-900 text-white font-extrabold text-xs">
+                                    <td class="py-3.5 px-4 text-indigo-300">Total</td>
+                                    <td class="py-3.5 px-4 text-left" id="ae-tot-desc">总计预算 (申请+形审+首轮实审+授权+首期单年维持年费)</td>
+                                    <td class="py-3.5 px-4 text-right text-slate-300" id="ae-tot-raw">-</td>
+                                    <td class="py-3.5 px-4 text-right text-emerald-400 bg-slate-900" id="ae-tot-calc">-</td>
+                                    <td class="py-3.5 px-4 text-right text-emerald-200" id="ae-tot-cny">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================== PAGE 9: COMPARE & REPORT ================== -->
+            <section id="page-compare" class="hidden space-y-6">
+                <!-- 总看板 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- 美国 (USPTO) -->
+                    <div class="bg-slate-50/50 rounded-2xl border border-slate-200/60 p-5 flex flex-col justify-between hover:shadow-lg transition-all duration-300">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-indigo-100 text-indigo-700 px-2.5 py-1 rounded-lg text-[10px] font-bold">美国 (USPTO)</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase" id="comp-us-entity">大实体</span>
+                            </div>
+                            <div class="text-2xl font-black text-slate-900 tracking-tight" id="comp-us-total">¥0.00</div>
+                            <p class="text-[10px] text-slate-400 mt-1" id="comp-us-subdesc">首期申请授权 + 第3.5年维持费</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-100 space-y-1.5 text-[10px] text-slate-500">
+                            <div class="flex justify-between"><span>基础(递交/检索/审查):</span><span id="comp-us-init" class="font-bold text-slate-700">-</span></div>
+                            <div class="flex justify-between utility-only-row"><span>超项超页附带规费:</span><span id="comp-us-excess" class="font-bold text-slate-700">-</span></div>
+                            <div class="flex justify-between"><span>授权及首期维持:</span><span id="comp-us-maint" class="font-bold text-emerald-600">-</span></div>
+                            <div class="flex justify-between text-amber-600 font-semibold utility-only-row"><span>所选或有程序成本:</span><span id="comp-us-contingent">-</span></div>
+                        </div>
+                    </div>
+
+                    <!-- 欧洲 (EPO / EUIPO) -->
+                    <div class="bg-slate-50/50 rounded-2xl border border-slate-200/60 p-5 flex flex-col justify-between hover:shadow-lg transition-all duration-300">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-blue-100 text-blue-700 px-2.5 py-1 rounded-lg text-[10px] font-bold" id="comp-ep-title">欧洲 (EPO)</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase" id="comp-ep-entity">2026新费率</span>
+                            </div>
+                            <div class="text-2xl font-black text-slate-900 tracking-tight" id="comp-ep-total">¥0.00</div>
+                            <p class="text-[10px] text-slate-400 mt-1" id="comp-ep-subdesc">首期申请授权 + 第3年维持年费</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-100 space-y-1.5 text-[10px] text-slate-500">
+                            <div class="flex justify-between"><span id="comp-lbl-ep-init">基础程序规费:</span><span id="comp-ep-init" class="font-bold text-slate-700">-</span></div>
+                            <div class="flex justify-between utility-only-row"><span>超项超页附带规费:</span><span id="comp-ep-excess" class="font-bold text-slate-700">-</span></div>
+                            <div class="flex justify-between"><span>授权及首次年费:</span><span id="comp-ep-maint" class="font-bold text-emerald-600">-</span></div>
+                        </div>
+                    </div>
+
+                    <!-- 日本 (JPO) -->
+                    <div class="bg-slate-50/50 rounded-2xl border border-slate-200/60 p-5 flex flex-col justify-between hover:shadow-lg transition-all duration-300">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-rose-100 text-rose-700 px-2.5 py-1 rounded-lg text-[10px] font-bold">日本 (JPO)</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase" id="comp-jp-entity">大企业</span>
+                            </div>
+                            <div class="text-2xl font-black text-slate-900 tracking-tight" id="comp-jp-total">¥0.00</div>
+                            <p class="text-[10px] text-slate-400 mt-1" id="comp-jp-subdesc">首期递交及授权捆绑 1-3 年年费</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-100 space-y-1.5 text-[10px] text-slate-500">
+                            <div class="flex justify-between"><span id="comp-lbl-jp-init">递交及审查请求费:</span><span id="comp-jp-init" class="font-bold text-slate-700">-</span></div>
+                            <div class="flex justify-between"><span id="comp-lbl-jp-maint">1-3年捆绑首期年费:</span><span id="comp-jp-maint" class="font-bold text-emerald-600">-</span></div>
+                        </div>
+                    </div>
+
+                    <!-- 韩国 (KIPO) -->
+                    <div class="bg-slate-50/50 rounded-2xl border border-slate-200/60 p-5 flex flex-col justify-between hover:shadow-lg transition-all duration-300">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-cyan-100 text-cyan-700 px-2.5 py-1 rounded-lg text-[10px] font-bold">韩国 (KIPO)</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase" id="comp-kr-entity">大企业</span>
+                            </div>
+                            <div class="text-2xl font-black text-slate-900 tracking-tight" id="comp-kr-total">¥0.00</div>
+                            <p class="text-[10px] text-slate-400 mt-1" id="comp-kr-subdesc">首期递交及授权捆绑 1-3 年年费</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-100 space-y-1.5 text-[10px] text-slate-500">
+                            <div class="flex justify-between"><span id="comp-lbl-kr-init">递交及实审审查费:</span><span id="comp-kr-init" class="font-bold text-slate-700">-</span></div>
+                            <div class="flex justify-between"><span id="comp-lbl-kr-maint">1-3年捆绑首期年费:</span><span id="comp-kr-maint" class="font-bold text-emerald-600">-</span></div>
+                        </div>
+                    </div>
+
+                    <!-- 欧亚 (EAPO) -->
+                    <div class="bg-slate-50/50 rounded-2xl border border-slate-200/60 p-5 flex flex-col justify-between hover:shadow-lg transition-all duration-300">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-emerald-100 text-emerald-700 px-2.5 py-1 rounded-lg text-[10px] font-bold">欧亚 (EAPO)</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase" id="comp-ea-entity">大实体</span>
+                            </div>
+                            <div class="text-2xl font-black text-slate-900 tracking-tight" id="comp-ea-total">¥0.00</div>
+                            <p class="text-[10px] text-slate-400 mt-1" id="comp-ea-subdesc">首期申请授权及第3年年费</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-100 space-y-1.5 text-[10px] text-slate-500">
+                            <div class="flex justify-between"><span id="comp-lbl-ea-init">申请/实审及授权:</span><span id="comp-ea-init" class="font-bold text-slate-700">-</span></div>
+                            <div class="flex justify-between"><span id="comp-lbl-ea-maint">第 3 年首次年费:</span><span id="comp-ea-maint" class="font-bold text-emerald-600">-</span></div>
+                        </div>
+                    </div>
+
+                    <!-- 马来西亚 (MyIPO) -->
+                    <div class="bg-slate-50/50 rounded-2xl border border-slate-200/60 p-5 flex flex-col justify-between hover:shadow-lg transition-all duration-300">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-amber-100 text-amber-700 px-2.5 py-1 rounded-lg text-[10px] font-bold">马来西亚 (MyIPO)</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase">标准统一</span>
+                            </div>
+                            <div class="text-2xl font-black text-slate-900 tracking-tight" id="comp-my-total">¥0.00</div>
+                            <p class="text-[10px] text-slate-400 mt-1" id="comp-my-subdesc">首期申请授权及第2年年费</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-100 space-y-1.5 text-[10px] text-slate-500">
+                            <div class="flex justify-between"><span id="comp-lbl-my-init">递交/审查请求费用:</span><span id="comp-my-init" class="font-bold text-slate-700">-</span></div>
+                            <div class="flex justify-between"><span id="comp-lbl-my-maint">第 2 年首次维持年费:</span><span id="comp-my-maint" class="font-bold text-emerald-600">-</span></div>
+                        </div>
+                    </div>
+
+                    <!-- 阿联酋 (UAE) -->
+                    <div class="bg-slate-50/50 rounded-2xl border border-slate-200/60 p-5 flex flex-col justify-between hover:shadow-lg transition-all duration-300 col-span-1 lg:col-span-2">
+                        <div>
+                            <div class="flex justify-between items-center mb-3">
+                                <span class="bg-purple-100 text-purple-700 px-2.5 py-1 rounded-lg text-[10px] font-bold">阿联酋 (UAE)</span>
+                                <span class="text-[10px] font-bold text-slate-400 uppercase" id="comp-ae-entity">大型企业</span>
+                            </div>
+                            <div class="text-2xl font-black text-slate-900 tracking-tight" id="comp-ae-total">¥0.00</div>
+                            <p class="text-[10px] text-slate-400 mt-1" id="comp-ae-subdesc">首期申请、形式审查、首轮实审、授权登报以及首次单年年费</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-3 text-[10px] text-slate-500">
+                            <div>
+                                <span class="block text-slate-400" id="comp-lbl-ae-init">递交/形审/首轮实审:</span>
+                                <span id="comp-ae-init" class="font-bold text-slate-700 block mt-1">-</span>
+                            </div>
+                            <div>
+                                <span class="block text-slate-400" id="comp-lbl-ae-grant">授权登记公告:</span>
+                                <span id="comp-ae-grant" class="font-bold text-slate-700 block mt-1">-</span>
+                            </div>
+                            <div>
+                                <span class="block text-slate-400" id="comp-lbl-ae-maint">首期第1年维持年费:</span>
+                                <span id="comp-ae-maint" class="font-bold text-emerald-600 block mt-1">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 导出动作栏 -->
+                <div class="bg-slate-50 p-6 rounded-2xl border border-slate-200/60 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div class="text-xs text-slate-500 text-center sm:text-left">
+                        <span class="block font-bold text-slate-800">准备生成官方审计报表？</span>
+                        <span class="block mt-0.5">一键导出包含全部七局精算明细、汇率折算规则和说明注释的 Excel (CSV) 报表。</span>
+                    </div>
+                    <button onclick="exportAllToCSV()" class="bg-slate-900 hover:bg-slate-800 text-white transition-all px-6 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 shadow-lg shrink-0">
+                        <i class="fa-solid fa-file-excel text-emerald-400 text-sm"></i> 导出完整 Excel 报表
+                    </button>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- 页脚 -->
+        <footer class="bg-white border-t border-slate-200/80 py-6 text-center text-[11px] text-slate-400 px-6 mt-auto">
+            <p>© 2026 GlobalPatentFee Inc. 所有规费标准均对标各国家局官方发布基准。外币结算依设定汇率实时计算，不含国内外代理事务所服务费。</p>
+        </footer>
+    </div>
+
+    <script>
+        // 全局状态管理
+        const state = {
+            activePage: 'global', // global, uspto, epo, jpo, kipo, eapo, myipo, uae, compare
+            patentType: 'utility', // utility, design
+            params: {
+                claims: 20,
+                indClaims: 3,
+                pages: 30,
+                designs: 1 // 外观设计专利项数 (多项外观申请时生效)
+            },
+            rates: {
+                usd: 7.25,
+                eur: 7.85,
+                jpy: 4.80,  // 100 JPY to CNY
+                krw: 5.35,  // 1000 KRW to CNY
+                rub: 7.80,  // 100 RUB to CNY
+                myr: 1.62,  // MYR to CNY
+                aed: 1.97   // AED to CNY
+            },
+            uspto: {
+                entity: 'large', // large, small, micro
+                contingents: {
+                    rce: false,
+                    advisory: false,
+                    appeal: false,
+                    correct: false
+                }
+            },
+            epo: {
+                version: 'new' // current, new
+            },
+            jpo: {
+                entity: 'none' // none, sme, micro
+            },
+            kipo: {
+                entity: 'large' // large, sme, micro
+            },
+            eapo: {
+                entity: 'large' // large, natural
+            },
+            myipo: {
+                entity: 'none'
+            },
+            uae: {
+                entity: 'company' // company, sme
+            }
+        };
+
+        // 页面初始加载
+        window.onload = function() {
+            calculateAll();
+        }
+
+        // 切换发明与外观设计
+        function setPatentType(type) {
+            state.patentType = type;
+            const btnUtil = document.getElementById('btn-type-utility');
+            const btnDesign = document.getElementById('btn-type-design');
+            const wrapperUtil = document.getElementById('wrapper-spec-utility');
+            const wrapperDesign = document.getElementById('wrapper-spec-design');
+
+            if (type === 'utility') {
+                btnUtil.className = "flex-1 py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all text-center";
+                btnDesign.className = "flex-1 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all text-center";
+                wrapperUtil.classList.remove('hidden');
+                wrapperDesign.classList.add('hidden');
+            } else {
+                btnUtil.className = "flex-1 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all text-center";
+                btnDesign.className = "flex-1 py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all text-center";
+                wrapperUtil.classList.add('hidden');
+                wrapperDesign.classList.remove('hidden');
+            }
+
+            // 更新界面上发明与外观特定行的展示
+            updateRowVisibility(type);
+
+            // 更新侧边栏和对比看板的地区标志文字（欧洲设计是 EUIPO 欧盟外观）
+            const epoNavSpan = document.getElementById('label-nav-epo');
+            const epoDashSpan = document.getElementById('dash-label-epo');
+            const epoCompSpan = document.getElementById('comp-ep-title');
+            if (type === 'design') {
+                epoNavSpan.innerText = "欧盟 (EUIPO)";
+                epoDashSpan.innerText = "欧盟 (EUIPO)";
+                epoCompSpan.innerText = "欧盟 (EUIPO)";
+            } else {
+                epoNavSpan.innerText = "欧洲 (EPO)";
+                epoDashSpan.innerText = "欧洲 (EPO)";
+                epoCompSpan.innerText = "欧洲 (EPO)";
+            }
+
+            // 重设页头说明
+            updateHeaderInfo(state.activePage);
+            calculateAll();
+        }
+
+        // 实用辅助方法：切换发明/外观行显示
+        function updateRowVisibility(type) {
+            const utilityRows = document.querySelectorAll('.utility-only-row');
+            const designRows = document.querySelectorAll('.design-only-row');
+
+            if (type === 'utility') {
+                utilityRows.forEach(row => row.classList.remove('hidden-row'));
+                designRows.forEach(row => row.classList.add('hidden-row'));
+            } else {
+                utilityRows.forEach(row => row.classList.add('hidden-row'));
+                designRows.forEach(row => row.classList.remove('hidden-row'));
+            }
+        }
+
+        // SPA 页面/侧边栏切换逻辑
+        function navigateTo(pageId) {
+            state.activePage = pageId;
+            
+            const pages = ['global', 'uspto', 'epo', 'jpo', 'kipo', 'eapo', 'myipo', 'uae', 'compare'];
+            pages.forEach(p => {
+                document.getElementById('page-' + p).classList.add('hidden');
+                
+                // 还原侧边栏按钮样式
+                const navBtn = document.getElementById('nav-' + p);
+                if (p === 'compare') {
+                    navBtn.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all text-indigo-400 hover:text-indigo-200 hover:bg-slate-800/40";
+                } else {
+                    navBtn.className = "w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all text-slate-400 hover:text-white hover:bg-slate-800/40";
+                }
+            });
+
+            // 显示选中页面
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+            
+            // 高亮侧边栏按钮
+            const activeBtn = document.getElementById('nav-' + pageId);
+            if (pageId === 'compare') {
+                activeBtn.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all bg-indigo-950 text-indigo-300 border border-indigo-800/30 shadow-md";
+            } else if (pageId === 'global') {
+                activeBtn.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all bg-indigo-600 text-white";
+            } else {
+                activeBtn.className = "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-xs font-semibold transition-all bg-indigo-600/25 text-white border-l-4 border-indigo-500 pl-2";
+            }
+
+            // 更新页头文案
+            updateHeaderInfo(pageId);
+            calculateAll();
+        }
+
+        // 动态变更页头文字 (完美支持外观与发明的动态话术切换)
+        function updateHeaderInfo(pageId) {
+            const isDesign = (state.patentType === 'design');
+            const titleMap = {
+                'global': { 
+                    t: isDesign ? '外观设计规格与汇率设置' : '基础规格与汇率设置', 
+                    d: isDesign ? '配置外观项目总数、基准结算外币汇率以联动全局数据' : '配置核心专利规格、基准结算外币汇率以联动全局数据' 
+                },
+                'uspto': { 
+                    t: isDesign ? '美国特许及商标局 (USPTO) 外观设计官费' : '美国特许及商标局 (USPTO) 官费明细', 
+                    d: isDesign ? '外观设计专利申请费用。包含基础申请、检索、审查以及授权费，美国外观专利授权后免缴维持年费。' : '包含递交、检索、实审、首次维持年费（第3.5年）以及或有申请程序' 
+                },
+                'epo': { 
+                    t: isDesign ? '欧盟知识产权局 (EUIPO) 欧盟外观设计官费' : '欧洲专利局 (EPO) 官费明细', 
+                    d: isDesign ? '欧盟外观设计（EUD）于2025/2026全面精简合并规费结构。支持单件多项目申请，不设额外审查费，按5年一期续展。' : '包含检索、实审、指定、授权及首次维持年费（第3年），采用2026最新法案' 
+                },
+                'jpo': { 
+                    t: isDesign ? '日本特许厅 (JPO) 外观设计官费' : '日本特许厅 (JPO) 官费明细', 
+                    d: isDesign ? '日本外观设计专利无需提交单独的实审请求，授权登记时仅预缴第 1 年度官费，系统已联动中小企业等减半规则。' : '日本于授权登记时需一次性合缴并预缴首期 1-3 年年费，系统已依实体减免比例计入' 
+                },
+                'kipo': { 
+                    t: isDesign ? '韩国特许厅 (KIPO) 外观设计官费' : '韩国特许厅 (KIPO) 官费明细', 
+                    d: isDesign ? '韩国外观设计采用大类和非实质审查并轨模式。授权注册时必须一次性合缴前 3 年维持费。' : '韩国授权时亦执行首期 1-3 年年费合缴，不再累加后续年份维持费' 
+                },
+                'eapo': { 
+                    t: isDesign ? '欧亚专利局 (EAPO) 工业外观设计官费' : '欧亚专利局 (EAPO) 官费明细', 
+                    d: isDesign ? '欧亚工业外观设计实施卢布计算。支持一案多设计合并申请并计算首期第3年年费。' : '2026最新卢布规费标准，首期年费仅计算第 3 年度单年维持费' 
+                },
+                'myipo': { 
+                    t: isDesign ? '马来西亚专利局 (MyIPO) 外观设计官费' : '马来西亚专利局 (MyIPO) 官费明细', 
+                    d: isDesign ? '采用马币计算。基础外观申请授权包含首期5年保护期，免前期年费，不设实体折扣。' : '采用马币计算。首次年费仅包含第 2 年度维持年费，无多实体让步折扣' 
+                },
+                'uae': { 
+                    t: isDesign ? '阿联酋经济部 (UAE) 外观设计官费' : '阿联酋经济部 (UAE) 官费明细', 
+                    d: isDesign ? '阿联酋外观设计保护期为20年。首次年费仅包含授权首年的年度维持年费，对SME给予大幅降税优惠。' : '阿联酋官费标准较高，首次年费仅包含第 1 年度维持年费' 
+                },
+                'compare': { 
+                    t: isDesign ? '全球七局外观设计首期费用对比' : '全球七局首期费用汇总与对比面板', 
+                    d: isDesign ? '统一折算为人民币（CNY）后的外观设计首期全流程（申请到授权首期维持）对比看板。' : '统一折算为人民币（CNY）后的多角度汇总审计图表，支持完整一键导出' 
+                }
+            };
+            document.getElementById('header-page-title').innerText = titleMap[pageId].t;
+            document.getElementById('header-page-desc').innerText = titleMap[pageId].d;
+        }
+
+        // 切换美国实体状态
+        function setUsptoEntity(entity) {
+            state.uspto.entity = entity;
+            ['large', 'small', 'micro'].forEach(e => {
+                const btn = document.getElementById('btn-us-' + e);
+                btn.className = (e === entity) ? "w-full py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all" : "w-full py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all";
+            });
+            calculateAll();
+        }
+
+        // 切换欧洲费率版本
+        function setEpoVersion(ver) {
+            state.epo.version = ver;
+            ['current', 'new'].forEach(v => {
+                const btn = document.getElementById('btn-ep-' + v);
+                btn.className = (v === ver) ? "px-4 py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all" : "px-4 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all";
+            });
+            calculateAll();
+        }
+
+        // 切换日本实体状态
+        function setJpoEntity(entity) {
+            state.jpo.entity = entity;
+            ['none', 'sme', 'micro'].forEach(e => {
+                const btn = document.getElementById('btn-jp-' + e);
+                btn.className = (e === entity) ? "px-4 py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all text-center" : "px-4 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all text-center";
+            });
+            calculateAll();
+        }
+
+        // 切换韩国实体状态
+        function setKipoEntity(entity) {
+            state.kipo.entity = entity;
+            ['large', 'sme', 'micro'].forEach(e => {
+                const btn = document.getElementById('btn-kr-' + e);
+                btn.className = (e === entity) ? "px-4 py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all text-center" : "px-4 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all text-center";
+            });
+            calculateAll();
+        }
+
+        // 切换欧亚实体状态
+        function setEapoEntity(entity) {
+            state.eapo.entity = entity;
+            ['large', 'natural'].forEach(e => {
+                const btn = document.getElementById('btn-ea-' + e);
+                btn.className = (e === entity) ? "px-4 py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all text-center" : "px-4 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all text-center";
+            });
+            calculateAll();
+        }
+
+        // 切换阿联酋实体状态
+        function setUaeEntity(entity) {
+            state.uae.entity = entity;
+            ['company', 'sme'].forEach(e => {
+                const btn = document.getElementById('btn-ae-' + e);
+                btn.className = (e === entity) ? "px-4 py-2 rounded-lg text-xs font-bold bg-white text-slate-800 shadow-sm transition-all text-center" : "px-4 py-2 rounded-lg text-xs font-bold text-slate-500 hover:text-slate-800 transition-all text-center";
+            });
+            calculateAll();
+        }
+
+        // 同步输入框和滑块的值
+        function syncSlider(field) {
+            const val = document.getElementById('slider-' + field).value;
+            document.getElementById('param-' + field).value = val;
+            calculateAll();
+        }
+
+        // 核心测算执行函数
+        function calculateAll() {
+            const isDesign = (state.patentType === 'design');
+
+            // 读取与校验控制台通用规格参数
+            state.params.claims = parseInt(document.getElementById('param-claims').value) || 20;
+            state.params.indClaims = parseInt(document.getElementById('param-indClaims').value) || 3;
+            state.params.pages = parseInt(document.getElementById('param-pages').value) || 30;
+            state.params.designs = parseInt(document.getElementById('param-designs').value) || 1;
+
+            // 双向绑定同步
+            document.getElementById('slider-claims').value = state.params.claims;
+            document.getElementById('slider-indClaims').value = state.params.indClaims;
+            document.getElementById('slider-pages').value = state.params.pages;
+            document.getElementById('slider-designs').value = state.params.designs;
+
+            // 规格文案显示同步
+            document.getElementById('val-disp-claims').innerText = state.params.claims + ' 项';
+            document.getElementById('val-disp-indClaims').innerText = state.params.indClaims + ' 项';
+            document.getElementById('val-disp-pages').innerText = state.params.pages + ' 页';
+            document.getElementById('val-disp-designs').innerText = state.params.designs + ' 项设计';
+
+            // 页头摘要更新
+            if (isDesign) {
+                document.getElementById('header-spec-summary').innerText = `外观设计：共 ${state.params.designs} 个设计项`;
+            } else {
+                document.getElementById('header-spec-summary').innerText = `${state.params.claims}项权利要求 | ${state.params.indClaims}项独权 | ${state.params.pages}页`;
+            }
+
+            // 获取实时汇率
+            state.rates.usd = parseFloat(document.getElementById('rate-usd-cny').value) || 7.25;
+            state.rates.eur = parseFloat(document.getElementById('rate-eur-cny').value) || 7.85;
+            state.rates.jpy = parseFloat(document.getElementById('rate-jpy-cny').value) || 4.80;
+            state.rates.krw = parseFloat(document.getElementById('rate-krw-cny').value) || 5.35;
+            state.rates.rub = parseFloat(document.getElementById('rate-rub-cny').value) || 7.80;
+            state.rates.myr = parseFloat(document.getElementById('rate-myr-cny').value) || 1.62;
+            state.rates.aed = parseFloat(document.getElementById('rate-aed-cny').value) || 1.97;
+
+            // ================== 1. USPTO 计算 ==================
+            let us_multiplier = 1.0;
+            if (state.uspto.entity === 'small') us_multiplier = 0.4;
+            if (state.uspto.entity === 'micro') us_multiplier = 0.2;
+
+            let us_filing, us_search, us_exam, us_issue, us_maint3;
+            let us_filing_raw, us_search_raw, us_exam_raw, us_issue_raw, us_maint3_raw;
+
+            if (isDesign) {
+                // 外观设计特定规费 (2025/2026 最新基准)
+                us_filing_raw = 300;
+                us_search_raw = 300;
+                us_exam_raw = 700;
+                us_issue_raw = 1300;
+                us_maint3_raw = 0; // 美国外观无年费维护费
+
+                document.getElementById('us-code-filing').innerText = "1017";
+                document.getElementById('us-lbl-filing').innerText = "基础外观设计申请费 (Basic Filing)";
+                document.getElementById('us-code-search').innerText = "1112";
+                document.getElementById('us-lbl-search').innerText = "外观检索费 (Design Search)";
+                document.getElementById('us-code-exam').innerText = "1312";
+                document.getElementById('us-lbl-exam').innerText = "外观审查费 (Design Examination)";
+                document.getElementById('us-code-issue').innerText = "1502";
+                document.getElementById('us-lbl-issue').innerText = "外观设计授权登记费 (Issue Fee)";
+            } else {
+                // 发明专利规费
+                us_filing_raw = 350;
+                us_search_raw = 770;
+                us_exam_raw = 880;
+                us_issue_raw = 1290;
+                us_maint3_raw = 2150;
+
+                document.getElementById('us-code-filing').innerText = "1011";
+                document.getElementById('us-lbl-filing').innerText = "基础申请费 (Basic Filing)";
+                document.getElementById('us-code-search').innerText = "1111";
+                document.getElementById('us-lbl-search').innerText = "检索费 (Patent Search)";
+                document.getElementById('us-code-exam').innerText = "1311";
+                document.getElementById('us-lbl-exam').innerText = "审查费 (Patent Examination)";
+                document.getElementById('us-code-issue').innerText = "1501";
+                document.getElementById('us-lbl-issue').innerText = "专利授权登记费 (Issue Fee - Utility)";
+            }
+
+            us_filing = us_filing_raw * us_multiplier;
+            us_search = us_search_raw * us_multiplier;
+            us_exam = us_exam_raw * us_multiplier;
+            us_issue = us_issue_raw * us_multiplier;
+            us_maint3 = us_maint3_raw * us_multiplier;
+
+            document.getElementById('us-fee-filing-base').innerText = `$${us_filing_raw.toFixed(2)}`;
+            document.getElementById('us-fee-filing').innerText = `$${us_filing.toFixed(2)}`;
+            document.getElementById('us-fee-filing-cny').innerText = `¥${(us_filing * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            
+            document.getElementById('us-fee-search-base').innerText = `$${us_search_raw.toFixed(2)}`;
+            document.getElementById('us-fee-search').innerText = `$${us_search.toFixed(2)}`;
+            document.getElementById('us-fee-search-cny').innerText = `¥${(us_search * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            
+            document.getElementById('us-fee-exam-base').innerText = `$${us_exam_raw.toFixed(2)}`;
+            document.getElementById('us-fee-exam').innerText = `$${us_exam.toFixed(2)}`;
+            document.getElementById('us-fee-exam-cny').innerText = `¥${(us_exam * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            document.getElementById('us-fee-issue-base').innerText = `$${us_issue_raw.toFixed(2)}`;
+            document.getElementById('us-fee-issue').innerText = `$${us_issue.toFixed(2)}`;
+            document.getElementById('us-fee-issue-cny').innerText = `¥${(us_issue * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            // 发明专用的超项超页/或有程序和年费小计逻辑
+            let us_exc_ind_fee = 0, us_exc_cl_fee = 0, us_exc_pg_fee = 0, us_contingent_raw_sum = 0, us_contingent_calc = 0;
+            if (!isDesign) {
+                const us_exc_ind_count = Math.max(0, state.params.indClaims - 3);
+                const us_exc_cl_count = Math.max(0, state.params.claims - 20);
+                us_exc_ind_fee = us_exc_ind_count * 600 * us_multiplier;
+                us_exc_cl_fee = us_exc_cl_count * 200 * us_multiplier;
+
+                const us_exc_pg_blocks = Math.ceil(Math.max(0, state.params.pages - 100) / 50);
+                us_exc_pg_fee = us_exc_pg_blocks * 450 * us_multiplier;
+
+                document.getElementById('us-lbl-excess-ind').innerText = us_exc_ind_count;
+                document.getElementById('us-fee-exind').innerText = `$${us_exc_ind_fee.toFixed(2)}`;
+                document.getElementById('us-fee-exind-cny').innerText = `¥${(us_exc_ind_fee * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('us-lbl-excess-claims').innerText = us_exc_cl_count;
+                document.getElementById('us-fee-excl').innerText = `$${us_exc_cl_fee.toFixed(2)}`;
+                document.getElementById('us-fee-excl-cny').innerText = `¥${(us_exc_cl_fee * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('us-lbl-excess-pages').innerText = us_exc_pg_blocks;
+                document.getElementById('us-fee-expg').innerText = `$${us_exc_pg_fee.toFixed(2)}`;
+                document.getElementById('us-fee-expg-cny').innerText = `¥${(us_exc_pg_fee * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('us-fee-maint3').innerText = `$${us_maint3.toFixed(2)}`;
+                document.getElementById('us-fee-maint3-cny').innerText = `¥${(us_maint3 * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                // 美国或有选项状态
+                state.uspto.contingents.rce = document.getElementById('opt-us-rce').checked;
+                state.uspto.contingents.advisory = document.getElementById('opt-us-advisory').checked;
+                state.uspto.contingents.appeal = document.getElementById('opt-us-appeal').checked;
+                state.uspto.contingents.correct = document.getElementById('opt-us-correct').checked;
+
+                if (state.uspto.contingents.rce) us_contingent_raw_sum += 1500;
+                if (state.uspto.contingents.advisory) us_contingent_raw_sum += 235;
+                if (state.uspto.contingents.appeal) us_contingent_raw_sum += 1000;
+                if (state.uspto.contingents.correct) us_contingent_raw_sum += 170;
+
+                us_contingent_calc = us_contingent_raw_sum * us_multiplier;
+
+                if (us_contingent_raw_sum > 0) {
+                    document.getElementById('row-us-contingent').classList.remove('hidden-row');
+                    document.getElementById('us-contingent-raw').innerText = `$${us_contingent_raw_sum.toFixed(2)}`;
+                    document.getElementById('us-contingent-calc').innerText = `$${us_contingent_calc.toFixed(2)}`;
+                    document.getElementById('us-contingent-cny').innerText = `¥${(us_contingent_calc * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+                } else {
+                    document.getElementById('row-us-contingent').classList.add('hidden-row');
+                }
+                document.getElementById('us-tot-desc').innerText = "总计预算 (递交+首次实审授权+第3.5年首期维持+或有程序)";
+            } else {
+                document.getElementById('row-us-contingent').classList.add('hidden-row');
+                document.getElementById('us-tot-desc').innerText = "总计预算 (外观申请递交+外观检索审查+外观授权登记费)";
+            }
+
+            const us_total_base = us_filing_raw + us_search_raw + us_exam_raw + us_exc_ind_fee/us_multiplier + us_exc_cl_fee/us_multiplier + us_exc_pg_fee/us_multiplier + us_issue_raw + us_maint3_raw + us_contingent_raw_sum;
+            const us_total_calc = us_filing + us_search + us_exam + us_exc_ind_fee + us_exc_cl_fee + us_exc_pg_fee + us_issue + us_maint3 + us_contingent_calc;
+
+            document.getElementById('us-tot-raw').innerText = `$${us_total_base.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('us-tot-calc').innerText = `$${us_total_calc.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('us-tot-cny').innerText = `¥${(us_total_calc * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+
+            // ================== 2. EPO / EUIPO 计算 ==================
+            let ep_filing_base, ep_filing, ep_search, ep_desig, ep_exam, ep_grant, ep_ren3;
+            let ep_exc_cl1_fee = 0, ep_exc_cl2_fee = 0, ep_exc_pg_fee = 0;
+            const is_ep_new = (state.epo.version === 'new');
+
+            if (isDesign) {
+                // 欧盟外观设计申请费 (EUIPO EUD 2025/2026最新平价多项系统)
+                // 1st design: €350, 从第2个设计起: 每个 €125
+                ep_filing_base = 350 + (state.params.designs > 1 ? (state.params.designs - 1) * 125 : 0);
+                ep_filing = ep_filing_base; 
+                ep_ren3 = 150; // 外观5年首期续展年费
+
+                document.getElementById('ep-code-filing').innerText = "EUD";
+                document.getElementById('ep-lbl-filing').innerText = "欧盟外观设计打包递交规费 (欧盟区单件多项)";
+                document.getElementById('ep-code-maint').innerText = "EU-R";
+                document.getElementById('ep-lbl-maint').innerText = "首次续展年费 (第5年保护期满后续展官费)";
+
+                document.getElementById('ep-tot-desc').innerText = "总计预算 (外观设计申请费+授权登记公告+首期5年续展费)";
+            } else {
+                // 发明专利规费
+                ep_filing_base = 135;
+                ep_filing = ep_filing_base;
+                ep_search = is_ep_new ? 1595 : 1520;
+                ep_desig = is_ep_new ? 720 : 685;
+                ep_exam = is_ep_new ? 2010 : 1915;
+
+                const ep_exc_cl1 = Math.max(0, Math.min(35, state.params.claims - 15));
+                ep_exc_cl1_fee = ep_exc_cl1 * (is_ep_new ? 290 : 275);
+                const ep_exc_cl2 = Math.max(0, state.params.claims - 50);
+                ep_exc_cl2_fee = ep_exc_cl2 * (is_ep_new ? 720 : 685);
+
+                const ep_exc_pg = Math.max(0, state.params.pages - 35);
+                ep_exc_pg_fee = ep_exc_pg * 17;
+
+                ep_grant = is_ep_new ? 1135 : 1080;
+                ep_ren3 = is_ep_new ? 725 : 690; 
+
+                document.getElementById('ep-code-filing').innerText = "020";
+                document.getElementById('ep-lbl-filing').innerText = "在线递交基础申请规费 (Filing fee)";
+                document.getElementById('ep-code-maint').innerText = "033";
+                document.getElementById('ep-lbl-maint').innerText = "首次年费 (第 3 年维持年费) 仅限首期";
+
+                // 给发明专利显示各细项
+                document.getElementById('ep-fee-search').innerText = `€${ep_search.toFixed(2)}`;
+                document.getElementById('ep-fee-search-cny').innerText = `¥${(ep_search * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+                document.getElementById('ep-fee-designation').innerText = `€${ep_desig.toFixed(2)}`;
+                document.getElementById('ep-fee-designation-cny').innerText = `¥${(ep_desig * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+                document.getElementById('ep-fee-exam').innerText = `€${ep_exam.toFixed(2)}`;
+                document.getElementById('ep-fee-exam-cny').innerText = `¥${(ep_exam * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('ep-lbl-excess1').innerText = ep_exc_cl1;
+                document.getElementById('ep-fee-exclaims1').innerText = `€${ep_exc_cl1_fee.toFixed(2)}`;
+                document.getElementById('ep-fee-exclaims1-cny').innerText = `¥${(ep_exc_cl1_fee * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('ep-lbl-excess2').innerText = ep_exc_cl2;
+                document.getElementById('ep-fee-exclaims2').innerText = `€${ep_exc_cl2_fee.toFixed(2)}`;
+                document.getElementById('ep-fee-exclaims2-cny').innerText = `¥${(ep_exc_cl2_fee * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('ep-lbl-excess-pages').innerText = ep_exc_pg;
+                document.getElementById('ep-fee-expages').innerText = `€${ep_exc_pg_fee.toFixed(2)}`;
+                document.getElementById('ep-fee-expages-cny').innerText = `¥${(ep_exc_pg_fee * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('ep-fee-grant').innerText = `€${ep_grant.toFixed(2)}`;
+                document.getElementById('ep-fee-grant-cny').innerText = `¥${(ep_grant * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('ep-tot-desc').innerText = "总计预算 (检索+实审+授权+第3年维持规费)";
+            }
+
+            document.getElementById('ep-fee-filing-base').innerText = `€${ep_filing_base.toFixed(2)}`;
+            document.getElementById('ep-fee-filing').innerText = `€${ep_filing.toFixed(2)}`;
+            document.getElementById('ep-fee-filing-cny').innerText = `¥${(ep_filing * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            document.getElementById('ep-fee-ren3-base').innerText = `€${(isDesign ? 150 : (is_ep_new ? 725 : 690)).toFixed(2)}`;
+            document.getElementById('ep-fee-ren3').innerText = `€${ep_ren3.toFixed(2)}`;
+            document.getElementById('ep-fee-ren3-cny').innerText = `¥${(ep_ren3 * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            const ep_tot_base = isDesign ? (ep_filing_base + 150) : (135 + 1520 + 685 + 1915 + ep_exc_cl1_fee/state.rates.eur + ep_exc_cl2_fee/state.rates.eur + ep_exc_pg_fee/state.rates.eur + 1080 + 690);
+            const ep_tot_calc = isDesign ? (ep_filing + ep_ren3) : (ep_filing + ep_search + ep_desig + ep_exam + ep_exc_cl1_fee + ep_exc_cl2_fee + ep_exc_pg_fee + ep_grant + ep_ren3);
+
+            document.getElementById('ep-tot-raw').innerText = `€${ep_tot_base.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('ep-tot-calc').innerText = `€${ep_tot_calc.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('ep-tot-cny').innerText = `¥${(ep_tot_calc * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+
+            // ================== 3. JPO 计算 ==================
+            let jp_filing_base, jp_exam_raw = 0, jp_annuity3_raw;
+            let jp_exam_multiplier = 1.0;
+            if (state.jpo.entity === 'sme') jp_exam_multiplier = 1 / 3;
+            if (state.jpo.entity === 'micro') jp_exam_multiplier = 1 / 4;
+
+            if (isDesign) {
+                jp_filing_base = 16000;
+                jp_annuity3_raw = 8500; // 日本外观设计首期登记第1年年费为 8,500日元
+
+                document.getElementById('jp-code-filing').innerText = "意匠申请";
+                document.getElementById('jp-lbl-filing').innerText = "外观设计申请规费 (Design Application Fee)";
+                document.getElementById('jp-code-maint').innerText = "1年年费";
+                document.getElementById('jp-lbl-maint').innerText = "首期授权登记缴付第 1 年外观维持年费";
+
+                document.getElementById('jp-tot-desc').innerText = "总计预算 (外观设计申请费+首年授权登记维持费)";
+            } else {
+                jp_filing_base = 14000;
+                jp_exam_raw = 138000 + (state.params.claims * 4000);
+                jp_annuity3_raw = (4300 + (state.params.claims * 300)) * 3; // 1-3年首期合缴
+
+                document.getElementById('jp-code-filing').innerText = "申请阶段";
+                document.getElementById('jp-lbl-filing').innerText = "专利申请递交官费 (Basic Filing)";
+                document.getElementById('jp-code-maint').innerText = "首期维持";
+                document.getElementById('jp-lbl-maint').innerText = "授权登记首期捆绑1-3年年费总额";
+
+                document.getElementById('jp-fee-exam-base').innerText = `¥${jp_exam_raw.toLocaleString()}`;
+                const jp_exam = jp_exam_raw * jp_exam_multiplier;
+                document.getElementById('jp-fee-exam').innerText = `¥${Math.floor(jp_exam).toLocaleString()}`;
+                document.getElementById('jp-fee-exam-cny').innerText = `¥${(jp_exam * (state.rates.jpy / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('jp-tot-desc').innerText = "总计预算 (申请递交+实审请求+1-3年合缴首期年费)";
+            }
+
+            const jp_filing = jp_filing_base; // 递交费不随实体打折
+            const jp_annuity3 = jp_annuity3_raw * jp_exam_multiplier;
+
+            document.getElementById('jp-fee-filing-base').innerText = `¥${jp_filing_base.toLocaleString()}`;
+            document.getElementById('jp-fee-filing').innerText = `¥${jp_filing.toLocaleString()}`;
+            document.getElementById('jp-fee-filing-cny').innerText = `¥${(jp_filing * (state.rates.jpy / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            document.getElementById('jp-fee-annuity3-base').innerText = `¥${jp_annuity3_raw.toLocaleString()}`;
+            document.getElementById('jp-fee-annuity3').innerText = `¥${Math.floor(jp_annuity3).toLocaleString()}`;
+            document.getElementById('jp-fee-annuity3-cny').innerText = `¥${(jp_annuity3 * (state.rates.jpy / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            const jp_tot_base = jp_filing_base + jp_exam_raw + jp_annuity3_raw;
+            const jp_tot_calc = jp_filing + (isDesign ? 0 : jp_exam_raw * jp_exam_multiplier) + jp_annuity3;
+
+            document.getElementById('jp-tot-raw').innerText = `¥${jp_tot_base.toLocaleString()}`;
+            document.getElementById('jp-tot-calc').innerText = `¥${Math.floor(jp_tot_calc).toLocaleString()}`;
+            document.getElementById('jp-tot-cny').innerText = `¥${(jp_tot_calc * (state.rates.jpy / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+
+            // ================== 4. KIPO 计算 ==================
+            let kr_multiplier = 1.0;
+            if (state.kipo.entity === 'sme') kr_multiplier = 0.5;
+            if (state.kipo.entity === 'micro') kr_multiplier = 0.3;
+
+            let kr_filing_raw, kr_exam_raw = 0, kr_ann3_raw;
+
+            if (isDesign) {
+                kr_filing_raw = 94000; // 实质审查外观申请费
+                kr_ann3_raw = 75000; // 前1-3年外观注册登记年费累计(25000 * 3年 = 75,000 KRW)
+
+                document.getElementById('kr-code-filing').innerText = "外观递交";
+                document.getElementById('kr-lbl-filing').innerText = "电子递交外观设计专利申请官费";
+                document.getElementById('kr-code-maint').innerText = "首期3年";
+                document.getElementById('kr-lbl-maint').innerText = "授权注册缴付 1-3 年外观设计年费总额";
+
+                document.getElementById('kr-tot-desc').innerText = "总计预算 (外观申请递交+首期1-3年合缴外观维持费)";
+            } else {
+                kr_filing_raw = 46000;
+                kr_exam_raw = 166000 + (state.params.claims * 51000);
+                kr_ann3_raw = (13000 * 3) + (state.params.claims * 12000 * 3); 
+
+                document.getElementById('kr-code-filing').innerText = "申请阶段";
+                document.getElementById('kr-lbl-filing').innerText = "电子递交发明专利申请规费 (Electronic Filing)";
+                document.getElementById('kr-code-maint').innerText = "首期年费";
+                document.getElementById('kr-lbl-maint').innerText = "授权前 1-3 年年费首期合缴总额";
+
+                document.getElementById('kr-fee-exam-base').innerText = `₩${kr_exam_raw.toLocaleString()}`;
+                const kr_exam = kr_exam_raw * kr_multiplier;
+                document.getElementById('kr-fee-exam').innerText = `₩${Math.floor(kr_exam).toLocaleString()}`;
+                document.getElementById('kr-fee-exam-cny').innerText = `¥${(kr_exam * (state.rates.krw / 1000)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('kr-tot-desc').innerText = "总计预算 (申请递交+实审请求+1-3年合缴首期年费)";
+            }
+
+            const kr_filing = kr_filing_raw * kr_multiplier;
+            const kr_ann3 = kr_ann3_raw * kr_multiplier;
+
+            document.getElementById('kr-fee-filing-base').innerText = `₩${kr_filing_raw.toLocaleString()}`;
+            document.getElementById('kr-fee-filing').innerText = `₩${Math.floor(kr_filing).toLocaleString()}`;
+            document.getElementById('kr-fee-filing-cny').innerText = `¥${(kr_filing * (state.rates.krw / 1000)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            document.getElementById('kr-fee-ann3-base').innerText = `₩${kr_ann3_raw.toLocaleString()}`;
+            document.getElementById('kr-fee-ann3').innerText = `₩${Math.floor(kr_ann3).toLocaleString()}`;
+            document.getElementById('kr-fee-ann3-cny').innerText = `¥${(kr_ann3 * (state.rates.krw / 1000)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            const kr_tot_base = kr_filing_raw + kr_exam_raw + kr_ann3_raw;
+            const kr_tot_calc = kr_filing + (isDesign ? 0 : kr_exam_raw * kr_multiplier) + kr_ann3;
+
+            document.getElementById('kr-tot-raw').innerText = `₩${kr_tot_base.toLocaleString()}`;
+            document.getElementById('kr-tot-calc').innerText = `₩${Math.floor(kr_tot_calc).toLocaleString()}`;
+            document.getElementById('kr-tot-cny').innerText = `¥${(kr_tot_calc * (state.rates.krw / 1000)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+
+            // ================== 5. EAPO 计算 ==================
+            let ea_multiplier = 1.0;
+            if (state.eapo.entity === 'natural') ea_multiplier = 0.5;
+
+            let ea_filing_base, ea_grant_base_raw, ea_maint_raw;
+            let ea_claims_excess_raw = 0, ea_exam_base_raw = 0, ea_pages_excess_raw = 0;
+
+            if (isDesign) {
+                // 欧亚工业外观设计特定规费 (2026年最新卢布法案)
+                // 1st design: ₽40,000, 之后每个设计追加: ₽20,000
+                ea_filing_base = 40000 + (state.params.designs > 1 ? (state.params.designs - 1) * 20000 : 0);
+                ea_grant_base_raw = 40000 + (state.params.designs > 1 ? (state.params.designs - 1) * 20000 : 0);
+                ea_maint_raw = 5000; // 首次年费(外观第三年)约为 ₽5,000
+
+                document.getElementById('ea-code-filing').innerText = "外观递交";
+                document.getElementById('ea-lbl-filing').innerText = "欧亚外观单一多项申请递交规费";
+                document.getElementById('ea-code-maint').innerText = "首次年费";
+                document.getElementById('ea-lbl-maint').innerText = "首次年费 (外观第 3 年维持年费) 仅限首期";
+
+                document.getElementById('ea-tot-desc').innerText = "总计预算 (外观设计申请+多项外观授权+首期第3年维持费)";
+            } else {
+                ea_filing_base = 70000;
+                if (state.params.claims > 5) {
+                    const s1 = Math.max(0, Math.min(15, state.params.claims - 5));
+                    const s2 = Math.max(0, Math.min(30, state.params.claims - 20));
+                    const s3 = Math.max(0, state.params.claims - 50);
+                    ea_claims_excess_raw = (s1 * 7000) + (s2 * 7500) + (s3 * 8000);
+                }
+                ea_exam_base_raw = 70000 + (state.params.indClaims >= 2 ? 40000 : 0) + (Math.max(0, state.params.indClaims - 2) * 20000);
+                ea_grant_base_raw = 45000;
+                ea_pages_excess_raw = Math.max(0, state.params.pages - 35) * 200;
+                ea_maint_raw = 15000;
+
+                document.getElementById('ea-code-filing').innerText = "单一程序";
+                document.getElementById('ea-lbl-filing').innerText = "电子递交单一程序规费 (包含前5项Claims)";
+                document.getElementById('ea-code-maint').innerText = "首期年费";
+                document.getElementById('ea-lbl-maint').innerText = "首次年费 (第 3 年度单年维持费) 仅限首期";
+
+                // 给发明专利显示各行
+                document.getElementById('ea-lbl-excess').innerText = Math.max(0, state.params.claims - 5);
+                document.getElementById('ea-fee-excess-base').innerText = `₽${ea_claims_excess_raw.toLocaleString()}`;
+                const ea_claims_excess = ea_claims_excess_raw * ea_multiplier;
+                document.getElementById('ea-fee-excess').innerText = `₽${Math.floor(ea_claims_excess).toLocaleString()}`;
+                document.getElementById('ea-fee-excess-cny').innerText = `¥${(ea_claims_excess * (state.rates.rub / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('ea-lbl-ind').innerText = state.params.indClaims;
+                document.getElementById('ea-fee-exam-base').innerText = `₽${ea_exam_base_raw.toLocaleString()}`;
+                const ea_exam = ea_exam_base_raw * ea_multiplier;
+                document.getElementById('ea-fee-exam').innerText = `₽${Math.floor(ea_exam).toLocaleString()}`;
+                document.getElementById('ea-fee-exam-cny').innerText = `¥${(ea_exam * (state.rates.rub / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('ea-lbl-pages').innerText = Math.max(0, state.params.pages - 35);
+                document.getElementById('ea-fee-grant-base').innerText = `₽${(ea_grant_base_raw + ea_pages_excess_raw).toLocaleString()}`;
+                const ea_grant_total = (ea_grant_base_raw + ea_pages_excess_raw) * ea_multiplier;
+                document.getElementById('ea-fee-grant').innerText = `₽${Math.floor(ea_grant_total).toLocaleString()}`;
+                document.getElementById('ea-fee-grant-cny').innerText = `¥${(ea_grant_total * (state.rates.rub / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('ea-tot-desc').innerText = "总计预算 (单一程序+超项超页+实审授权+第3年维持)";
+            }
+
+            const ea_filing = ea_filing_base * ea_multiplier;
+            const ea_maint = ea_maint_raw * ea_multiplier;
+
+            document.getElementById('ea-fee-filing-base').innerText = `₽${ea_filing_base.toLocaleString()}`;
+            document.getElementById('ea-fee-filing').innerText = `₽${Math.floor(ea_filing).toLocaleString()}`;
+            document.getElementById('ea-fee-filing-cny').innerText = `¥${(ea_filing * (state.rates.rub / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            document.getElementById('ea-fee-maint-base').innerText = `₽${ea_maint_raw.toLocaleString()}`;
+            document.getElementById('ea-fee-maint').innerText = `₽${Math.floor(ea_maint).toLocaleString()}`;
+            document.getElementById('ea-fee-maint-cny').innerText = `¥${(ea_maint * (state.rates.rub / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            if (isDesign) {
+                const ea_grant_design = ea_grant_base_raw * ea_multiplier;
+                document.getElementById('ea-fee-grant-base-design').innerText = `₽${ea_grant_base_raw.toLocaleString()}`;
+                document.getElementById('ea-fee-grant-design').innerText = `₽${Math.floor(ea_grant_design).toLocaleString()}`;
+                document.getElementById('ea-fee-grant-design-cny').innerText = `¥${(ea_grant_design * (state.rates.rub / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            }
+
+            const ea_tot_base = isDesign ? (ea_filing_base + ea_grant_base_raw + ea_maint_raw) : (70000 + ea_claims_excess_raw + ea_exam_base_raw + 45000 + ea_pages_excess_raw + 15000);
+            const ea_tot_calc = isDesign ? (ea_filing + (ea_grant_base_raw * ea_multiplier) + ea_maint) : (ea_filing + (ea_claims_excess_raw * ea_multiplier) + (ea_exam_base_raw * ea_multiplier) + ((45000 + ea_pages_excess_raw) * ea_multiplier) + ea_maint);
+
+            document.getElementById('ea-tot-raw').innerText = `₽${ea_tot_base.toLocaleString()}`;
+            document.getElementById('ea-tot-calc').innerText = `₽${Math.floor(ea_tot_calc).toLocaleString()}`;
+            document.getElementById('ea-tot-cny').innerText = `¥${(ea_tot_calc * (state.rates.rub / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+
+            // ================== 6. MyIPO 计算 ==================
+            let my_filing_raw, my_tot_calc;
+            let my_excess_claims_raw = 0;
+
+            if (isDesign) {
+                my_filing_raw = 500; // 包含基础申请与各视角出版费约 RM 500
+
+                document.getElementById('my-code-filing').innerText = "外观设计";
+                document.getElementById('my-lbl-filing').innerText = "外观设计申请规费 (含视图出版与登记费用)";
+
+                document.getElementById('my-tot-desc').innerText = "总计预算 (外观设计首期申请与公告费)";
+                my_tot_calc = my_filing_raw;
+            } else {
+                my_filing_raw = 290;
+                if (state.params.claims > 10) {
+                    const s1 = Math.max(0, Math.min(10, state.params.claims - 10));
+                    const s2 = Math.max(0, Math.min(10, state.params.claims - 20));
+                    const s3 = Math.max(0, Math.min(10, state.params.claims - 30));
+                    const s4 = Math.max(0, state.params.claims - 40);
+                    my_excess_claims_raw = (s1 * 20) + (s2 * 30) + (s3 * 40) + (s4 * 50);
+                }
+                const my_exam_raw = 950;
+                const my_maint_raw = 290;
+
+                document.getElementById('my-code-filing').innerText = "申请递交";
+                document.getElementById('my-lbl-filing').innerText = "电子递交基础发明专利申请费 (Electronic Filing)";
+
+                document.getElementById('my-lbl-excess').innerText = Math.max(0, state.params.claims - 10);
+                document.getElementById('my-fee-excess-base').innerText = `RM ${my_excess_claims_raw.toFixed(2)}`;
+                document.getElementById('my-fee-excess').innerText = `RM ${my_excess_claims_raw.toFixed(2)}`;
+                document.getElementById('my-fee-excess-cny').innerText = `¥${(my_excess_claims_raw * state.rates.myr).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('my-fee-exam').innerText = `RM ${my_exam_raw.toFixed(2)}`;
+                document.getElementById('my-fee-exam-cny').innerText = `¥${(my_exam_raw * state.rates.myr).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('my-fee-maint').innerText = `RM ${my_maint_raw.toFixed(2)}`;
+                document.getElementById('my-fee-maint-cny').innerText = `¥${(my_maint_raw * state.rates.myr).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('my-tot-desc').innerText = "总计预算 (递交+超项+实审请求+第2年单年年费)";
+                my_tot_calc = my_filing_raw + my_excess_claims_raw + my_exam_raw + my_maint_raw;
+            }
+
+            document.getElementById('my-fee-filing-base').innerText = `RM ${my_filing_raw.toFixed(2)}`;
+            document.getElementById('my-fee-filing').innerText = `RM ${my_filing_raw.toFixed(2)}`;
+            document.getElementById('my-fee-filing-cny').innerText = `¥${(my_filing_raw * state.rates.myr).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            document.getElementById('my-tot-raw').innerText = `RM ${my_tot_calc.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('my-tot-calc').innerText = `RM ${my_tot_calc.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
+            document.getElementById('my-tot-cny').innerText = `¥${(my_tot_calc * state.rates.myr).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+
+            // ================== 7. UAE 计算 ==================
+            let uae_filing, uae_grant, uae_exam = 0, uae_maint;
+            const uae_formality = isDesign ? 0 : 400; // 外观免去发明专利专属形审
+
+            if (isDesign) {
+                if (state.uae.entity === 'sme') {
+                    uae_filing = 1000; // 外观设计申请（SME级）
+                    uae_grant = 400;   // 外观公告（SME级）
+                    uae_maint = 100;   // 首次年度费（SME级）
+                } else {
+                    uae_filing = 2000; // 公司申请人
+                    uae_grant = 800;   // 公司申请人公告
+                    uae_maint = 200;   // 公司第1年年费
+                }
+
+                document.getElementById('ae-code-filing').innerText = "外观递交";
+                document.getElementById('ae-lbl-filing').innerText = "外观设计申请官费 (Industrial Design Filing)";
+                document.getElementById('ae-code-grant').innerText = "设计公告";
+                document.getElementById('ae-lbl-grant').innerText = "外观设计公告与出版规费 (Design Publication)";
+                document.getElementById('ae-code-maint').innerText = "首次年费";
+                document.getElementById('ae-lbl-maint').innerText = "首次外观维持年费 (第一年度缴费)";
+
+                document.getElementById('ae-tot-desc').innerText = "总计预算 (外观设计申请费+外观公告出版费+首次首年年费)";
+            } else {
+                if (state.uae.entity === 'sme') {
+                    uae_filing = 1000;
+                    uae_grant = 400;
+                    uae_maint = 400;
+                    if (state.params.claims <= 10) uae_exam = 3500;
+                    else if (state.params.claims <= 30) uae_exam = 4000;
+                    else uae_exam = 4500;
+                } else {
+                    uae_filing = 2000;
+                    uae_grant = 800;
+                    uae_maint = 800;
+                    if (state.params.claims <= 10) uae_exam = 7000;
+                    else if (state.params.claims <= 30) uae_exam = 8000;
+                    else uae_exam = 9000;
+                }
+
+                document.getElementById('ae-code-filing').innerText = "递交阶段";
+                document.getElementById('ae-lbl-filing').innerText = "电子申请递交官费 (Patent Application Filing)";
+                document.getElementById('ae-code-grant').innerText = "授权登记";
+                document.getElementById('ae-lbl-grant').innerText = "专利授权及证书打印官费";
+                document.getElementById('ae-code-maint').innerText = "首期年费";
+                document.getElementById('ae-lbl-maint').innerText = "首次年费 (第 1 年度维持费) 仅限首期";
+
+                document.getElementById('ae-lbl-claims').innerText = state.params.claims;
+                document.getElementById('ae-fee-exam-base').innerText = `AED ${(state.uae.entity === 'sme' ? uae_exam * 2 : uae_exam).toLocaleString()}`;
+                document.getElementById('ae-fee-exam').innerText = `AED ${uae_exam.toLocaleString()}`;
+                document.getElementById('ae-fee-exam-cny').innerText = `¥${(uae_exam * state.rates.aed).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('ae-fee-formality-cny').innerText = `¥${(400 * state.rates.aed).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+                document.getElementById('ae-tot-desc').innerText = "总计预算 (申请+形审+首轮实审+授权+首期单年维持年费)";
+            }
+
+            document.getElementById('ae-fee-filing-base').innerText = `AED ${(state.uae.entity === 'sme' ? uae_filing * 2 : uae_filing).toLocaleString()}`;
+            document.getElementById('ae-fee-filing').innerText = `AED ${uae_filing.toLocaleString()}`;
+            document.getElementById('ae-fee-filing-cny').innerText = `¥${(uae_filing * state.rates.aed).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            document.getElementById('ae-fee-grant-base').innerText = `AED ${(state.uae.entity === 'sme' ? uae_grant * 2 : uae_grant).toLocaleString()}`;
+            document.getElementById('ae-fee-grant').innerText = `AED ${uae_grant.toLocaleString()}`;
+            document.getElementById('ae-fee-grant-cny').innerText = `¥${(uae_grant * state.rates.aed).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            document.getElementById('ae-fee-maint-base').innerText = `AED ${(state.uae.entity === 'sme' ? uae_maint * 2 : uae_maint).toLocaleString()}`;
+            document.getElementById('ae-fee-maint').innerText = `AED ${uae_maint.toLocaleString()}`;
+            document.getElementById('ae-fee-maint-cny').innerText = `¥${(uae_maint * state.rates.aed).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            const uae_tot_base = isDesign ? ( (state.uae.entity === 'sme' ? uae_filing * 2 : uae_filing) + (state.uae.entity === 'sme' ? uae_grant * 2 : uae_grant) + (state.uae.entity === 'sme' ? uae_maint * 2 : uae_maint) ) : ((state.uae.entity === 'sme' ? 2000 : 2000) + 400 + (state.uae.entity === 'sme' ? uae_exam * 2 : uae_exam) + 800 + 800);
+            const uae_tot_calc = uae_filing + uae_formality + uae_exam + uae_grant + uae_maint;
+
+            document.getElementById('ae-tot-raw').innerText = `AED ${uae_tot_base.toLocaleString()}`;
+            document.getElementById('ae-tot-calc').innerText = `AED ${uae_tot_calc.toLocaleString()}`;
+            document.getElementById('ae-tot-cny').innerText = `¥${(uae_tot_calc * state.rates.aed).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+
+            // ================== 8. 计算人民币（CNY）折算总额 ==================
+            const cny_us_total = us_total_calc * state.rates.usd;
+            const cny_ep_total = ep_tot_calc * state.rates.eur;
+            const cny_jp_total = jp_tot_calc * (state.rates.jpy / 100);
+            const cny_kr_total = kr_tot_calc * (state.rates.krw / 1000);
+            const cny_ea_total = ea_tot_calc * (state.rates.rub / 100);
+            const cny_my_total = my_tot_calc * state.rates.myr;
+            const cny_ae_total = uae_tot_calc * state.rates.aed;
+
+            // ================== 9. 刷新所有 Dashboard 预览卡片 (Page 1) ==================
+            document.getElementById('dash-us-total').innerText = `¥${cny_us_total.toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            document.getElementById('dash-ep-total').innerText = `¥${cny_ep_total.toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            document.getElementById('dash-jp-total').innerText = `¥${cny_jp_total.toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            document.getElementById('dash-kr-total').innerText = `¥${cny_kr_total.toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            document.getElementById('dash-ea-total').innerText = `¥${cny_ea_total.toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            document.getElementById('dash-my-total').innerText = `¥${cny_my_total.toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            document.getElementById('dash-ae-total').innerText = `¥${cny_ae_total.toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            // ================== 10. 刷新 Comparison Table 看板 (Page 9) ==================
+            // 美国对比
+            document.getElementById('comp-us-total').innerText = `¥${cny_us_total.toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            document.getElementById('comp-us-entity').innerText = state.uspto.entity === 'large' ? '大实体' : state.uspto.entity === 'small' ? '小实体 (-60%)' : '微实体 (-80%)';
+            document.getElementById('comp-us-init').innerText = `¥${((us_filing + us_search + us_exam) * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            if (!isDesign) {
+                document.getElementById('comp-us-subdesc').innerText = "首期申请授权 + 第3.5年维持费";
+                document.getElementById('comp-us-excess').innerText = `¥${((us_exc_ind_fee + us_exc_cl_fee + us_exc_pg_fee) * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+                document.getElementById('comp-us-maint').innerText = `¥${((us_issue + us_maint3) * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+                document.getElementById('comp-us-contingent').innerText = `¥${(us_contingent_calc * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            } else {
+                document.getElementById('comp-us-subdesc').innerText = "外观设计申请费 + 授权登记费";
+                document.getElementById('comp-us-maint').innerText = `¥${(us_issue * state.rates.usd).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            }
+
+            // 欧洲对比 (欧盟外观EUIPO vs EPO)
+            document.getElementById('comp-ep-total').innerText = `¥${cny_ep_total.toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            if (!isDesign) {
+                document.getElementById('comp-ep-entity').innerText = is_ep_new ? '2026新费率' : '原费率';
+                document.getElementById('comp-ep-subdesc').innerText = "首期申请授权 + 第3年维持年费";
+                document.getElementById('comp-lbl-ep-init').innerText = "基础程序规费:";
+                document.getElementById('comp-ep-init').innerText = `¥${((ep_filing + ep_search + ep_desig + ep_exam) * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+                document.getElementById('comp-ep-excess').innerText = `¥${((ep_exc_cl1_fee + ep_exc_cl2_fee + ep_exc_pg_fee) * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+                document.getElementById('comp-ep-maint').innerText = `¥${((ep_grant + ep_ren3) * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            } else {
+                document.getElementById('comp-ep-entity').innerText = "欧盟统一多项";
+                document.getElementById('comp-ep-subdesc').innerText = "欧盟多项外观递交 + 5年期满续展费";
+                document.getElementById('comp-lbl-ep-init').innerText = "外观多项申请递交费:";
+                document.getElementById('comp-ep-init').innerText = `¥${(ep_filing * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+                document.getElementById('comp-ep-maint').innerText = `¥${(ep_ren3 * state.rates.eur).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            }
+
+            // 日本对比
+            document.getElementById('comp-jp-total').innerText = `¥${cny_jp_total.toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            document.getElementById('comp-jp-entity').innerText = state.jpo.entity === 'none' ? '大企业无减免' : state.jpo.entity === 'sme' ? '中小企业 (-2/3)' : '微创 (-3/4)';
+            if (!isDesign) {
+                document.getElementById('comp-jp-subdesc').innerText = "首期递交及授权捆绑 1-3 年年费";
+                document.getElementById('comp-lbl-jp-init').innerText = "递交及审查请求费:";
+                document.getElementById('comp-lbl-jp-maint').innerText = "1-3年捆绑首期年费:";
+                document.getElementById('comp-jp-init').innerText = `¥${((jp_filing + (jp_exam_raw * jp_exam_multiplier)) * (state.rates.jpy / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            } else {
+                document.getElementById('comp-jp-subdesc').innerText = "外观设计申请费 + 首年维持登记年费";
+                document.getElementById('comp-lbl-jp-init').innerText = "外观申请官费:";
+                document.getElementById('comp-lbl-jp-maint').innerText = "首年登记维持年费:";
+                document.getElementById('comp-jp-init').innerText = `¥${(jp_filing * (state.rates.jpy / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            }
+            document.getElementById('comp-jp-maint').innerText = `¥${(jp_annuity3 * (state.rates.jpy / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            // 韩国对比
+            document.getElementById('comp-kr-total').innerText = `¥${cny_kr_total.toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            document.getElementById('comp-kr-entity').innerText = state.kipo.entity === 'large' ? '大企业' : state.kipo.entity === 'sme' ? '中小企业 (-50%)' : '个人/微创 (-70%)';
+            if (!isDesign) {
+                document.getElementById('comp-kr-subdesc').innerText = "首期递交及授权捆绑 1-3 年年费";
+                document.getElementById('comp-lbl-kr-init').innerText = "递交及实审审查费:";
+                document.getElementById('comp-lbl-kr-maint').innerText = "1-3年捆绑首期年费:";
+                document.getElementById('comp-kr-init').innerText = `¥${((kr_filing + (kr_exam_raw * kr_multiplier)) * (state.rates.krw / 1000)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            } else {
+                document.getElementById('comp-kr-subdesc').innerText = "外观申请递交费 + 捆绑1-3年外观年费";
+                document.getElementById('comp-lbl-kr-init').innerText = "外观申请规费:";
+                document.getElementById('comp-lbl-kr-maint').innerText = "1-3年捆绑注册年费:";
+                document.getElementById('comp-kr-init').innerText = `¥${(kr_filing * (state.rates.krw / 1000)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            }
+            document.getElementById('comp-kr-maint').innerText = `¥${(kr_ann3 * (state.rates.krw / 1000)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            // 欧亚对比
+            document.getElementById('comp-ea-total').innerText = `¥${cny_ea_total.toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            document.getElementById('comp-ea-entity').innerText = state.eapo.entity === 'large' ? '大实体' : '自然人 (-50%)';
+            if (!isDesign) {
+                document.getElementById('comp-ea-subdesc').innerText = "首期申请授权及第3年年费";
+                document.getElementById('comp-lbl-ea-init').innerText = "申请/实审及授权:";
+                document.getElementById('comp-lbl-ea-maint').innerText = "第 3 年首次年费:";
+                document.getElementById('comp-ea-init').innerText = `¥${((ea_filing + (ea_claims_excess_raw * ea_multiplier) + (ea_exam_base_raw * ea_multiplier) + ((45000 + ea_pages_excess_raw) * ea_multiplier)) * (state.rates.rub / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            } else {
+                document.getElementById('comp-ea-subdesc').innerText = "外观多项申请 + 授权 + 第三维持年费";
+                document.getElementById('comp-lbl-ea-init').innerText = "外观多项申请与公告印花费:";
+                document.getElementById('comp-lbl-ea-maint').innerText = "第 3 年度外观维持费:";
+                document.getElementById('comp-ea-init').innerText = `¥${(((ea_filing_base + ea_grant_base_raw) * ea_multiplier) * (state.rates.rub / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            }
+            document.getElementById('comp-ea-maint').innerText = `¥${(ea_maint * (state.rates.rub / 100)).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+
+            // 马来西亚对比
+            document.getElementById('comp-my-total').innerText = `¥${cny_my_total.toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            if (!isDesign) {
+                document.getElementById('comp-my-subdesc').innerText = "首期申请授权及第2年年费";
+                document.getElementById('comp-lbl-my-init').innerText = "递交/审查请求费用:";
+                document.getElementById('comp-lbl-my-maint').innerText = "第 2 年首次维持年费:";
+                document.getElementById('comp-my-init').innerText = `¥${((my_filing_raw + my_excess_claims_raw + 950) * state.rates.myr).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+                document.getElementById('comp-my-maint').innerText = `¥${(290 * state.rates.myr).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            } else {
+                document.getElementById('comp-my-subdesc').innerText = "外观设计首期申请与公告费";
+                document.getElementById('comp-lbl-my-init').innerText = "外观设计申请递交与公告:";
+                document.getElementById('comp-lbl-my-maint').innerText = "首次年费 (第五年起算):";
+                document.getElementById('comp-my-init').innerText = `¥${(my_filing_raw * state.rates.myr).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+                document.getElementById('comp-my-maint').innerText = "¥0.00 (首期免年费)";
+            }
+
+            // 阿联酋对比
+            document.getElementById('comp-ae-total').innerText = `¥${cny_ae_total.toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            document.getElementById('comp-ae-entity').innerText = state.uae.entity === 'company' ? '大企业/法人' : '中小企业 (-50%)';
+            if (!isDesign) {
+                document.getElementById('comp-ae-subdesc').innerText = "首期申请、形式审查、首轮实审、授权登报以及首次单年年费";
+                document.getElementById('comp-lbl-ae-init').innerText = "递交/形审/首轮实审:";
+                document.getElementById('comp-lbl-ae-grant').innerText = "授权登记公告:";
+                document.getElementById('comp-lbl-ae-maint').innerText = "首期第1年维持年费:";
+                document.getElementById('comp-ae-init').innerText = `¥${((uae_filing + 400 + uae_exam) * state.rates.aed).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+                document.getElementById('comp-ae-grant').innerText = `¥${(800 * state.rates.aed).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+                document.getElementById('comp-ae-maint').innerText = `¥${(800 * state.rates.aed).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            } else {
+                document.getElementById('comp-ae-subdesc').innerText = "外观申请、设计公告以及首年年度维持年费";
+                document.getElementById('comp-lbl-ae-init').innerText = "外观申请官费:";
+                document.getElementById('comp-lbl-ae-grant').innerText = "外观设计出版公告费:";
+                document.getElementById('comp-lbl-ae-maint').innerText = "外观首年年度维持官费:";
+                document.getElementById('comp-ae-init').innerText = `¥${(uae_filing * state.rates.aed).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+                document.getElementById('comp-ae-grant').innerText = `¥${(uae_grant * state.rates.aed).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+                document.getElementById('comp-ae-maint').innerText = `¥${(uae_maint * state.rates.aed).toLocaleString('zh-CN', {minimumFractionDigits: 2})}`;
+            }
+        }
+
+        // CSV 预算清单导出程序 (支持外观设计和发明专利自适应逻辑)
+        function exportAllToCSV() {
+            calculateAll();
+
+            const isDesign = (state.patentType === 'design');
+            const claims = state.params.claims;
+            const indClaims = state.params.indClaims;
+            const pages = state.params.pages;
+            const designs = state.params.designs;
+
+            let csvContent = "\uFEFF"; // 添加 BOM 支持 Excel 打开不出现乱码
+            csvContent += `全球七局专利申请首期规费预算明细表 (${isDesign ? '外观设计专利' : '发明专利'} - GlobalPatentFee Output)\n`;
+            csvContent += "生成时间,2026年,设定参数,";
+            if (isDesign) {
+                csvContent += `外观设计项数: ${designs} 项\n`;
+            } else {
+                csvContent += `权利要求数: ${claims} | 独立权利要求: ${indClaims} | 说明书页数: ${pages}\n`;
+            }
+            csvContent += "说明：本模型聚焦首期费用（年费/维持费仅计算首次必须交纳的一期，不再累计生命周期内后续年度的年费，美国或有程序作为额外参考）\n";
+            csvContent += `换算汇率,USD: ${state.rates.usd} | EUR: ${state.rates.eur} | JPY*0.01: ${state.rates.jpy} | KRW*0.001: ${state.rates.krw} | RUB*0.01: ${state.rates.rub} | MYR: ${state.rates.myr} | AED: ${state.rates.aed}\n\n`;
+
+            // 1. 美国
+            csvContent += "1. 美国局 (USPTO)\n";
+            csvContent += `实体状态,${state.uspto.entity === 'large' ? '大实体' : state.uspto.entity === 'small' ? '小实体 (-60%)' : '微实体 (-80%)'}\n`;
+            csvContent += "规费名称,基础大实体价 (USD),适用折后价 (USD),折合人民币 (CNY)\n";
+            csvContent += `${document.getElementById('us-lbl-filing').innerText},${document.getElementById('us-fee-filing-base').innerText.replace('$', '')},${document.getElementById('us-fee-filing').innerText.replace('$', '')},${document.getElementById('us-fee-filing-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            csvContent += `${document.getElementById('us-lbl-search').innerText},${document.getElementById('us-fee-search-base').innerText.replace('$', '')},${document.getElementById('us-fee-search').innerText.replace('$', '')},${document.getElementById('us-fee-search-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            csvContent += `${document.getElementById('us-lbl-exam').innerText},${document.getElementById('us-fee-exam-base').innerText.replace('$', '')},${document.getElementById('us-fee-exam').innerText.replace('$', '')},${document.getElementById('us-fee-exam-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            if (!isDesign) {
+                csvContent += `独权超项费(>3),600.00,${document.getElementById('us-fee-exind').innerText.replace('$', '')},${document.getElementById('us-fee-exind-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+                csvContent += `总权超项费(>20),200.00,${document.getElementById('us-fee-excl').innerText.replace('$', '')},${document.getElementById('us-fee-excl-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+                csvContent += `说明书超页费,450.00,${document.getElementById('us-fee-expg').innerText.replace('$', '')},${document.getElementById('us-fee-expg-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+                csvContent += `专利首次维持费 (第3.5年),2150.00,${document.getElementById('us-fee-maint3').innerText.replace('$', '')},${document.getElementById('us-fee-maint3-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            }
+            csvContent += `${document.getElementById('us-lbl-issue').innerText},${document.getElementById('us-fee-issue-base').innerText.replace('$', '')},${document.getElementById('us-fee-issue').innerText.replace('$', '')},${document.getElementById('us-fee-issue-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            
+            if (!isDesign && (document.getElementById('opt-us-rce').checked || document.getElementById('opt-us-advisory').checked || document.getElementById('opt-us-appeal').checked || document.getElementById('opt-us-correct').checked)) {
+                csvContent += `已选或有程序总额,${document.getElementById('us-contingent-raw').innerText.replace('$', '')},${document.getElementById('us-contingent-calc').innerText.replace('$', '')},${document.getElementById('us-contingent-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            }
+            csvContent += `美国局小计,,${document.getElementById('us-tot-calc').innerText.replace('$', '')},${document.getElementById('us-tot-cny').innerText.replace('¥', '').replace(/,/g, '')}\n\n`;
+
+            // 2. 欧洲 (EUIPO/EPO)
+            csvContent += `2. ${isDesign ? '欧盟知识产权局 (EUIPO)' : '欧洲专利局 (EPO)'}\n`;
+            if (!isDesign) {
+                csvContent += `费率类型,${state.epo.version === 'new' ? '2026最新执行费率' : '原费率标准'}\n`;
+            }
+            csvContent += "规费名称,基础标准价 (EUR),结算价 (EUR),折合人民币 (CNY)\n";
+            csvContent += `${document.getElementById('ep-lbl-filing').innerText},${document.getElementById('ep-fee-filing-base').innerText.replace('€', '')},${document.getElementById('ep-fee-filing').innerText.replace('€', '')},${document.getElementById('ep-fee-filing-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            if (!isDesign) {
+                csvContent += `检索规费,1595.00,${document.getElementById('ep-fee-search').innerText.replace('€', '')},${document.getElementById('ep-fee-search-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+                csvContent += `指定规费,720.00,${document.getElementById('ep-fee-designation').innerText.replace('€', '')},${document.getElementById('ep-fee-designation-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+                csvContent += `实审请求规费,2010.00,${document.getElementById('ep-fee-exam').innerText.replace('€', '')},${document.getElementById('ep-fee-exam-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+                csvContent += `权利超项费(16-50),290.00,${document.getElementById('ep-fee-exclaims1').innerText.replace('€', '')},${document.getElementById('ep-fee-exclaims1-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+                csvContent += `权利超项费(51+),720.00,${document.getElementById('ep-fee-exclaims2').innerText.replace('€', '')},${document.getElementById('ep-fee-exclaims2-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+                csvContent += `说明书超页规费,17.00,${document.getElementById('ep-fee-expages').innerText.replace('€', '')},${document.getElementById('ep-fee-expages-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+                csvContent += `授权与公告费,1135.00,${document.getElementById('ep-fee-grant').innerText.replace('€', '')},${document.getElementById('ep-fee-grant-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            }
+            csvContent += `${document.getElementById('ep-lbl-maint').innerText},${document.getElementById('ep-fee-ren3-base').innerText.replace('€', '')},${document.getElementById('ep-fee-ren3').innerText.replace('€', '')},${document.getElementById('ep-fee-ren3-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            csvContent += `欧洲/欧盟小计,,${document.getElementById('ep-tot-calc').innerText.replace('€', '')},${document.getElementById('ep-tot-cny').innerText.replace('¥', '').replace(/,/g, '')}\n\n`;
+
+            // 3. 日本
+            csvContent += "3. 日本局 (JPO)\n";
+            csvContent += `实体减免,${state.jpo.entity === 'none' ? '标准大企业' : state.jpo.entity === 'sme' ? '中小企业' : '微型企业/个人'}\n`;
+            csvContent += "规费名称,大企业原全价 (JPY),所选实体价 (JPY),折合人民币 (CNY)\n";
+            csvContent += `${document.getElementById('jp-lbl-filing').innerText},${document.getElementById('jp-fee-filing-base').innerText.replace('¥', '').replace(/,/g, '')},${document.getElementById('jp-fee-filing').innerText.replace('¥', '').replace(/,/g, '')},${document.getElementById('jp-fee-filing-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            if (!isDesign) {
+                csvContent += `实质审查请求费,${document.getElementById('jp-fee-exam-base').innerText.replace('¥', '').replace(/,/g, '')},${document.getElementById('jp-fee-exam').innerText.replace('¥', '').replace(/,/g, '')},${document.getElementById('jp-fee-exam-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            }
+            csvContent += `${document.getElementById('jp-lbl-maint').innerText},${document.getElementById('jp-fee-annuity3-base').innerText.replace('¥', '').replace(/,/g, '')},${document.getElementById('jp-fee-annuity3').innerText.replace('¥', '').replace(/,/g, '')},${document.getElementById('jp-fee-annuity3-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            csvContent += `日本特许厅小计,,${document.getElementById('jp-tot-calc').innerText.replace('¥', '').replace(/,/g, '')},${document.getElementById('jp-tot-cny').innerText.replace('¥', '').replace(/,/g, '')}\n\n`;
+
+            // 4. 韩国
+            csvContent += "4. 韩国局 (KIPO)\n";
+            csvContent += `实体减免,${state.kipo.entity === 'large' ? '大企业' : state.kipo.entity === 'sme' ? '中小企业' : '微型企业/个人'}\n`;
+            csvContent += "规费名称,大企业原价 (KRW),折后优惠价 (KRW),折合人民币 (CNY)\n";
+            csvContent += `${document.getElementById('kr-lbl-filing').innerText},${document.getElementById('kr-fee-filing-base').innerText.replace('₩', '').replace(/,/g, '')},${document.getElementById('kr-fee-filing').innerText.replace('₩', '').replace(/,/g, '')},${document.getElementById('kr-fee-filing-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            if (!isDesign) {
+                csvContent += `实质审查请求费,${document.getElementById('kr-fee-exam-base').innerText.replace('₩', '').replace(/,/g, '')},${document.getElementById('kr-fee-exam').innerText.replace('₩', '').replace(/,/g, '')},${document.getElementById('kr-fee-exam-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            }
+            csvContent += `${document.getElementById('kr-lbl-maint').innerText},${document.getElementById('kr-fee-ann3-base').innerText.replace('₩', '').replace(/,/g, '')},${document.getElementById('kr-fee-ann3').innerText.replace('₩', '').replace(/,/g, '')},${document.getElementById('kr-fee-ann3-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            csvContent += `韩国特许厅小计,,${document.getElementById('kr-tot-calc').innerText.replace('₩', '').replace(/,/g, '')},${document.getElementById('kr-tot-cny').innerText.replace('¥', '').replace(/,/g, '')}\n\n`;
+
+            // 5. 欧亚
+            csvContent += "5. 欧亚局 (EAPO)\n";
+            csvContent += `实体减免,${state.eapo.entity === 'large' ? '大实体' : '自然人'}\n`;
+            csvContent += "规费名称,大实体标准 (RUB),适用折后价 (RUB),折合人民币 (CNY)\n";
+            csvContent += `${document.getElementById('ea-lbl-filing').innerText},${document.getElementById('ea-fee-filing-base').innerText.replace('₽', '').replace(/,/g, '')},${document.getElementById('ea-fee-filing').innerText.replace('₽', '').replace(/,/g, '')},${document.getElementById('ea-fee-filing-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            if (!isDesign) {
+                csvContent += `权利超项费,${document.getElementById('ea-fee-excess-base').innerText.replace('₽', '').replace(/,/g, '')},${document.getElementById('ea-fee-excess').innerText.replace('₽', '').replace(/,/g, '')},${document.getElementById('ea-fee-excess-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+                csvContent += `实质审查费,${document.getElementById('ea-fee-exam-base').innerText.replace('₽', '').replace(/,/g, '')},${document.getElementById('ea-fee-exam').innerText.replace('₽', '').replace(/,/g, '')},${document.getElementById('ea-fee-exam-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+                csvContent += `授权及印花费,${document.getElementById('ea-fee-grant-base').innerText.replace('₽', '').replace(/,/g, '')},${document.getElementById('ea-fee-grant').innerText.replace('₽', '').replace(/,/g, '')},${document.getElementById('ea-fee-grant-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            } else {
+                csvContent += `外观授权登记费,${document.getElementById('ea-fee-grant-base-design').innerText.replace('₽', '').replace(/,/g, '')},${document.getElementById('ea-fee-grant-design').innerText.replace('₽', '').replace(/,/g, '')},${document.getElementById('ea-fee-grant-design-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            }
+            csvContent += `${document.getElementById('ea-lbl-maint').innerText},${document.getElementById('ea-fee-maint-base').innerText.replace('₽', '').replace(/,/g, '')},${document.getElementById('ea-fee-maint').innerText.replace('₽', '').replace(/,/g, '')},${document.getElementById('ea-fee-maint-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            csvContent += `欧亚局小计,,${document.getElementById('ea-tot-calc').innerText.replace('₽', '').replace(/,/g, '')},${document.getElementById('ea-tot-cny').innerText.replace('¥', '').replace(/,/g, '')}\n\n`;
+
+            // 6. 马来西亚
+            csvContent += "6. 马来西亚局 (MyIPO)\n";
+            csvContent += "规费名称,标准大实体价 (MYR),折后结算价 (MYR),折合人民币 (CNY)\n";
+            csvContent += `${document.getElementById('my-lbl-filing').innerText},${document.getElementById('my-fee-filing-base').innerText.replace('RM ', '')},${document.getElementById('my-fee-filing').innerText.replace('RM ', '')},${document.getElementById('my-fee-filing-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            if (!isDesign) {
+                csvContent += `权利要求超项费,${document.getElementById('my-fee-excess-base').innerText.replace('RM ', '')},${document.getElementById('my-fee-excess').innerText.replace('RM ', '')},${document.getElementById('my-fee-excess-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+                csvContent += `实质审查请求费,950.00,${document.getElementById('my-fee-exam').innerText.replace('RM ', '')},${document.getElementById('my-fee-exam-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+                csvContent += `首次年费 (第2年维持),290.00,${document.getElementById('my-fee-maint').innerText.replace('RM ', '')},${document.getElementById('my-fee-maint-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            }
+            csvContent += `马来西亚小计,,${document.getElementById('my-tot-calc').innerText.replace('RM ', '')},${document.getElementById('my-tot-cny').innerText.replace('¥', '').replace(/,/g, '')}\n\n`;
+
+            // 7. 阿联酋
+            csvContent += "7. 阿联酋局 (UAE)\n";
+            csvContent += `实体等级,${state.uae.entity === 'company' ? '大企业/法人' : '中小企业/学术减半'}\n`;
+            csvContent += "规费名称,大企业标准价 (AED),所选优惠官费 (AED),折合人民币 (CNY)\n";
+            csvContent += `${document.getElementById('ae-lbl-filing').innerText},${document.getElementById('ae-fee-filing-base').innerText.replace('AED ', '').replace(/,/g, '')},${document.getElementById('ae-fee-filing').innerText.replace('AED ', '').replace(/,/g, '')},${document.getElementById('ae-fee-filing-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            if (!isDesign) {
+                csvContent += `形式审查官费,400,400,${document.getElementById('ae-fee-formality-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+                csvContent += `实质审查官费,${document.getElementById('ae-fee-exam-base').innerText.replace('AED ', '').replace(/,/g, '')},${document.getElementById('ae-fee-exam').innerText.replace('AED ', '').replace(/,/g, '')},${document.getElementById('ae-fee-exam-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            }
+            csvContent += `${document.getElementById('ae-lbl-grant').innerText},${document.getElementById('ae-fee-grant-base').innerText.replace('AED ', '').replace(/,/g, '')},${document.getElementById('ae-fee-grant').innerText.replace('AED ', '').replace(/,/g, '')},${document.getElementById('ae-fee-grant-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            csvContent += `${document.getElementById('ae-lbl-maint').innerText},${document.getElementById('ae-fee-maint-base').innerText.replace('AED ', '').replace(/,/g, '')},${document.getElementById('ae-fee-maint').innerText.replace('AED ', '').replace(/,/g, '')},${document.getElementById('ae-fee-maint-cny').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            csvContent += `阿联酋小计,,${document.getElementById('ae-tot-calc').innerText.replace('AED ', '').replace(/,/g, '')},${document.getElementById('ae-tot-cny').innerText.replace('¥', '').replace(/,/g, '')}\n\n`;
+
+            // 横向汇总对比
+            csvContent += "8. 各国及地区专利局首期入场总成本汇总对比 (CNY)\n";
+            csvContent += "专利局名称,总计人民币 (CNY)\n";
+            csvContent += `美国 (USPTO),${document.getElementById('comp-us-total').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            csvContent += `${isDesign ? '欧盟 (EUIPO)' : '欧洲 (EPO)'},${document.getElementById('comp-ep-total').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            csvContent += `日本 (JPO),${document.getElementById('comp-jp-total').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            csvContent += `韩国 (KIPO),${document.getElementById('comp-kr-total').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            csvContent += `欧亚 (EAPO),${document.getElementById('comp-ea-total').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            csvContent += `马来西亚 (MyIPO),${document.getElementById('comp-my-total').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+            csvContent += `阿联酋 (UAE),${document.getElementById('comp-ae-total').innerText.replace('¥', '').replace(/,/g, '')}\n`;
+
+            // 触发下载
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", `Global_Patent_7_Offices_FirstYear_Budget_2026_${isDesign ? 'Design' : 'Utility'}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
