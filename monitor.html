@@ -1,1 +1,1205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>全球涉外专利战略与合规在线知识库</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f5f7fa',
+                            100: '#e4e8f0',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e293b',
+                            950: '#0f172a',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        /* Highlight match style */
+        .highlight {
+            background-color: #fef08a;
+            color: #854d0e;
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: 600;
+        }
+        @media print {
+            .no-print {
+                display: none !important;
+            }
+            main {
+                overflow: visible !important;
+                height: auto !important;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col h-screen overflow-hidden">
 
+    <!-- Top Header Banner -->
+    <header class="bg-brand-950 text-white px-6 py-4 flex flex-col sm:flex-row justify-between items-center shrink-0 shadow-lg z-10 no-print">
+        <div class="flex items-center space-x-3 mb-3 sm:mb-0">
+            <div class="bg-brand-600 p-2 rounded-lg text-white">
+                <i class="fa-solid fa-scale-balanced text-xl"></i>
+            </div>
+            <div>
+                <h1 class="text-base sm:text-lg font-bold tracking-wide">全球涉外专利战略与合规知识库</h1>
+                <p class="text-[10px] sm:text-xs text-slate-400">Global IP Strategy, Compliance & Portfolio Management Hub</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-3 w-full sm:w-auto">
+            <!-- Global Interactive Search -->
+            <div class="relative flex-1 sm:flex-none">
+                <span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-slate-400">
+                    <i class="fa-solid fa-magnifying-glass text-xs"></i>
+                </span>
+                <input type="text" id="searchTerm" onkeyup="handleSearch()" placeholder="搜索本库文献条款、法条..." 
+                       class="w-full sm:w-64 bg-slate-800 text-slate-200 placeholder-slate-500 pl-9 pr-4 py-1.5 rounded-lg border border-slate-700 focus:outline-none focus:border-brand-500 text-xs">
+            </div>
+            <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                <i class="fa-solid fa-file-pdf"></i> 打印/导出PDF
+            </button>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- Left Navigation Sidebar -->
+        <aside class="w-80 bg-slate-900 text-slate-300 flex flex-col justify-between shrink-0 border-r border-slate-800 no-print hidden md:flex">
+            <div class="overflow-y-auto flex-1 py-4">
+                
+                <div class="px-4 mb-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider">互动决策台</div>
+                <div class="space-y-1 px-2 mb-6">
+                    <button onclick="switchTab('tool-calculator')" class="nav-btn w-full flex items-center px-3 py-2 rounded-lg text-xs font-medium transition text-slate-400 hover:bg-slate-800 hover:text-slate-100" id="btn-tool-calculator">
+                        <i class="fa-solid fa-calculator w-5 text-emerald-400"></i>
+                        <span>布局 ROI 智能决策计算器</span>
+                    </button>
+                    <button onclick="switchTab('tool-wizard')" class="nav-btn w-full flex items-center px-3 py-2 rounded-lg text-xs font-medium transition text-slate-400 hover:bg-slate-800 hover:text-slate-100" id="btn-tool-wizard">
+                        <i class="fa-solid fa-route w-5 text-amber-400"></i>
+                        <span>加速通道选择推荐向导</span>
+                    </button>
+                    <button onclick="switchTab('tool-checklist')" class="nav-btn w-full flex items-center px-3 py-2 rounded-lg text-xs font-medium transition text-slate-400 hover:bg-slate-800 hover:text-slate-100" id="btn-tool-checklist">
+                        <i class="fa-solid fa-list-check w-5 text-purple-400"></i>
+                        <span>负责人日常工作 SOP 进度表</span>
+                    </button>
+                </div>
+
+                <div class="px-4 mb-2 text-[10px] font-bold text-slate-500 uppercase tracking-wider">核心底稿文献</div>
+                <div class="space-y-1 px-2">
+                    <button onclick="switchTab('doc-framework')" class="nav-btn w-full flex items-center px-3 py-2.5 rounded-lg text-xs font-semibold transition bg-slate-800 text-white" id="btn-doc-framework">
+                        <i class="fa-solid fa-compass w-5 text-blue-400"></i>
+                        <span class="text-left">一、海外专利布局评审机制</span>
+                    </button>
+                    <button onclick="switchTab('doc-acceleration')" class="nav-btn w-full flex items-center px-3 py-2.5 rounded-lg text-xs font-semibold transition text-slate-400 hover:bg-slate-800 hover:text-slate-100" id="btn-doc-acceleration">
+                        <i class="fa-solid fa-gauge-high w-5 text-sky-400"></i>
+                        <span class="text-left">二、涉外专利加速通道实务</span>
+                    </button>
+                    <button onclick="switchTab('doc-playbook')" class="nav-btn w-full flex items-center px-3 py-2.5 rounded-lg text-xs font-semibold transition text-slate-400 hover:bg-slate-800 hover:text-slate-100" id="btn-doc-playbook">
+                        <i class="fa-solid fa-book w-5 text-indigo-400"></i>
+                        <span class="text-left">三、负责人实务与合规手册</span>
+                    </button>
+                </div>
+
+            </div>
+            
+            <div class="p-4 bg-slate-950/60 border-t border-slate-800 text-center">
+                <p class="text-[10px] text-slate-500">企业涉外资产管理决策系统</p>
+                <p class="text-[9px] text-slate-600 mt-0.5">V3.4 - Persistent Data Sync</p>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="flex-1 overflow-y-auto p-4 sm:p-8" id="contentArea">
+
+            <!-- Mobile Sticky Navigation Helper -->
+            <div class="no-print md:hidden bg-slate-800 text-white p-3 rounded-lg mb-4 flex justify-between items-center text-xs">
+                <span class="font-bold"><i class="fa-solid fa-bars mr-1"></i> 快速导航：</span>
+                <select onchange="switchTab(this.value)" class="bg-slate-700 text-white border border-slate-600 rounded p-1 text-xs">
+                    <option value="doc-framework">底稿：海外专利布局评审机制</option>
+                    <option value="doc-acceleration">底稿：涉外专利加速通道实务</option>
+                    <option value="doc-playbook">底稿：负责人实务与合规手册</option>
+                    <option value="tool-calculator">工具：布局 ROI 智能决策计算器</option>
+                    <option value="tool-wizard">工具：加速通道选择推荐向导</option>
+                    <option value="tool-checklist">工具：负责人日常工作 SOP</option>
+                </select>
+            </div>
+
+            <!-- SECTION 1: 海外专利布局评审与决策机制指引 -->
+            <section id="doc-framework" class="tab-content max-w-4xl mx-auto space-y-6">
+                
+                <div class="bg-white p-6 sm:p-10 rounded-2xl border border-slate-200 shadow-sm relative">
+                    <div class="absolute top-6 right-6 no-print hidden sm:block">
+                        <span class="bg-blue-50 text-blue-700 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">DOC-01</span>
+                    </div>
+                    
+                    <span class="text-xs font-bold text-blue-600 tracking-widest uppercase">CORP GOVERNANCE</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 mb-6">企业海外专利布局评审与决策机制指引</h2>
+                    
+                    <div class="prose prose-slate max-w-none text-sm leading-relaxed text-slate-600 space-y-6">
+                        
+                        <!-- Header Box -->
+                        <div class="bg-slate-50 border-l-4 border-blue-600 p-4 rounded-r-lg">
+                            <p class="font-medium text-slate-900">引言：</p>
+                            <p class="text-xs text-slate-500 mt-1">
+                                为规范公司海外专利申请（巴黎公约/PCT）的决策流程，避免盲目出海导致预算失控，同时确保核心技术在海外目标市场获得高稳定性、高对抗性的专利保护，特制定本评审与决策机制。
+                            </p>
+                        </div>
+
+                        <!-- 1. 三大天条 -->
+                        <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2 mt-8">
+                            <span class="text-blue-600">一、</span> 核心决策原则：出海专利的“三大天条”
+                        </h3>
+                        <p>在进入具体评估指标前，任何出海案件必须首先通过以下“三大天条”的初步筛选，实行<strong>一票否决制</strong>：</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+                            <div class="p-4 rounded-xl border border-rose-100 bg-rose-50/40">
+                                <h4 class="font-bold text-rose-900 flex items-center gap-1.5 text-xs uppercase tracking-wide">
+                                    <i class="fa-solid fa-earth-asia"></i> 1. 地域相关性
+                                </h4>
+                                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                    申请国必须是公司的<strong>当前核心市场、未来规划市场、或主要竞争对手的制造/销售基地</strong>。若纯属“防御性”且无任何产品出海或供应链布局可能，原则上不予出海。
+                                </p>
+                            </div>
+                            <div class="p-4 rounded-xl border border-rose-100 bg-rose-50/40">
+                                <h4 class="font-bold text-rose-900 flex items-center gap-1.5 text-xs uppercase tracking-wide">
+                                    <i class="fa-solid fa-magnifying-glass"></i> 2. 可检测性 (Detectability)
+                                </h4>
+                                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                    权利要求保护的技术方案必须能在成品、软件运行界面、或公开的工艺流程中被<strong>逆向检测</strong>到。若属于“黑盒”式且无法取证的内部制造工艺，原则上不申请海外专利，转为技术秘密保护。
+                                </p>
+                            </div>
+                            <div class="p-4 rounded-xl border border-rose-100 bg-rose-50/40">
+                                <h4 class="font-bold text-rose-900 flex items-center gap-1.5 text-xs uppercase tracking-wide">
+                                    <i class="fa-solid fa-hourglass-half"></i> 3. 技术生命周期
+                                </h4>
+                                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                    该技术的商业生命周期必须 <strong>&ge; 3 年</strong>。若属于迭代极快、1-2 年即淘汰的过渡性技术，原则上不进行高成本的海外布局。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 2. 两阶段评审 -->
+                        <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2 mt-8">
+                            <span class="text-blue-600">二、</span> 两阶段评审里程碑（Funnel Milestones）
+                        </h3>
+                        <p>海外布局评审采用“两阶段漏斗”控制机制，卡死法定时间节点，合理分配各阶段预算：</p>
+                        
+                        <div class="space-y-4 my-4">
+                            <div class="relative pl-6 border-l-2 border-slate-200">
+                                <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-blue-600"></div>
+                                <h4 class="font-bold text-slate-900 text-xs uppercase">阶段一：优先权日前评审（第 9-10 个月）</h4>
+                                <p class="text-xs text-slate-500 mt-1">
+                                    <strong>评审时机：</strong>在中国首次申请（首申）申请日起 <strong>9 - 10 个月</strong>。<br>
+                                    <strong>决策目的：</strong>决定是否出海？如果出海，是直接走巴黎公约（12个月内进单国），还是走 PCT（锁住30个月期限）？<br>
+                                    <strong>核心输入物：</strong>首申文本与初次研发方案；CNIPA 下发的一通检索报告或一通 OA（若有）；市场部/业务部关于该技术对应产品的出海意向确认。
+                                </p>
+                            </div>
+                            <div class="relative pl-6 border-l-2 border-slate-200">
+                                <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full bg-indigo-600"></div>
+                                <h4 class="font-bold text-slate-900 text-xs uppercase">阶段二：进入国家阶段评审（第 28 个月）</h4>
+                                <p class="text-xs text-slate-500 mt-1">
+                                    <strong>评审时机：</strong>自最早优先权日起 <strong>28 个月</strong>（距离 PCT 进国家阶段最后期限仅剩 2 个月）。<br>
+                                    <strong>决策目的：</strong>锁定最终需要高额投资的具体目标国（美、欧、日、韩、英、东南亚等）。<br>
+                                    <strong>核心输入物：</strong>PCT 国际检索报告（ISR）及书面意见（WO）；对应产品的海外实际销售数据或最新量产路标；竞品在海外市场的最新技术动态。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 3. 量化模型 -->
+                        <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2 mt-8">
+                            <span class="text-blue-600">三、</span> 多维度量化评估模型（Scoring Model）
+                        </h3>
+                        <p>为减少主观偏差，采用量化评分卡（Scorecard）制度。评审委员会对以下四大维度进行打分（每项满分 5 分）：</p>
+                        
+                        <div class="overflow-x-auto border border-slate-200 rounded-lg my-4">
+                            <table class="min-w-full text-xs text-left">
+                                <thead class="bg-slate-50 text-slate-700 font-bold uppercase border-b">
+                                    <tr>
+                                        <th class="p-3">维度</th>
+                                        <th class="p-3">权重</th>
+                                        <th class="p-3">5分 (极高/极优)</th>
+                                        <th class="p-3">3分 (中等)</th>
+                                        <th class="p-3">1分 (极低/不建议)</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 text-slate-600">
+                                    <tr>
+                                        <td class="p-3 font-semibold text-slate-900">市场关联性 ($M$)</td>
+                                        <td class="p-3">30%</td>
+                                        <td class="p-3">对应产品已在目标国大规模销售，或已有明确的量产并出海计划。</td>
+                                        <td class="p-3">对应产品处于预研或立项阶段，目标国为潜在市场。</td>
+                                        <td class="p-3">属于边缘配套技术，或目标国未来基本无对应产品的销售计划。</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-semibold text-slate-900">技术可检测性 ($D$)</td>
+                                        <td class="p-3">30%</td>
+                                        <td class="p-3">属于外观、直观电学/机械接口、或公开 UI 交互。可通过整机拆解、红外测试、或常规仪器直测获取证据。</td>
+                                        <td class="p-3">属于内部集成电路或结构，需要通过高精尖实验室仪器或复杂的实验方法才能检测。</td>
+                                        <td class="p-3">属于服务器端封闭算法，或工厂内部的不可逆制造方法，没有任何痕迹留在成品中，完全无法逆向。</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-semibold text-slate-900">技术生命周期 ($L$)</td>
+                                        <td class="p-3">20%</td>
+                                        <td class="p-3">属于底层长青技术、标准必要技术，商业生命周期 &ge; 5 年。</td>
+                                        <td class="p-3">属于行业主流演进技术，生命周期 2 - 3 年。</td>
+                                        <td class="p-3">属于极易被替代的过渡性设计，迭代周期 &lt; 1.5 年，审查排队未完产品即已下市。</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-semibold text-slate-900">防御与对抗价值 ($F$)</td>
+                                        <td class="p-3">20%</td>
+                                        <td class="p-3">属于行业标准避不开的必经通路，或可以直接卡住竞争对手核心产品的升级方案，绕过成本极高。</td>
+                                        <td class="p-3">竞争对手有绕过的可能，但会使其制造成本增加 15% - 30%，或导致其性能明显下降。</td>
+                                        <td class="p-3">属于边缘外围保护，极易通过微小改动避让，不具备实质性防御壁垒。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="bg-indigo-50/50 rounded-xl p-4 border border-indigo-100 space-y-2 text-xs">
+                            <p class="font-bold text-indigo-950">综合评估分值计算公式：</p>
+                            <div class="bg-white p-2 rounded text-center text-sm font-mono font-bold text-indigo-700">
+                                I_roi = M * 30% + D * 30% + L * 20% + F * 20%
+                            </div>
+                            <p class="font-bold text-slate-700 mt-2">分值决策逻辑：</p>
+                            <ul class="list-disc pl-5 space-y-1 text-slate-600">
+                                <li><strong>I_roi &ge; 4.2（高优先级 - 绿灯案）：</strong>积极出海，直接走巴黎公约（若市场明确）或优先走 PCT。进入目标国后，首选美国 Track One 优先审查或欧洲 PACE 免费加速，抢占授权制高点。</li>
+                                <li><strong>3.0 &le; I_roi &lt; 4.2（中优先级 - 黄灯案）：</strong>首选 PCT 途径，用最少的成本锁住 30/31 个月的国家阶段期限。在第 28 个月时重新打分，精准锁定落地国。</li>
+                                <li><strong>I_roi &lt; 3.0（低优先级 - 红灯案）：</strong>拒绝出海。仅限在中国国内做常规防御布局，或退回转为内部技术秘密。</li>
+                            </ul>
+                        </div>
+
+                        <!-- 4. 目标国选择矩阵 -->
+                        <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2 mt-8">
+                            <span class="text-blue-600">四、</span> 目标国选择矩阵（Target Country Selection）
+                        </h3>
+                        <p>根据技术属性和业务模式，精准划分目标国配置：</p>
+                        
+                        <div class="overflow-x-auto border border-slate-200 rounded-lg my-4">
+                            <table class="min-w-full text-xs text-left">
+                                <thead class="bg-slate-50 text-slate-700 font-bold uppercase border-b">
+                                    <tr>
+                                        <th class="p-3">技术类型</th>
+                                        <th class="p-3">目标国配置推荐</th>
+                                        <th class="p-3">布局深度</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-200 text-slate-600">
+                                    <tr>
+                                        <td class="p-3 font-semibold text-slate-900">核心雾化结构/发热体/底层材料</td>
+                                        <td class="p-3 font-semibold text-blue-700">美、欧、日、中、英</td>
+                                        <td class="p-3">全套产品独创设计均申请独立权利要求。</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-semibold text-slate-900">外观设计 / UI 界面</td>
+                                        <td class="p-3 font-semibold text-blue-700">美、欧（欧盟外观一网打尽）、英</td>
+                                        <td class="p-3">快速拿证，防止被竞对抄袭和反向起诉。</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-semibold text-slate-900">精密工艺、控制软件与电控</td>
+                                        <td class="p-3 font-semibold text-blue-700">中国（制造大本营）、美（高侵权索赔区）</td>
+                                        <td class="p-3">重点关注制造地保护及高额侵权惩罚区。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- 5. 审批流 -->
+                        <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2 mt-8">
+                            <span class="text-blue-600">五、</span> 评审与审批流（Workflow & Governance）
+                        </h3>
+                        <ol class="list-decimal pl-5 space-y-2">
+                            <li><strong>评审委员会架构：</strong>评审委员会由以下三方组成，确保商业、法律与技术的三角平衡：
+                                <ul class="list-disc pl-5 mt-1 space-y-1">
+                                    <li><strong>涉外专利负责人：</strong>主持，负责法理与成本把关，拥有一票否决权</li>
+                                    <li><strong>研发总监/核心发明人：</strong>负责技术方案的创新深度与规避可能性评估</li>
+                                    <li><strong>产品/出海业务线负责人：</strong>负责海外商业价值、市场生命周期与BU预算承担确认</li>
+                                </ul>
+                            </li>
+                            <li><strong>审批会决策流程：</strong>
+                                <ul class="list-disc pl-5 mt-1 space-y-1">
+                                    <li><strong>节点触发：</strong>专利工程师在首申第 9 个月、或 PCT 满 27 个月时，自动拉取待评审清单。</li>
+                                    <li><strong>打分评估：</strong>召集评审委员会议，由产品和研发共同打分，计算 $I_{\text{roi}}$ 评分。</li>
+                                    <li><strong>结果裁决：</strong>若通过，涉外专利负责人签发外代代理指令，并确定加速通道类型。若被否决，转入技术秘密保管流程，通知研发团队做好内部脱密处理。</li>
+                                    <li><strong>成本归集：</strong>所有获批进入海外的规费及律师费，均归集至对应出海业务单元（BU）的年度预算池中。</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- SECTION 2: 涉外专利加速通道适用条件与实务指南 -->
+            <section id="doc-acceleration" class="tab-content max-w-4xl mx-auto space-y-6 hidden">
+                
+                <div class="bg-white p-6 sm:p-10 rounded-2xl border border-slate-200 shadow-sm relative">
+                    <div class="absolute top-6 right-6 no-print hidden sm:block">
+                        <span class="bg-sky-50 text-sky-700 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">DOC-02</span>
+                    </div>
+
+                    <span class="text-xs font-bold text-sky-600 tracking-widest uppercase">TACTICAL SPEED</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 mb-6">涉外专利加速通道适用条件与实务指南</h2>
+
+                    <div class="prose prose-slate max-w-none text-sm leading-relaxed text-slate-600 space-y-6">
+                        
+                        <div class="bg-slate-50 border-l-4 border-sky-600 p-4 rounded-r-lg">
+                            <p class="font-medium text-slate-900">引言：</p>
+                            <p class="text-xs text-slate-500 mt-1">
+                                在海外专利布局中，“速度”往往直接决定了商业竞争的成败。领先企业绝不盲目等待常规排队，而是根据预算、技术成熟度及竞争态势，灵活组合各国的加速审查程序。
+                            </p>
+                        </div>
+
+                        <!-- 1. Track One -->
+                        <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2 mt-8">
+                            <span class="text-sky-600">一、</span> 美国：Track One（优先审查程序）—— 终极速度武器
+                        </h3>
+                        <p>Track One（Prioritized Examination）是目前美国最受欢迎、确定性最高的加速通道。其官方目标是<strong>在授予优先审查状态后 12 个月内达成“最终决定”</strong>（即授权或最终驳回）。</p>
+                        
+                        <div class="space-y-3">
+                            <p><strong>1. 适用对象：</strong></p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>依据 35 U.S.C. 111(a) 新提交的<strong>美国发明普通正案（Original Utility Application）</strong>或植物专利申请。</li>
+                                <li><strong>延续案（Continuation, CA）</strong>或<strong>部分连续案（Continuation-in-Part, CIP）</strong>。</li>
+                                <li>随<strong>继续审查请求（RCE）</strong>一同提交的待决申请（每件案子通常仅允许在 RCE 时使用一次 Track One）。</li>
+                                <li><strong class="text-rose-600">注意：</strong>PCT 进入美国国家阶段（371 案）在最初进入时不能直接申请 Track One。若 371 案要用 Track One，必须先以 Bypass（旁路延续案）方式重新提交 111(a) 申请，或者在 371 案下发一通前提交 RCE。</li>
+                            </ul>
+
+                            <p class="mt-4"><strong>2. 核心限制与条件（极严格）：</strong></p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>权利要求数量限制：</strong>在申请或审核 Track One 资格时，必须满足<strong>独立权利要求 &le; 4 项，总权利要求 &le; 30 项</strong>。</li>
+                                <li><strong>禁止多重从属（No Multiple Dependent Claims）：</strong>权利要求书中绝对不能出现“多引多”的格式。</li>
+                                <li><strong>电子申报要求：</strong>必须通过 USPTO 电子系统（Patent Center）提交。</li>
+                                <li><strong>年度配额限制：</strong>USPTO 设有每个财政年度的受理上限（目前<strong>年配额已上调至 20,000 件</strong>）。</li>
+                                <li><strong>答辩时限惩罚：</strong>如果收到 OA 后申请人申请了任何延期答辩（Extension of Time），<strong>Track One 资格将自动且永久终止</strong>，案件退回常规审查排队。</li>
+                            </ul>
+
+                            <p class="mt-4"><strong>3. 官费标准（以规费为准）：</strong></p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>大实体 (Large Entity)：</strong>优先审查规费约 <strong>$4,515</strong>（全套首发官费通常在 $5,500 左右）。</li>
+                                <li><strong>小实体 (Small Entity)：</strong>规费打 4 折，约 <strong>$1,806</strong>。</li>
+                                <li><strong>微型实体 (Micro Entity)：</strong>规费打 2 折，约 <strong>$903</strong>。</li>
+                            </ul>
+
+                            <p class="mt-4"><strong>4. 优势与实务建议：</strong></p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>优势：</strong>速度极快，通常在缴费后 2-3 个月内即可收到第一步实质性审查意见（FAOM）；无需提交任何检索报告或可专利性说明，对诉讼不留后患。</li>
+                                <li><strong>实务建议：</strong>对于需要快速拿证阻击对手、或用于融资/许可谈判的核心“卡脖子”专利，直接走 Track One。在提交时，指示代理人严格删去多引多，并将权利要求控制在 4/30 以内，避免因格式问题导致申请被直接驳回。</li>
+                            </ul>
+                        </div>
+
+                        <!-- Crucial Alert Box -->
+                        <div class="p-4 rounded-xl border border-rose-200 bg-rose-50 text-rose-950 text-xs my-6">
+                            <h4 class="font-bold flex items-center gap-1.5"><i class="fa-solid fa-circle-exclamation text-rose-600"></i> ⚠️ 重要政策变更：美国实用新型“加速审查（AE）”已全面废除</h4>
+                            <p class="mt-1 leading-relaxed">
+                                由于 Track One 程序的极大普及，以及常规加速审查（Accelerated Examination, AE）极低的利用率，<strong>USPTO 已正式宣布停止受理发明/实用新型（Utility）的常规加速审查（AE）申请</strong>。目前，常规 AE 程序仅对外观设计（Design）专利申请开放。企业在制定出海计划时，请删除针对发明专利申请传统 AE 的预算和流程，全面转向 Track One 或 PPH。
+                            </p>
+                        </div>
+
+                        <!-- 2. PACE -->
+                        <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2 mt-8">
+                            <span class="text-sky-600">二、</span> 欧洲：PACE 程序（加速审查程序）—— 零官费的加速良药
+                        </h3>
+                        <div class="space-y-3">
+                            <p><strong>1. 适用对象：</strong></p>
+                            <p class="text-xs text-slate-500">所有处于检索（Search）或实审（Examination）阶段的欧洲发明专利申请（包括直接欧洲申请、PCT 进欧洲等）。</p>
+                            
+                            <p class="mt-4"><strong>2. 核心限制与条件：</strong></p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>一阶段一申请：</strong>申请人必须针对“加速检索”和“加速实审”分别提出 PACE 请求（不能一揽子申请）。</li>
+                                <li><strong>电子化提交：</strong>必须且仅能通过 EPO 在线提交专用表单（Form 1005）。</li>
+                                <li><strong>放弃撤回惩罚：</strong>如果申请人申请了任何答辩延期（Extension of Time）；或者申请案被驳回、撤回、或由于未按时缴费而被拟制撤回，<strong>该案将永久退出 PACE 程序</strong>，且对于同一件申请，不能第二次提交 PACE 请求。</li>
+                                <li><strong>配额限制：</strong>虽然官方没有硬性上限，但如果同一个申请人（同一家公司）在短时间内对大量申请同时提交 PACE，EPO 可能会要求该申请人进行“自主优先级排序（Prioritisation）”，限制其实际加速的数量。</li>
+                            </ul>
+
+                            <p class="mt-4"><strong>3. 官费标准：</strong></p>
+                            <p class="font-bold text-emerald-600 font-mono text-sm">完全免费（$0 / €0）。EPO 不收取任何附加官费。</p>
+
+                            <p class="mt-4"><strong>4. 优势与实务建议：</strong></p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>优势：</strong>零额外成本。一旦加入，EPO 会尽最大努力在 3-6 个月内出具检索报告或下发审查意见。</li>
+                                <li><strong>实务建议：</strong>PACE 是“君子协定”，EPO 并没有法定的“超时赔偿”机制，如果审查员手头案子太多，实际效果可能会打折。因此，在提交 PACE 后，需要让欧洲代理人保持密切的主动跟进，且在答辩时<strong>绝对不要申请延期</strong>，否则前功尽弃。</li>
+                            </ul>
+                        </div>
+
+                        <!-- 3. PPH -->
+                        <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2 mt-8">
+                            <span class="text-sky-600">三、</span> 全球：PPH（专利审查高速路）—— 跨国联动的性价比之王
+                        </h3>
+                        <p>PPH（Patent Prosecution Highway）是基于多个国家或地区专利局之间签署的双边或多边合作协议（如 Global PPH）。</p>
+                        
+                        <div class="space-y-3">
+                            <p><strong>1. 适用对象：</strong></p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li>在“在先审查局”（OEE，例如中国国家知识产权局 CNIPA）的对应申请中，<strong>至少有一项权利要求被认定为“可授权 / 具备可专利性”</strong>。</li>
+                                <li>处于“在后审查局”（OLE，例如美国 USPTO、欧洲 EPO）的对应申请<strong>尚未开始实质审查</strong>（即尚未下发一通）。</li>
+                            </ul>
+
+                            <p class="mt-4"><strong>2. 核心限制与条件：</strong></p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>权利要求充分对应（Sufficient Correspondence）：</strong>在后审查局中请求加速的所有权利要求，其保护范围必须<strong>等于或窄于</strong>在先审查局中已被认定为可授权的权利要求。</li>
+                                <li><strong>提交证明文件：</strong>必须提交在先审查局的审查意见通知书（OA）、授权决定书副本，以及对应的英文翻译（机器翻译通常被接受）。</li>
+                            </ul>
+
+                            <p class="mt-4"><strong>3. 官费标准：</strong></p>
+                            <p class="font-bold text-emerald-600 font-mono text-sm">完全免费（$0）。</p>
+
+                            <p class="mt-4"><strong>4. 优势与实务建议：</strong></p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>优势：</strong>免费；由于审查员会极大地参考和信赖在先审查结论，因此 PPH 案的<strong>一次性授权率极高</strong>，且答辩往复次数通常很少。</li>
+                                <li><strong>实务建议：</strong>对于预算有限，但国内优先权案已经顺利授权的涉外项目，<strong>PPH 是性价比最高的出海第一选择</strong>。但需注意，由于权利要求必须“窄于”国内已授权版本，这可能会限制争取更宽保护范围的商业企图。如果想要扩大保护范围，可以通过 PPH 快速拿下一个窄独权（作为防御），同时在美国提交一件延续案（CA）去继续斗争宽独权。</li>
+                            </ul>
+                        </div>
+
+                        <!-- 4. Petition to make special -->
+                        <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2 mt-8">
+                            <span class="text-sky-600">四、</span> 美国：Petition to Make Special（基于特殊理由的请愿）—— 政策性绿色通道
+                        </h3>
+                        <p>如果不愿支付 Track One 的高昂官费，且不满足 PPH 的对应条件，可以检索是否符合政策性的特殊加速条件。</p>
+                        
+                        <div class="space-y-3">
+                            <p><strong>1. 适用条件（主要类别）：</strong></p>
+                            <ul class="list-disc pl-5 space-y-1">
+                                <li><strong>发明人年龄：</strong>申请人（发明人之一）年龄在 <strong>65 岁（含）以上</strong>。</li>
+                                <li><strong>发明人健康原因：</strong>申请人由于重病，面临在常规审查周期内无法见证专利授权的风险。</li>
+                                <li><strong>国家重大战略与技术方向：</strong>环境质量保护（Environment，能实质性提升或保护环境）；能源开发与节约（Energy，有助于能源资源的开发、利用或节约）；特定专项（如癌症免疫疗法加速试点等）。</li>
+                            </ul>
+
+                            <p class="mt-4"><strong>2. 核心限制与条件：</strong></p>
+                            <p class="text-xs text-slate-500">必须提交正式的 Petition 申请，并附带满足上述条件的宣誓书（Declaration）或第三方证明材料。若是基于技术领域，申请人需要承担极高的解释举证成本。</p>
+
+                            <p class="mt-4"><strong>3. 官费标准：</strong></p>
+                            <p class="text-xs text-slate-500">若基于<strong>发明人年龄或健康原因</strong>提出：<span class="font-bold text-emerald-600">完全免费（$0）</span>。若基于其他技术或环境理由提出：需缴纳小额的请愿费。</p>
+
+                            <p class="mt-4"><strong>4. 实务建议：</strong></p>
+                            <p class="text-xs text-slate-500">
+                                在跨国联合研发，或者初创企业早期由元老级核心发明人（年龄较大者）联合署名时，<strong>“年龄 65 岁”是一张极其好用的免费美国加速王牌</strong>。只要在 ADS（申请人信息表）中如实填报其出生年月日，并在下发一通前提交一份简单的 Petition 即可。
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- SECTION 3: 涉外专利负责人实务与合规全面指引手册 -->
+            <section id="doc-playbook" class="tab-content max-w-4xl mx-auto space-y-6 hidden">
+                
+                <div class="bg-white p-6 sm:p-10 rounded-2xl border border-slate-200 shadow-sm relative">
+                    <div class="absolute top-6 right-6 no-print hidden sm:block">
+                        <span class="bg-indigo-50 text-indigo-700 text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">DOC-03</span>
+                    </div>
+
+                    <span class="text-xs font-bold text-indigo-600 tracking-widest uppercase">IP MANAGEMENT PLAYBOOK</span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-2 mb-6">涉外专利负责人实务与合规全面指引手册</h2>
+
+                    <div class="prose prose-slate max-w-none text-sm leading-relaxed text-slate-600 space-y-6">
+                        
+                        <div class="bg-slate-50 border-l-4 border-indigo-600 p-4 rounded-r-lg">
+                            <p class="font-medium text-slate-900">引言：</p>
+                            <p class="text-xs text-slate-500 mt-1">
+                                作为涉外专利负责人（Global IP Manager），你的核心使命是<strong>利用有限的预算，在目标市场构建稳定性高、防御力强、且具备商业进攻价值的专利资产包，同时将公司的海外侵权风险降至最低</strong>。
+                            </p>
+                        </div>
+
+                        <!-- 1. 三驾马车 -->
+                        <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2 mt-8">
+                            <span class="text-indigo-600">一、</span> 顶层战略：涉外专利布局的“三驾马车”
+                        </h3>
+                        <p>领先企业从不盲目在海外撒网。你需要根据业务属性，将涉外申请划分为三类：</p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 my-4">
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                <h4 class="font-bold text-slate-900 text-xs">A类：防御性专利</h4>
+                                <ul class="list-disc pl-4 mt-2 text-xs text-slate-500 space-y-1">
+                                    <li>保护自身主营产品。</li>
+                                    <li>追求快速授权与稳定性。</li>
+                                    <li>常用通道：Track One、PPH。</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                <h4 class="font-bold text-slate-900 text-xs">B类：卡脖子/进攻性专利</h4>
+                                <ul class="list-disc pl-4 mt-2 text-xs text-slate-500 space-y-1">
+                                    <li>针对竞争对手的痛点布局。</li>
+                                    <li>追求保护范围，拖长审查。</li>
+                                    <li>常用通道：分案/延续案（CA）。</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200">
+                                <h4 class="font-bold text-slate-900 text-xs">C类：基础性/标准专利</h4>
+                                <ul class="list-disc pl-4 mt-2 text-xs text-slate-500 space-y-1">
+                                    <li>参与国际标准制定（如SEP）。</li>
+                                    <li>资产价值极高。</li>
+                                    <li>需长期重点跟踪保护。</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <p><strong>路径选择的黄金法则：</strong></p>
+                        <ul class="list-disc pl-5 space-y-2">
+                            <li><strong>若追求绝对速度（快速拿证阻击对手）：</strong>
+                                <ul class="list-disc pl-5 mt-1 space-y-1 text-slate-500 text-xs">
+                                    <li><strong>美国：</strong>首选 <strong>Track One</strong>，12 个月内结案。</li>
+                                    <li><strong>欧洲：</strong>利用 <strong>PACE 程序</strong>，无需额外官费。</li>
+                                    <li><strong>其他地区：</strong>若国内已授权，通过 <strong>PPH</strong> 加速，性价比最高。</li>
+                                </ul>
+                            </li>
+                            <li><strong>若追求保护范围的最大化（放长线钓大鱼）：</strong>
+                                <ul class="list-disc pl-5 mt-1 space-y-1 text-slate-500 text-xs">
+                                    <li><strong>美国：</strong>善用<strong>延续案（CA）</strong>和<strong>部分连续案（CIP）</strong>。保持至少有一件母案或分案处于“Pending”状态。一旦对手产品上市，立刻修改 Pending 案的权利要求进行精准套牢。</li>
+                                    <li><strong>欧洲：</strong>在收到授权意向通知书（Rule 71(3)）前，合理利用分案（Divisional）保留火种。</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <!-- 2. 合规生死线 -->
+                        <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2 mt-8">
+                            <span class="text-indigo-600">二、</span> 合规生死线：绝不能踩的“三大红线”
+                        </h3>
+                        <p>在海外，合规漏洞可以直接摧毁数百万美金研发出来的专利。作为负责人，你必须死守以下合规防线：</p>
+                        
+                        <div class="space-y-4 my-4">
+                            <div class="p-4 rounded-xl border border-amber-100 bg-amber-50/40">
+                                <h4 class="font-bold text-amber-900 text-xs uppercase tracking-wide">
+                                    1. 诚实信用义务与 IDS 披露（Duty of Candor & IDS）—— 美国案命门
+                                </h4>
+                                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                    美国专利法 <strong>37 CFR 1.56</strong> 规定了极严苛的披露义务。一旦有同族申请（如中国优先权案、PCT、欧洲案），在收到任何一国的检索报告（ISR）、审查意见通知书（OA）或驳回决定后，<strong>必须在 3 个月内同步向美国局（USPTO）提交 IDS 申报</strong>。若故意不披露被竞对在诉讼中证明，该专利将被判定为“不可执行（Unenforceable）”，全案报废。
+                                </p>
+                            </div>
+                            <div class="p-4 rounded-xl border border-rose-100 bg-rose-50/40">
+                                <h4 class="font-bold text-rose-900 text-xs uppercase tracking-wide">
+                                    2. 原始公开范围限制（Added Matter）—— 欧洲案命门
+                                </h4>
+                                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                    欧洲专利局（EPO）执行全球最严苛的 <strong>Article 123(2) EPC（修改超范围）</strong> 审查标准（Gold Standard）。在撰写原始说明书时，<strong>禁止“中间概括”</strong>，不能从某具体实施例中抽离单一特征放到权利要求中，除非该特征与该实施例其他特征无关联。建议在进入欧洲前，尽量恢复或保留“多引多”的权利要求关系。
+                                </p>
+                            </div>
+                            <div class="p-4 rounded-xl border border-sky-100 bg-sky-50/40">
+                                <h4 class="font-bold text-sky-900 text-xs uppercase tracking-wide">
+                                    3. 保密审查（Foreign Filing License）—— 中国法红线
+                                </h4>
+                                <p class="text-xs text-slate-500 mt-2 leading-relaxed">
+                                    根据中国专利法第 19 条，在中国境内完成的发明，向外国申请专利前，<strong>必须向国家知识产权局申请保密审查</strong>（或先提交中国申请/同时提交 PCT 并指定中国局）。若违反，该发明今后在中国将彻底无法获得专利权，且可能面临泄密指控。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 3. 实务管控 -->
+                        <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2 mt-8">
+                            <span class="text-indigo-600">三、</span> 实务管控：高效管理“外部美外代”与“预算控制”
+                        </h3>
+                        <p>涉外专利的大部分预算都流向了外部事务所（外代）。领先企业有一套精细化的外代考核与省钱秘籍：</p>
+                        
+                        <ol class="list-decimal pl-5 space-y-2">
+                            <li><strong>建立外代分级管理 (Vendor Management)：</strong>
+                                <ul class="list-disc pl-5 mt-1 space-y-1 text-slate-500 text-xs">
+                                    <li><strong>Tier 1 (顶尖大所)：</strong>处理核心基础、高商业价值的卡脖子专利。收费高，但撰写与答辩质量极佳。</li>
+                                    <li><strong>Tier 2 (性价比所)：</strong>处理常规外围、防御性专利。采用包干制（Flat Fee），固定答辩限额。</li>
+                                    <li><strong>Tier 3 (流程服务所)：</strong>处理 PCT 直接进入国家阶段的常规翻译与录入。</li>
+                                </ul>
+                            </li>
+                            <li><strong>控费技巧：</strong>
+                                <ul class="list-disc pl-5 mt-1 space-y-1 text-slate-500 text-xs">
+                                    <li><strong>实体规模申报 (Entity Status)：</strong>核对公司是否符合美国局的 Micro Entity（2折官费）或 Small Entity（4折官费）。若是大企业授权/独占许可，需如实申报 Large Entity，严防欺诈专利局行为。</li>
+                                    <li><strong>翻译费管理：</strong>在国内寻找高性价比翻译公司做好初稿翻译，外代只负责“校对（Review）”，坚决避免让欧美外代进行整篇翻译（外代费用是国内的3-5倍）。</li>
+                                    <li><strong>利用 1.97(e) 免除美案规费：</strong>严格卡死“3个月发文日”时间差，指示外代在 3 个月内提交 IDS 并勾选 1.97(e) 声明。</li>
+                                </ul>
+                            </li>
+                        </ol>
+
+                        <!-- 4. FTO -->
+                        <h3 class="text-lg font-bold text-slate-900 border-b pb-2 flex items-center gap-2 mt-8">
+                            <span class="text-indigo-600">四、</span> 风险防控：海外 FTO 排查与诉讼预警
+                        </h3>
+                        <p>产品出海，专利未动，FTO（自由操作分析）先行。当在 FTO 中抓到了大烟草公司或其他竞对的在先高危专利时，处理矩阵如下：</p>
+                        
+                        <ol class="list-decimal pl-5 space-y-2">
+                            <li><strong>回避设计（Design-around）：</strong>让研发团队改结构或软件算法。这是成本最低、最彻底的解决方案。</li>
+                            <li><strong>准备无效弹药（Invalidity Search）：</strong>若无法绕过，立刻开始检索地雷专利的现有技术。重点挖掘中国早期实用新型或欧洲未译成英文的早期公开文献。</li>
+                            <li><strong>防御性公开（Defensive Publication）：</strong>若有极佳避让方案但无预算申请专利，可公开于 <em>Research Disclosure</em> 平台上，直接产生 Prior Art 效力，堵死竞对以此申请专利打我们的路标。</li>
+                            <li><strong>供应链 IP 担保（Indemnification）：</strong>与上游核心器件供应商签署严格的 IP 责任划分协议，确保海外被诉时，供应链能分担诉讼和赔偿成本。</li>
+                        </ol>
+
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- SECTION 4: TOOL - ROI CALCULATOR -->
+            <section id="tool-calculator" class="tab-content max-w-4xl mx-auto space-y-6 hidden">
+                
+                <div class="bg-white p-6 sm:p-10 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center space-x-2 text-emerald-600 mb-2">
+                        <i class="fa-solid fa-calculator text-xl animate-pulse"></i>
+                        <span class="text-xs font-bold tracking-widest uppercase">INTELLIGENT DECISION</span>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-2">海外专利布局评审与决策 ROI 计算器</h2>
+                    <p class="text-xs text-slate-500 mb-6">利用加权打分法量化海外专利出海必要性，避免盲目出海导致预算浪费。</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Left Controls -->
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-100 md:col-span-2 space-y-6">
+                            <h3 class="text-xs font-bold text-slate-900 border-b pb-2 flex justify-between items-center">
+                                <span>1. 输入评估参数 (1-5分)</span>
+                                <button onclick="resetROICalculator()" class="text-[10px] text-slate-400 hover:text-slate-600 transition"><i class="fa-solid fa-rotate-left"></i> 重置滑块</button>
+                            </h3>
+                            
+                            <!-- Question 1 -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1.5 flex justify-between">
+                                    <span>市场相关性 (Market Relevance) [权重: 30%]</span>
+                                    <span class="text-emerald-600 font-bold" id="val-q1">3分</span>
+                                </label>
+                                <input type="range" min="1" max="5" value="3" step="1" id="q-market" oninput="calculateROI()" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                                <p class="text-[9px] text-slate-400 mt-1">1分: 完全无任何此市场出海计划 | 3分: 潜在规划中市场 | 5分: 已经销售或具有明确出海量产计划的核心主营市场</p>
+                            </div>
+
+                            <!-- Question 2 -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1.5 flex justify-between">
+                                    <span>可检测性 (Detectability) [权重: 30%]</span>
+                                    <span class="text-emerald-600 font-bold" id="val-q2">3分</span>
+                                </label>
+                                <input type="range" min="1" max="5" value="3" step="1" id="q-detect" oninput="calculateROI()" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                                <p class="text-[9px] text-slate-400 mt-1">1分: 纯黑盒软件算法/内部隐蔽制造工艺 | 3分: 需要复杂实验室切片/分析检测 | 5分: 产品外观可见、直观UI界面或可通过标准整机拆包直测</p>
+                            </div>
+
+                            <!-- Question 3 -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1.5 flex justify-between">
+                                    <span>技术生命周期 (Lifecycle) [权重: 20%]</span>
+                                    <span class="text-emerald-600 font-bold" id="val-q3">3分</span>
+                                </label>
+                                <input type="range" min="1" max="5" value="3" step="1" id="q-lifecycle" oninput="calculateROI()" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                                <p class="text-[9px] text-slate-400 mt-1">1分: 过渡型设计，生命周期 &lt; 1.5年 | 3分: 行业中规中矩演化特征 (2-3年) | 5分: 属于底层长青技术或核心标准要素 (&ge;5年)</p>
+                            </div>
+
+                            <!-- Question 4 -->
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-700 mb-1.5 flex justify-between">
+                                    <span>防御与对抗价值 (Defensive & Blocking) [权重: 20%]</span>
+                                    <span class="text-emerald-600 font-bold" id="val-q4">3分</span>
+                                </label>
+                                <input type="range" min="1" max="5" value="3" step="1" id="q-defensive" oninput="calculateROI()" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-500">
+                                <p class="text-[9px] text-slate-400 mt-1">1分: 边缘防御特征，极其容易绕过 | 3分: 竞争对手具有绕过可能性但会增加15%以上的制造成本 | 5分: 行业标配卡脖子特征，完全无法绕过</p>
+                            </div>
+                        </div>
+
+                        <!-- Right Output -->
+                        <div class="space-y-4">
+                            <div class="bg-slate-900 text-white p-6 rounded-xl border border-slate-800 flex flex-col justify-between h-full min-h-[300px]">
+                                <div>
+                                    <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">综合 ROI 指数</h3>
+                                    <div class="flex items-baseline space-x-1">
+                                        <span class="text-4xl sm:text-5xl font-black font-mono tracking-tight text-emerald-400" id="roi-score">3.0</span>
+                                        <span class="text-slate-500 text-sm">/ 5.0</span>
+                                    </div>
+                                    <div class="w-full bg-slate-800 rounded-full h-1 mt-3">
+                                        <div class="bg-emerald-400 h-1 rounded-full" id="roi-bar" style="width: 60%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="my-4">
+                                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">“三大天条”准入自检</h4>
+                                    <div class="p-2.5 rounded-lg text-xs" id="tian-box">
+                                        <span id="tian-text"><i class="fa-solid fa-circle-check mr-1 text-emerald-400"></i> 符合海外布局条件</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">智能决策建议</h4>
+                                    <p class="text-xs text-slate-200 leading-relaxed font-medium" id="roi-recommendation">请输入数值计算结果。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- SECTION 5: TOOL - WIZARD -->
+            <section id="tool-wizard" class="tab-content max-w-4xl mx-auto space-y-6 hidden">
+                
+                <div class="bg-white p-6 sm:p-10 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center space-x-2 text-amber-600 mb-2">
+                        <i class="fa-solid fa-route text-xl"></i>
+                        <span class="text-xs font-bold tracking-widest uppercase">DECISION ROADMAP</span>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-2">涉外加速审查路径推荐向导</h2>
+                    <p class="text-xs text-slate-500 mb-6">通过回答 4 个核心商业及法律前提问题，秒出最佳出海加速申请通道及预算配置指引。</p>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Left Form Options -->
+                        <div class="bg-slate-50 p-6 rounded-xl border border-slate-100 md:col-span-2 space-y-4">
+                            
+                            <!-- Q1 -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">1. 你的主要目标国家或市场是什么？</label>
+                                <select id="wiz-country" onchange="runWizard()" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs focus:outline-none focus:border-amber-500">
+                                    <option value="us">美国 (USPTO)</option>
+                                    <option value="ep">欧洲 (EPO)</option>
+                                    <option value="other">其他主要缔约国 (日/韩/东南亚/多国)</option>
+                                </select>
+                            </div>
+
+                            <!-- Q2 -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">2. 该案对应的国内优先权案是否已获得授权（或至少有一项权利要求被认定可授权）？</label>
+                                <div class="flex items-center space-x-4 mt-1">
+                                    <label class="flex items-center space-x-1.5 text-xs text-slate-700 cursor-pointer">
+                                        <input type="radio" name="wiz-cn-auth" value="yes" checked onchange="runWizard()" class="w-4 h-4 text-amber-500 border-slate-300 focus:ring-amber-500">
+                                        <span>是 (至少1项Claim可授权)</span>
+                                    </label>
+                                    <label class="flex items-center space-x-1.5 text-xs text-slate-700 cursor-pointer">
+                                        <input type="radio" name="wiz-cn-auth" value="no" onchange="runWizard()" class="w-4 h-4 text-amber-500 border-slate-300 focus:ring-amber-500">
+                                        <span>否 / 还在排队实审中</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Q3 -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">3. 公司的该案专项预算情况如何？</label>
+                                <div class="flex items-center space-x-4 mt-1">
+                                    <label class="flex items-center space-x-1.5 text-xs text-slate-700 cursor-pointer">
+                                        <input type="radio" name="wiz-budget" value="high" checked onchange="runWizard()" class="w-4 h-4 text-amber-500 border-slate-300 focus:ring-amber-500">
+                                        <span>充足 (愿意支付几千美金快速拿证)</span>
+                                    </label>
+                                    <label class="flex items-center space-x-1.5 text-xs text-slate-700 cursor-pointer">
+                                        <input type="radio" name="wiz-budget" value="low" onchange="runWizard()" class="w-4 h-4 text-amber-500 border-slate-300 focus:ring-amber-500">
+                                        <span>紧张 (希望零成本官费进行加速)</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Q4 -->
+                            <div>
+                                <label class="block text-xs font-bold text-slate-700 uppercase mb-1.5">4. 是否有特殊发明人身份红利可利用？</label>
+                                <div class="flex items-center space-x-4 mt-1">
+                                    <label class="flex items-center space-x-1.5 text-xs text-slate-700 cursor-pointer">
+                                        <input type="radio" name="wiz-special" value="yes" onchange="runWizard()" class="w-4 h-4 text-amber-500 border-slate-300 focus:ring-amber-500">
+                                        <span>有 (发明人包含65岁以上老元老)</span>
+                                    </label>
+                                    <label class="flex items-center space-x-1.5 text-xs text-slate-700 cursor-pointer">
+                                        <input type="radio" name="wiz-special" value="no" checked onchange="runWizard()" class="w-4 h-4 text-amber-500 border-slate-300 focus:ring-amber-500">
+                                        <span>无特殊主体身份</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Right Output Box -->
+                        <div class="space-y-4">
+                            <div class="bg-amber-950 text-amber-50 p-6 rounded-xl border border-amber-900 flex flex-col justify-between h-full min-h-[300px]">
+                                <div>
+                                    <h3 class="text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1">推荐最优通道</h3>
+                                    <div class="text-xl sm:text-2xl font-black text-amber-300" id="wiz-recommend-title">
+                                        PPH 专利审查高速路
+                                    </div>
+                                    <div class="mt-2 text-xs text-amber-100 leading-relaxed" id="wiz-recommend-desc">
+                                        正在分析您的决策条件...
+                                    </div>
+                                </div>
+
+                                <div class="my-4 border-t border-amber-900/60 pt-3">
+                                    <h4 class="text-[10px] font-bold text-amber-400 uppercase tracking-wider mb-1">官方规费预估 (Official Fee)</h4>
+                                    <p class="text-xl font-bold font-mono text-emerald-400" id="wiz-fee">$0</p>
+                                </div>
+
+                                <div class="bg-amber-900/40 p-3 rounded-lg text-[11px] leading-relaxed text-amber-200">
+                                    <strong>关键执行指令：</strong> <span id="wiz-action">正在生成行动计划...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- SECTION 6: TOOL - CHECKLIST -->
+            <section id="tool-checklist" class="tab-content max-w-4xl mx-auto space-y-6 hidden">
+                
+                <div class="bg-white p-6 sm:p-10 rounded-2xl border border-slate-200 shadow-sm">
+                    <div class="flex items-center space-x-2 text-purple-600 mb-2">
+                        <i class="fa-solid fa-list-check text-xl animate-bounce"></i>
+                        <span class="text-xs font-bold tracking-widest uppercase">DAILY OPERATION SOP</span>
+                    </div>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mb-2">涉外专利负责人日常工作检查清单</h2>
+                    <p class="text-xs text-slate-500 mb-6">结合跨国大企业最佳实务，将日常高风险合规防线和控费技巧固化为可交互的月度 SOP 表，数据保存在本地浏览器中。</p>
+
+                    <div class="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                        <div class="bg-slate-50 p-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                            <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">MONTHLY SPRINTS PROGRESS</span>
+                            <div class="flex items-center space-x-3 w-full sm:w-auto justify-between">
+                                <span class="text-xs text-slate-500">已完成：<strong class="text-purple-600 font-mono" id="checklist-pct">0%</strong></span>
+                                <button onclick="resetSOPChecklist()" class="text-[10px] text-red-500 hover:text-red-700 transition font-semibold"><i class="fa-solid fa-trash-can"></i> 清除数据重置</button>
+                            </div>
+                        </div>
+                        <div class="divide-y divide-slate-100" id="sop-checklist-container">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Scripts Area -->
+    <script>
+        // Tab switching logic
+        function switchTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(el => {
+                el.classList.add('hidden');
+            });
+            // Show active tab
+            document.getElementById(tabId).classList.remove('hidden');
+
+            // Reset desktop sidebar buttons
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-slate-800', 'text-white');
+                btn.classList.add('text-slate-400', 'hover:bg-slate-800', 'hover:text-slate-100');
+            });
+            
+            // Activate corresponding sidebar button
+            const activeBtn = document.getElementById('btn-' + tabId);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-400', 'hover:bg-slate-800', 'hover:text-slate-100');
+                activeBtn.classList.add('bg-slate-800', 'text-white');
+            }
+
+            // Sync mobile select if visible
+            const selectEl = document.querySelector('select');
+            if (selectEl) {
+                selectEl.value = tabId;
+            }
+
+            // Scroll tab content to top
+            document.getElementById('contentArea').scrollTop = 0;
+        }
+
+        // Search logic to instantly filter or highight keywords
+        function handleSearch() {
+            const term = document.getElementById('searchTerm').value.trim().toLowerCase();
+            if (!term) {
+                removeHighlights();
+                return;
+            }
+
+            // Simple tab switching heuristic to the best matching tab
+            const index = {
+                'doc-framework': ['评审', '决策', '天条', '一票否决', '量量', '打分', '权重', '地域', '检测', 'I_roi', '巴黎', 'PCT', '28个', '9个'],
+                'doc-acceleration': ['优先', 'Track One', 'PACE', 'PPH', 'AE', '加急', '加速', '延期', '4/30', '双重从属', '配额', '65岁', 'Petition'],
+                'doc-playbook': ['负责人', '三驾马车', '合规', '红线', 'IDS', '37 CFR', '1.56', '超范围', 'EPC', '保密', '19条', '控费', 'FTO', '外代']
+            };
+
+            let bestTab = 'doc-framework';
+            let maxHits = 0;
+
+            for (const [tabKey, keywords] of Object.entries(index)) {
+                let hits = 0;
+                keywords.forEach(kw => {
+                    if (term.includes(kw.toLowerCase()) || kw.toLowerCase().includes(term)) {
+                        hits += 1;
+                    }
+                });
+                if (hits > maxHits) {
+                    maxHits = hits;
+                    bestTab = tabKey;
+                }
+            }
+
+            if (maxHits > 0) {
+                switchTab(bestTab);
+            }
+
+            // Highlight words inside the current tab
+            const currentTabEl = document.getElementById(bestTab);
+            removeHighlights();
+            highlightWords(currentTabEl, term);
+        }
+
+        function highlightWords(element, word) {
+            if (!element) return;
+            const textNodes = [];
+            const walk = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+            let node;
+            while(node = walk.nextNode()) {
+                if (node.parentNode.nodeName !== 'SCRIPT' && node.parentNode.nodeName !== 'STYLE' && node.parentNode.className !== 'no-highlight') {
+                    textNodes.push(node);
+                }
+            }
+
+            textNodes.forEach(node => {
+                const text = node.nodeValue;
+                const index = text.toLowerCase().indexOf(word);
+                if (index >= 0) {
+                    const span = document.createElement('span');
+                    const regex = new RegExp(`(${escapeRegExp(word)})`, 'gi');
+                    span.innerHTML = text.replace(regex, '<span class="highlight">$1</span>');
+                    node.parentNode.replaceChild(span, node);
+                }
+            });
+        }
+
+        function removeHighlights() {
+            document.querySelectorAll('.highlight').forEach(el => {
+                const parent = el.parentNode;
+                parent.replaceChild(document.createTextNode(el.innerText), el);
+                parent.normalize();
+            });
+        }
+
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        // ROI Calculator Algorithm
+        function calculateROI() {
+            const m = parseInt(document.getElementById('q-market').value);
+            const d = parseInt(document.getElementById('q-detect').value);
+            const l = parseInt(document.getElementById('q-lifecycle').value);
+            const f = parseInt(document.getElementById('q-defensive').value);
+
+            document.getElementById('val-q1').innerText = m + '分';
+            document.getElementById('val-q2').innerText = d + '分';
+            document.getElementById('val-q3').innerText = l + '分';
+            document.getElementById('val-q4').innerText = f + '分';
+
+            const score = (m * 0.3 + d * 0.3 + l * 0.2 + f * 0.2).toFixed(1);
+            document.getElementById('roi-score').innerText = score;
+            document.getElementById('roi-bar').style.width = (score / 5 * 100) + '%';
+
+            const tianBox = document.getElementById('tian-box');
+            const tianText = document.getElementById('tian-text');
+            const recText = document.getElementById('roi-recommendation');
+
+            // Hard check of Golden Rules ("天条")
+            if (m < 2) {
+                tianBox.className = "p-2.5 bg-rose-50 text-rose-800 rounded-lg text-xs font-semibold";
+                tianText.innerHTML = '<i class="fa-solid fa-ban text-rose-600 mr-1"></i> 【地域天条一票否决】申请国并非核心/竞争对手主战区，严禁出海！';
+                recText.innerText = "一票否决决策：由于市场契合度极低，属于无意义海外申请。建议立即阻断该国巴黎公约/进入国家阶段，避免浪费昂贵官方规费和代理人服务费。";
+                return;
+            }
+            if (d < 2) {
+                tianBox.className = "p-2.5 bg-amber-50 text-amber-800 rounded-lg text-xs font-semibold";
+                tianText.innerHTML = '<i class="fa-solid fa-circle-exclamation text-amber-600 mr-1"></i> 【可检测天条警示】无法通过反向逆向检测（纯后台黑盒/制造内部工艺）';
+                recText.innerText = "合规保护建议：由于无法取证维权，严禁申请海外任何发明/实用新型！应当立即归口转为公司“核心技术秘密(Trade Secret)”进行管控，避免因专利公开而白白泄露方案。";
+                return;
+            }
+            if (l < 2) {
+                tianBox.className = "p-2.5 bg-amber-50 text-amber-800 rounded-lg text-xs font-semibold";
+                tianText.innerHTML = '<i class="fa-solid fa-circle-exclamation text-amber-600 mr-1"></i> 【生命周期天条警示】技术极快迭代淘汰，商业生命周期过短';
+                recText.innerText = "预算保护建议：海外审查通常需要2-3年。由于该技术会在极短时间内退市，专利尚未授权产品已遭淘汰。建议仅在中国做常规防守，不予进入昂贵的海外。";
+                return;
+            }
+
+            // Normal score evaluation
+            tianBox.className = "p-2.5 bg-emerald-50 text-emerald-800 rounded-lg text-xs font-semibold";
+            tianText.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> 【天条自检通过】完美符合海外出海准入红线。';
+
+            if (score >= 4.2) {
+                recText.innerText = "【高优先级绿灯案】：技术含金量高、极易取证维权且对应核心主营市场。建议进入阶段一后，积极申请 Track One (美国优先审查) 或 PACE (欧洲加速)，抢占海外排他权利先手！";
+            } else if (score >= 3.0) {
+                recText.innerText = "【中优先级黄灯案】：出海合理度中等。建议阶段一优先选择走 PCT 通道（低成本占位），在第 28 个月阶段二评审时，结合最新出海销量数据和研发路标，精准决定是否落地该国。";
+            } else {
+                recText.innerText = "【低优先级红灯案】：分值过低。不建议开展多国大面积海外申请。可退回作中国常规防守，或作为技术秘密备案。";
+            }
+        }
+
+        function resetROICalculator() {
+            document.getElementById('q-market').value = 3;
+            document.getElementById('q-detect').value = 3;
+            document.getElementById('q-lifecycle').value = 3;
+            document.getElementById('q-defensive').value = 3;
+            calculateROI();
+        }
+
+        // Wizard Decision Tree Algorithm
+        function runWizard() {
+            const country = document.getElementById('wiz-country').value;
+            const isAuth = document.querySelector('input[name="wiz-cn-auth"]:checked').value === 'yes';
+            const budgetHigh = document.querySelector('input[name="wiz-budget"]:checked').value === 'high';
+            const specialYes = document.querySelector('input[name="wiz-special"]:checked').value === 'yes';
+
+            const titleEl = document.getElementById('wiz-recommend-title');
+            const descEl = document.getElementById('wiz-recommend-desc');
+            const feeEl = document.getElementById('wiz-fee');
+            const actionEl = document.getElementById('wiz-action');
+
+            if (country === 'us') {
+                if (specialYes) {
+                    titleEl.innerText = "Petition to Make Special (基于年龄/健康请愿)";
+                    descEl.innerText = "由于您的发明人团队包含 65 岁以上高龄元老，符合美国 37 CFR 1.102 豁免绿色通道，可以通过请愿直接加速审理，无需排队。";
+                    feeEl.innerText = "$0 (完全免费)";
+                    actionEl.innerText = "在 ADS 表中如实填报其出生年月日，并在下发一通前提交一份简单的 Petition 即可。";
+                } else if (budgetHigh) {
+                    titleEl.innerText = "Track One (Prioritized Examination)";
+                    descEl.innerText = "对于预算充足的项目，Track One 是美国的终极速度武器，能够在 12 个月内结案。";
+                    feeEl.innerText = "大实体 $4,515 / 小实体 $1,806";
+                    actionEl.innerText = "指示代理人将权利要求限制在 4 项独立 / 30 项总权利要求以内，且彻底消除多重从属 claim 后随案提交。";
+                } else if (isAuth) {
+                    titleEl.innerText = "PPH (专利审查高速路)";
+                    descEl.innerText = "中国案已有权利要求获得授权，可以零官费向美国局申请 PPH，审查员将极高信赖中国局结论，快速一次性授权。";
+                    feeEl.innerText = "$0 (完全免费)";
+                    actionEl.innerText = "让美代在后申请未下发一通前，提交国内 OA 翻译件，快速锁死防御性权利范围。";
+                } else {
+                    titleEl.innerText = "常规大实体排队 + 待 RCE 阶段转 Track One";
+                    descEl.innerText = "目前没有特别红利且不舍得首期昂贵投入。建议首发走常规排队，待后续遇到侵权诉讼，可通过 RCE （继续审查请求）追加 Track One 快速拿到授权。";
+                    feeEl.innerText = "初始 $0 (常规排队)";
+                    actionEl.innerText = "正常提交等待，每半个月监测一次竞争对手的 FTO 商业侵权进展。";
+                }
+            } else if (country === 'ep') {
+                if (isAuth && !budgetHigh) {
+                    titleEl.innerText = "PPH (欧洲专利高速路)";
+                    descEl.innerText = "基于中国局已授权结论，可以零附加官费在欧洲申请 PPH，快速授权。";
+                    feeEl.innerText = "$0 / €0";
+                    actionEl.innerText = "向 EPO 在线提交 PPH 请求，权利要求必须与中国局可授权版本保持同等或更窄范围。";
+                } else {
+                    titleEl.innerText = "EPO PACE (免费加速程序)";
+                    descEl.innerText = "欧专局对处于检索或实审状态的所有发明专利均提供 PACE 免费通道，只要不申请延期答辩即可。";
+                    feeEl.innerText = "$0 / €0 (完全免费)";
+                    actionEl.innerText = "必须分别提交加速检索和加速实审表（Form 1005）。在收到 OA 后绝对不能申请答辩延期，否则资格终身作废！";
+                }
+            } else {
+                // Other countries
+                if (isAuth) {
+                    titleEl.innerText = "双边 PPH (专利审查高速路)";
+                    descEl.innerText = "利用中国局（CNIPA）已授权结论，几乎在日、韩、东南亚、英国等全球几十个主流 PPH 合作国，均可以零官费直接拉起加速。";
+                    feeEl.innerText = "$0 (各国规费完全免除)";
+                    actionEl.innerText = "让当地代理人准备中案授权文本翻译件，在一通实质审查前直接提交 PPH 提速申请。";
+                } else {
+                    titleEl.innerText = "常规 PCT/巴黎公约布局";
+                    descEl.innerText = "无在先授权且费用有限，常规进入单国排队审查。";
+                    feeEl.innerText = "依单国常规标准收费";
+                    actionEl.innerText = "建议在国际阶段撰写好优秀的答辩修改，静待排队。";
+                }
+            }
+        }
+
+        // SOP Monthly Checklist with localStorage
+        const defaultSOPList = [
+            { id: 1, cat: "优先权预警", title: "中国首申第 9-10 个月案件普查", desc: "月度拉取所有即将满9个月的中国首次申请名单。强制发起‘出海必要性评审打分卡’，决定是直接走巴黎公约，还是走 PCT，并进行 BU 预算审批。", done: false },
+            { id: 2, cat: "PCT入国预警", title: "PCT 满 28 个月落地决策监控", desc: "筛选本月所有进入最早优先权第 28 个月的 PCT 案，结合市场部和 BU 出海最新量产数据锁定最终进入的目标国，签发代理人授权指令。", done: false },
+            { id: 3, cat: "美国合规", title: "同族案检索报告/OA IDS 联动申报", desc: "核对所有美案的同族（中、欧、日、PCT）是否新下发了 ISR 检索报告、OA 甚至驳回决定。如有新对比文件，确保在发文日 3 个月内提交美国 IDS，封死 inequitable conduct 风险红线。", done: false },
+            { id: 4, cat: "账单审计", title: "外部外代账单（Billing）季度审计", desc: "审计外部美欧代理事务所费用。重点排查有无未经我方事先邮件授权即主动开展的 Examiner Interview、未授权的 Preliminary Amendment 的不合规官费和律师时薪账单。", done: false },
+            { id: 5, cat: "风险排查", title: "高危大烟草对手专利及诉讼雷盘", desc: "对菲莫（PMI）、英美（BAT）等主要假想敌在主要出海市场的最新专利公告进行自动库追踪，一旦发现高危新授 Claim，立刻发起 9个月内 EPO 异议准备或 FTO 回避设计评估。", done: false }
+        ];
+
+        function loadSOPChecklist() {
+            let list = JSON.parse(localStorage.getItem('globalIPSOPList'));
+            if (!list) {
+                list = defaultSOPList;
+                localStorage.setItem('globalIPSOPList', JSON.stringify(list));
+            }
+            renderSOPChecklist(list);
+        }
+
+        function toggleSOPItem(id) {
+            let list = JSON.parse(localStorage.getItem('globalIPSOPList'));
+            list = list.map(item => {
+                if (item.id === id) item.done = !item.done;
+                return item;
+            });
+            localStorage.setItem('globalIPSOPList', JSON.stringify(list));
+            renderSOPChecklist(list);
+        }
+
+        function resetSOPChecklist() {
+            localStorage.setItem('globalIPSOPList', JSON.stringify(defaultSOPList));
+            renderSOPChecklist(defaultSOPList);
+        }
+
+        function renderSOPChecklist(list) {
+            const container = document.getElementById('sop-checklist-container');
+            container.innerHTML = '';
+            
+            let doneCount = 0;
+            list.forEach(item => {
+                if (item.done) doneCount++;
+                const itemDiv = document.createElement('div');
+                itemDiv.className = `p-4 flex items-start space-x-3 transition hover:bg-slate-50 ${item.done ? 'bg-slate-50/50' : ''}`;
+                itemDiv.innerHTML = `
+                    <input type="checkbox" ${item.done ? 'checked' : ''} onclick="toggleSOPItem(${item.id})" 
+                           class="mt-1 w-4.5 h-4.5 text-purple-600 border-slate-300 rounded focus:ring-purple-500 cursor-pointer">
+                    <div class="flex-1">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[9px] px-1.5 py-0.5 rounded font-bold uppercase ${item.done ? 'bg-slate-200 text-slate-500' : 'bg-purple-100 text-purple-800'}">
+                                ${item.cat}
+                            </span>
+                            <h4 class="text-xs sm:text-sm font-bold ${item.done ? 'text-slate-400 line-through' : 'text-slate-900'}">${item.title}</h4>
+                        </div>
+                        <p class="text-[11px] ${item.done ? 'text-slate-400' : 'text-slate-500'} mt-1 leading-relaxed">${item.desc}</p>
+                    </div>
+                    <div class="text-right shrink-0">
+                        <span class="text-[9px] font-bold ${item.done ? 'text-slate-400' : 'text-purple-600'}">
+                            ${item.done ? '已完成' : '待处理'}
+                        </span>
+                    </div>
+                `;
+                container.appendChild(itemDiv);
+            });
+
+            const pct = Math.round((doneCount / list.length) * 100);
+            document.getElementById('checklist-pct').innerText = pct + '%';
+        }
+
+        // Window load initializations
+        window.onload = function() {
+            // Default show Document 1 (Framework)
+            switchTab('doc-framework');
+            
+            // Run initial calcs for tools
+            calculateROI();
+            runWizard();
+            loadSOPChecklist();
+        }
+    </script>
+</body>
+</html>
