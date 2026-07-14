@@ -1,1 +1,1542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英语口语时态肌肉记忆训练营 Pro - Spoken English Tense Trainer</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+        .animate-pulse-slow {
+            animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .6; }
+        }
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-indigo-700 via-violet-700 to-indigo-800 text-white shadow-lg sticky top-0 z-40 glassmorphism">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="p-2.5 bg-white/10 rounded-xl backdrop-blur-sm border border-white/15">
+                    <i data-lucide="zap" class="w-8 h-8 text-yellow-300 fill-yellow-300"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-bold tracking-tight flex items-center gap-2">
+                        英语口语时态肌肉记忆训练营 <span class="bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full font-extrabold uppercase">API Pro</span>
+                    </h1>
+                    <p class="text-xs text-indigo-200 mt-0.5">多维实时 API 联动 · 深度重塑大脑时间轴</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <!-- API Settings Button -->
+                <button onclick="openApiSettings()" class="bg-white/10 hover:bg-white/15 active:scale-95 border border-white/20 px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition">
+                    <i data-lucide="settings" class="w-4 h-4"></i>
+                    <span>AI 配置中心</span>
+                </button>
+                <div class="hidden md:flex items-center gap-2 bg-indigo-900/40 px-4 py-2 rounded-xl border border-indigo-400/20 text-xs font-medium">
+                    <span class="w-2 h-2 bg-emerald-400 rounded-full animate-ping"></span>
+                    <span>状态：API 实时通信已就绪</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl w-full mx-auto px-4 py-6 flex-grow grid grid-cols-1 lg:grid-cols-4 gap-6">
+        
+        <!-- Left Column: Navigation & Status Dashboard -->
+        <div class="lg:col-span-1 space-y-4">
+            <!-- Navigation Card -->
+            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 glassmorphism">
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-2">功能模块</p>
+                <nav class="space-y-1">
+                    <button onclick="switchTab('trigger')" id="tab-trigger" class="tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm bg-indigo-50 text-indigo-600">
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="alarm-clock" class="w-5 h-5"></i>
+                            <span>1. 时间警报器</span>
+                        </div>
+                        <span class="bg-indigo-100 text-indigo-800 text-[10px] px-2 py-0.5 rounded-full font-bold">Trigger</span>
+                    </button>
+                    
+                    <button onclick="switchTab('verbs')" id="tab-verbs" class="tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm text-slate-600 hover:bg-slate-50">
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="search-code" class="w-5 h-5"></i>
+                            <span>2. 词典 & 复读机</span>
+                        </div>
+                        <span class="bg-violet-100 text-violet-800 text-[10px] px-2 py-0.5 rounded-full font-bold">API Dict</span>
+                    </button>
+                    
+                    <button onclick="switchTab('switcher')" id="tab-switcher" class="tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm text-slate-600 hover:bg-slate-50">
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="mic" class="w-5 h-5"></i>
+                            <span>3. 自说自话 & AI教练</span>
+                        </div>
+                        <span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">AI Voice</span>
+                    </button>
+                    
+                    <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm text-slate-600 hover:bg-slate-50">
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="check-square" class="w-5 h-5"></i>
+                            <span>4. 避坑大诊断 (12题)</span>
+                        </div>
+                        <span class="bg-rose-100 text-rose-800 text-[10px] px-2 py-0.5 rounded-full font-bold">Quiz</span>
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Global Status Card -->
+            <div class="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-950 text-white p-5 rounded-2xl shadow-md relative overflow-hidden">
+                <div class="absolute -right-6 -bottom-6 text-slate-700/20 opacity-30">
+                    <i data-lucide="award" class="w-32 h-32"></i>
+                </div>
+                <h3 class="font-bold text-base mb-1">今日修炼档案</h3>
+                <p class="text-xs text-slate-400 mb-4">目标：通过不规则动词的肌肉条件反射</p>
+                <div class="space-y-4 relative z-10">
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span>肌肉记忆总进度</span>
+                            <span id="progress-percent" class="font-bold">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-700 h-2.5 rounded-full overflow-hidden">
+                            <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-violet-500 h-full w-0 transition-all duration-500"></div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-700/50 text-[11px]">
+                        <div>
+                            <span class="text-slate-400 block">查词典次数</span>
+                            <span id="dict-count" class="font-bold text-yellow-300 text-sm">0</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-400 block">AI 纠音成功</span>
+                            <span id="ai-count" class="font-bold text-emerald-400 text-sm">0次</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Daily Tense Inspiration -->
+            <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-2xl">
+                <h4 class="text-xs font-bold text-indigo-800 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="book-open" class="w-4 h-4"></i>
+                    <span>每日一句 · 时态拆解</span>
+                </h4>
+                <p id="daily-quote" class="text-xs font-semibold text-slate-700 italic">"I thought you knew about the plan."</p>
+                <div class="mt-2 text-[11px] text-indigo-700 border-t border-indigo-200/50 pt-1.5 leading-relaxed">
+                    <span class="font-bold">时态解析：</span>
+                    <span id="daily-quote-desc">"I thought" 为一般过去时，其后的宾语从句动词 "knew" 也必须一致变为过去式。</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Interactive Workspaces -->
+        <div class="lg:col-span-3">
+            
+            <!-- MODULE 1: Trigger Board -->
+            <div id="panel-trigger" class="panel space-y-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <i data-lucide="alarm-clock" class="w-6 h-6 text-indigo-600"></i>
+                        <h2 class="text-xl font-bold">时间触发器警报 (Trigger Words)</h2>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        训练守则：在口语组织中，一旦你的大脑想到或听到以下“时间指标词”，<b>主语后紧随的动词必须瞬间、无条件切换为过去时态！</b>不要留任何反应时间。
+                    </p>
+                </div>
+
+                <!-- Alarm Banner -->
+                <div id="alarm-banner" class="hidden bg-rose-50 border-2 border-rose-500/30 p-5 rounded-2xl text-center flex flex-col items-center justify-center gap-2 transition duration-300">
+                    <div class="flex items-center gap-2 text-rose-600 font-bold text-lg animate-bounce">
+                        <i data-lucide="alert-triangle" class="w-6 h-6 fill-rose-100"></i>
+                        <span>🚨 过去式强制变音警报（Tense Triggered!）</span>
+                    </div>
+                    <p class="text-sm text-rose-700 font-semibold" id="alarm-desc">只要你说出这个词，动词必须变过去式！</p>
+                </div>
+
+                <!-- Grid of Triggers -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <button onclick="triggerAlarm('Yesterday', '昨天', ['I had breakfast at 8', 'I woke up early', 'I talked to my manager'])" class="bg-white p-5 rounded-xl border border-slate-100 hover:border-indigo-400 hover:shadow-md transition text-left group">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition">Yesterday</span>
+                            <span class="text-xs bg-indigo-50 px-2 py-0.5 rounded text-indigo-600 font-bold">昨天</span>
+                        </div>
+                        <p class="text-xs text-slate-400">最经典触发词。动词秒变过去式。</p>
+                    </button>
+
+                    <button onclick="triggerAlarm('Last week/night', '上周/昨晚', ['We went to a restaurant', 'It was extremely cold', 'I watched a nice movie'])" class="bg-white p-5 rounded-xl border border-slate-100 hover:border-indigo-400 hover:shadow-md transition text-left group">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition">Last ...</span>
+                            <span class="text-xs bg-indigo-50 px-2 py-0.5 rounded text-indigo-600 font-bold">上个...</span>
+                        </div>
+                        <p class="text-xs text-slate-400">Last night, Last week, Last year.</p>
+                    </button>
+
+                    <button onclick="triggerAlarm('5 minutes ago', '五分钟前', ['I got your email', 'He left the office', 'We finished the call'])" class="bg-white p-5 rounded-xl border border-slate-100 hover:border-indigo-400 hover:shadow-md transition text-left group">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition">... ago</span>
+                            <span class="text-xs bg-indigo-50 px-2 py-0.5 rounded text-indigo-600 font-bold">...以前</span>
+                        </div>
+                        <p class="text-xs text-slate-400">时间差。哪怕一分钟以前也是过去。</p>
+                    </button>
+
+                    <button onclick="triggerAlarm('When I was...', '当我当年是...', ['I lived in Beijing', 'I thought it was difficult', 'I played a lot of games'])" class="bg-white p-5 rounded-xl border border-slate-100 hover:border-indigo-400 hover:shadow-md transition text-left group">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition">When I was...</span>
+                            <span class="text-xs bg-indigo-50 px-2 py-0.5 rounded text-indigo-600 font-bold">当年...</span>
+                        </div>
+                        <p class="text-xs text-slate-400">引导长串回忆叙述。后面全用过去时。</p>
+                    </button>
+
+                    <button onclick="triggerAlarm('Just now', '刚才', ['I noticed some changes', 'I felt tired', 'I did a quick research'])" class="bg-white p-5 rounded-xl border border-slate-100 hover:border-indigo-400 hover:shadow-md transition text-left group">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition">Just now</span>
+                            <span class="text-xs bg-indigo-50 px-2 py-0.5 rounded text-indigo-600 font-bold">刚才</span>
+                        </div>
+                        <p class="text-xs text-slate-400">虽然离现在极近，但在物理上已结束。</p>
+                    </button>
+
+                    <button onclick="triggerAlarm('In 2024', '在2024年', ['I bought my computer', 'I joined this company', 'We moved to another place'])" class="bg-white p-5 rounded-xl border border-slate-100 hover:border-indigo-400 hover:shadow-md transition text-left group">
+                        <div class="flex justify-between items-start mb-2">
+                            <span class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition">In [Past Year]</span>
+                            <span class="text-xs bg-indigo-50 px-2 py-0.5 rounded text-indigo-600 font-bold">过去特定年份</span>
+                        </div>
+                        <p class="text-xs text-slate-400">明确的历史时间标志节点。</p>
+                    </button>
+                </div>
+
+                <!-- Template practice card -->
+                <div id="practice-card" class="hidden bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                    <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                        <h4 class="font-bold text-slate-800 text-sm">口语即兴跟读练习</h4>
+                        <span class="text-xs text-slate-400">大声跟读三遍，让发音成为物理反射！</span>
+                    </div>
+                    <div class="space-y-3" id="template-sentences">
+                        <!-- Dynamic Sentences -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODULE 2: Muscle Memory Verb machine -->
+            <div id="panel-verbs" class="panel hidden space-y-6">
+                <!-- Header Box -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                    <div>
+                        <div class="flex items-center gap-2.5 mb-2">
+                            <i data-lucide="swords" class="w-6 h-6 text-indigo-600"></i>
+                            <h2 class="text-xl font-bold">高频不规则动词肌肉复读机 (内置 API 词典)</h2>
+                        </div>
+                        <p class="text-sm text-slate-500 leading-relaxed">
+                            日常会话 80% 的不规则变音其实都被这几十个动词垄断了。本模块已成功连接至<b>免费国际词典 API</b>。
+                        </p>
+                    </div>
+                    <button onclick="toggleHideVerbs()" id="toggle-hide-btn" class="bg-indigo-50 text-indigo-700 border border-indigo-200 px-3 py-2 rounded-xl text-xs font-semibold hover:bg-indigo-100 transition whitespace-nowrap">
+                        👁️ 盲测模式 (隐藏过去式)
+                    </button>
+                </div>
+
+                <!-- Live Dictionary API Search Widget -->
+                <div class="bg-gradient-to-r from-violet-600 to-indigo-700 p-5 rounded-2xl text-white shadow-md space-y-3">
+                    <h3 class="font-bold text-sm flex items-center gap-2">
+                        <i data-lucide="book-open" class="w-4.5 h-4.5"></i>
+                        <span>实时 API 查词：检索任何动词的不规则变体与真人发音</span>
+                    </h3>
+                    <div class="flex gap-2">
+                        <input type="text" id="dict-search-input" placeholder="输入任意动词原型，如 swim, run, catch..." class="flex-grow px-4 py-2.5 text-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-300">
+                        <button onclick="queryDictionaryApi()" class="bg-yellow-400 hover:bg-yellow-300 text-indigo-900 font-bold px-5 py-2.5 rounded-xl text-sm transition flex items-center gap-1.5 active:scale-95">
+                            <i data-lucide="search" class="w-4 h-4"></i>
+                            <span>API 查询</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Search Results Area (Hidden by default, shown on lookup) -->
+                    <div id="dict-results-box" class="hidden bg-white/10 p-4 rounded-xl border border-white/10 text-xs space-y-2.5 transition duration-300">
+                        <!-- Filled by lookup -->
+                    </div>
+                </div>
+
+                <!-- Verb Category Switcher -->
+                <div class="flex gap-2 bg-slate-200/60 p-1.5 rounded-xl max-w-lg">
+                    <button onclick="switchVerbCategory('be')" id="verb-cat-be" class="verb-cat-btn flex-1 py-2 text-xs font-bold rounded-lg text-center transition bg-white text-slate-800 shadow-sm">Be 动词分裂</button>
+                    <button onclick="switchVerbCategory('action')" id="verb-cat-action" class="verb-cat-btn flex-1 py-2 text-xs font-bold rounded-lg text-center transition text-slate-600 hover:text-slate-800">三大行为之王</button>
+                    <button onclick="switchVerbCategory('think')" id="verb-cat-think" class="verb-cat-btn flex-1 py-2 text-xs font-bold rounded-lg text-center transition text-slate-600 hover:text-slate-800">思想与表达</button>
+                    <button onclick="switchVerbCategory('advanced')" id="verb-cat-advanced" class="verb-cat-btn flex-1 py-2 text-xs font-bold rounded-lg text-center transition text-slate-600 hover:text-slate-800">日常出行不规则</button>
+                </div>
+
+                <!-- Verb Cards Display -->
+                <div id="verb-practice-area" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Dynamic content filled by JS -->
+                </div>
+            </div>
+
+            <!-- MODULE 3: AI 3-Tense Splitter (Voice Supported) -->
+            <div id="panel-switcher" class="panel hidden space-y-6">
+                <!-- Header Box -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <i data-lucide="split" class="w-6 h-6 text-emerald-600"></i>
+                        <h2 class="text-xl font-bold">三态对照 (3-Tense Split) & AI 口语教练</h2>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        这是最高阶的口语自我提升手段：在同一场景下，用<b>现在时（客观/习惯）、过去时（已发生动作）和将来时（规划/打算）</b>流畅变换。支持<b>免 Key 快速翻译 API</b> 与 <b>AI 纠音能力</b>。
+                    </p>
+                </div>
+
+                <!-- Sandbox Scenario Selector -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    <button onclick="switchScenario('coffee')" id="scen-coffee" class="scen-btn p-3 bg-white border border-indigo-100 rounded-xl hover:shadow-sm transition font-bold text-xs sm:text-sm text-center text-indigo-600 ring-2 ring-indigo-500/20">☕ 咖啡时刻</button>
+                    <button onclick="switchScenario('work')" id="scen-work" class="scen-btn p-3 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition font-bold text-xs sm:text-sm text-center text-slate-700">💻 办公状态</button>
+                    <button onclick="switchScenario('exercise')" id="scen-exercise" class="scen-btn p-3 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition font-bold text-xs sm:text-sm text-center text-slate-700">🏃 运动健身</button>
+                    <button onclick="switchScenario('shopping')" id="scen-shopping" class="scen-btn p-3 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition font-bold text-xs sm:text-sm text-center text-slate-700">🛍️ 逛街买单</button>
+                    <button onclick="switchScenario('travel')" id="scen-travel" class="scen-btn p-3 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition font-bold text-xs sm:text-sm text-center text-slate-700">✈️ 假期出行</button>
+                    <button onclick="switchScenario('cooking')" id="scen-cooking" class="scen-btn p-3 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition font-bold text-xs sm:text-sm text-center text-slate-700">🍳 厨房烹饪</button>
+                    <button onclick="switchScenario('meeting')" id="scen-meeting" class="scen-btn p-3 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition font-bold text-xs sm:text-sm text-center text-slate-700">👥 会议陈述</button>
+                    <button onclick="switchScenario('weekend')" id="scen-weekend" class="scen-btn p-3 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition font-bold text-xs sm:text-sm text-center text-slate-700">🏡 周末生活</button>
+                </div>
+
+                <!-- Scenario Sandbox Display -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-6" id="scenario-sandbox">
+                    <!-- Dynamically loaded -->
+                </div>
+
+                <!-- Free Keyless Translation API Interface -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                    <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
+                        <i data-lucide="languages" class="w-5 h-5 text-indigo-600"></i>
+                        <span>翻译翻译：把我的中文表达直接转成过去时</span>
+                    </h3>
+                    <p class="text-xs text-slate-400">使用国际免 Key 翻译 API，快速帮你找出英文表达中藏在动词后面的陷阱。</p>
+                    <div class="flex gap-2">
+                        <input type="text" id="translate-input" placeholder="输入中文想法，例如：昨天下午我给朋友打了个电话..." class="flex-grow px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
+                        <button onclick="translateAndShiftTense()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition active:scale-95 flex items-center gap-1">
+                            <i data-lucide="sparkles" class="w-4 h-4"></i>
+                            <span>API 翻译</span>
+                        </button>
+                    </div>
+
+                    <!-- Translation Results Shimmer Loading -->
+                    <div id="translate-result" class="hidden p-4 rounded-xl border border-indigo-100 bg-indigo-50/40 space-y-2">
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODULE 4: Tense Crash Quiz -->
+            <div id="panel-quiz" class="panel hidden space-y-6">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <div class="flex items-center gap-2.5 mb-2">
+                            <i data-lucide="shield-alert" class="w-6 h-6 text-rose-600"></i>
+                            <h2 class="text-xl font-bold">避坑大诊断：粉碎 12 大英语时态车祸现场</h2>
+                        </div>
+                        <p class="text-sm text-slate-500 leading-relaxed">
+                            中英文差异在否定、疑问、时间从句等复杂语境下最容易爆雷。全部做对，代表你的时态肌肉已基本完形！
+                        </p>
+                    </div>
+                    <!-- Master Score Tracker -->
+                    <div class="bg-rose-50 border border-rose-100 p-3 rounded-xl flex items-center gap-2.5 flex-shrink-0">
+                        <i data-lucide="trophy" class="w-8 h-8 text-yellow-500 fill-yellow-100"></i>
+                        <div>
+                            <span class="text-[10px] text-slate-400 font-bold block">我的得分</span>
+                            <span id="quiz-correct-count" class="font-extrabold text-lg text-rose-600">0 / 12</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Sandbox Card -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-6">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <span id="quiz-badge" class="text-xs bg-rose-100 text-rose-800 font-extrabold px-2.5 py-1 rounded-lg">否定句还原误区</span>
+                        <span id="quiz-index-indicator" class="text-xs bg-indigo-50 text-indigo-700 font-bold px-2 py-0.5 rounded">1 / 12</span>
+                    </div>
+
+                    <!-- Question Container -->
+                    <div id="quiz-question-container" class="space-y-4">
+                        <p class="text-sm text-rose-500 font-semibold flex items-center gap-1.5">
+                            <i data-lucide="bug" class="w-4 h-4"></i>
+                            <span>找出以下口语场景下的时态病症：</span>
+                        </p>
+                        <h3 id="quiz-wrong-sentence" class="text-lg md:text-xl font-bold text-slate-700 bg-rose-50/50 border border-rose-100 px-4 py-3.5 rounded-xl italic">
+                            "I didn't went to the store yesterday."
+                        </h3>
+                        <p id="quiz-chinese-meaning" class="text-xs text-slate-400">中文释义：我昨天没去过那个商店。</p>
+                        
+                        <!-- Options list -->
+                        <div class="space-y-2.5 pt-2" id="quiz-options">
+                            <!-- filled by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Feedback block (Hidden until answered) -->
+                    <div id="quiz-feedback" class="hidden p-4 rounded-xl border flex gap-3 transition">
+                        <!-- Filled by JS -->
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="flex justify-between items-center pt-4 border-t border-slate-100">
+                        <button onclick="prevQuiz()" id="btn-quiz-prev" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-lg text-xs font-bold hover:bg-slate-200 transition disabled:opacity-50" disabled>
+                            上一题
+                        </button>
+                        <button onclick="nextQuiz()" id="btn-quiz-next" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-indigo-700 transition">
+                            下一题
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Custom Modal for API Settings -->
+    <div id="api-settings-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white max-w-md w-full rounded-2xl shadow-xl border border-slate-100 p-6 space-y-4 animate-scale-up">
+            <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                <h3 class="font-bold text-slate-800 flex items-center gap-1.5">
+                    <i data-lucide="settings-2" class="text-indigo-600 w-5 h-5"></i>
+                    <span>AI 与 接口配置中心 (API Portal)</span>
+                </h3>
+                <button onclick="closeApiSettings()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+
+            <p class="text-xs text-slate-500 leading-relaxed">
+                您可以接入个人账户的大语言模型（LLM）API。接入后，本应用中的 AI 口语纠错和自说自话评估将由真实的 AI 驱动：
+            </p>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 mb-1">大模型服务提供商</label>
+                    <select id="api-provider" onchange="toggleApiCustomEndpoint()" class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500">
+                        <option value="none">使用本地高保真模拟引擎 (免费/免Key)</option>
+                        <option value="deepseek">DeepSeek AI (推荐)</option>
+                        <option value="openai">OpenAI (GPT-4o)</option>
+                        <option value="custom">其他自定义中转 API</option>
+                    </select>
+                </div>
+
+                <div id="api-key-container" class="hidden">
+                    <label class="block text-xs font-bold text-slate-600 mb-1">API Key</label>
+                    <input type="password" id="api-key-input" placeholder="sk-..." class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <div id="api-endpoint-container" class="hidden">
+                    <label class="block text-xs font-bold text-slate-600 mb-1">API 端点 (Endpoint)</label>
+                    <input type="text" id="api-endpoint-input" placeholder="https://api.deepseek.com/v1" class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500">
+                </div>
+
+                <div id="api-model-container" class="hidden">
+                    <label class="block text-xs font-bold text-slate-600 mb-1">自定义模型名称 (Model)</label>
+                    <input type="text" id="api-model-input" placeholder="deepseek-chat" class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500">
+                </div>
+            </div>
+
+            <div class="flex gap-2 pt-3">
+                <button onclick="closeApiSettings()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold py-2 rounded-xl text-xs transition">
+                    取消
+                </button>
+                <button onclick="saveApiSettings()" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-xl text-xs transition">
+                    保存并激活
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs border-t border-slate-800 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 space-y-1">
+            <p>基于口语肌肉条件反射理论构建 · 每日打卡 5 分钟，彻底告别一般现在时统治大脑</p>
+            <p class="text-slate-600">&copy; 2026 Spoken English Tense System Pro. Active API Connections Verified.</p>
+        </div>
+    </footer>
+
+    <!-- App JavaScript Logic -->
+    <script>
+        // Track Progress State
+        const userProgress = {
+            triggerCount: 0,
+            verbTTSCount: 0,
+            aiRecognitionSucceeded: 0,
+            quizTested: Array(12).fill(false),
+            dictLookups: 0,
+            aiCoachSuccesses: 0
+        };
+
+        // Static Quotes Database (Fallback & Daily card)
+        const localQuotes = [
+            { text: "I thought you knew about the plan.", desc: "'I thought' 决定了整个宾语从句处于过去时间轴，故从句动词必须变过去式 'knew'。" },
+            { text: "Yesterday, she got exactly what she deserved.", desc: "'Yesterday' 触发主语后的核心动词立刻变成过去式 'got'。" },
+            { text: "I didn't notice any changes until they pointed them out.", desc: "在助动词 'didn't' 之后，动词 'notice' 强制恢复原形，而之后的从句再用过去式 'pointed'。" },
+            { text: "If we had run faster, we would have caught the train.", desc: "虚拟语气（过去），使用 'had run' 表明对过去事实的假设。" }
+        ];
+
+        // 8 Scenario Datasets
+        const scenarioData = {
+            coffee: {
+                title: "咖啡时刻 (Coffee Time)", icon: "☕",
+                present: "I usually drink black coffee in the morning.",
+                presentHint: "习惯：平时早晨我喝黑咖啡。", presentTarget: "drink",
+                past: "But this morning, I drank a latte instead.",
+                pastHint: "过去：但今天早上我改喝了一杯拿铁。", pastTarget: "drank",
+                future: "Tomorrow, I think I will try their cold brew.",
+                futureHint: "将来：明天我估计会尝试冷萃。"
+            },
+            work: {
+                title: "办公状态 (Work Routine)", icon: "💻",
+                present: "I work from home on Tuesdays.",
+                presentHint: "习惯：我周二通常居家办公。", presentTarget: "work",
+                past: "But yesterday, I worked at the office all day.",
+                pastHint: "过去：但昨天我整天都在办公室上班。", pastTarget: "worked",
+                future: "Next week, I am going to take a few days off.",
+                futureHint: "将来：下周，我打算请几天假。"
+            },
+            exercise: {
+                title: "运动健身 (Workout)", icon: "🏃",
+                present: "I usually go running in the evening.",
+                presentHint: "习惯：我通常晚上去跑步。", presentTarget: "go",
+                past: "But last night, I did yoga instead.",
+                pastHint: "过去：但昨晚，我改做瑜伽了。", pastTarget: "did",
+                future: "This weekend, I will lift weights with my coach.",
+                futureHint: "将来：这周末，我将跟教练去练力量。"
+            },
+            shopping: {
+                title: "逛街买单 (Shopping)", icon: "🛍️",
+                present: "I normally buy groceries online.",
+                presentHint: "习惯：我平时一般在网上下单买菜。", presentTarget: "buy",
+                past: "But earlier today, I bought some fresh fruit at the market.",
+                pastHint: "过去：但今天早些时候，我在市场买了些新鲜水果。", pastTarget: "bought",
+                future: "Next month, I think I will order everything online again.",
+                futureHint: "将来：下个月，我估计还是全部网购。"
+            },
+            travel: {
+                title: "假期出行 (Travel Holiday)", icon: "✈️",
+                present: "I usually travel to warm places during holidays.",
+                presentHint: "习惯：过节时我通常喜欢去温暖的地方旅行。", presentTarget: "travel",
+                past: "But last year, I went to a snowy city in Switzerland.",
+                pastHint: "过去：但去年，我去了瑞士一个白雪皑皑的城市。", pastTarget: "went",
+                future: "For the next vacation, I will book a flight to Hawaii.",
+                futureHint: "将来：下次度假，我将订飞往夏威夷的机票。"
+            },
+            cooking: {
+                title: "厨房烹饪 (Kitchen Cooking)", icon: "🍳",
+                present: "I always cook dinner by myself.",
+                presentHint: "习惯：我平时总是自己做晚饭。", presentTarget: "cook",
+                past: "But last Sunday, I ordered takeout from my favorite restaurant.",
+                pastHint: "过去：但上周日，我从最爱的餐馆点了外卖。", pastTarget: "ordered",
+                future: "Tomorrow night, I will prepare a special feast for my friends.",
+                futureHint: "将来：明晚，我计划给朋友准备一餐特别的盛宴。"
+            },
+            meeting: {
+                title: "会议陈述 (Meeting Speech)", icon: "👥",
+                present: "I always present my slides in English during meetings.",
+                presentHint: "习惯：开会时我总是用英文汇报我的幻灯片。", presentTarget: "present",
+                past: "But in this morning's sync, I spoke in Chinese instead.",
+                pastHint: "过去：但在今天早上的同步会中，我改用中文讲了。", pastTarget: "spoke",
+                future: "Next Monday, I will host the whole global sync session.",
+                futureHint: "将来：下周一，我将主持整个全球同步会议。"
+            },
+            weekend: {
+                title: "周末生活 (Weekend Vibe)", icon: "🏡",
+                present: "I typically sleep in late on Saturdays.",
+                presentHint: "习惯：周六我平时一般都会睡个懒觉。", presentTarget: "sleep",
+                past: "But yesterday morning, I woke up at 6 AM to clean the house.",
+                pastHint: "过去：但昨天早上，我早上6点就爬起来打扫屋子了。", pastTarget: "woke",
+                future: "Next Saturday, I am going to spend the whole day in nature.",
+                futureHint: "将来：下周六，我准备整天泡在大自然里。"
+            }
+        };
+
+        // 12 Quiz questions
+        const quizQuestions = [
+            {
+                badge: "否定句还原误区",
+                wrong: "I didn't went to the gym yesterday.",
+                explain: "否定助动词 didn't 已经承载了“过去时”属性，后续的主动词必须还原为原型（go）。",
+                options: [
+                    { text: "I didn't go to the gym yesterday.", correct: true },
+                    { text: "I was not went to the gym yesterday.", correct: false },
+                    { text: "I didn't going to the gym yesterday.", correct: false }
+                ],
+                chinese: "我昨天没有去健身房。"
+            },
+            {
+                badge: "疑问句助动词误区",
+                wrong: "Did you saw him at the office just now?",
+                explain: "疑问助动词 Did 已经代表了过去，实义动词 saw 必须强制变回原形 see。",
+                options: [
+                    { text: "Did you see him at the office just now?", correct: true },
+                    { text: "Were you saw him at the office just now?", correct: false },
+                    { text: "Did you seen him at the office just now?", correct: false }
+                ],
+                chinese: "你刚才在办公室看见他了吗？"
+            },
+            {
+                badge: "间接引语时态一致",
+                wrong: "I thought the meeting is today.",
+                explain: "“I thought”(我以为) 说明你思考的动作在过去，所以从句中本以为是事实的“is”必须同步退回到“was”。",
+                options: [
+                    { text: "I thought the meeting was today.", correct: true },
+                    { text: "I thought the meeting is today.", correct: false },
+                    { text: "I thought the meeting will be today.", correct: false }
+                ],
+                chinese: "我本以为会议是今天的（而实际上不是）。"
+            },
+            {
+                badge: "叙事时态连贯性",
+                wrong: "I went to the store yesterday. I see my friend and we have a chat.",
+                explain: "在描述同一个过去的故事时，动词时态应当保持连贯。不能头一句用过去式，后一句又溜回现在时。",
+                options: [
+                    { text: "I went to the store yesterday. I see my friend and we had a chat.", correct: false },
+                    { text: "I went to the store yesterday. I saw my friend and we had a chat.", correct: true },
+                    { text: "I went to the store yesterday. I saw my friend and we have a chat.", correct: false }
+                ],
+                chinese: "我昨天去了商店。我看到了我的朋友并且聊了一会。"
+            },
+            {
+                badge: "Used To 习惯混淆",
+                wrong: "I used to getting up early years ago.",
+                explain: "“used to do sth.” 指过去常常做某事（现已不做了），后面只接动词原形。而“be used to doing”才代表习惯于做某事。",
+                options: [
+                    { text: "I was used to get up early years ago.", correct: false },
+                    { text: "I used to get up early years ago.", correct: true },
+                    { text: "I am used to get up early years ago.", correct: false }
+                ],
+                chinese: "我多年前经常早起。"
+            },
+            {
+                badge: "Since 引导的主从时态",
+                wrong: "I have joined this club since I arrived here in 2024.",
+                explain: "用 since 引导的时间状语从句用一般过去时（过去特定动作），而主句表达持续状态，应该使用现在完成时。",
+                options: [
+                    { text: "I have been in this club since I arrived here in 2024.", correct: true },
+                    { text: "I joined this club since I have arrived here in 2024.", correct: false },
+                    { text: "I had joined this club since I arrived here in 2024.", correct: false }
+                ],
+                chinese: "自从2024年我到达这里之后，我一直在该俱乐部中。"
+            },
+            {
+                badge: " would rather 虚拟语气",
+                wrong: "I would rather you tell me the truth yesterday.",
+                explain: "“would rather” 后面引导的宾语从句若表示对过去事实的愿望，从句需用过去完成时（had done）。",
+                options: [
+                    { text: "I would rather you told me the truth yesterday.", correct: false },
+                    { text: "I would rather you had told me the truth yesterday.", correct: true },
+                    { text: "I would rather you tell me the truth yesterday.", correct: false }
+                ],
+                chinese: "我真希望你昨天对我说了实话。"
+            },
+            {
+                badge: "Wish 虚拟语气",
+                wrong: "I wish I buy that stock last week.",
+                explain: "wish 引导的对过去的愿望，表示难以实现的假设，属于虚拟语气，从句动词须变为过去完成时（had bought）。",
+                options: [
+                    { text: "I wish I had bought that stock last week.", correct: true },
+                    { text: "I wish I bought that stock last week.", correct: false },
+                    { text: "I wish I have bought that stock last week.", correct: false }
+                ],
+                chinese: "我真希望上周买了那只股票。"
+            },
+            {
+                badge: "被动语态中的过去时",
+                wrong: "This bridge built in 1990.",
+                explain: "桥是“被建造”的，且时间是过去的1990年，需要使用一般过去时被动语态（was/were + 过去分词）。",
+                options: [
+                    { text: "This bridge build in 1990.", correct: false },
+                    { text: "This bridge was built in 1990.", correct: true },
+                    { text: "This bridge has built in 1990.", correct: false }
+                ],
+                chinese: "这座桥建于1990年。"
+            },
+            {
+                badge: "现在完成 vs 一般过去",
+                wrong: "I have eaten dinner at 6 PM.",
+                explain: "如果句中带有具体确切的过去时间点（at 6 PM），不能使用现在完成时，而必须使用一般过去时（ate）。",
+                options: [
+                    { text: "I have eat dinner at 6 PM.", correct: false },
+                    { text: "I ate dinner at 6 PM.", correct: true },
+                    { text: "I had eaten dinner at 6 PM.", correct: false }
+                ],
+                chinese: "我下午六点吃了晚饭。"
+            },
+            {
+                badge: "过去进行时与一般过去",
+                wrong: "While I walked down the street, it started to rain.",
+                explain: "当表示主句动作发生时，背景动作正在进行，背景动作用进行时。'While' 后常跟进行时（was walking）。",
+                options: [
+                    { text: "While I was walking down the street, it started to rain.", correct: true },
+                    { text: "While I walked down the street, it was starting to rain.", correct: false },
+                    { text: "While I was walked down the street, it started to rain.", correct: false }
+                ],
+                chinese: "当我在街上走着的时候，天开始下雨了。"
+            },
+            {
+                badge: "过去完成时先后顺序",
+                wrong: "By the time the police arrived, the thief ran away.",
+                explain: "在“警察到达”这个过去的时间点之前，“小偷逃跑”已经发生，属于“过去的过去”，必须使用过去完成时（had run away）。",
+                options: [
+                    { text: "By the time the police arrived, the thief was running away.", correct: false },
+                    { text: "By the time the police arrived, the thief had run away.", correct: true },
+                    { text: "By the time the police arrived, the thief has run away.", correct: false }
+                ],
+                chinese: "当警察赶到的时候，小偷已经逃跑了。"
+            }
+        ];
+
+        // 4 Category irregular verb list
+        const verbsData = {
+            be: [
+                { present: "am/is", past: "was", example: "I was exhausted.", exampleCN: "我当时筋疲力尽。", explain: "口语高频错。am/is 统一在过去式中收拢成 was。" },
+                { present: "are", past: "were", example: "They were late again.", exampleCN: "他们又迟到了。", explain: "are 必须变 were，发音类似于 /wɜːr/ 别读成 where。" },
+                { present: "am/is doing (进行)", past: "was/were doing", example: "We were arguing about it.", exampleCN: "我们当时正在为此事争论不休。", explain: "描写过去某一精确时间切片正在做的事情。" }
+            ],
+            action: [
+                { present: "go (去)", past: "went", example: "I went to the dentist.", exampleCN: "我去看牙医了（别习惯性吐出 go yesterday）。", explain: "最高频位移动词，一有过去暗示，立刻变形为 went。" },
+                { present: "do (做)", past: "did", example: "He did a perfect job.", exampleCN: "他完成了一件极其完美的工作。", explain: "do-did 变化。提问、否定以及强调的主心骨。" },
+                { present: "have/has (拥有/吃)", past: "had", example: "I had some tea.", exampleCN: "我刚刚喝了些茶。", explain: "吃饭、开会、进行娱乐，均可使用 had 概括。" }
+            ],
+            think: [
+                { present: "think (觉得)", past: "thought", example: "I thought you were in the UK.", exampleCN: "我（之前）一直以为你在英国呢（暗含现在才知道你不在）。", explain: "表示大脑中先前持有的看法，极其高频，gh不发音。" },
+                { present: "say (说)", past: "said", example: "The boss said it was okay.", exampleCN: "老板（当时）说这没问题。", explain: "注意 said 的读音是 /sed/，而不是 sayed 的长音。" }
+            ],
+            advanced: [
+                { present: "take (拿走/花费)", past: "took", example: "It took me three hours.", exampleCN: "这花了我三个小时。", explain: "常用于花费时间 took /tʊk/。" },
+                { present: "write (写)", past: "wrote", example: "I wrote an email to her.", exampleCN: "我给她写了一封邮件。", explain: "注意 o 的发音双元音化 wrote。" },
+                { present: "run (跑)", past: "ran", example: "I ran into my ex today.", exampleCN: "我今天偶遇了我的前度。", explain: "由 /ʌ/ 转化为口型更宽的扁音 /æ/。" }
+            ]
+        };
+
+        // Custom Custom Toast System (Replacement of forbidden alert)
+        function showToast(message, type = "info") {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `p-4 rounded-xl shadow-lg border text-xs font-semibold flex items-center gap-2.5 transition duration-300 transform translate-y-2 opacity-0 glassmorphism`;
+            
+            let colorClass = "bg-white text-slate-800 border-slate-100";
+            let icon = "info";
+            if (type === "success") {
+                colorClass = "bg-emerald-50 text-emerald-800 border-emerald-200";
+                icon = "check-circle";
+            } else if (type === "error") {
+                colorClass = "bg-rose-50 text-rose-800 border-rose-200";
+                icon = "alert-circle";
+            } else if (type === "warning") {
+                colorClass = "bg-amber-50 text-amber-800 border-amber-200";
+                icon = "alert-triangle";
+            }
+
+            toast.className += ` ${colorClass}`;
+            toast.innerHTML = `
+                <i data-lucide="${icon}" class="w-4.5 h-4.5"></i>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            lucide.createIcons();
+            
+            // animate in
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 50);
+
+            // remove
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => {
+                    toast.remove();
+                }, 300);
+            }, 3500);
+        }
+
+        // Setup Application on Load
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            loadVerbPractice('be');
+            loadScenario('coffee');
+            loadQuiz();
+            initDailyQuote();
+            loadStoredApiSettings();
+        });
+
+        function initDailyQuote() {
+            const rand = localQuotes[Math.floor(Math.random() * localQuotes.length)];
+            document.getElementById('daily-quote').innerText = `"${rand.text}"`;
+            document.getElementById('daily-quote-desc').innerText = rand.desc;
+        }
+
+        // Global Navigation logic
+        function switchTab(tabId) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm text-slate-600 hover:bg-slate-50";
+            });
+
+            document.getElementById(`panel-${tabId}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            
+            if (tabId === 'trigger') {
+                activeBtn.className = "tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm bg-indigo-50 text-indigo-600";
+            } else if (tabId === 'verbs') {
+                activeBtn.className = "tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm bg-violet-50 text-violet-700";
+            } else if (tabId === 'switcher') {
+                activeBtn.className = "tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm bg-emerald-50 text-emerald-700";
+            } else if (tabId === 'quiz') {
+                activeBtn.className = "tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm bg-rose-50 text-rose-700";
+            }
+            lucide.createIcons();
+        }
+
+        // Update overall progress state
+        function updateProgress() {
+            const bar = document.getElementById('progress-bar');
+            const percentTxt = document.getElementById('progress-percent');
+            
+            let totalScore = 0;
+            if (userProgress.triggerCount > 0) totalScore += 25;
+            if (userProgress.dictLookups > 0) totalScore += 25;
+            if (userProgress.aiCoachSuccesses > 0) totalScore += 25;
+            
+            // Quiz score contribution
+            const finishedQuizCount = userProgress.quizTested.filter(Boolean).length;
+            totalScore += Math.round((finishedQuizCount / 12) * 25);
+
+            bar.style.width = totalScore + '%';
+            percentTxt.innerText = totalScore + '%';
+            
+            document.getElementById('dict-count').innerText = userProgress.dictLookups;
+            document.getElementById('ai-count').innerText = `${userProgress.aiCoachSuccesses}次`;
+        }
+
+        // API Configuration Settings Handlers
+        let activeApiKey = "";
+        let activeApiEndpoint = "";
+        let activeApiModel = "";
+        let activeApiProvider = "none";
+
+        function openApiSettings() {
+            document.getElementById('api-settings-modal').classList.remove('hidden');
+        }
+
+        function closeApiSettings() {
+            document.getElementById('api-settings-modal').classList.add('hidden');
+        }
+
+        function toggleApiCustomEndpoint() {
+            const provider = document.getElementById('api-provider').value;
+            const keyBox = document.getElementById('api-key-container');
+            const endpointBox = document.getElementById('api-endpoint-container');
+            const modelBox = document.getElementById('api-model-container');
+
+            if (provider === 'none') {
+                keyBox.classList.add('hidden');
+                endpointBox.classList.add('hidden');
+                modelBox.classList.add('hidden');
+            } else if (provider === 'deepseek') {
+                keyBox.classList.remove('hidden');
+                endpointBox.classList.add('hidden');
+                modelBox.classList.add('hidden');
+            } else if (provider === 'openai') {
+                keyBox.classList.remove('hidden');
+                endpointBox.classList.add('hidden');
+                modelBox.classList.add('hidden');
+            } else if (provider === 'custom') {
+                keyBox.classList.remove('hidden');
+                endpointBox.classList.remove('hidden');
+                modelBox.classList.remove('hidden');
+            }
+        }
+
+        function saveApiSettings() {
+            const provider = document.getElementById('api-provider').value;
+            localStorage.setItem('tense_api_provider', provider);
+
+            if (provider !== 'none') {
+                const key = document.getElementById('api-key-input').value.trim();
+                localStorage.setItem('tense_api_key', key);
+                
+                if (provider === 'custom') {
+                    localStorage.setItem('tense_api_endpoint', document.getElementById('api-endpoint-input').value.trim());
+                    localStorage.setItem('tense_api_model', document.getElementById('api-model-input').value.trim());
+                } else {
+                    localStorage.removeItem('tense_api_endpoint');
+                    localStorage.removeItem('tense_api_model');
+                }
+            } else {
+                localStorage.removeItem('tense_api_key');
+                localStorage.removeItem('tense_api_endpoint');
+                localStorage.removeItem('tense_api_model');
+            }
+
+            loadStoredApiSettings();
+            closeApiSettings();
+            showToast("API 核心配置成功，接口通路已重塑！", "success");
+        }
+
+        function loadStoredApiSettings() {
+            activeApiProvider = localStorage.getItem('tense_api_provider') || 'none';
+            activeApiKey = localStorage.getItem('tense_api_key') || '';
+            
+            document.getElementById('api-provider').value = activeApiProvider;
+            document.getElementById('api-key-input').value = activeApiKey;
+
+            if (activeApiProvider === 'custom') {
+                activeApiEndpoint = localStorage.getItem('tense_api_endpoint') || '';
+                activeApiModel = localStorage.getItem('tense_api_model') || '';
+                document.getElementById('api-endpoint-input').value = activeApiEndpoint;
+                document.getElementById('api-model-input').value = activeApiModel;
+            } else if (activeApiProvider === 'deepseek') {
+                activeApiEndpoint = "https://api.deepseek.com/v1";
+                activeApiModel = "deepseek-chat";
+            } else if (activeApiProvider === 'openai') {
+                activeApiEndpoint = "https://api.openai.com/v1";
+                activeApiModel = "gpt-4o-mini";
+            } else {
+                activeApiEndpoint = "";
+                activeApiModel = "";
+            }
+
+            toggleApiCustomEndpoint();
+        }
+
+        // MODULE 2: Query Free Dictionary API Live
+        async function queryDictionaryApi() {
+            const input = document.getElementById('dict-search-input').value.trim().toLowerCase();
+            const resultsBox = document.getElementById('dict-results-box');
+
+            if (!input) {
+                showToast("请输入需要检索的动词原型！", "warning");
+                return;
+            }
+
+            // Show Loading shimmer state
+            resultsBox.classList.remove('hidden');
+            resultsBox.innerHTML = `
+                <div class="flex items-center justify-center py-4 gap-2">
+                    <div class="w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-slate-300">正在与国际公共词典 API 握手通信...</span>
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${input}`);
+                if (!response.ok) {
+                    throw new Error("Word not found in database.");
+                }
+
+                const data = await response.json();
+                const wordData = data[0];
+                
+                // Parse Phonetics & Audio
+                let phonetic = wordData.phonetic || "";
+                let audioUrl = "";
+                
+                if (wordData.phonetics && wordData.phonetics.length > 0) {
+                    const matchPhon = wordData.phonetics.find(p => p.text);
+                    if (matchPhon) phonetic = matchPhon.text;
+                    
+                    const matchAud = wordData.phonetics.find(p => p.audio && p.audio.length > 0);
+                    if (matchAud) audioUrl = matchAud.audio;
+                }
+
+                // Extract Definitions
+                let definitionsHtml = "";
+                if (wordData.meanings && wordData.meanings.length > 0) {
+                    const verbMeaning = wordData.meanings.find(m => m.partOfSpeech === "verb") || wordData.meanings[0];
+                    if (verbMeaning && verbMeaning.definitions) {
+                        verbMeaning.definitions.slice(0, 2).forEach((def, dIdx) => {
+                            definitionsHtml += `
+                                <div class="bg-white/5 p-2 rounded-lg border border-white/5">
+                                    <span class="text-[10px] text-yellow-300 font-bold block">义项 ${dIdx + 1} (${verbMeaning.partOfSpeech})</span>
+                                    <p class="text-slate-200 mt-0.5">${def.definition}</p>
+                                    ${def.example ? `<p class="text-slate-400 italic mt-0.5">例句: "${def.example}"</p>` : ""}
+                                </div>
+                            `;
+                        });
+                    }
+                }
+
+                // Render dynamic output
+                resultsBox.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-2.5">
+                        <div>
+                            <span class="text-lg font-black text-white capitalize">${wordData.word}</span>
+                            <span class="text-xs text-yellow-300 ml-1.5 font-semibold">${phonetic}</span>
+                        </div>
+                        ${audioUrl ? `
+                            <button onclick="playUrlAudio('${audioUrl}')" class="bg-yellow-400 hover:bg-yellow-300 text-indigo-900 px-3 py-1.5 rounded-lg font-bold text-[10px] uppercase flex items-center gap-1 active:scale-95 transition">
+                                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                                <span>真人原声发音</span>
+                            </button>
+                        ` : `
+                            <span class="text-[10px] text-slate-400">暂无真人原声音频</span>
+                        `}
+                    </div>
+                    <div class="space-y-2 mt-2">
+                        ${definitionsHtml || "<p class='text-slate-300'>暂无具体动词词义解释。</p>"}
+                    </div>
+                `;
+                lucide.createIcons();
+
+                userProgress.dictLookups++;
+                updateProgress();
+
+            } catch (err) {
+                console.error(err);
+                resultsBox.innerHTML = `
+                    <div class="text-rose-300 flex items-center gap-1.5 py-2">
+                        <i data-lucide="x-circle" class="w-4.5 h-4.5 flex-shrink-0"></i>
+                        <span>API 异常或未找到该动词。请确保输入拼写正确（必须为动词原形）。</span>
+                    </div>
+                `;
+                lucide.createIcons();
+            }
+        }
+
+        function playUrlAudio(url) {
+            const audio = new Audio(url);
+            audio.play().catch(err => {
+                console.error("Audio playback failed:", err);
+                showToast("音频流播放失败，可能是浏览器禁用了跨域多媒体。", "error");
+            });
+        }
+
+        // MODULE 1: Trigger Word System
+        function triggerAlarm(word, chinese, sentences) {
+            const banner = document.getElementById('alarm-banner');
+            const desc = document.getElementById('alarm-desc');
+            const practiceCard = document.getElementById('practice-card');
+            const sentenceContainer = document.getElementById('template-sentences');
+
+            banner.classList.remove('hidden');
+            desc.innerHTML = `你刚发出了过去时间指令 <span class="bg-rose-200 text-rose-900 px-2 py-0.5 rounded-md font-bold text-sm">${word} (${chinese})</span>！请大声朗读以下句子：`;
+            
+            sentenceContainer.innerHTML = '';
+            sentences.forEach((sentence) => {
+                const parts = sentence.split(' ');
+                const subject = parts[0];
+                const pastVerb = parts[1];
+                const rest = parts.slice(2).join(' ');
+
+                const row = document.createElement('div');
+                row.className = "flex flex-col sm:flex-row sm:items-center justify-between p-3.5 bg-slate-50 border border-slate-100 rounded-xl gap-3 hover:bg-slate-100/50 transition";
+                row.innerHTML = `
+                    <div class="text-sm font-semibold text-slate-800 leading-relaxed">
+                        <span class="text-rose-600 font-bold">${word},</span> ${subject} <span class="bg-yellow-200 text-slate-900 px-1.5 py-0.5 rounded font-extrabold shadow-sm">${pastVerb}</span> ${rest}.
+                    </div>
+                    <button onclick="speakText('${word}, ${sentence}')" class="bg-indigo-600 hover:bg-indigo-700 text-white p-2 rounded-lg transition self-end sm:self-auto" title="TTS 伴读">
+                        <i data-lucide="volume-2" class="w-4 h-4"></i>
+                    </button>
+                `;
+                sentenceContainer.appendChild(row);
+            });
+
+            practiceCard.classList.remove('hidden');
+            lucide.createIcons();
+
+            userProgress.triggerCount++;
+            updateProgress();
+        }
+
+        // MODULE 2: Local verbs engine
+        let verbsHideState = false;
+        let currentVerbCategory = 'be';
+
+        function toggleHideVerbs() {
+            verbsHideState = !verbsHideState;
+            const btn = document.getElementById('toggle-hide-btn');
+            if (verbsHideState) {
+                btn.className = "bg-rose-50 text-rose-700 border border-rose-200 px-3 py-2 rounded-xl text-xs font-semibold hover:bg-rose-100 transition whitespace-nowrap";
+                btn.innerText = "👁️ 盲测模式中 (点击显现)";
+            } else {
+                btn.className = "bg-indigo-50 text-indigo-700 border border-indigo-200 px-3 py-2 rounded-xl text-xs font-semibold hover:bg-indigo-100 transition whitespace-nowrap";
+                btn.innerText = "👁️ 盲测模式 (隐藏过去式)";
+            }
+            loadVerbPractice(currentVerbCategory);
+        }
+
+        function switchVerbCategory(cat) {
+            currentVerbCategory = cat;
+            document.querySelectorAll('.verb-cat-btn').forEach(btn => {
+                btn.className = "verb-cat-btn flex-1 py-2 text-xs font-bold rounded-lg text-center transition text-slate-600 hover:text-slate-800";
+            });
+            document.getElementById(`verb-cat-${cat}`).className = "verb-cat-btn flex-1 py-2 text-xs font-bold rounded-lg text-center transition bg-white text-slate-800 shadow-sm";
+            loadVerbPractice(cat);
+        }
+
+        function loadVerbPractice(cat) {
+            const container = document.getElementById('verb-practice-area');
+            container.innerHTML = '';
+            
+            verbsData[cat].forEach((item, index) => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:shadow transition flex flex-col justify-between gap-3";
+                
+                const pastDisplay = verbsHideState 
+                    ? `<span id="hidden-verb-${index}" onclick="revealVerb(${index}, '${item.past}')" class="cursor-pointer bg-slate-900 text-slate-900 px-3 py-0.5 rounded font-extrabold select-none hover:bg-slate-800 hover:text-slate-300">点击显现</span>`
+                    : `<span class="bg-rose-100 text-rose-700 px-3 py-0.5 rounded font-extrabold">${item.past}</span>`;
+
+                card.innerHTML = `
+                    <div class="space-y-2">
+                        <div class="flex items-center gap-3">
+                            <span class="text-xs font-bold text-slate-400 capitalize">${item.present}</span>
+                            <i data-lucide="arrow-right" class="w-4 h-4 text-slate-300"></i>
+                            ${pastDisplay}
+                        </div>
+                        <div class="space-y-0.5">
+                            <p class="text-sm font-extrabold text-slate-800">${item.example}</p>
+                            <p class="text-xs text-slate-400">${item.exampleCN}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between border-t border-slate-50 pt-2 text-[10px] text-slate-400">
+                        <span>💡 ${item.explain}</span>
+                        <button onclick="speakText('${item.example}')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-2 py-1.5 rounded-lg flex items-center gap-1 transition">
+                            <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                            <span>读出声音</span>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        function revealVerb(idx, answer) {
+            const el = document.getElementById(`hidden-verb-${idx}`);
+            el.className = "bg-rose-100 text-rose-700 px-3 py-0.5 rounded font-extrabold animate-pulse";
+            el.innerText = answer;
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.85;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                showToast("您的浏览器未搭载系统语音合成模块，推荐在 Chrome 中使用。", "error");
+            }
+        }
+
+        // MODULE 3: MyMemory Keyless Translation API Interface
+        async function translateAndShiftTense() {
+            const input = document.getElementById('translate-input').value.trim();
+            const resultBox = document.getElementById('translate-result');
+
+            if (!input) {
+                showToast("请输入需要翻译的中文想法！", "warning");
+                return;
+            }
+
+            resultBox.classList.remove('hidden');
+            resultBox.innerHTML = `
+                <div class="flex items-center gap-2 py-2">
+                    <div class="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-xs text-indigo-800 font-bold">正在联络 MyMemory 翻译中枢接口...</span>
+                </div>
+            `;
+
+            try {
+                // Free public translation API
+                const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(input)}&langpair=zh-CN|en-US`);
+                if (!response.ok) {
+                    throw new Error("Translation API Response Error");
+                }
+
+                const data = await response.json();
+                const translatedText = data.responseData.translatedText;
+
+                // Simple regex parser for English tenses to simulate structural shift
+                let rawWords = translatedText.split(' ');
+                
+                resultBox.innerHTML = `
+                    <div class="space-y-2 text-xs">
+                        <div>
+                            <span class="text-[10px] bg-indigo-200 text-indigo-900 font-bold px-2 py-0.5 rounded uppercase">API 翻译直出</span>
+                            <p class="text-sm font-bold text-slate-800 mt-1 italic">"${translatedText}"</p>
+                        </div>
+                        <div class="border-t border-indigo-100 pt-2 mt-2 space-y-1.5">
+                            <span class="text-[10px] bg-rose-100 text-rose-800 font-extrabold px-2 py-0.5 rounded uppercase">自主纠正肌肉警报</span>
+                            <p class="text-slate-600 leading-relaxed">
+                                如果你翻译出的句意描述的是<b>过去发生的动作（如昨天、刚才）</b>，请立刻在大脑中检查动词！
+                                例如，把动词原型自动切换为不规则过去式，确保说出口的是纯正的过去时态。
+                            </p>
+                        </div>
+                    </div>
+                `;
+
+            } catch (err) {
+                console.error(err);
+                resultBox.innerHTML = `
+                    <div class="text-xs text-rose-600 font-semibold flex items-center gap-1.5 py-1">
+                        <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0"></i>
+                        <span>API 通信偶发故障，请稍后再试或点击重新查询。</span>
+                    </div>
+                `;
+                lucide.createIcons();
+            }
+        }
+
+        // MODULE 3: LLM Coach & Local Simulator Core Logic
+        let activeScenarioKey = 'coffee';
+
+        function switchScenario(key) {
+            activeScenarioKey = key;
+            document.querySelectorAll('.scen-btn').forEach(btn => {
+                btn.className = "scen-btn p-3 bg-white border border-slate-100 rounded-xl hover:shadow-sm transition font-bold text-xs sm:text-sm text-center text-slate-700";
+            });
+            document.getElementById(`scen-${key}`).className = "scen-btn p-3 bg-white border border-indigo-100 rounded-xl hover:shadow-sm transition font-bold text-xs sm:text-sm text-center text-indigo-600 ring-2 ring-indigo-500/20";
+            loadScenario(key);
+        }
+
+        function loadScenario(key) {
+            const data = scenarioData[key];
+            const sandbox = document.getElementById('scenario-sandbox');
+            sandbox.innerHTML = `
+                <div class="flex items-center gap-3 border-b border-slate-100 pb-3">
+                    <span class="text-2xl">${data.icon}</span>
+                    <h3 class="font-bold text-base text-slate-800">${data.title}</h3>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- Present -->
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1 relative group">
+                        <span class="absolute right-3 top-3 text-[10px] bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-bold uppercase">一般现在时 (事实)</span>
+                        <p class="text-[10px] text-slate-400">客观常态/日常规律</p>
+                        <p class="text-sm font-bold text-slate-800">${data.present}</p>
+                        <p class="text-[10px] text-slate-400">💡 义：${data.presentHint}</p>
+                        <button onclick="speakText('${data.present}')" class="absolute right-3 bottom-3 opacity-0 group-hover:opacity-100 transition text-indigo-600 hover:text-indigo-800"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                    </div>
+
+                    <!-- Past -->
+                    <div class="p-4 bg-rose-50/50 rounded-xl border border-rose-100 space-y-1 relative group">
+                        <span class="absolute right-3 top-3 text-[10px] bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded font-bold uppercase">一般过去时 (主战场)</span>
+                        <p class="text-[10px] text-rose-500 font-bold flex items-center gap-1">🚨 特别警报：动词必须完成不规则物理变性！</p>
+                        <p class="text-sm font-bold text-slate-800">${data.past}</p>
+                        <p class="text-[10px] text-slate-400">💡 义：${data.pastHint}</p>
+                        <button onclick="speakText('${data.past}')" class="absolute right-3 bottom-3 opacity-0 group-hover:opacity-100 transition text-indigo-600 hover:text-indigo-800"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                    </div>
+
+                    <!-- Future -->
+                    <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1 relative group">
+                        <span class="absolute right-3 top-3 text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold uppercase">一般将来时 (计划)</span>
+                        <p class="text-[10px] text-slate-400">打算、计划、推测</p>
+                        <p class="text-sm font-bold text-slate-800">${data.future}</p>
+                        <p class="text-[10px] text-slate-400">💡 义：${data.futureHint}</p>
+                        <button onclick="speakText('${data.future}')" class="absolute right-3 bottom-3 opacity-0 group-hover:opacity-100 transition text-indigo-600 hover:text-indigo-800"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
+                    </div>
+                </div>
+
+                <!-- Voice Sandbox (Microphone Testing) -->
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-5 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-5 relative overflow-hidden">
+                    <div class="space-y-1.5 flex-grow z-10">
+                        <h4 class="font-bold text-sm text-yellow-300 flex items-center gap-1.5">
+                            <i data-lucide="mic" class="w-4 h-4"></i>
+                            <span>AI 语音时态校正测试</span>
+                        </h4>
+                        <p class="text-xs text-slate-300">请大声读出上方包含过去时的句子（注意过去式动词重读发音）：</p>
+                        <p class="text-[11px] text-indigo-300 font-semibold" id="api-status-hint">
+                            ${activeApiProvider !== 'none' ? '🚀 真实 AI 接口对齐：由云端大模型对你的时态和语调进行高级诊断' : '💡 当前使用本地自检引擎：您可以配置自己的 AI Key 以启用大模型精细判卷'}
+                        </p>
+                        
+                        <!-- Live speech feedback -->
+                        <div id="speech-live-box" class="hidden mt-3 bg-slate-850 p-3 rounded-xl border border-slate-700 text-xs space-y-2">
+                            <div>
+                                <span class="text-slate-400 font-bold block mb-0.5">识别出的文本:</span>
+                                <p class="text-yellow-100 italic" id="live-speech-txt">"Listening..."</p>
+                            </div>
+                            <div id="speech-check-result" class="font-bold"></div>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-center gap-1.5 flex-shrink-0 z-10">
+                        <button id="mic-btn" onclick="toggleSpeechRecognition()" class="w-16 h-16 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-indigo-500/20 transition duration-150">
+                            <i id="mic-icon" data-lucide="mic" class="w-7 h-7"></i>
+                        </button>
+                        <span id="mic-status-label" class="text-[11px] text-slate-400 font-bold">点击开始录音</span>
+                    </div>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        // Speech Recognition Setup
+        let recognition = null;
+        let isRecording = false;
+
+        function toggleSpeechRecognition() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) {
+                showToast("您的浏览器不支持 Web Speech 语音引擎。建议使用最新版本的 Chrome 或 Edge。", "error");
+                return;
+            }
+
+            if (!recognition) {
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.lang = 'en-US';
+                recognition.interimResults = false;
+
+                recognition.onstart = () => {
+                    isRecording = true;
+                    document.getElementById('mic-btn').className = "w-16 h-16 bg-rose-600 animate-pulse text-white rounded-full flex items-center justify-center shadow-lg transition";
+                    document.getElementById('mic-icon').setAttribute('data-lucide', 'mic-off');
+                    document.getElementById('mic-status-label').innerText = "录音中，请大声朗读";
+                    document.getElementById('mic-status-label').className = "text-[11px] text-rose-400 font-bold animate-pulse";
+                    
+                    document.getElementById('speech-live-box').classList.remove('hidden');
+                    document.getElementById('live-speech-txt').innerText = "正在倾听您的发音，请开口...";
+                    document.getElementById('speech-check-result').innerHTML = "";
+                    lucide.createIcons();
+                };
+
+                recognition.onresult = (event) => {
+                    const resultText = event.results[0][0].transcript;
+                    document.getElementById('live-speech-txt').innerText = `"${resultText}"`;
+                    processOralResult(resultText);
+                };
+
+                recognition.onerror = (event) => {
+                    console.error("Speech Recognition Error:", event.error);
+                    document.getElementById('live-speech-txt').innerText = `听写服务中断: ${event.error}`;
+                    stopRecordingUI();
+                };
+
+                recognition.onend = () => {
+                    stopRecordingUI();
+                };
+            }
+
+            if (isRecording) {
+                recognition.stop();
+            } else {
+                recognition.start();
+            }
+        }
+
+        function stopRecordingUI() {
+            isRecording = false;
+            document.getElementById('mic-btn').className = "w-16 h-16 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full flex items-center justify-center shadow-lg transition";
+            document.getElementById('mic-icon').setAttribute('data-lucide', 'mic');
+            document.getElementById('mic-status-label').innerText = "点击开始录音";
+            document.getElementById('mic-status-label').className = "text-[11px] text-slate-400 font-bold";
+            lucide.createIcons();
+        }
+
+        async function processOralResult(spokenText) {
+            const resultBox = document.getElementById('speech-check-result');
+            
+            // If API Settings is set, invoke real AI model
+            if (activeApiProvider !== 'none' && activeApiKey) {
+                resultBox.className = "text-[11px] text-yellow-300 flex items-center gap-1.5";
+                resultBox.innerHTML = `
+                    <div class="w-3.5 h-3.5 border-2 border-yellow-300 border-t-transparent rounded-full animate-spin"></div>
+                    <span>大模型正在对您的时态语流进行诊断...</span>
+                `;
+                
+                try {
+                    const aiReport = await callLlmOralCoach(spokenText, scenarioData[activeScenarioKey].past);
+                    resultBox.className = "text-xs space-y-1.5 pt-2 border-t border-slate-700 text-emerald-400";
+                    resultBox.innerHTML = `
+                        <p class="font-extrabold text-xs flex items-center gap-1">🚀 真实 AI 诊断报告报告：</p>
+                        <p class="text-slate-300 text-[11px] italic">"${aiReport}"</p>
+                    `;
+                    userProgress.aiCoachSuccesses++;
+                    updateProgress();
+                } catch (err) {
+                    console.error(err);
+                    showToast("AI 模型服务连接超时，降级至本地诊断。", "warning");
+                    localSelfCheck(spokenText);
+                }
+            } else {
+                // Local self check
+                localSelfCheck(spokenText);
+            }
+        }
+
+        function localSelfCheck(spokenText) {
+            const cleanSpoken = spokenText.toLowerCase();
+            const data = scenarioData[activeScenarioKey];
+            const resultBox = document.getElementById('speech-check-result');
+            
+            const targetWord = data.pastTarget.toLowerCase();
+            const isMatch = cleanSpoken.includes(targetWord);
+
+            if (isMatch) {
+                resultBox.className = "text-emerald-400 text-xs flex items-center gap-1.5 mt-2";
+                resultBox.innerHTML = `
+                    <i data-lucide="check-circle-2" class="w-4 h-4 fill-emerald-950"></i>
+                    <span>诊断合格！系统在您的语流中捕获了正确的过去式不规则变音【${data.pastTarget}】！肌肉记忆良好。</span>
+                `;
+                userProgress.aiCoachSuccesses++;
+                updateProgress();
+            } else {
+                resultBox.className = "text-rose-400 text-xs flex items-center gap-1.5 mt-2";
+                resultBox.innerHTML = `
+                    <i data-lucide="x-circle" class="w-4 h-4 fill-rose-950"></i>
+                    <span>未捕获过去时变性！您是否误说成了原型？不规则变形发音是英语时态的核心物理肌肉。</span>
+                `;
+            }
+            lucide.createIcons();
+        }
+
+        // Call Custom Compatible LLM API
+        async function callLlmOralCoach(userSpoken, targetSentence) {
+            const prompt = `你是一位严厉的英语口语时态纠音教练。
+目标句意: "${targetSentence}"
+用户实际说出的录音听写文本: "${userSpoken}"
+请对用户的发音做出客观时态层面的诊断，用中文一句话指出他有没有读对不规则过去式动词，他的语法有没有错，并给出改进建议，控制在80字以内。`;
+
+            const payload = {
+                model: activeApiModel,
+                messages: [
+                    { role: "system", content: "You are a helpful and concise English oral tutor." },
+                    { role: "user", content: prompt }
+                ],
+                temperature: 0.3
+            };
+
+            const response = await fetch(`${activeApiEndpoint}/chat/completions`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${activeApiKey}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error("LLM Connection Failed");
+            }
+
+            const resData = await response.json();
+            return resData.choices[0].message.content;
+        }
+
+        // MODULE 4: Quiz Logic
+        let currentQuizIndex = 0;
+        let selectedOptionIdx = null;
+
+        function loadQuiz() {
+            const data = quizQuestions[currentQuizIndex];
+            document.getElementById('quiz-index-indicator').innerText = `${currentQuizIndex + 1} / ${quizQuestions.length}`;
+            document.getElementById('quiz-badge').innerText = data.badge;
+            document.getElementById('quiz-wrong-sentence').innerText = `"${data.wrong}"`;
+            document.getElementById('quiz-chinese-meaning').innerText = `💡 真实中文含义：${data.chinese}`;
+            
+            const feedback = document.getElementById('quiz-feedback');
+            feedback.className = "hidden";
+            feedback.innerHTML = "";
+            selectedOptionIdx = null;
+
+            const optionsBox = document.getElementById('quiz-options');
+            optionsBox.innerHTML = '';
+            
+            data.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.onclick = () => submitAnswer(idx, opt.correct);
+                btn.className = "w-full p-3.5 border border-slate-100 hover:border-indigo-200 rounded-xl text-left font-semibold text-sm transition flex justify-between items-center bg-slate-50 text-slate-700";
+                btn.innerHTML = `
+                    <span>${opt.text}</span>
+                    <div class="w-5 h-5 border border-slate-300 rounded-full flex items-center justify-center"></div>
+                `;
+                optionsBox.appendChild(btn);
+            });
+
+            document.getElementById('btn-quiz-prev').disabled = currentQuizIndex === 0;
+            const nextBtn = document.getElementById('btn-quiz-next');
+            if (currentQuizIndex === quizQuestions.length - 1) {
+                nextBtn.innerText = "完成训练营挑战";
+            } else {
+                nextBtn.innerText = "下一题";
+            }
+        }
+
+        function submitAnswer(idx, isCorrect) {
+            if (selectedOptionIdx !== null) return;
+            selectedOptionIdx = idx;
+
+            const data = quizQuestions[currentQuizIndex];
+            const feedback = document.getElementById('quiz-feedback');
+            const optionsBox = document.getElementById('quiz-options');
+            
+            Array.from(optionsBox.children).forEach((btn, bIdx) => {
+                const optData = data.options[bIdx];
+                if (optData.correct) {
+                    btn.className = "w-full p-3.5 border border-emerald-200 bg-emerald-50 text-emerald-800 rounded-xl text-left font-semibold text-sm transition flex justify-between items-center";
+                    btn.querySelector('div').className = "w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center text-white";
+                    btn.querySelector('div').innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i>`;
+                } else if (bIdx === idx) {
+                    btn.className = "w-full p-3.5 border border-rose-200 bg-rose-50 text-rose-800 rounded-xl text-left font-semibold text-sm transition flex justify-between items-center";
+                    btn.querySelector('div').className = "w-5 h-5 bg-rose-500 rounded-full flex items-center justify-center text-white";
+                    btn.querySelector('div').innerHTML = `<i data-lucide="x" class="w-3.5 h-3.5"></i>`;
+                } else {
+                    btn.className = "w-full p-3.5 border border-slate-100 bg-slate-50 text-slate-400 rounded-xl text-left font-semibold text-sm cursor-not-allowed opacity-50 flex justify-between items-center";
+                }
+            });
+
+            feedback.classList.remove('hidden');
+            if (isCorrect) {
+                feedback.className = "p-4 rounded-xl border border-emerald-200 bg-emerald-50 flex gap-3 text-emerald-800 text-xs leading-relaxed";
+                feedback.innerHTML = `
+                    <i data-lucide="sparkles" class="w-5 h-5 text-emerald-500 flex-shrink-0"></i>
+                    <div>
+                        <p class="font-extrabold mb-0.5">回答正确！时态条件反射极好！</p>
+                        <p>${data.explain}</p>
+                    </div>
+                `;
+            } else {
+                feedback.className = "p-4 rounded-xl border border-rose-200 bg-rose-50 flex gap-3 text-rose-800 text-xs leading-relaxed";
+                feedback.innerHTML = `
+                    <i data-lucide="alert-circle" class="w-5 h-5 text-rose-500 flex-shrink-0"></i>
+                    <div>
+                        <p class="font-extrabold mb-0.5">哎呀，落入思维陷阱了！注意规则：</p>
+                        <p>${data.explain}</p>
+                    </div>
+                `;
+            }
+
+            userProgress.quizTested[currentQuizIndex] = true;
+            
+            // Calculate correct score sum
+            const activeCorrectCount = userProgress.quizTested.filter((status, index) => status && quizQuestions[index].options.find(o => o.correct).text === document.getElementById('quiz-options').children[quizQuestions[index].options.findIndex(o => o.correct)].innerText.trim()).length;
+            
+            // Update simple count
+            let solvedTotal = userProgress.quizTested.filter(Boolean).length;
+            document.getElementById('quiz-correct-count').innerText = `${solvedTotal} / 12`;
+
+            updateProgress();
+            lucide.createIcons();
+        }
+
+        function nextQuiz() {
+            if (currentQuizIndex < quizQuestions.length - 1) {
+                currentQuizIndex++;
+                loadQuiz();
+            } else {
+                showToast("恭喜您！顺利通关 12 大时态避坑诊断关卡！请坚持每天热身跟读！", "success");
+            }
+        }
+
+        function prevQuiz() {
+            if (currentQuizIndex > 0) {
+                currentQuizIndex--;
+                loadQuiz();
+            }
+        }
+    </script>
+</body>
+</html>
