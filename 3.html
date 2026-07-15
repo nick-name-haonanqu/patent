@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>全球专利布局与 PPH 交互式决策系统</title>
+    <title>全球专利路线与 PPH 智能决策系统</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -32,16 +32,11 @@
         .transition-all-300 {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .gradient-border {
-            position: relative;
-            border-radius: 0.75rem;
-            background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(16,185,129,0.1) 100%);
-        }
     </style>
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col selection:bg-indigo-500 selection:text-white">
 
-    <!-- Navigation / Header -->
+    <!-- Header / Navigation -->
     <header class="border-b border-slate-800 bg-slate-900/80 backdrop-blur sticky top-0 z-50 px-4 py-4 sm:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
         <div class="flex items-center gap-3">
             <div class="h-10 w-10 rounded-xl bg-gradient-to-br from-indigo-500 to-emerald-400 flex items-center justify-center shadow-lg shadow-indigo-500/20">
@@ -49,10 +44,10 @@
             </div>
             <div>
                 <h1 class="text-lg font-bold tracking-tight text-white flex items-center gap-2">
-                    全球专利路线与 PPH 智能决策系统
+                    全球专利路线与 PPH 智能试算决策系统
                     <span class="text-xs font-semibold px-2 py-0.5 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">2026/2027 官方标准</span>
                 </h1>
-                <p class="text-xs text-slate-400">最新 CNIPA-EPO 永久双边 PPH、USPTO 规费新政及 EPO PACE / 美国 Track One 深度集成</p>
+                <p class="text-xs text-slate-400">中欧试点(EPO-ISA)永久化、最新 CNIPA-EPO 永久双边 PPH、USPTO 规费新政及期限多锚点联动</p>
             </div>
         </div>
         <div class="flex items-center gap-3">
@@ -65,31 +60,34 @@
         </div>
     </header>
 
-    <!-- Main Workspace Container -->
+    <!-- Main Workspace -->
     <main class="flex-grow p-4 sm:p-6 md:p-8 max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
 
-        <!-- Left Controls and Visual Area (Lg: 8 cols) -->
+        <!-- Left Column (Lg: 8 cols) -->
         <section class="lg:col-span-8 flex flex-col gap-6">
             
-            <!-- Route Selector Dashboard -->
+            <!-- Step 1: Base Parameters Dashboard -->
             <div class="bg-slate-900 border border-slate-800 rounded-xl p-5 shadow-2xl">
                 <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
                     <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"></path></svg>
-                    第一步：设定你的全球专利路线与优先权日
+                    第一步：设定全球专利布局与目标阶段
                 </h2>
                 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- ISA Selector -->
                     <div class="space-y-2">
-                        <label class="text-xs text-slate-400 font-medium">1. 国际检索单位 (ISA)</label>
+                        <label class="text-xs text-slate-400 font-medium flex justify-between">
+                            <span>1. 国际检索单位 (ISA)</span>
+                            <span class="text-[10px] text-indigo-400 font-semibold cursor-pointer" onclick="showRouteHelp()">选路指南 ?</span>
+                        </label>
                         <div class="grid grid-cols-2 gap-2 bg-slate-950 p-1 rounded-lg border border-slate-800">
                             <button onclick="setRoute('epo')" id="btn-route-epo" class="py-2.5 px-3 text-xs font-semibold rounded-md text-center transition-all-300 bg-indigo-600 text-white flex flex-col items-center justify-center gap-1">
                                 <span>EPO 作为 ISA</span>
-                                <span class="text-[10px] font-normal opacity-80">中欧试点(全英文)</span>
+                                <span class="text-[9px] font-normal opacity-80">中欧试点/全英文递交</span>
                             </button>
                             <button onclick="setRoute('cnipa')" id="btn-route-cnipa" class="py-2.5 px-3 text-xs font-semibold rounded-md text-center transition-all-300 text-slate-400 hover:text-slate-200 flex flex-col items-center justify-center gap-1">
                                 <span>CNIPA 作为 ISA</span>
-                                <span class="text-[10px] font-normal opacity-80">中文PCT递交</span>
+                                <span class="text-[9px] font-normal opacity-80">中文PCT递交/延迟翻译</span>
                             </button>
                         </div>
                     </div>
@@ -100,37 +98,92 @@
                         <div class="grid grid-cols-2 gap-2 bg-slate-950 p-1 rounded-lg border border-slate-800">
                             <button onclick="setDestination('epo')" id="btn-dest-epo" class="py-2.5 px-3 text-xs font-semibold rounded-md text-center transition-all-300 bg-indigo-600 text-white flex flex-col items-center justify-center gap-1">
                                 <span>欧洲阶段 (EPO)</span>
-                                <span class="text-[10px] font-normal opacity-80">最迟优先权日31个月</span>
+                                <span class="text-[9px] font-normal opacity-80">最迟优先权日31个月</span>
                             </button>
                             <button onclick="setDestination('us')" id="btn-dest-us" class="py-2.5 px-3 text-xs font-semibold rounded-md text-center transition-all-300 text-slate-400 hover:text-slate-200 flex flex-col items-center justify-center gap-1">
                                 <span>美国阶段 (USPTO)</span>
-                                <span class="text-[10px] font-normal opacity-80">最迟优先权日30个月</span>
+                                <span class="text-[9px] font-normal opacity-80">最迟优先权日30个月</span>
                             </button>
                         </div>
                     </div>
+                </div>
+            </div>
 
-                    <!-- Term Calculator Input -->
-                    <div class="space-y-2">
-                        <label class="text-xs text-slate-400 font-medium">3. 最早优先权日 (Priority Date)</label>
-                        <div class="bg-slate-950 p-2 rounded-lg border border-slate-800 flex items-center gap-2 h-[46px]">
-                            <svg class="w-4 h-4 text-indigo-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            <input type="date" id="priorityDatePicker" onchange="updatePriorityDate(this.value)" class="bg-transparent text-xs text-slate-200 border-none focus:ring-0 w-full outline-none select-none filter invert brightness-200">
+            <!-- Step 1.5: Multi-Anchor Term Calculator (New Feature) -->
+            <div class="bg-slate-900 border border-indigo-500/20 rounded-xl p-5 shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                    <svg class="w-24 h-24 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                </div>
+
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                        <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+                        第二步：全球专利多锚点期限智能试算器 (Multi-Anchor Calculator)
+                    </h2>
+                    <button onclick="resetDates()" class="text-[10px] text-slate-400 hover:text-white bg-slate-850 px-2 py-1 rounded border border-slate-700 transition-all-300">一键还原理论期限</button>
+                </div>
+
+                <!-- Inputs Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-slate-950 p-4 rounded-xl border border-slate-800">
+                    <!-- Anchor 1: Priority Date -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center">
+                            <label class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
+                                <span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span> 最早优先权日 (PD)
+                            </label>
+                            <span class="text-[9px] bg-indigo-500/10 text-indigo-400 px-1.5 py-0.2 rounded font-mono">基准点</span>
                         </div>
-                        <div class="text-[10px] text-slate-500">设置后系统将自动推算后续所有节点的实际截止期限。</div>
+                        <input type="date" id="inputPD" onchange="updateCustomDate('pd', this.value)" class="w-full bg-slate-900 border border-slate-800 rounded-md px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-indigo-500 transition-all-300">
+                    </div>
+
+                    <!-- Anchor 2: PCT Filing Date -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center">
+                            <label class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
+                                <span id="indicatorPCT" class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span> PCT国际递交日
+                            </label>
+                            <span id="badgePCT" class="text-[9px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.2 rounded font-mono">自动估算</span>
+                        </div>
+                        <div class="relative">
+                            <input type="date" id="inputPCTD" onchange="updateCustomDate('pctd', this.value)" class="w-full bg-slate-900 border border-slate-800 rounded-md px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-emerald-500 transition-all-300">
+                        </div>
+                    </div>
+
+                    <!-- Anchor 3: National Entry Date -->
+                    <div class="space-y-1.5">
+                        <div class="flex justify-between items-center">
+                            <label class="text-[11px] text-slate-400 font-medium flex items-center gap-1">
+                                <span id="indicatorEntry" class="h-1.5 w-1.5 rounded-full bg-amber-500"></span> 实际进入国家阶段日
+                            </label>
+                            <span id="badgeEntry" class="text-[9px] bg-amber-500/10 text-amber-400 px-1.5 py-0.2 rounded font-mono">自动估算</span>
+                        </div>
+                        <div class="relative">
+                            <input type="date" id="inputEntryD" onchange="updateCustomDate('entryd', this.value)" class="w-full bg-slate-900 border border-slate-800 rounded-md px-2 py-1.5 text-xs text-slate-200 outline-none focus:border-amber-500 transition-all-300">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Anchor Diagnosis Status Bar -->
+                <div class="mt-3 text-[11px] bg-slate-950/60 border border-slate-800/80 rounded-lg p-2.5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                    <div class="flex items-center gap-2 text-slate-300">
+                        <span class="flex h-2 w-2 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                        </span>
+                        <span id="calcDiagnosisText">试算引擎正常，未检测到手动覆盖日期。</span>
+                    </div>
+                    <div class="text-[10px] text-indigo-400 font-mono bg-indigo-500/5 px-2 py-0.5 rounded border border-indigo-500/10" id="calcLogicDesc">
+                        逻辑链：最早优先权日 (M0) ➜ 全局传导
                     </div>
                 </div>
             </div>
 
             <!-- Interactive Visual Timeline Map -->
             <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-2xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
-                    <svg class="w-32 h-32 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </div>
-
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
                         <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                        第二步：可视化动态时间线（支持加速折叠）
+                        第三步：可视化动态时间线与加速折叠
                     </h2>
                     <span class="text-xs text-indigo-400 font-medium bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-full transition-all-300" id="timelineSpeedupStatus">普通进度模式</span>
                 </div>
@@ -147,7 +200,7 @@
                     </div>
                 </div>
 
-                <p class="text-xs text-slate-400 mt-4 italic text-center">💡 提示：在下方配置不同的【加速选项】，时间线上的月份节点会自动向前压缩并用绿色标识！点击节点可查看详情。</p>
+                <p class="text-xs text-slate-400 mt-4 italic text-center">💡 温馨提示：切换并配置下方的【加速选项】，时间线上的月份节点和实际日期会动态向前压缩并高亮显示！</p>
             </div>
 
             <!-- Configurator & Simulators based on Destination -->
@@ -169,7 +222,7 @@
                     <div class="h-6 w-6 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-400 shrink-0" id="toastIcon">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                     </div>
-                    <div>
+                    <div class="flex-grow">
                         <h4 class="text-sm font-bold text-white" id="toastTitle">优化成功</h4>
                         <p class="text-xs text-slate-400 mt-1" id="toastDesc">您的美国申请官费已被优化！成功规避了多项从属权利要求的额外罚款。</p>
                     </div>
@@ -213,10 +266,10 @@
             </div>
 
             <!-- Node Context Detail Display Panel -->
-            <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-2xl flex-grow flex flex-col min-h-[400px]">
+            <div class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-2xl flex-grow flex flex-col min-h-[420px]">
                 <div class="flex items-center gap-2 pb-4 border-b border-slate-800">
                     <span class="h-6 w-6 rounded-full bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 text-xs font-bold flex items-center justify-center mono" id="nodeDetailNum">M0</span>
-                    <div>
+                    <div class="flex-grow">
                         <h3 class="text-sm font-bold text-white" id="nodeDetailName">正在加载节点详情...</h3>
                         <p class="text-[10px] text-slate-400 uppercase tracking-widest font-semibold" id="nodeDetailSub">MONTH --</p>
                     </div>
@@ -264,8 +317,12 @@
             dest: 'epo',         // 'epo' or 'us'
             entity: 'large',     // 'large', 'small', 'micro'
             activeNodeIndex: 0,
-            priorityDate: '',    // YYYY-MM-DD
             
+            // Core Calculator Anchors (Multi-Anchor Mode)
+            priorityDate: '',      // PD (Anchor 1) - String "YYYY-MM-DD"
+            pctFilingDate: '',     // PCTD (Anchor 2) - User manual locked, or empty for automatic
+            nationalEntryDate: '',  // ENTRYD (Anchor 3) - User manual locked, or empty for automatic
+
             // EPO Options (Form 1200 Section 12)
             waiver12_1: false,   // Early processing
             waiver12_2: false,   // Waive Rule 161/162 & Rule 70(2)
@@ -279,14 +336,14 @@
             usTrackOneEnabled: false // USPTO Track One (Prioritized Exam)
         };
 
-        // --- DATE HELPERS ---
+        // --- CALENDAR DATE UTILITIES ---
         function addMonths(dateStr, months) {
             if (!dateStr) return new Date();
             let date = new Date(dateStr);
             let d = date.getDate();
             date.setMonth(date.getMonth() + months);
             if (date.getDate() !== d) {
-                date.setDate(0); // Handle month-end overflow securely
+                date.setDate(0); // Safely handle month-end bounds
             }
             return date;
         }
@@ -299,13 +356,83 @@
             return `${y}-${m}-${d}`;
         }
 
-        function updatePriorityDate(val) {
-            state.priorityDate = val;
-            renderTimeline();
+        // --- MULTI-ANCHOR SYSTEM LOGIC ---
+        function updateCustomDate(anchorType, value) {
+            if (anchorType === 'pd') {
+                state.priorityDate = value;
+                // If user changes PD, we automatically reset dependent auto dates
+                if (!state.pctFilingDate) {
+                    document.getElementById('inputPCTD').value = formatDate(addMonths(value, 12));
+                }
+                if (!state.nationalEntryDate) {
+                    let normalOffset = state.dest === 'epo' ? 31 : 30;
+                    document.getElementById('inputEntryD').value = formatDate(addMonths(value, normalOffset));
+                }
+            } else if (anchorType === 'pctd') {
+                state.pctFilingDate = value;
+                document.getElementById('badgePCT').innerText = value ? "手动锁死" : "自动估算";
+                document.getElementById('badgePCT').className = value ? "text-[9px] bg-indigo-500/10 text-indigo-400 px-1.5 py-0.2 rounded font-mono" : "text-[9px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.2 rounded font-mono";
+                document.getElementById('indicatorPCT').className = value ? "h-1.5 w-1.5 rounded-full bg-indigo-500 animate-pulse" : "h-1.5 w-1.5 rounded-full bg-emerald-500";
+            } else if (anchorType === 'entryd') {
+                state.nationalEntryDate = value;
+                document.getElementById('badgeEntry').innerText = value ? "手动锁死" : "自动估算";
+                document.getElementById('badgeEntry').className = value ? "text-[9px] bg-indigo-500/10 text-indigo-400 px-1.5 py-0.2 rounded font-mono" : "text-[9px] bg-amber-500/10 text-amber-400 px-1.5 py-0.2 rounded font-mono";
+                document.getElementById('indicatorEntry').className = value ? "h-1.5 w-1.5 rounded-full bg-indigo-500 animate-pulse" : "h-1.5 w-1.5 rounded-full bg-amber-500";
+            }
+
+            renderAll();
         }
 
-        // Dynamic Milestone Engine: Monthly offsets are computed rather than fully static.
-        // We define base month and structural labels, but actual node "M-number" will be calculated at runtime.
+        function resetDates() {
+            state.pctFilingDate = '';
+            state.nationalEntryDate = '';
+            
+            document.getElementById('inputPCTD').value = formatDate(addMonths(state.priorityDate, 12));
+            document.getElementById('badgePCT').innerText = "自动估算";
+            document.getElementById('badgePCT').className = "text-[9px] bg-emerald-500/10 text-emerald-400 px-1.5 py-0.2 rounded font-mono";
+            document.getElementById('indicatorPCT').className = "h-1.5 w-1.5 rounded-full bg-emerald-500";
+
+            let normalOffset = state.dest === 'epo' ? 31 : 30;
+            document.getElementById('inputEntryD').value = formatDate(addMonths(state.priorityDate, normalOffset));
+            document.getElementById('badgeEntry').innerText = "自动估算";
+            document.getElementById('badgeEntry').className = "text-[9px] bg-amber-500/10 text-amber-400 px-1.5 py-0.2 rounded font-mono";
+            document.getElementById('indicatorEntry').className = "h-1.5 w-1.5 rounded-full bg-amber-500";
+
+            showToast("日期锚点已重置", "全部阶段截止期均已恢复至官方标准的最迟法定期限。");
+            renderAll();
+        }
+
+        // Core calculations to establish base dates for the timeline dynamically
+        function getCalculatedAnchorDates() {
+            let pd = new Date(state.priorityDate);
+            
+            // 1. PCT Filing Date
+            let pctd;
+            if (state.pctFilingDate) {
+                pctd = new Date(state.pctFilingDate);
+            } else {
+                pctd = addMonths(state.priorityDate, 12);
+            }
+
+            // 2. International Search (ISR): Official rule is max(PD + 16 Months, PCTD + 9 Months)
+            let isrBase1 = addMonths(state.priorityDate, 16);
+            let isrBase2 = formatDate(pctd); // Convert to string first
+            let isrCalculated = addMonths(isrBase2, 9);
+            let isr = isrBase1 > isrCalculated ? isrBase1 : isrCalculated;
+
+            // 3. National Entry Date
+            let ned;
+            let normalOffset = state.dest === 'epo' ? 31 : 30;
+            if (state.nationalEntryDate) {
+                ned = new Date(state.nationalEntryDate);
+            } else {
+                ned = addMonths(state.priorityDate, normalOffset);
+            }
+
+            return { pd, pctd, isr, ned };
+        }
+
+        // --- DETAILED STATIC MILESTONE DATASETS ---
         const baseMilestones = {
             epo: {
                 epo: [
@@ -331,14 +458,14 @@
             us: {
                 epo: [
                     { key: "priority", baseM: 0, title: "优先权确立", sub: "Priority Date", desc: "锁死权利要求，准备全球多国布局。", checklist: ["原始申请文本递交", "锁死公开范围"], guardrail: "美国外观/发明极其重视 IDS（信息披露义务）。在 EPO 国际阶段检索到的所有 D1、D2 对比文件，在后续进入美国时必须全面如实披露，绝不可隐瞒。" },
-                    { key: "entry", baseM: 30, title: "进入美国国家阶段", sub: "USPTO Entry (Month 30)", desc: "向USPTO提交进入371国家阶段申请。由于国际阶段是英文，免除全套翻译成本！", checklist: ["Form PTO-1390 进入请求书", "ADS 表格（Form PTO/AIA/14）", "发明人宣言（Oath/Declaration - PTO/AIA/01）", "IDS 披露书 (Form PTO/SB/08)：披露国际检索(ISR)列出的所有对比文件！"], guardrail: "⚠️ 多项从属大坑：中国常采用多项从属权利要求，美国对此征收大实体 $860 的极高罚金！递交进入时，必须做“初步修改（Preliminary Amendment）”，把多项从属拆成单项从属，并精简总项数 <= 20。" },
+                    { key: "entry", baseM: 30, title: "进入美国国家阶段", sub: "USPTO Entry", desc: "向USPTO提交进入371国家阶段申请。由于国际阶段是英文，免除全套翻译成本！", checklist: ["Form PTO-1390 进入请求书", "ADS 表格（Form PTO/AIA/14）", "发明人宣言（Oath/Declaration - PTO/AIA/01）", "IDS 披露书 (Form PTO/SB/08)：披露国际检索(ISR)列出的所有对比文件！"], guardrail: "⚠️ 多项从属大坑：中国常采用多项从属权利要求，美国对此征收大实体 $860 的极高罚金！递交进入时，必须做“初步修改（Preliminary Amendment）”，把多项从属拆成单项从属，并精简总项数 <= 20。" },
                     { key: "accelerate", baseM: 31, title: "加速通道选择", sub: "PPH / Track One", desc: "决定采用 PPH 或付费的 Track One 优先审查程序实现极速授权。", checklist: ["PPH 请求书 (Form PTO/SB/20PCT)（若适用）", "或 Track One 优先审查请求书及额外缴纳大实体 $4200 官费"], guardrail: "⭐ 方案对冲：美国外观不设 RCE。Track One 提供最高优先级，保证12个月内出最终决定；PPH 为免费通道，只要 EPO 检索正面即可极速入列审查，无需高昂申请费。" },
                     { key: "oa", baseM: 35, title: "一期实质审查", sub: "Non-Final OA", desc: "USPTO审查员发出非最终实质审查意见。美国外观通常是112条图纸驳回。", checklist: ["答辩陈述与修改理由（Remarks）", "符合USPTO阴影与虚线规范的 Replacement Sheets 替换图页"], guardrail: "如果遭遇外观112(a)(b)条阴影不清晰、3D空间无法重构驳回，接受审查员建议，直接将被指出部分改为 broken lines（虚线）予以放弃。不要试图去画深浅，否则会因引入 132条 New Matter（新物质）遭遇致命驳回。" },
                     { key: "grant", baseM: 40, title: "授权与领证", sub: "Issue and Grant", desc: "收到 Notice of Allowance 授权通知书，交公告费，专利正式生效。", checklist: ["Form PTO-85B 缴费单", "缴纳公告与公布规费 (大实体 $1290)"], guardrail: "Notice of Allowance 的3个月缴费期限是刚性的，绝对不可申请延期！一旦逾期，案子将不可撤销地宣告失效。收到通知后必须尽快安排打款。" }
                 ],
                 cnipa: [
                     { key: "priority", baseM: 0, title: "中国优先权确立", sub: "Priority Date", desc: "中文母案递交，确定发明/外观原始权利核心。", checklist: ["中国发明/外观原始申请文本"], guardrail: "如果申请包含外观，请注意：美国外观需要提供阴影和多面正投影图。仅提供中国外观习惯的白模照片，后续在美国可能导致无法确立112条保护边界。" },
-                    { key: "entry", baseM: 30, title: "进入美国国家阶段", sub: "USPTO Entry (Month 30)", desc: "必须将全套中文文本翻译为英文。面临多项从属和超项官费的极限挑战。", checklist: ["全套说明书、权利要求书、附图、摘要的完整英文翻译（成本约 2000-5000 USD）", "初步修改（Preliminary Amendment）：重中之重！强制将所有多项从属改成单项从属，规避罚款！", "发明人宣言、ADS表、IDS表：必须向USPTO提交中国母案检索、中国审查意见（OA）中的所有对比文件和译文！"], guardrail: "🚨 IDS 诚信原则：美国实行极其严苛的 Duty of Disclosure（披露义务）。如果您中国母案已经出过审查意见（OA）或搜出过对比文件，必须在进入美国时一并用 IDS 披露。故意隐瞒可能导致专利即便授权也无法强制执行，甚至被判欺诈无效！" },
+                    { key: "entry", baseM: 30, title: "进入美国国家阶段", sub: "USPTO Entry", desc: "必须将全套中文文本翻译为英文。面临多项从属和超项官费的极限挑战。", checklist: ["全套说明书、权利要求书、附图、摘要的完整英文翻译（成本约 2000-5000 USD）", "初步修改（Preliminary Amendment）：重中之重！强制将所有多项从属改成单项从属，规避罚款！", "发明人宣言、ADS表、IDS表：必须向USPTO提交中国母案检索、中国审查意见（OA）中的所有对比文件和译文！"], guardrail: "🚨 IDS 诚信原则：美国实行极其严苛的 Duty of Disclosure（披露义务）。如果您中国母案已经出过审查意见（OA）或搜出过对比文件，必须在进入美国时一并用 IDS 披露。故意隐瞒可能导致专利即便授权也无法强制执行，甚至被判欺诈无效！" },
                     { key: "accelerate", baseM: 31, title: "加速通道决策", sub: "PPH / Track One", desc: "若中国母案已授权，走双向 Bilateral PPH；或者硬刚付费的 Track One 优先审查。", checklist: ["PPH 请求书 (Bilateral Form PTO/SB/20CN)", "中国母案授权文本及英文译文、中国母案最后一份授权审查通知书及英文译文", "严格的主动修改：使美国权利要求与中国授权权利要求充分对应"], guardrail: "这是中国高科技企业出海美国的“经典高胜率”打法。将美国权利要求改得跟中国授权一致，审查员出于对中国局检索结果的信任，往往能在数月内“一锤定音”直接放行授权。" },
                     { key: "oa", baseM: 45, title: "实质审查与救济", sub: "Office Action Response", desc: "遭遇驳回后进行答辩。若遭遇最终驳回 (Final OA)，可通过 RCE 进行救济。", checklist: ["Non-Final OA 实质答辩书与修改件", "若遭遇 Final OA：提交 RCE（继续审查请求）或提交 CON（延续案）。注意：外观专利不适用 RCE，外观如需继续审查，必须提交 CPA（37 CFR 1.53(d)）或提交延续案。"], guardrail: "Final OA 后的救济手段在发明和外观中有本质区别。发明专利提交第一次 RCE 需支付大实体 $1500（小实体 $600）；外观专利没有 RCE 机制，如需纠缠必须交 CPA 或提延续案。" },
                     { key: "grant", baseM: 50, title: "授权与领证", sub: "Notice of Allowance", desc: "答辩成功，收到授权通知，交公告费，专利正式进入保护期。", checklist: ["Form PTO-85B 缴费传单", "缴纳 Utility Issue Fee 授权费（大实体 $1290）"], guardrail: "成功领证。在专利授权前，如果产品在市场上发生了快速迭代，请评估是否需要在授权前紧急提交一件延续案（Continuation Application），以便在美国用新的权利要求继续圈地保护更新后的产品特征。" }
@@ -346,15 +473,14 @@
             }
         };
 
-        // --- REACTIVE RENDERING ENGINE ---
+        // --- STREAMING_CHUNK: Processing events and routing updates... ---
         function setRoute(r) {
             state.route = r;
             document.getElementById('btn-route-epo').className = r === 'epo' ? 'py-2.5 px-3 text-xs font-semibold rounded-md text-center transition-all-300 bg-indigo-600 text-white flex flex-col items-center justify-center gap-1' : 'py-2.5 px-3 text-xs font-semibold rounded-md text-center transition-all-300 text-slate-400 hover:text-slate-200 flex flex-col items-center justify-center gap-1';
             document.getElementById('btn-route-cnipa').className = r === 'cnipa' ? 'py-2.5 px-3 text-xs font-semibold rounded-md text-center transition-all-300 bg-indigo-600 text-white flex flex-col items-center justify-center gap-1' : 'py-2.5 px-3 text-xs font-semibold rounded-md text-center transition-all-300 text-slate-400 hover:text-slate-200 flex flex-col items-center justify-center gap-1';
             
-            // Adjust defaults
-            state.activeNodeIndex = 0;
             // Clear route-specific acceleration parameters
+            state.activeNodeIndex = 0;
             state.epoPphEnabled = false;
             state.usPphEnabled = false;
             state.usTrackOneEnabled = false;
@@ -368,6 +494,12 @@
             document.getElementById('btn-dest-epo').className = d === 'epo' ? 'py-2.5 px-3 text-xs font-semibold rounded-md text-center transition-all-300 bg-indigo-600 text-white flex flex-col items-center justify-center gap-1' : 'py-2.5 px-3 text-xs font-semibold rounded-md text-center transition-all-300 text-slate-400 hover:text-slate-200 flex flex-col items-center justify-center gap-1';
             document.getElementById('btn-dest-us').className = d === 'us' ? 'py-2.5 px-3 text-xs font-semibold rounded-md text-center transition-all-300 bg-indigo-600 text-white flex flex-col items-center justify-center gap-1' : 'py-2.5 px-3 text-xs font-semibold rounded-md text-center transition-all-300 text-slate-400 hover:text-slate-200 flex flex-col items-center justify-center gap-1';
             
+            // Adjust input entries and default months dynamically based on target destination
+            let normalOffset = d === 'epo' ? 31 : 30;
+            if (!state.nationalEntryDate) {
+                document.getElementById('inputEntryD').value = formatDate(addMonths(state.priorityDate, normalOffset));
+            }
+
             state.activeNodeIndex = 0;
             state.epoPphEnabled = false;
             state.usPphEnabled = false;
@@ -410,11 +542,11 @@
         function toggleUsPph(checked) {
             state.usPphEnabled = checked;
             if (checked && state.usTrackOneEnabled) {
-                state.usTrackOneEnabled = false; // Mutually exclusive in UI for visual impact
+                state.usTrackOneEnabled = false; // Mutually exclusive
                 if (document.getElementById('chk-us-trackone')) document.getElementById('chk-us-trackone').checked = false;
             }
             if (checked) {
-                showToast("美国 PPH 极速加速已激活", "基于 ISA/EPO 的正面审查报告，USPTO 案件排队时间缩短 12-18 个月！而且官费 $0。");
+                showToast("美国 PPH 极速加速已激活", "基于 ISA/EPO 的正面审查报告，USPTO 案件排队时间缩短 12-18 个月！且官费 $0。");
             }
             renderAll();
         }
@@ -450,16 +582,8 @@
             renderToolboxes();
         }
 
-        function optimizeClaims() {
-            state.claimsCount = 20;
-            state.hasMultipleDependents = false;
-            
-            if (document.getElementById('claimsSlider')) document.getElementById('claimsSlider').value = 20;
-            if (document.getElementById('multiDependentToggle')) document.getElementById('multiDependentToggle').checked = false;
-            
-            showToast("权利要求智能优化完成！", "已成功为您将权利要求项数合并精简为 20 项，并将多项从属权利要求解构成单项从属。直接省下天价惩罚附加费！");
-            renderFees();
-            renderToolboxes();
+        function showRouteHelp() {
+            showToast("中欧双向检索路径指南", "【EPO作为ISA】：由EPO直接检索，返华或赴美走PPH畅通无阻，返欧免一千多欧。 【CNIPA作为ISA】：中文PCT进件门槛低，资金压力后推。");
         }
 
         function showToast(title, desc) {
@@ -477,7 +601,7 @@
             toast.className = toast.className.replace('opacity-100 pointer-events-auto transform translate-y-0', 'opacity-0 pointer-events-none transform translate-y-5');
         }
 
-        // --- CALCULATION LOGICS (2026 OFFICIAL TARIFFS) ---
+        // --- STREAMING_CHUNK: Computing 2026/2027 USPTO & EPO fees dynamically... ---
         function calculateFees() {
             let total = 0;
             let currency = "EUR";
@@ -507,7 +631,6 @@
                     breakdown.push({ name: "欧洲补充检索费 (EPO已检索免除)", cost: 0, curr: "EUR", green: true });
                 }
 
-                // PACE or PPH on Europe are $0 official fee
                 if (state.paceEnabled) {
                     breakdown.push({ name: "欧洲 PACE 加速计划申请费", cost: 0, curr: "EUR", green: true });
                 }
@@ -518,7 +641,6 @@
                 total = filing + designation + exam + suppSearch;
             } else {
                 currency = "USD";
-                // USPTO Fees based on 2025/2026/2027 official standards
                 let basic = Math.round(400 * factor);
                 let search = Math.round(770 * factor);
                 let exam = Math.round(880 * factor);
@@ -529,8 +651,6 @@
 
                 total = basic + search + exam;
 
-                // Track One Prioritized Exam Fee: Large $4,200 / Small $1,680 / Micro $840
-                // Plus processing fee $140 / $56 / $28
                 if (state.usTrackOneEnabled) {
                     let trackOneFee = Math.round(4200 * factor);
                     let trackOneProc = Math.round(140 * factor);
@@ -543,7 +663,6 @@
                     breakdown.push({ name: "美国 PPH 快速审查申请费", cost: 0, curr: "USD", green: true });
                 }
 
-                // Claims surcharges
                 if (state.claimsCount > 20) {
                     let overageCount = state.claimsCount - 20;
                     let claimCost = Math.round(overageCount * 100 * factor);
@@ -561,7 +680,6 @@
             return { total, currency, breakdown };
         }
 
-        // Render fee visualizer panel
         function renderFees() {
             const data = calculateFees();
             const calcMainFee = document.getElementById('calcMainFee');
@@ -596,7 +714,6 @@
                 `;
             });
 
-            // Conversion estimates
             let rmbEquiv = Math.round(data.total * (data.currency === 'EUR' ? 8.0 : 7.2));
             html += `
             <div class="flex justify-between items-center py-2 text-indigo-300 font-bold border-t border-slate-800/80 mt-2">
@@ -608,7 +725,7 @@
             feeBreakdownDetails.innerHTML = html;
         }
 
-        // Render left configuration widgets and simulator panels
+        // --- STREAMING_CHUNK: Updating dynamic strategy configuration blocks... ---
         function renderToolboxes() {
             const card1 = document.getElementById('leftToolboxCard1');
             const card2 = document.getElementById('leftToolboxCard2');
@@ -647,314 +764,4 @@
                 card2.innerHTML = `
                     <div class="flex items-center gap-2 mb-3">
                         <div class="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        </div>
-                        <h3 class="text-sm font-bold text-white uppercase tracking-wider">欧洲加速通道配置中心 (Free)</h3>
-                    </div>
-                    
-                    <div class="space-y-3 bg-slate-950 p-3.5 rounded-lg border border-slate-800">
-                        <label class="flex items-start gap-2.5 cursor-pointer select-none">
-                            <input type="checkbox" id="chk-epo-pace" onchange="togglePace(this.checked)" ${state.paceEnabled ? 'checked' : ''} class="mt-1 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-0">
-                            <div class="text-xs">
-                                <span class="font-bold text-white block">PACE 优先审查计划 (PACE Request)</span>
-                                <span class="text-slate-400 text-[10px]">完全免费。实审启动后插队，每轮审查意见下发由原本 6-12 个月压缩到 3 个月内。</span>
-                            </div>
-                        </label>
-
-                        ${state.route === 'cnipa' ? `
-                        <label class="flex items-start gap-2.5 cursor-pointer select-none border-t border-slate-800 pt-3">
-                            <input type="checkbox" id="chk-epo-pph" onchange="toggleEpoPph(this.checked)" ${state.epoPphEnabled ? 'checked' : ''} class="mt-1 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-0">
-                            <div class="text-xs">
-                                <span class="font-bold text-white block">中欧双边 PPH 加速通道</span>
-                                <span class="text-slate-400 text-[10px]">完全免费。依托国内授权案直接提速至欧洲排队前列，最晚在补充检索结束确认实审（R70(2)）前提交。</span>
-                            </div>
-                        </label>` : `
-                        <div class="border-t border-slate-800 pt-2.5 text-[10px] text-slate-500 italic">
-                            * EPO 作为 ISA 路径已被视为“欧洲最快自研案”，无法对自己提 PPH 申请。建议在进入欧洲后直接提 PACE 提速即可。
-                        </div>
-                        `}
-                    </div>
-                `;
-            } else {
-                // Card 1: USPTO Claim Surcharge Optimizer
-                card1.innerHTML = `
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="h-8 w-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                        </div>
-                        <h3 class="text-sm font-bold text-white uppercase tracking-wider">美国国家阶段超项与规费优化器</h3>
-                    </div>
-                    
-                    <div class="space-y-4 bg-slate-950 p-4 rounded-lg border border-slate-800">
-                        <div class="space-y-1">
-                            <div class="flex justify-between text-xs">
-                                <span class="text-slate-400">美国阶段权利要求项数:</span>
-                                <span class="text-indigo-400 font-bold mono" id="usClaimsValText">${state.claimsCount} 项</span>
-                            </div>
-                            <input type="range" id="claimsSlider" min="15" max="40" value="${state.claimsCount}" oninput="setUSClaims(this.value)" class="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
-                            <div class="flex justify-between text-[10px] text-slate-500">
-                                <span>15 项 (基础)</span>
-                                <span>20 项 (免罚临界)</span>
-                                <span>40 项</span>
-                            </div>
-                        </div>
-
-                        <label class="flex items-start gap-2.5 cursor-pointer select-none pt-2 border-t border-slate-800/80">
-                            <input type="checkbox" id="multiDependentToggle" onchange="toggleMultipleDependents(this.checked)" ${state.hasMultipleDependents ? 'checked' : ''} class="mt-1 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-0">
-                            <div class="text-xs">
-                                <span class="font-bold text-white block">保护方案包含多项从属权利要求?</span>
-                                <span class="text-slate-400 text-[10px]">从国内带入的多项从属不加修改会在美国产生高额罚款。</span>
-                            </div>
-                        </label>
-                    </div>
-                `;
-
-                // Card 2: Interactive Optimizer Button (US Acceleration Hub)
-                card2.innerHTML = `
-                    <div class="flex items-center gap-2 mb-3">
-                        <div class="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                        </div>
-                        <h3 class="text-sm font-bold text-white uppercase tracking-wider">美国加速通道决策中心</h3>
-                    </div>
-                    
-                    <div class="space-y-3 bg-slate-950 p-3.5 rounded-lg border border-slate-800">
-                        <label class="flex items-start gap-2.5 cursor-pointer select-none">
-                            <input type="checkbox" id="chk-us-pph" onchange="toggleUsPph(this.checked)" ${state.usPphEnabled ? 'checked' : ''} class="mt-1 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-0">
-                            <div class="text-xs">
-                                <span class="font-bold text-white block">PPH 快速审查通道 (PPH Option)</span>
-                                <span class="text-emerald-400 font-bold text-[10px]">官方规费：$0。</span>
-                                <span class="text-slate-400 text-[10px] block">基于前置局的正向结果申请。最快在2个月内直接下发首期OA审查。</span>
-                            </div>
-                        </label>
-
-                        <label class="flex items-start gap-2.5 cursor-pointer select-none border-t border-slate-800 pt-3">
-                            <input type="checkbox" id="chk-us-trackone" onchange="toggleUsTrackOne(this.checked)" ${state.usTrackOneEnabled ? 'checked' : ''} class="mt-1 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-0">
-                            <div class="text-xs">
-                                <span class="font-bold text-white block">37 CFR 1.102(e) / Track One 优先审查</span>
-                                <span class="text-amber-500 font-bold text-[10px]">官方规费：大实体 $4,340 / 小实体 $1,736 / 微实体 $868</span>
-                                <span class="text-slate-400 text-[10px] block">最顶级的氪金加速通道！不限制对应性。USPTO 刚性承诺：自开启之日起12个月内必须作出最终驳回或授权意见。</span>
-                            </div>
-                        </label>
-                    </div>
-                `;
-            }
-        }
-
-        // Calculate dynamic month milestones based on active acceleration states
-        function getDynamicMonths() {
-            let baseArray = JSON.parse(JSON.stringify(baseMilestones[state.dest][state.route]));
-            
-            // Adjustments for EPO destination
-            if (state.dest === 'epo') {
-                // If route = cnipa (M0, M12, M16, M31, M32, M38, M44, M55)
-                // If route = epo (M0, M12, M16, M31, M32, M36, M40)
-                
-                let shift12_1 = state.waiver12_1; // true/false
-                let shift12_2 = state.waiver12_2; // true/false
-                let pace = state.paceEnabled;
-                let pph = state.epoPphEnabled;
-
-                baseArray.forEach(node => {
-                    node.originalM = node.baseM;
-                    node.diff = 0;
-
-                    // Apply early processing waiver (12.1)
-                    if (shift12_1 && node.baseM >= 31) {
-                        // Normally waits until month 31. Early processing allows skipping this wait, starting national phase earlier
-                        // Practically shifts downstream dates forward by up to 2 months
-                        node.diff += 2;
-                    }
-
-                    // Apply 12.2 Waiver (Waiving R161/R162 communications)
-                    if (shift12_2) {
-                        if (state.route === 'epo') {
-                            if (node.key === "r161") { node.skipped = true; }
-                            if (node.baseM >= 36) { node.diff += 6; } // Skips the 6 months R161 communication wait
-                        } else { // route == cnipa
-                            if (node.key === "r161") { node.skipped = true; }
-                            if (node.key === "sesr") { node.diff += 6; } // SESR happens 6 months faster
-                            if (node.key === "sub_exam_cn") { node.skipped = true; } // Skips R70(2) proceed confirmation wait
-                            if (node.baseM >= 55) { node.diff += 12; } // Total skip of both waits is ~12 months
-                        }
-                    }
-
-                    // Apply PACE speedup
-                    if (pace && node.key === "grant") {
-                        node.diff += 4; // Exam cycle cut down by ~4 months
-                    }
-
-                    // Apply PPH (CNIPA route only)
-                    if (pph && state.route === 'cnipa') {
-                        if (node.key === "sub_exam_cn" || node.key === "grant") {
-                            node.diff += 6; // Examination takes 6 months less
-                        }
-                    }
-
-                    node.currentM = Math.max(0, node.baseM - node.diff);
-                });
-            } else {
-                // Adjustments for US destination
-                // Route EPO: [priority:0, entry:30, accelerate:31, oa:35, grant:40]
-                // Route CNIPA: [priority:0, entry:30, accelerate:31, oa:45, grant:50]
-                let trackOne = state.usTrackOneEnabled;
-                let pph = state.usPphEnabled;
-
-                baseArray.forEach(node => {
-                    node.originalM = node.baseM;
-                    node.diff = 0;
-
-                    if (trackOne) {
-                        if (node.key === "oa") {
-                            node.diff += (state.route === 'epo' ? 2 : 10); // Track One gives first OA extremely fast
-                        }
-                        if (node.key === "grant") {
-                            node.diff += (state.route === 'epo' ? 5 : 12); // Under 12 months for final decision
-                        }
-                    } else if (pph) {
-                        if (node.key === "oa") {
-                            node.diff += (state.route === 'epo' ? 1 : 6); 
-                        }
-                        if (node.key === "grant") {
-                            node.diff += (state.route === 'epo' ? 3 : 8); 
-                        }
-                    }
-
-                    node.currentM = Math.max(0, node.baseM - node.diff);
-                });
-            }
-
-            return baseArray;
-        }
-
-        // Render dynamic timelines with adaptive visual modes
-        function renderTimeline() {
-            const container = document.getElementById('timelineNodesContainer');
-            const activeLine = document.getElementById('timelineActiveLine');
-            const speedupStatus = document.getElementById('timelineSpeedupStatus');
-            
-            const currentNodes = getDynamicMonths();
-            const activeNode = currentNodes[state.activeNodeIndex];
-
-            // Calculate total acceleration months
-            let maxDiff = 0;
-            currentNodes.forEach(n => {
-                if (n.diff > maxDiff) maxDiff = n.diff;
-            });
-
-            // Set Header Status
-            if (state.dest === 'epo') {
-                if (state.waiver12_1 && state.waiver12_2 && state.paceEnabled) {
-                    speedupStatus.innerText = `🔥 极限推进模式 (已省约 ${maxDiff} 个月)`;
-                    speedupStatus.className = "text-xs text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full shadow-lg shadow-emerald-500/10";
-                } else if (state.waiver12_1 || state.waiver12_2 || state.paceEnabled || state.epoPphEnabled) {
-                    speedupStatus.innerText = `⚡ 加速处理中 (已省约 ${maxDiff} 个月)`;
-                    speedupStatus.className = "text-xs text-indigo-400 font-bold bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-full";
-                } else {
-                    speedupStatus.innerText = "普通排队模式";
-                    speedupStatus.className = "text-xs text-slate-400 font-medium bg-slate-800 border border-slate-700 px-2.5 py-1 rounded-full";
-                }
-            } else {
-                if (state.usTrackOneEnabled) {
-                    speedupStatus.innerText = `🚀 Track One 极速氪金模式 (已省约 ${maxDiff} 个月)`;
-                    speedupStatus.className = "text-xs text-amber-400 font-bold bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full shadow-lg shadow-emerald-500/10";
-                } else if (state.usPphEnabled) {
-                    speedupStatus.innerText = `⚡ PPH 绿色通道加速 (已省约 ${maxDiff} 个月)`;
-                    speedupStatus.className = "text-xs text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full";
-                } else {
-                    speedupStatus.innerText = "普通排队模式";
-                    speedupStatus.className = "text-xs text-slate-400 font-medium bg-slate-800 border border-slate-700 px-2.5 py-1 rounded-full";
-                }
-            }
-
-            // Render Node HTML blocks
-            let html = "";
-            let widthPercentage = (state.activeNodeIndex / (currentNodes.length - 1)) * 100;
-            activeLine.style.width = `${widthPercentage}%`;
-
-            currentNodes.forEach((node, idx) => {
-                let isPassed = idx <= state.activeNodeIndex;
-                let isActive = idx === state.activeNodeIndex;
-
-                let nodeStyle = "border-slate-800 bg-slate-950 text-slate-400 hover:border-indigo-400";
-                if (isActive) {
-                    nodeStyle = "border-indigo-500 bg-indigo-600 text-white ring-4 ring-indigo-500/30 scale-110 shadow-lg shadow-indigo-500/20";
-                } else if (isPassed) {
-                    nodeStyle = "border-emerald-500 bg-emerald-500/10 text-emerald-400";
-                }
-
-                // Skipped nodes due to waiver
-                let isSkipped = node.skipped || false;
-
-                // Build month text (e.g. M36 or M32 (-4m))
-                let monthLabel = `M${node.currentM}`;
-                if (node.diff > 0 && !isSkipped && node.currentM !== node.baseM) {
-                    monthLabel = `<span class="text-[10px] text-emerald-400 font-black block">M${node.currentM}</span><span class="text-[8px] text-emerald-500 block font-bold mt-[-4px]">-${node.diff}m</span>`;
-                } else {
-                    monthLabel = `<span class="text-xs font-black">${monthLabel}</span>`;
-                }
-
-                // Dynamic date calculation
-                let nodeDateStr = formatDate(addMonths(state.priorityDate, node.currentM));
-
-                html += `
-                <button onclick="setActiveNode(${idx})" class="flex flex-col items-center focus:outline-none transition-all-300 group max-w-[100px] relative ${isSkipped ? 'opacity-40 pointer-events-none' : ''}">
-                    <div class="h-12 w-12 rounded-full border-2 flex flex-col items-center justify-center z-10 transition-all-300 ${isSkipped ? 'border-dashed border-slate-700 bg-slate-900 text-slate-600 line-through' : nodeStyle}">
-                        ${isSkipped ? '✖' : monthLabel}
-                    </div>
-                    <span class="text-[11px] font-semibold mt-2 text-center truncate w-full ${isActive ? 'text-indigo-400 font-bold' : isPassed ? 'text-slate-300' : 'text-slate-500'} transition-all-300 group-hover:text-indigo-400">
-                        ${node.title}
-                    </span>
-                    <span class="text-[9px] font-mono mt-0.5 text-center ${isActive ? 'text-indigo-300 font-bold' : isPassed ? 'text-emerald-400' : 'text-slate-500'}">
-                        ${isSkipped ? '--' : nodeDateStr}
-                    </span>
-                    ${isSkipped ? `<span class="absolute top-[-15px] bg-slate-900 text-slate-500 text-[8px] font-bold px-1 rounded border border-slate-700 select-none">已跳过等待</span>` : ''}
-                </button>
-                `;
-            });
-
-            container.innerHTML = html;
-
-            // Render Right Detail Panel based on active node
-            let activeDateStr = formatDate(addMonths(state.priorityDate, activeNode.currentM));
-            document.getElementById('nodeDetailNum').innerHTML = `M${activeNode.currentM}`;
-            document.getElementById('nodeDetailName').innerText = activeNode.title;
-            document.getElementById('nodeDetailSub').innerHTML = `${activeNode.sub} &nbsp;|&nbsp; <span class="text-indigo-400 font-mono font-bold">${activeDateStr}</span>`;
-            document.getElementById('nodeDefenseTip').innerText = activeNode.guardrail;
-
-            let checkHtml = "";
-            activeNode.checklist.forEach(item => {
-                checkHtml += `
-                <li class="flex items-start gap-2 leading-relaxed">
-                    <span class="text-emerald-400 shrink-0 select-none">✔</span>
-                    <span>${item}</span>
-                </li>
-                `;
-            });
-            document.getElementById('nodeChecklist').innerHTML = checkHtml;
-        }
-
-        function setActiveNode(idx) {
-            state.activeNodeIndex = idx;
-            renderTimeline();
-        }
-
-        // Master controller function to redraw UI completely
-        function renderAll() {
-            renderFees();
-            renderToolboxes();
-            renderTimeline();
-        }
-
-        // --- WINDOW BOOTSTRAPPING ---
-        window.onload = function() {
-            let defaultDate = new Date();
-            defaultDate.setMonth(defaultDate.getMonth() - 12);
-            state.priorityDate = defaultDate.toISOString().split('T')[0];
-            document.getElementById('priorityDatePicker').value = state.priorityDate;
-            renderAll();
-        };
-    </script>
-
-</body>
-</html>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-1
