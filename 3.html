@@ -764,4 +764,351 @@
                 card2.innerHTML = `
                     <div class="flex items-center gap-2 mb-3">
                         <div class="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-1
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <h3 class="text-sm font-bold text-white uppercase tracking-wider">欧洲加速通道配置中心 (Free)</h3>
+                    </div>
+                    
+                    <div class="space-y-3 bg-slate-950 p-3.5 rounded-lg border border-slate-800">
+                        <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                            <input type="checkbox" id="chk-epo-pace" onchange="togglePace(this.checked)" ${state.paceEnabled ? 'checked' : ''} class="mt-1 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-0">
+                            <div class="text-xs">
+                                <span class="font-bold text-white block">PACE 优先审查计划 (PACE Request)</span>
+                                <span class="text-slate-400 text-[10px]">完全免费。实审启动后插队，每轮审查意见下发由原本 6-12 个月压缩到 3 个月内。</span>
+                            </div>
+                        </label>
+
+                        ${state.route === 'cnipa' ? `
+                        <label class="flex items-start gap-2.5 cursor-pointer select-none border-t border-slate-800 pt-3">
+                            <input type="checkbox" id="chk-epo-pph" onchange="toggleEpoPph(this.checked)" ${state.epoPphEnabled ? 'checked' : ''} class="mt-1 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-0">
+                            <div class="text-xs">
+                                <span class="font-bold text-white block">中欧双边 PPH 加速通道</span>
+                                <span class="text-slate-400 text-[10px]">完全免费。依托国内授权案直接提速至欧洲排队前列，最晚在补充检索结束确认实审（R70(2)）前提交。</span>
+                            </div>
+                        </label>` : `
+                        <div class="border-t border-slate-800 pt-2.5 text-[10px] text-slate-500 italic">
+                            * EPO 作为 ISA 路径已被视为“欧洲最快自研案”，无法对自己提 PPH 申请。建议在进入欧洲后直接提 PACE 提速即可。
+                        </div>
+                        `}
+                    </div>
+                `;
+            } else {
+                // Card 1: USPTO Claim Surcharge Optimizer
+                card1.innerHTML = `
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="h-8 w-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                        </div>
+                        <h3 class="text-sm font-bold text-white uppercase tracking-wider">美国国家阶段超项与规费优化器</h3>
+                    </div>
+                    
+                    <div class="space-y-4 bg-slate-950 p-4 rounded-lg border border-slate-800">
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-xs">
+                                <span class="text-slate-400">美国阶段权利要求项数:</span>
+                                <span class="text-indigo-400 font-bold mono" id="usClaimsValText">${state.claimsCount} 项</span>
+                            </div>
+                            <input type="range" id="claimsSlider" min="15" max="40" value="${state.claimsCount}" oninput="setUSClaims(this.value)" class="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500">
+                            <div class="flex justify-between text-[10px] text-slate-500">
+                                <span>15 项 (基础)</span>
+                                <span>20 项 (免罚临界)</span>
+                                <span>40 项</span>
+                            </div>
+                        </div>
+
+                        <label class="flex items-start gap-2.5 cursor-pointer select-none pt-2 border-t border-slate-800/80">
+                            <input type="checkbox" id="multiDependentToggle" onchange="toggleMultipleDependents(this.checked)" ${state.hasMultipleDependents ? 'checked' : ''} class="mt-1 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-0">
+                            <div class="text-xs">
+                                <span class="font-bold text-white block">保护方案包含多项从属权利要求?</span>
+                                <span class="text-slate-400 text-[10px]">从国内带入的多项从属不加修改会在美国产生高额罚款。如果在此处超项，将面临严重的惩罚附加规费。</span>
+                            </div>
+                        </label>
+                    </div>
+                `;
+
+                // Card 2: Interactive Optimizer Button (US Acceleration Hub)
+                card2.innerHTML = `
+                    <div class="flex items-center gap-2 mb-3">
+                        <div class="h-8 w-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        </div>
+                        <h3 class="text-sm font-bold text-white uppercase tracking-wider">美国加速通道决策中心</h3>
+                    </div>
+                    
+                    <div class="space-y-3 bg-slate-950 p-3.5 rounded-lg border border-slate-800">
+                        <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                            <input type="checkbox" id="chk-us-pph" onchange="toggleUsPph(this.checked)" ${state.usPphEnabled ? 'checked' : ''} class="mt-1 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-0">
+                            <div class="text-xs">
+                                <span class="font-bold text-white block">PPH 快速审查通道 (PPH Option)</span>
+                                <span class="text-emerald-400 font-bold text-[10px]">官方规费：$0。</span>
+                                <span class="text-slate-400 text-[10px] block">基于前置局的正向结果申请。最快在2个月内直接下发首期OA审查。</span>
+                            </div>
+                        </label>
+
+                        <label class="flex items-start gap-2.5 cursor-pointer select-none border-t border-slate-800 pt-3">
+                            <input type="checkbox" id="chk-us-trackone" onchange="toggleUsTrackOne(this.checked)" ${state.usTrackOneEnabled ? 'checked' : ''} class="mt-1 rounded border-slate-800 bg-slate-900 text-indigo-600 focus:ring-0">
+                            <div class="text-xs">
+                                <span class="font-bold text-white block">37 CFR 1.102(e) / Track One 优先审查</span>
+                                <span class="text-amber-500 font-bold text-[10px]">官方规费：大实体 $4,340 / 小实体 $1,736 / 微实体 $868</span>
+                                <span class="text-slate-400 text-[10px] block">最顶级的付费加速通道！不限制对应性。USPTO 刚性承诺：自开启之日起12个月内必须作出最终驳回或授权意见。</span>
+                            </div>
+                        </label>
+                    </div>
+                `;
+            }
+        }
+
+        // --- STREAMING_CHUNK: Computing dynamic dates using multi-anchor logic chain... ---
+        // Generates dynamic offsets and actual calendar date mapping.
+        function getTimelineNodesWithDynamicDates() {
+            let baseArray = JSON.parse(JSON.stringify(baseMilestones[state.dest][state.route]));
+            let anchors = getCalculatedAnchorDates();
+
+            // Set dynamic header diagnosis texts
+            let diagnosisText = "试算引擎：全流程采用官方理论计算值 (PD ➜ M0 传导)。";
+            let calcLogicText = "优先权日 ➜ 基础全链条推算";
+            
+            if (state.pctFilingDate && state.nationalEntryDate) {
+                diagnosisText = "极速联动：已手动锁死【PCT递交日】和【实际国家进入日】，后续节点完全以此展开链式推算。";
+                calcLogicText = "PCT日 & 进入日双重断层联动 ➜ 后续推导";
+            } else if (state.pctFilingDate) {
+                diagnosisText = "链式试算：【PCT递交日】已被手动覆盖，国际检索（ISR）自动捕获该更优节点。";
+                calcLogicText = "用户PCT日 ➜ ISR联动 / 优先权日 ➜ 进入日";
+            } else if (state.nationalEntryDate) {
+                diagnosisText = "锚点漂移：【实际国家进入日】已被手动覆盖。进入后所有官方节点均基于此特定日期重置偏移！";
+                calcLogicText = "用户自定义进入国家日 ➜ 后续审查节点完全切断";
+            }
+            
+            document.getElementById('calcDiagnosisText').innerText = diagnosisText;
+            document.getElementById('calcLogicDesc').innerText = calcLogicText;
+
+            // Offset adjustments
+            if (state.dest === 'epo') {
+                let shift12_1 = state.waiver12_1; 
+                let shift12_2 = state.waiver12_2; 
+                let pace = state.paceEnabled;
+                let pph = state.epoPphEnabled;
+
+                baseArray.forEach(node => {
+                    node.originalM = node.baseM;
+                    node.diff = 0;
+
+                    // 12.1 Early Processing Waiver
+                    if (shift12_1 && node.baseM >= 31) {
+                        node.diff += 2; 
+                    }
+
+                    // 12.2 Rule 161/162 & Rule 70(2) Waiver
+                    if (shift12_2) {
+                        if (state.route === 'epo') {
+                            if (node.key === "r161") { node.skipped = true; }
+                            if (node.baseM >= 36) { node.diff += 6; }
+                        } else { 
+                            if (node.key === "r161") { node.skipped = true; }
+                            if (node.key === "sesr") { node.diff += 6; } 
+                            if (node.key === "sub_exam_cn") { node.skipped = true; } 
+                            if (node.baseM >= 55) { node.diff += 12; } 
+                        }
+                    }
+
+                    // PACE
+                    if (pace && node.key === "grant") {
+                        node.diff += 4; 
+                    }
+
+                    // PPH CNIPA
+                    if (pph && state.route === 'cnipa') {
+                        if (node.key === "sub_exam_cn" || node.key === "grant") {
+                            node.diff += 6; 
+                        }
+                    }
+
+                    node.currentM = Math.max(0, node.baseM - node.diff);
+
+                    // --- CALENDAR DATE CHAINING ASSIGNMENTS ---
+                    if (node.key === "priority") {
+                        node.calendarDate = anchors.pd;
+                    } else if (node.key === "pct_filing") {
+                        node.calendarDate = anchors.pctd;
+                    } else if (node.key === "isr") {
+                        node.calendarDate = anchors.isr;
+                    } else {
+                        // All post-entry nodes anchor directly on the "ned" (National Entry Date) calculated dynamically
+                        // We deduct month offsets relative to the base entry month
+                        let offsetFromEntry = node.baseM - 31; // how many months after theoretical Month 31
+                        let finalOffset = offsetFromEntry - node.diff;
+                        node.calendarDate = addMonths(formatDate(anchors.ned), finalOffset);
+                    }
+                });
+            } else {
+                let trackOne = state.usTrackOneEnabled;
+                let pph = state.usPphEnabled;
+
+                baseArray.forEach(node => {
+                    node.originalM = node.baseM;
+                    node.diff = 0;
+
+                    if (trackOne) {
+                        if (node.key === "oa") {
+                            node.diff += (state.route === 'epo' ? 2 : 10); 
+                        }
+                        if (node.key === "grant") {
+                            node.diff += (state.route === 'epo' ? 5 : 12); 
+                        }
+                    } else if (pph) {
+                        if (node.key === "oa") {
+                            node.diff += (state.route === 'epo' ? 1 : 6); 
+                        }
+                        if (node.key === "grant") {
+                            node.diff += (state.route === 'epo' ? 3 : 8); 
+                        }
+                    }
+
+                    node.currentM = Math.max(0, node.baseM - node.diff);
+
+                    // --- CALENDAR DATE CHAINING ASSIGNMENTS (US) ---
+                    if (node.key === "priority") {
+                        node.calendarDate = anchors.pd;
+                    } else {
+                        let offsetFromEntry = node.baseM - 30; // base entry month for USA is 30
+                        let finalOffset = offsetFromEntry - node.diff;
+                        node.calendarDate = addMonths(formatDate(anchors.ned), finalOffset);
+                    }
+                });
+            }
+
+            return baseArray;
+        }
+
+        // --- STREAMING_CHUNK: Rendering the interactive timeline components... ---
+        function renderTimeline() {
+            const container = document.getElementById('timelineNodesContainer');
+            const activeLine = document.getElementById('timelineActiveLine');
+            const speedupStatus = document.getElementById('timelineSpeedupStatus');
+            
+            const currentNodes = getTimelineNodesWithDynamicDates();
+            const activeNode = currentNodes[state.activeNodeIndex];
+
+            // Set Speedup status text
+            let maxDiff = 0;
+            currentNodes.forEach(n => {
+                if (n.diff > maxDiff) maxDiff = n.diff;
+            });
+
+            if (state.dest === 'epo') {
+                if (state.waiver12_1 && state.waiver12_2 && state.paceEnabled) {
+                    speedupStatus.innerText = `🔥 极速推进模式 (已省约 ${maxDiff} 个月)`;
+                    speedupStatus.className = "text-xs text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full shadow-lg shadow-emerald-500/10";
+                } else if (state.waiver12_1 || state.waiver12_2 || state.paceEnabled || state.epoPphEnabled) {
+                    speedupStatus.innerText = `⚡ 加速处理中 (已省约 ${maxDiff} 个月)`;
+                    speedupStatus.className = "text-xs text-indigo-400 font-bold bg-indigo-500/10 border border-indigo-500/20 px-2.5 py-1 rounded-full";
+                } else {
+                    speedupStatus.innerText = "普通排队模式";
+                    speedupStatus.className = "text-xs text-slate-400 font-medium bg-slate-800 border border-slate-700 px-2.5 py-1 rounded-full";
+                }
+            } else {
+                if (state.usTrackOneEnabled) {
+                    speedupStatus.innerText = `🚀 Track One 极速氪金模式 (已省约 ${maxDiff} 个月)`;
+                    speedupStatus.className = "text-xs text-amber-400 font-bold bg-amber-500/10 border border-amber-500/20 px-2.5 py-1 rounded-full shadow-lg shadow-emerald-500/10";
+                } else if (state.usPphEnabled) {
+                    speedupStatus.innerText = `⚡ PPH 绿色通道加速 (已省约 ${maxDiff} 个月)`;
+                    speedupStatus.className = "text-xs text-emerald-400 font-bold bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-full";
+                } else {
+                    speedupStatus.innerText = "普通排队模式";
+                    speedupStatus.className = "text-xs text-slate-400 font-medium bg-slate-800 border border-slate-700 px-2.5 py-1 rounded-full";
+                }
+            }
+
+            // Render Nodes
+            let html = "";
+            let widthPercentage = (state.activeNodeIndex / (currentNodes.length - 1)) * 100;
+            activeLine.style.width = `${widthPercentage}%`;
+
+            currentNodes.forEach((node, idx) => {
+                let isPassed = idx <= state.activeNodeIndex;
+                let isActive = idx === state.activeNodeIndex;
+
+                let nodeStyle = "border-slate-800 bg-slate-950 text-slate-400 hover:border-indigo-400";
+                if (isActive) {
+                    nodeStyle = "border-indigo-500 bg-indigo-600 text-white ring-4 ring-indigo-500/30 scale-110 shadow-lg shadow-indigo-500/20";
+                } else if (isPassed) {
+                    nodeStyle = "border-emerald-500 bg-emerald-500/10 text-emerald-400";
+                }
+
+                let isSkipped = node.skipped || false;
+
+                // Format month text
+                let monthLabel = `M${node.currentM}`;
+                if (node.diff > 0 && !isSkipped && node.currentM !== node.baseM) {
+                    monthLabel = `<span class="text-[10px] text-emerald-400 font-black block">M${node.currentM}</span><span class="text-[8px] text-emerald-500 block font-bold mt-[-4px]">-${node.diff}m</span>`;
+                } else {
+                    monthLabel = `<span class="text-xs font-black">${monthLabel}</span>`;
+                }
+
+                let formattedCalDate = formatDate(node.calendarDate);
+
+                html += `
+                <button onclick="setActiveNode(${idx})" class="flex flex-col items-center focus:outline-none transition-all-300 group max-w-[105px] relative ${isSkipped ? 'opacity-40 pointer-events-none' : ''}">
+                    <div class="h-12 w-12 rounded-full border-2 flex flex-col items-center justify-center z-10 transition-all-300 ${isSkipped ? 'border-dashed border-slate-700 bg-slate-900 text-slate-600 line-through' : nodeStyle}">
+                        ${isSkipped ? '✖' : monthLabel}
+                    </div>
+                    <span class="text-[11px] font-semibold mt-2 text-center truncate w-full ${isActive ? 'text-indigo-400 font-bold' : isPassed ? 'text-slate-300' : 'text-slate-500'} transition-all-300 group-hover:text-indigo-400">
+                        ${node.title}
+                    </span>
+                    <span class="text-[9px] font-mono mt-0.5 text-center ${isActive ? 'text-indigo-300 font-bold' : isPassed ? 'text-emerald-400' : 'text-slate-500'}">
+                        ${isSkipped ? '--' : formattedCalDate}
+                    </span>
+                    ${isSkipped ? `<span class="absolute top-[-15px] bg-slate-900 text-slate-500 text-[8px] font-bold px-1 rounded border border-slate-700 select-none">已跳过等待</span>` : ''}
+                </button>
+                `;
+            });
+
+            container.innerHTML = html;
+
+            // Render Right Details Panel based on the active node
+            let activeDateStr = formatDate(activeNode.calendarDate);
+            document.getElementById('nodeDetailNum').innerHTML = `M${activeNode.currentM}`;
+            document.getElementById('nodeDetailName').innerText = activeNode.title;
+            document.getElementById('nodeDetailSub').innerHTML = `${activeNode.sub} &nbsp;|&nbsp; <span class="text-indigo-400 font-mono font-bold">${activeDateStr}</span>`;
+            document.getElementById('nodeDefenseTip').innerText = activeNode.guardrail;
+
+            let checkHtml = "";
+            activeNode.checklist.forEach(item => {
+                checkHtml += `
+                <li class="flex items-start gap-2 leading-relaxed">
+                    <span class="text-emerald-400 shrink-0 select-none">✔</span>
+                    <span>${item}</span>
+                </li>
+                `;
+            });
+            document.getElementById('nodeChecklist').innerHTML = checkHtml;
+        }
+
+        function setActiveNode(idx) {
+            state.activeNodeIndex = idx;
+            renderTimeline();
+        }
+
+        function renderAll() {
+            renderFees();
+            renderToolboxes();
+            renderTimeline();
+        }
+
+        // --- WINDOW INITIALIZATION & BOOTSTRAPPING ---
+        window.onload = function() {
+            // Default setup: Priority date set to exactly 1 year ago (Month -12) to simulate current PCT active lifecycle.
+            let defaultDate = new Date();
+            defaultDate.setMonth(defaultDate.getMonth() - 12);
+            state.priorityDate = defaultDate.toISOString().split('T')[0];
+            
+            // Set input values
+            document.getElementById('inputPD').value = state.priorityDate;
+            document.getElementById('inputPCTD').value = formatDate(addMonths(state.priorityDate, 12));
+            document.getElementById('inputEntryD').value = formatDate(addMonths(state.priorityDate, 31));
+
+            renderAll();
+        };
+    </script>
+</body>
+</html>
