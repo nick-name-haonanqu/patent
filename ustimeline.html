@@ -504,7 +504,7 @@
                     '逾期提交的 PCT 国际申请文本及传送费'
                 ],
                 getFees: (entity) => {
-                    let feeMap = { 'large': 2100, 'small': 840, 'micro': 420 };
+                    let feeMap = { 'large': 2260, 'small': 1200, 'micro': 600 };
                     let cost = feeMap[entity];
                     return { cost, curr: 'USD', name: '美国优先权恢复规费(37 CFR 1.55(c))' };
                 }
