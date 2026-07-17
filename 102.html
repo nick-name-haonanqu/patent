@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USPTO FITF Examiner Interactive Training Portal - Finnegan Edition</title>
+    <title>USPTO AIA & Pre-AIA 跨境现有技术诊断与双语对照数据库工作站</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- MathJax for LaTeX Rendering -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es6/tex-mml-chtml.js"></script>
     
     <style>
         body {
@@ -19,7 +22,29 @@
         .font-mono-code {
             font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
         }
-        /* Custom subtle scrollbar */
+        /* Visual states for flow chart nodes */
+        .flow-node-inactive {
+            border-color: #cbd5e1 !important;
+            background-color: #ffffff !important;
+            color: #64748b !important;
+        }
+        .flow-node-active {
+            border-color: #0096b1 !important;
+            background-color: #f0fdfa !important;
+            color: #0f766e !important;
+            box-shadow: 0 4px 15px rgba(0, 150, 177, 0.15);
+        }
+        .flow-node-pass {
+            border-color: #10b981 !important;
+            background-color: #f0fdf4 !important;
+            color: #15803d !important;
+        }
+        .flow-node-block {
+            border-color: #ef4444 !important;
+            background-color: #fef2f2 !important;
+            color: #b91c1c !important;
+        }
+        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -34,515 +59,1437 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
-        /* SVG Timeline Styling */
-        .timeline-axis {
-            stroke: #cbd5e1;
-            stroke-width: 3;
-            stroke-dasharray: 4 2;
-        }
-        .timeline-axis-solid {
-            stroke: #94a3b8;
-            stroke-width: 3;
-        }
-        /* Pointing Indicator Glow */
-        .glow-point {
-            animation: pulse-glow 2s infinite;
-        }
-        @keyframes pulse-glow {
-            0% { r: 5; opacity: 1; }
-            50% { r: 12; opacity: 0.4; }
-            100% { r: 5; opacity: 1; }
-        }
     </style>
 </head>
 <body class="text-slate-700 min-h-screen flex flex-col antialiased">
 
     <!-- Finnegan Premium Navy and Teal Header -->
-    <header class="bg-[#0b2545] border-b-4 border-[#0096b1] text-white shadow-md sticky top-0 z-50">
-        <div class="max-w-[1600px] mx-auto px-4 py-4 sm:px-6 flex flex-col xl:flex-row items-center justify-between gap-4">
+    <header class="bg-[#0b2545] border-b-4 border-[#0096b1] sticky top-0 z-50 text-white shadow-md">
+        <div class="max-w-[1600px] mx-auto px-4 py-3 sm:px-6 flex flex-col xl:flex-row items-center justify-between gap-4">
             <div class="flex items-center space-x-3.5">
                 <div class="bg-[#0096b1] p-2.5 rounded-xl text-white shadow-lg shadow-[#0096b1]/20">
-                    <i class="fa-solid fa-graduation-cap text-2xl animate-bounce"></i>
+                    <i class="fa-solid fa-scale-balanced text-2xl"></i>
                 </div>
                 <div>
                     <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-white flex flex-wrap items-center gap-2">
-                        USPTO FITF 官方审查员综合培训与图示化互动教学系统
-                        <span class="bg-[#0096b1]/20 text-[#00b4d8] text-[10px] px-2 py-0.5 rounded font-mono-code border border-[#0096b1]/30">Slide 102(a)(1) & (a)(2) Core Edition</span>
+                        美国专利法现有技术智能测算与中英双语对照知识工作站
+                        <span class="bg-[#0096b1]/20 text-[#00b4d8] text-[10px] px-2 py-0.5 rounded font-mono-code border border-[#0096b1]/30">AIA & Pre-AIA Consolidated</span>
                     </h1>
-                    <p class="text-[11px] text-slate-300">
-                        依据 MPEP 2100 与 USPTO Official Training Slides (6-18 Final with Talking Points) 精确编译
+                    <p class="text-xs text-slate-300">
+                        深度整合 AIA 3(n)(1) 过渡期法则、Hilmer Doctrine、PCT 英文公开限制、Rule 131 宣誓退回算法
                     </p>
                 </div>
             </div>
             
-            <!-- 三维教学区切换选项卡 -->
-            <div class="flex space-x-1 bg-[#134074] p-1 rounded-xl border border-slate-700/40">
-                <button onclick="switchSection('vis-hub')" id="btn-vis-hub" class="px-4 py-2 text-xs font-bold rounded-lg bg-[#0096b1] text-white transition-all shadow-md">
-                    <i class="fa-solid fa-chart-line mr-1.5"></i>1. 官方案例 timeline 图示化教学
+            <!-- 主导航 Tabs -->
+            <div class="flex flex-wrap gap-1 bg-[#134074] p-1 rounded-xl border border-slate-700/40 text-[11px] sm:text-xs font-bold">
+                <button onclick="switchTab('governing-law')" id="tab-btn-governing-law" class="px-3 py-2 rounded-lg bg-[#0096b1] text-white transition-all shadow-md">
+                    <i class="fa-solid fa-gavel mr-1"></i>1. 风险专利法规判定
                 </button>
-                <button onclick="switchSection('sandbox')" id="btn-sandbox" class="px-4 py-2 text-xs font-bold rounded-lg text-slate-200 hover:text-white transition-all">
-                    <i class="fa-solid fa-microchip mr-1.5"></i>2. 跨境现有技术测算沙盘
+                <button onclick="switchTab('ref-date')" id="tab-btn-ref-date" class="px-3 py-2 rounded-lg text-slate-200 hover:text-white transition-all">
+                    <i class="fa-solid fa-calculator mr-1"></i>2. 跨境现有技术测算沙盘
                 </button>
-                <button onclick="switchSection('exam-room')" id="btn-exam-room" class="px-4 py-2 text-xs font-bold rounded-lg text-slate-200 hover:text-white transition-all">
-                    <i class="fa-solid fa-gavel mr-1.5"></i>3. 审查员上岗模拟自测
+                <button onclick="switchTab('scenarios')" id="tab-btn-scenarios" class="px-3 py-2 rounded-lg text-slate-200 hover:text-white transition-all">
+                    <i class="fa-solid fa-graduation-cap mr-1"></i>3. USPTO 官方案例学习
+                </button>
+                <button onclick="switchTab('statutes')" id="tab-btn-statutes" class="px-3 py-2 rounded-lg text-slate-200 hover:text-white transition-all">
+                    <i class="fa-solid fa-book-bookmark mr-1"></i>4. 102/103中英对照数据库
+                </button>
+                <button onclick="switchTab('quiz')" id="tab-btn-quiz" class="px-3 py-2 rounded-lg text-slate-200 hover:text-white transition-all">
+                    <i class="fa-solid fa-clipboard-question mr-1"></i>5. 审查员上岗模拟自测
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- 主工作空间 -->
+    <!-- 主工作区 -->
     <main class="flex-grow max-w-[1600px] w-full mx-auto px-4 py-6 sm:px-6">
 
-        <!-- ==================== SECTION 1: 官方案例 TIMELINE 可视化教学区 ==================== -->
-        <div id="section-vis-hub" class="space-y-6">
-            
-            <!-- 导言横幅 -->
+        <!-- ==================== TAB 1: GOVERNING LAW CALCULATOR (3(n)(1) Transition) ==================== -->
+        <div id="tab-governing-law" class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+            <!-- 左侧：输入事实面板 -->
+            <div class="xl:col-span-5 space-y-6">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
+                    <div class="flex items-center space-x-2 pb-3 border-b border-slate-100">
+                        <span class="w-3 h-6 bg-[#0096b1] rounded-full"></span>
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-[#0b2545]">分析对象：风险专利基本事实输入</h2>
+                    </div>
+
+                    <div class="space-y-4 text-xs">
+                        <div>
+                            <label class="block font-bold text-slate-600 mb-1">风险专利的实际美国申请日 (US Actual Filing Date) <span class="text-rose-500">*</span></label>
+                            <input type="date" id="law-us-filed" onchange="calcGoverningLaw()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none focus:ring-1 focus:ring-[#0096b1]" value="2014-06-15">
+                            <span class="text-[10px] text-slate-400 mt-1 block">AIA物理生效界限：$2013\text{年}3\text{月}16\text{日}$</span>
+                        </div>
+
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-[#0b2545] flex items-center gap-1.5">
+                                    <i class="fa-solid fa-plane-arrival text-[#0096b1]"></i> 该专利是否要求了国外/在先优先权?
+                                </span>
+                                <input type="checkbox" id="law-has-priority" checked onchange="toggleLawPriority()" class="rounded text-[#0096b1] focus:ring-0 cursor-pointer w-4 h-4">
+                            </div>
+                            
+                            <div id="law-priority-panel" class="space-y-2 pt-2 border-t border-slate-200">
+                                <label class="block font-bold text-slate-600 mb-1">最早在先申请/优先权日 (Priority Date, e.g. CN/EP)</label>
+                                <input type="date" id="law-priority-date" onchange="calcGoverningLaw()" class="w-full bg-white border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none" value="2012-10-10">
+                            </div>
+                        </div>
+
+                        <!-- 3(n)(1) 核心 New Matter 触发判断 -->
+                        <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2.5">
+                            <span class="font-bold text-[#0b2545] block">AIA 3(n)(1) 新增技术支持性校验 (New Matter Claimed?)</span>
+                            <p class="text-[10px] text-slate-500 leading-normal">
+                                对于递交日在 2013-03-16 之后，但优先权日在其之前的“过渡申请案”，该专利在整个审查历史（包括已被删权利要求）中，**是否包含过至少一项（At least one claim）无法被 2013-03-16 前在先说明书完整支持（unsupported under 35 U.S.C. 112）的权利要求**？
+                            </p>
+                            <label class="flex items-start p-2.5 bg-white rounded-lg border border-slate-200 cursor-pointer hover:border-[#0096b1] transition">
+                                <input type="checkbox" id="law-has-new-matter" onchange="calcGoverningLaw()" class="mt-0.5 mr-2 rounded text-[#0096b1] focus:ring-0">
+                                <span class="font-semibold text-slate-700">是的，曾包含过不受优先权文本支持的 Claims（触发 New Matter）</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 典型法理案情快速导入 -->
+                <div class="bg-[#0b2545]/5 p-4 rounded-2xl border border-[#0b2545]/10 space-y-3 text-xs">
+                    <span class="font-bold text-[#0b2545] flex items-center gap-1.5"><i class="fa-solid fa-bolt text-[#0096b1]"></i> 快速导入典型过渡期场景</span>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button onclick="loadGovCase('pure-pre')" class="bg-white hover:bg-slate-100 p-2 rounded-lg border border-slate-200 text-left transition font-semibold">
+                            💡 纯旧法专利 (2012年申请)
+                        </button>
+                        <button onclick="loadGovCase('transition-supported')" class="bg-white hover:bg-slate-100 p-2 rounded-lg border border-slate-200 text-left transition font-semibold">
+                            💡 过渡案：无新增 Claims
+                        </button>
+                        <button onclick="loadGovCase('transition-unsupported')" class="bg-white hover:bg-slate-100 p-2 rounded-lg border border-slate-200 text-left transition font-semibold">
+                            💥 过渡案：含新增 Claims
+                        </button>
+                        <button onclick="loadGovCase('pure-aia')" class="bg-white hover:bg-slate-100 p-2 rounded-lg border border-slate-200 text-left transition font-semibold">
+                            💡 纯新法专利 (2015年申请)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：决策树流程图与诊断书 -->
+            <div class="xl:col-span-7 space-y-6 flex flex-col justify-between">
+                <!-- 动态发光决策图 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col flex-grow">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                        <span class="text-xs font-bold text-[#0b2545] uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-solid fa-diagram-project text-[#0096b1]"></i> AIA 3(n)(1) 过渡期法律适用动态决策图
+                        </span>
+                        <span class="text-[10px] font-mono-code bg-[#0096b1]/10 text-[#0096b1] px-2 py-0.5 rounded border border-[#0096b1]/20">MPEP 2159</span>
+                    </div>
+
+                    <div class="flex-grow flex flex-col justify-center items-center py-6 space-y-4">
+                        <!-- 节点 1 -->
+                        <div id="gov-node-filing" class="w-80 p-3 rounded-xl border-2 text-center transition-all duration-300 shadow-sm">
+                            <span class="text-[9px] font-bold tracking-wider block opacity-70">Step 1: US Actual Filing Date</span>
+                            <p class="text-xs font-bold mt-1">Is US Filing Date On/After March 16, 2013?</p>
+                            <span id="gov-val-filing" class="text-[10px] font-mono-code bg-slate-100 px-2 rounded text-slate-500 inline-block mt-1">Evaluating...</span>
+                        </div>
+
+                        <div class="text-slate-300"><i class="fa-solid fa-chevron-down text-sm"></i></div>
+
+                        <!-- 节点 2 -->
+                        <div id="gov-node-priority" class="w-80 p-3 rounded-xl border-2 text-center transition-all duration-300 shadow-sm">
+                            <span class="text-[9px] font-bold tracking-wider block opacity-70">Step 2: Foreign / US Priority Check</span>
+                            <p class="text-xs font-bold mt-1">Earliest Priority Date is Before 3/16/2013?</p>
+                            <span id="gov-val-priority" class="text-[10px] font-mono-code bg-slate-100 px-2 rounded text-slate-500 inline-block mt-1">Evaluating...</span>
+                        </div>
+
+                        <div class="text-slate-300"><i class="fa-solid fa-chevron-down text-sm"></i></div>
+
+                        <!-- 节点 3 -->
+                        <div id="gov-node-newmatter" class="w-80 p-3 rounded-xl border-2 text-center transition-all duration-300 shadow-sm">
+                            <span class="text-[9px] font-bold tracking-wider block opacity-70">Step 3: 112 Support & Claim Check</span>
+                            <p class="text-xs font-bold mt-1">Any Claim Lacks Support Pre-3/16/2013?</p>
+                            <span id="gov-val-newmatter" class="text-[10px] font-mono-code bg-slate-100 px-2 rounded text-slate-500 inline-block mt-1">Evaluating...</span>
+                        </div>
+
+                        <div class="text-slate-300"><i class="fa-solid fa-chevron-down text-sm"></i></div>
+
+                        <!-- 结论 -->
+                        <div id="gov-node-result" class="w-80 p-3 rounded-xl border-2 text-center transition-all duration-300 shadow-sm">
+                            <span class="text-[9px] font-bold tracking-wider block opacity-70">Governing Law Verdict</span>
+                            <p class="text-xs font-extrabold mt-1" id="gov-text-result">Determining...</p>
+                            <span id="gov-val-result" class="text-[10px] font-mono-code bg-slate-100 px-2 rounded text-slate-500 inline-block mt-1">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 审查结论报告书 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <span class="text-xs font-bold text-[#0b2545] uppercase tracking-wider block pb-2 border-b border-slate-100">
+                        <i class="fa-solid fa-file-invoice text-[#0096b1]"></i> 风险专利管辖法规诊断意见书
+                    </span>
+                    <div id="gov-report-content" class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed font-mono-code whitespace-pre-wrap min-h-[120px]">
+                        计算中...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 2: REFERENCE PRIOR ART DATE SANDBOX ==================== -->
+        <div id="tab-ref-date" class="hidden grid grid-cols-1 xl:grid-cols-12 gap-6">
+            <!-- 左侧：输入现有技术事实 -->
+            <div class="xl:col-span-5 space-y-6">
+                <!-- 目标专利时间锚点 -->
+                <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <div class="flex items-center space-x-2 pb-2 border-b border-slate-100">
+                        <span class="w-2.5 h-5 bg-[#0096b1] rounded"></span>
+                        <h3 class="text-xs font-bold text-[#0b2545] uppercase">1. 设置本案时间锚点 (Subject Patent Baseline)</h3>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <label class="block font-semibold text-slate-500 mb-1">有效申请日 (EFD)</label>
+                            <input type="date" id="sb-subject-efd" onchange="calcPriorArtSandbox()" class="w-full bg-slate-50 border border-slate-200 rounded px-2.5 py-1.5" value="2014-06-15">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-500 mb-1">管辖法规定性</label>
+                            <div id="sb-subject-law" class="w-full bg-slate-100 border border-slate-200 rounded px-2.5 py-1.5 font-bold text-slate-600">-</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 对比文献属性 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <div class="flex items-center space-x-2 pb-2 border-b border-slate-100">
+                        <span class="w-2.5 h-5 bg-amber-500 rounded"></span>
+                        <h3 class="text-xs font-bold text-amber-800 uppercase">2. 候选对比文献基本事实</h3>
+                    </div>
+
+                    <div class="space-y-4 text-xs">
+                        <!-- 文献法定分类 -->
+                        <div>
+                            <label class="block font-bold text-slate-600 mb-1.5">对比文献类型 (Reference Type)</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <label class="flex flex-col items-center p-2.5 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer text-center hover:border-[#0096b1]" id="sb-lbl-us">
+                                    <input type="radio" name="sb-ref-type" value="us_patent" checked onchange="toggleRefType()" class="mb-1 text-[#0096b1]">
+                                    <span class="font-bold text-[#0b2545]">美国专利/PGPub</span>
+                                    <span class="text-[8px] text-slate-400">102(a)(2) 潜在秘密现有技术</span>
+                                </label>
+                                <label class="flex flex-col items-center p-2.5 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer text-center hover:border-[#0096b1]" id="sb-lbl-pct">
+                                    <input type="radio" name="sb-ref-type" value="pct_app" onchange="toggleRefType()" class="mb-1 text-[#0096b1]">
+                                    <span class="font-bold text-[#0b2545]">指定美 PCT 国际公开</span>
+                                    <span class="text-[8px] text-slate-400">需验证语言、指定资格</span>
+                                </label>
+                                <label class="flex flex-col items-center p-2.5 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer text-center hover:border-amber-500" id="sb-lbl-foreign">
+                                    <input type="radio" name="sb-ref-type" value="foreign_patent" onchange="toggleRefType()" class="mb-1 text-[#0096b1]">
+                                    <span class="font-bold text-amber-700">单纯国外专利 (CN/EP)</span>
+                                    <span class="text-[8px] text-slate-400">绝不享有 102(a)(2) 追溯</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 重要日期填写 -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-bold text-slate-600 mb-1">公开/公告日 (Pub Date)</label>
+                                <input type="date" id="sb-ref-pub-date" onchange="calcPriorArtSandbox()" class="w-full bg-slate-50 border border-slate-200 rounded px-2.5 py-1.5" value="2013-11-10">
+                            </div>
+                            <div id="sb-panel-filed">
+                                <label class="block font-bold text-slate-600 mb-1">实际递交日 (Actual Filed Date)</label>
+                                <input type="date" id="sb-ref-filed-date" onchange="calcPriorArtSandbox()" class="w-full bg-slate-50 border border-slate-200 rounded px-2.5 py-1.5" value="2011-12-12">
+                            </div>
+                        </div>
+
+                        <!-- 跨境国外优先权判定 -->
+                        <div id="sb-panel-priority" class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2.5">
+                            <div class="flex items-center justify-between">
+                                <span class="font-bold text-[#0b2545] flex items-center gap-1.5">
+                                    <i class="fa-solid fa-plane-arrival text-[#0096b1]"></i> 该对比文献是否声明了国外优先权?
+                                </span>
+                                <input type="checkbox" id="sb-ref-has-priority" checked onchange="toggleRefPriority()" class="rounded text-[#0096b1] cursor-pointer">
+                            </div>
+                            <div id="sb-priority-inputs" class="space-y-2.5 pt-2 border-t border-slate-200">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-[10px] font-semibold text-slate-500 mb-1">最早在先外国申请日 (Priority Date)</label>
+                                        <input type="date" id="sb-ref-priority-date" onchange="calcPriorArtSandbox()" class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-slate-800" value="2010-12-15">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-semibold text-slate-500 mb-1">优先权国 (Country)</label>
+                                        <input type="text" id="sb-ref-priority-country" class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-slate-800" value="CN (中国)">
+                                    </div>
+                                </div>
+                                <label class="flex items-start p-2 bg-amber-50 rounded border border-amber-200 cursor-pointer">
+                                    <input type="checkbox" id="sb-ref-priority-supported" checked onchange="calcPriorArtSandbox()" class="mt-0.5 mr-2 rounded text-[#0096b1]">
+                                    <span class="text-[10px] text-amber-800">
+                                        确认对比文献的外国优先权文本（如CN原说明书）中<b>已完整支持</b>争议技术特征。
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- PCT 特有限制条件 -->
+                        <div id="sb-panel-pct" class="hidden bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2">
+                            <span class="font-bold text-[#0b2545] block">PCT 现有技术生效资格校验</span>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" id="sb-pct-english" checked onchange="calcPriorArtSandbox()" class="mr-2 rounded text-[#0096b1]">
+                                <span class="font-semibold text-slate-700">该 PCT 是否以【英文】国际公开？</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" id="sb-pct-us-designated" checked onchange="calcPriorArtSandbox()" class="mr-2 rounded text-[#0096b1]">
+                                <span class="font-semibold text-slate-700">该 PCT 申请指定了美国吗？</span>
+                            </label>
+                        </div>
+
+                        <!-- Rule 131 宣誓退回控制台 (仅在 Pre-AIA 下动态显现) -->
+                        <div id="sb-panel-swearback" class="hidden bg-[#0b2545]/5 p-4 rounded-xl border border-[#0b2545]/20 space-y-3">
+                            <div class="flex items-center justify-between border-b border-[#0b2545]/10 pb-2">
+                                <span class="font-bold text-[#0b2545] flex items-center gap-1.5 text-xs">
+                                    <i class="fa-solid fa-feather-pointed text-[#0096b1]"></i> Pre-AIA Rule 131 宣誓退回模拟控制台
+                                </span>
+                                <input type="checkbox" id="sb-use-swearback" onchange="toggleSwearback()" class="rounded text-[#0096b1] cursor-pointer">
+                            </div>
+                            <div id="sb-swearback-inputs" class="hidden space-y-3 pt-1">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="block text-[10px] font-semibold text-slate-500 mb-1">发明构思日 (Conception Date)</label>
+                                        <input type="date" id="sb-swear-conception" onchange="calcPriorArtSandbox()" class="w-full bg-white border border-slate-200 rounded px-2 py-1" value="2011-10-01">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-semibold text-slate-500 mb-1">付诸实践日 (RTP Date)</label>
+                                        <input type="date" id="sb-swear-rtp" onchange="calcPriorArtSandbox()" class="w-full bg-white border border-slate-200 rounded px-2 py-1" value="2011-11-20">
+                                    </div>
+                                </div>
+                                <label class="flex items-start p-2 bg-emerald-50 rounded border border-emerald-200 cursor-pointer">
+                                    <input type="checkbox" id="sb-swear-diligence" checked onchange="calcPriorArtSandbox()" class="mt-0.5 mr-2 rounded text-[#0096b1]">
+                                    <span class="text-[10px] text-emerald-800">
+                                        确认在此期间（对方生效日前至我方RTP）保持了<b>合理、连续的勤勉义务 (Continuous Diligence)</b>。
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 快速载入对比文献场景 -->
+                <div class="bg-[#0b2545]/5 p-4 rounded-2xl border border-[#0b2545]/10 space-y-3 text-xs">
+                    <span class="font-bold text-[#0b2545] flex items-center gap-1.5"><i class="fa-solid fa-bolt text-[#0096b1]"></i> 导入跨境/旧法典型测算场景</span>
+                    <div class="grid grid-cols-1 gap-2">
+                        <button onclick="loadRefCase('cn-patent')" class="bg-white hover:bg-slate-100 p-2 rounded-lg border border-slate-200 text-left transition font-semibold">
+                            🇨🇳 场景 A：单纯中国在后公开专利 (在美新旧法下均不构成障碍)
+                        </button>
+                        <button onclick="loadRefCase('us-with-cn-priority')" class="bg-white hover:bg-slate-100 p-2 rounded-lg border border-slate-200 text-left transition font-semibold">
+                            🇺🇸 场景 B：美国专利声明中国优先权 (新旧法发生 Hilmer 偏转)
+                        </button>
+                        <button onclick="loadRefCase('pct-non-english')" class="bg-white hover:bg-slate-100 p-2 rounded-lg border border-slate-200 text-left transition font-semibold">
+                            🌐 场景 C：中文国际公开的 PCT (旧法 102(e) 触发贬值退化，新法无损)
+                        </button>
+                        <button onclick="loadRefCase('swearback-test')" class="bg-white hover:bg-slate-100 p-2 rounded-lg border border-slate-200 text-left transition font-semibold">
+                            ✒️ 场景 D：旧法 102(e) 宣誓退回 (Rule 131 Conception 抢跑)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：动态 SVG 法律时间轴与报告书 -->
+            <div class="xl:col-span-7 space-y-6 flex flex-col justify-between">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col flex-grow">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                        <span class="text-xs font-bold text-[#0b2545] uppercase tracking-wider flex items-center gap-1.5">
+                            <i class="fa-regular fa-clock text-[#0096b1]"></i> 实时沙盘 SVG 法律时间轴生命周期图谱
+                        </span>
+                        <span class="text-[10px] bg-slate-100 text-slate-500 font-mono-code px-2 py-0.5 rounded">Live Vector</span>
+                    </div>
+
+                    <!-- SVG 渲染画幅 -->
+                    <div class="flex-grow flex items-center justify-center py-6 bg-slate-50 rounded-xl mt-4 border border-slate-100 overflow-x-auto">
+                        <div class="min-w-[760px] h-[280px] relative">
+                            <svg id="svg-sandbox-canvas" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                                <!-- JS draws the dynamic timeline here -->
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 测算报告 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <span class="text-xs font-bold text-[#0b2545] uppercase tracking-wider block pb-2 border-b border-slate-100">
+                        <i class="fa-solid fa-list-check text-emerald-600"></i> 对比文献现有技术效力诊断报告书
+                    </span>
+                    <div id="ref-report-content" class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed font-mono-code whitespace-pre-wrap min-h-[140px]">
+                        计算中...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== TAB 3: USPTO OFFICIAL SCENARIO HUB ==================== -->
+        <div id="tab-scenarios" class="hidden space-y-6">
             <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col md:flex-row items-center justify-between gap-4">
                 <div class="space-y-1">
                     <h2 class="text-sm font-extrabold text-[#0b2545] flex items-center gap-1.5">
                         <span class="w-2.5 h-5 bg-[#0096b1] rounded"></span>
-                        第一部分：USPTO FITF 官方培训 PPT 典型情景图示化拆解
+                        第三部分：USPTO FITF 官方培训经典 PPT 情景图示化拆解
                     </h2>
                     <p class="text-xs text-slate-500">
-                        本模块将 USPTO 审查员综合培训幻灯片中复杂的文字叙述，还原为高精度的<b>交互法律时间轴（Visual Timeline）</b>。请点击下方卡片选择官方情景开始学习：
+                        系统精准复现了 USPTO 官方审查员培训课件的 5 组核心 Scenario。请在下方选择卡片，我们将自动更新交互 SVG 时间轴。
                     </p>
                 </div>
-                <div class="flex items-center gap-2 text-xs text-slate-500">
-                    <span class="inline-block w-3 h-3 bg-teal-100 border border-teal-400 rounded-full"></span> 宽限期(Grace Period)
-                    <span class="inline-block w-3 h-3 bg-rose-500 rounded-full"></span> 我方申请日 (EFD)
-                    <span class="inline-block w-3 h-3 bg-amber-500 rounded-full"></span> 现有技术日 (Art Date)
-                </div>
             </div>
 
-            <!-- 5大官方经典幻灯片案例切换按钮 -->
+            <!-- 5个卡片 -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
-                
-                <!-- Slide Case 1 -->
-                <div onclick="selectSlideCase(1)" id="case-card-1" class="bg-white p-4 rounded-xl border-2 border-[#0096b1] cursor-pointer hover:shadow-md transition duration-200 flex flex-col justify-between">
+                <div onclick="selectSlideCase(1)" id="case-card-1" class="bg-white p-4 rounded-xl border-2 border-[#0096b1] cursor-pointer hover:shadow-md transition flex flex-col justify-between">
                     <div>
                         <span class="text-[9px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">AIA 102(a)(1)</span>
-                        <h3 class="text-xs font-bold text-[#0b2545] mt-2">Scenario A: 经典公开出版物</h3>
-                        <p class="text-[10px] text-slate-400 mt-1">第三方在宽限期外提前公开发表技术文章，如何阻碍我方？</p>
+                        <h3 class="text-xs font-bold text-[#0b2545] mt-2">Scenario A: 经典文献公开</h3>
+                        <p class="text-[10px] text-slate-400 mt-1">第三方在宽限期外提前独立公开发表技术论文。</p>
                     </div>
                     <span class="text-[10px] text-[#0096b1] font-bold mt-2 inline-flex items-center gap-1">点击激活图示 <i class="fa-solid fa-circle-play"></i></span>
                 </div>
 
-                <!-- Slide Case 2 -->
-                <div onclick="selectSlideCase(2)" id="case-card-2" class="bg-white p-4 rounded-xl border border-slate-200 cursor-pointer hover:shadow-md transition duration-200 flex flex-col justify-between">
+                <div onclick="selectSlideCase(2)" id="case-card-2" class="bg-white p-4 rounded-xl border border-slate-200 cursor-pointer hover:shadow-md transition flex flex-col justify-between">
                     <div>
-                        <span class="text-[9px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">102(b)(1)(A) Exception</span>
+                        <span class="text-[9px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded border border-teal-200">102(b)(1)(A)</span>
                         <h3 class="text-xs font-bold text-[#0b2545] mt-2">Scenario B: 自公开豁免</h3>
-                        <p class="text-[10px] text-slate-400 mt-1">发明人本人在宽限期内提前泄密/自公开后，如何通过宣誓排除？</p>
+                        <p class="text-[10px] text-slate-400 mt-1">发明人本人在宽限期内提前在论坛发表公开演讲。</p>
                     </div>
                     <span class="text-[10px] text-[#0096b1] font-bold mt-2 inline-flex items-center gap-1">点击激活图示 <i class="fa-solid fa-circle-play"></i></span>
                 </div>
 
-                <!-- Slide Case 3 -->
-                <div onclick="selectSlideCase(3)" id="case-card-3" class="bg-white p-4 rounded-xl border border-slate-200 cursor-pointer hover:shadow-md transition duration-200 flex flex-col justify-between">
+                <div onclick="selectSlideCase(3)" id="case-card-3" class="bg-white p-4 rounded-xl border border-slate-200 cursor-pointer hover:shadow-md transition flex flex-col justify-between">
                     <div>
-                        <span class="text-[9px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">102(b)(1)(B) Shield</span>
-                        <h3 class="text-xs font-bold text-[#0b2545] mt-2">Scenario C: 先发制人屏蔽盾</h3>
-                        <p class="text-[10px] text-slate-400 mt-1">我方自公开在先，第三方跟风公开在后，我方抢跑首发如何形成保护？</p>
+                        <span class="text-[9px] font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">102(b)(1)(B)</span>
+                        <h3 class="text-xs font-bold text-[#0b2545] mt-2">Scenario C: 抢先首发盾</h3>
+                        <p class="text-[10px] text-slate-400 mt-1">我方自公开在先，第三方跟风在后，我方抢先形成保护盾。</p>
                     </div>
                     <span class="text-[10px] text-[#0096b1] font-bold mt-2 inline-flex items-center gap-1">点击激活图示 <i class="fa-solid fa-circle-play"></i></span>
                 </div>
 
-                <!-- Slide Case 4 -->
-                <div onclick="selectSlideCase(4)" id="case-card-4" class="bg-white p-4 rounded-xl border border-slate-200 cursor-pointer hover:shadow-md transition duration-200 flex flex-col justify-between">
+                <div onclick="selectSlideCase(4)" id="case-card-4" class="bg-white p-4 rounded-xl border border-slate-200 cursor-pointer hover:shadow-md transition flex flex-col justify-between">
                     <div>
                         <span class="text-[9px] font-bold text-indigo-700 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-200">102(a)(2) & 102(d)</span>
-                        <h3 class="text-xs font-bold text-[#0b2545] mt-2">Scenario D: 外国优先权追溯</h3>
-                        <p class="text-[10px] text-slate-400 mt-1">Hilmer 学说废止！在先美案如何通过中国在先申请砸掉本发案？</p>
+                        <h3 class="text-xs font-bold text-[#0b2545] mt-2">Scenario D: 优先权跨国追溯</h3>
+                        <p class="text-[10px] text-slate-400 mt-1">Hilmer废除！在先美案中国优先权102(d)跨国直接截击本发案。</p>
                     </div>
                     <span class="text-[10px] text-[#0096b1] font-bold mt-2 inline-flex items-center gap-1">点击激活图示 <i class="fa-solid fa-circle-play"></i></span>
                 </div>
 
-                <!-- Slide Case 5 -->
-                <div onclick="selectSlideCase(5)" id="case-card-5" class="bg-white p-4 rounded-xl border border-slate-200 cursor-pointer hover:shadow-md transition duration-200 flex flex-col justify-between">
+                <div onclick="selectSlideCase(5)" id="case-card-5" class="bg-white p-4 rounded-xl border border-slate-200 cursor-pointer hover:shadow-md transition flex flex-col justify-between">
                     <div>
-                        <span class="text-[9px] font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded border border-red-200">102(b)(2)(B) Exception</span>
-                        <h3 class="text-xs font-bold text-[#0b2545] mt-2">Scenario E: 专利屏蔽盾</h3>
-                        <p class="text-[10px] text-slate-400 mt-1">我方在先自公开，能防得住第三方享有更早 102(d) 效力的专利申请吗？</p>
+                        <span class="text-[9px] font-bold text-red-700 bg-red-50 px-2 py-0.5 rounded border border-red-200">102(b)(2)(B)</span>
+                        <h3 class="text-xs font-bold text-[#0b2545] mt-2">Scenario E: 在先专利屏蔽盾</h3>
+                        <p class="text-[10px] text-slate-400 mt-1">我方提前学术自公开，如何屏蔽第三方在先申请专利的102(d)效力？</p>
                     </div>
                     <span class="text-[10px] text-[#0096b1] font-bold mt-2 inline-flex items-center gap-1">点击激活图示 <i class="fa-solid fa-circle-play"></i></span>
                 </div>
-
             </div>
 
-            <!-- 图示化时间轴主渲染区 (Dynamic SVG Axis Canvas) -->
+            <!-- 动态 SVG 时间轴 -->
             <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-                <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                    <span class="text-xs font-bold text-[#0b2545] flex items-center gap-1.5 uppercase">
-                        <i class="fa-regular fa-clock text-[#0096b1]"></i> 官方案例交互式 SVG 时间轴 (Dynamic Interactive Timeline Axis)
-                    </span>
-                    <span id="case-title-active" class="text-xs font-extrabold text-[#0096b1] font-mono-code bg-[#0096b1]/10 px-3 py-1 rounded-full">
-                        Scenario A
-                    </span>
-                </div>
-
-                <!-- SVG 动态时间轴视口容器 -->
+                <span class="text-xs font-bold text-[#0b2545] uppercase tracking-wider block pb-2 border-b border-slate-100">
+                    <i class="fa-regular fa-clock text-[#0096b1]"></i> USPTO 官方案例 SVG 时间轴渲染
+                </span>
                 <div class="w-full bg-slate-50 rounded-xl p-4 overflow-x-auto border border-slate-100">
-                    <div class="min-w-[900px] h-[360px] relative">
-                        <svg id="svg-timeline-canvas" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                            <!-- JS will dynamically inject gorgeous SVG layers here -->
+                    <div class="min-w-[760px] h-[280px] relative">
+                        <svg id="svg-scenarios-canvas" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Case study timeline layers -->
                         </svg>
                     </div>
                 </div>
-
-                <p class="text-[10px] text-slate-400 text-center italic">
-                    * 提示：时间轴刻度、遮罩层和图标标记均严格根据选定案情的真实日期比例（AIA 1年宽限期）精算绘制。
-                </p>
             </div>
 
-            <!-- 分析卡片与 Talking Points 揭秘 -->
             <div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
-                
-                <!-- 案情事实与法律审查依据 (占 5 列) -->
+                <!-- 官方事实与适用 -->
                 <div class="xl:col-span-5 bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4 flex flex-col justify-between">
                     <div>
-                        <div class="flex items-center space-x-2 pb-3 border-b border-slate-100">
-                            <span class="w-3 h-6 bg-indigo-600 rounded-full"></span>
-                            <h3 class="text-xs font-bold uppercase text-[#0b2545]">Scenario Facts & Legal Basis (官方案情及依据)</h3>
-                        </div>
-                        <div class="space-y-3.5 pt-4 text-xs">
-                            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                                <span class="font-bold text-slate-600 block mb-1">本发案事实 (Subject Facts)</span>
+                        <span class="text-xs font-bold uppercase text-[#0b2545] block pb-2 border-b">Scenario Facts & Legal Basis</span>
+                        <div class="space-y-3 pt-3 text-xs">
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                <span class="font-bold text-slate-600 block mb-1">风险申请案事实</span>
                                 <p id="case-fact-subject" class="text-slate-700 leading-relaxed">-</p>
                             </div>
-                            <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                                <span class="font-bold text-slate-600 block mb-1">引证文献事实 (Prior Art Facts)</span>
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
+                                <span class="font-bold text-slate-600 block mb-1">对比引证文献事实</span>
                                 <p id="case-fact-reference" class="text-slate-700 leading-relaxed">-</p>
                             </div>
                         </div>
                     </div>
-
-                    <div class="pt-4 border-t border-slate-100">
-                        <span class="text-[11px] font-bold text-slate-400 block mb-1.5">MPEP / 35 U.S.C. 适用条款判定</span>
-                        <div class="flex items-center justify-between text-xs font-bold font-mono-code bg-[#0b2545]/5 px-4 py-2.5 rounded-lg border border-[#0b2545]/10">
+                    <div class="pt-3 border-t">
+                        <span class="text-[10px] text-slate-400 block mb-1">主控法条条款 / 官方审查裁决</span>
+                        <div class="flex justify-between items-center bg-[#0b2545]/5 px-4 py-2 rounded-lg border border-[#0b2545]/10 font-mono-code text-xs font-bold">
                             <span class="text-[#0b2545]" id="case-law-section">-</span>
                             <span class="text-emerald-600" id="case-law-result">-</span>
                         </div>
                     </div>
                 </div>
 
-                <!-- 审查员隐藏版 PPT Talking Points (占 7 列) -->
+                <!-- 审查员隐藏版 Talking Points -->
                 <div class="xl:col-span-7 bg-amber-50/40 p-6 rounded-2xl border border-amber-200 shadow-sm space-y-4">
-                    <div class="flex items-center space-x-2 pb-3 border-b border-amber-200">
+                    <div class="flex items-center space-x-2 pb-2 border-b border-amber-200">
                         <i class="fa-solid fa-gavel text-amber-600 text-lg"></i>
-                        <h3 class="text-xs font-extrabold uppercase text-amber-900 tracking-wider">
-                            Examiner Talking Points - Secret Instruction (隐藏版官方审查要点底稿)
-                        </h3>
+                        <h3 class="text-xs font-extrabold text-amber-950 uppercase tracking-wider">Examiner Training Talking Points (隐藏审查指令深度剖析)</h3>
                     </div>
-
-                    <!-- 原生 Talking Points 真实复刻 -->
-                    <div class="space-y-4">
-                        <div class="bg-white p-4 rounded-xl border border-amber-100 shadow-sm space-y-2">
-                            <h4 class="text-xs font-extrabold text-[#0b2545] flex items-center gap-1.5">
-                                <i class="fa-solid fa-circle-question text-amber-500"></i>
-                                审查员底层思考路径 (Examiner Analysis & Decision-Making Flow)
-                            </h4>
-                            <p id="case-talking-path" class="text-xs text-slate-600 leading-relaxed">-</p>
+                    <div class="space-y-3 text-xs">
+                        <div class="bg-white p-3.5 rounded-lg border border-amber-100 shadow-sm">
+                            <span class="font-bold text-slate-700 block mb-1">审查员法理判断链条</span>
+                            <p id="case-talking-path" class="text-slate-600 leading-relaxed">-</p>
                         </div>
-
-                        <div class="bg-white p-4 rounded-xl border border-amber-100 shadow-sm space-y-2">
-                            <h4 class="text-xs font-extrabold text-[#0b2545] flex items-center gap-1.5">
-                                <i class="fa-solid fa-bolt text-[#0096b1]"></i>
-                                隐藏备忘录 Talking Points 独家解密 (PPT Footer Backstory)
-                            </h4>
-                            <div id="case-talking-backstory" class="text-xs text-slate-600 leading-relaxed whitespace-pre-wrap font-mono-code">-</div>
+                        <div class="bg-white p-3.5 rounded-lg border border-amber-100 shadow-sm">
+                            <span class="font-bold text-teal-700 block mb-1">官方底注解密 (PPT Backstory Notes)</span>
+                            <p id="case-talking-backstory" class="text-slate-600 leading-relaxed font-mono-code whitespace-pre-wrap">-</p>
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </div>
 
-        <!-- ==================== SECTION 2: 跨境现有技术测算沙盘 ==================== -->
-        <div id="section-sandbox" class="hidden grid grid-cols-1 xl:grid-cols-12 gap-6">
-            
-            <!-- 左侧输入面板 (占 5 列) -->
-            <div class="xl:col-span-5 space-y-6">
-                <!-- 主控参数卡 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-                    <div class="flex items-center space-x-2 pb-3 border-b border-slate-100">
-                        <span class="w-3 h-6 bg-[#0096b1] rounded-full"></span>
-                        <h3 class="text-xs font-bold uppercase text-[#0b2545]">Step 1: 本案申请属性 (Subject Facts)</h3>
+        <!-- ==================== TAB 4: BILINGUAL STATUTES DATABASE ==================== -->
+        <div id="tab-statutes" class="hidden space-y-6">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4">
+                    <div>
+                        <h2 class="text-sm font-extrabold text-[#0b2545] uppercase flex items-center gap-1.5">
+                            <i class="fa-solid fa-book-open text-[#0096b1]"></i> 美国专利法第 102 / 103 条新旧法中英司法级双语对照库
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-1">
+                            严格依官方条款原文与跨境无效、诉讼标准司法翻译汇编，支持本地实时关键词检索过滤。
+                        </p>
                     </div>
+                    <!-- 交互式实时检索框 -->
+                    <div class="relative w-full md:w-80">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-slate-400">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                        <input type="text" id="statute-search-input" oninput="filterStatutes()" placeholder="搜索关键字 (如: effectively filed, 宽限期...)" class="w-full pl-9 pr-4 py-2 border border-slate-200 rounded-lg text-xs bg-slate-50 focus:outline-none focus:ring-1 focus:ring-[#0096b1]">
+                    </div>
+                </div>
+
+                <!-- 法规导航子选项卡 -->
+                <div class="flex space-x-1.5 border-b border-slate-100 pb-2">
+                    <button id="sub-tab-btn-aia-102" onclick="switchSubStatute('aia-102')" class="px-3.5 py-1.5 text-xs font-bold rounded-lg bg-[#0096b1] text-white transition-all">AIA 102 (新法新颖性)</button>
+                    <button id="sub-tab-btn-aia-103" onclick="switchSubStatute('aia-103')" class="px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition-all">AIA 103 (新法创造性)</button>
+                    <button id="sub-tab-btn-pre-102" onclick="switchSubStatute('pre-102')" class="px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition-all">Pre-AIA 102 (旧法新颖性)</button>
+                    <button id="sub-tab-btn-pre-103" onclick="switchSubStatute('pre-103')" class="px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition-all">Pre-AIA 103 (旧法创造性)</button>
+                </div>
+
+                <!-- 条款展现容器 -->
+                <div class="space-y-4 pt-2 max-h-[600px] overflow-y-auto pr-1">
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
-                        <div>
-                            <label class="block font-bold text-slate-600 mb-1">本案有效申请日 (EFD) <span class="text-rose-500">*</span></label>
-                            <input type="date" id="sb-subject-efd" onchange="runSandboxCalc()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none" value="2020-06-01">
-                            <span class="text-[9px] text-slate-400 mt-1 block">AIA/Pre-AIA分水岭: 2013-03-16</span>
+                    <!-- ================= AIA 102 ================= -->
+                    <div id="statute-sec-aia-102" class="statute-group space-y-4">
+                        <!-- 102(a) -->
+                        <div class="statute-card bg-slate-50 border border-slate-200 rounded-xl p-4 transition-all" data-text="AIA 102 a NOVELTY PRIOR ART claimed invention patented printed publication public use on sale otherwise available to the public effective filing date names another inventor effectively filed 新颖性 现有技术 有效申请日 印刷出版物 专利化 公开使用 在售 另一位发明人 被有效递交">
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2 mb-3">
+                                <span class="font-bold text-xs text-[#0b2545] font-mono-code">AIA 35 U.S.C. 102(a) - NOVELTY; PRIOR ART</span>
+                                <button onclick="copyStatuteText(this)" class="text-[10px] text-[#0096b1] font-bold hover:underline flex items-center gap-1"><i class="fa-regular fa-copy"></i> 复制中英对照</button>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs leading-relaxed">
+                                <div class="statute-eng text-slate-600 pr-2 border-r border-slate-200/60 font-mono-code">
+                                    <strong>A person shall be entitled to a patent unless—</strong><br>
+                                    <strong>(1)</strong> the claimed invention was patented, described in a printed publication, or in public use, on sale, or otherwise available to the public before the effective filing date of the claimed invention; or<br>
+                                    <strong>(2)</strong> the claimed invention was described in a patent issued under section 151, or in an application for patent published or deemed published under section 122(b), in which the patent or application, as the case may be, names another inventor and was effectively filed before the effective filing date of the claimed invention.
+                                </div>
+                                <div class="statute-chi text-slate-700 font-sans">
+                                    <strong>任何人均有权获得专利，除非——</strong><br>
+                                    <strong>(1)</strong> 在要求保护的发明的有效申请日（EFD）之前，该要求保护的发明已被专利化、在印刷出版物中描述、或已被公开使用、在售、或以其他方式为公众所知（otherwise available to the public）；或<br>
+                                    <strong>(2)</strong> 在要求保护的发明的有效申请日（EFD）之前，该要求保护的发明已被描述在依据第151条授予的美国专利中，或被描述在依据第122(b)条公布或视作公布的美国专利申请中，且该专利或申请（视具体情况而定）命名了<strong>另一位发明人（names another inventor）</strong>，并且是在该要求保护的发明的有效申请日之前<strong>被有效地递交（effectively filed）</strong>。
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label class="block font-bold text-slate-600 mb-1">本案发明人名单</label>
-                            <input type="text" id="sb-subject-inventor" oninput="runSandboxCalc()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none" value="John Smith, David May">
-                            <span class="text-[9px] text-slate-400 mt-1 block">逗号分隔英文姓名</span>
+
+                        <!-- 102(b) -->
+                        <div class="statute-card bg-slate-50 border border-slate-200 rounded-xl p-4 transition-all" data-text="AIA 102 b EXCEPTIONS disclosures made 1 year or less before effective filing date inventor joint inventor publicly disclosed common ownership same person 宽限期 例外 豁免 1年 自公开 共同所有权 联合研发 同一人">
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2 mb-3">
+                                <span class="font-bold text-xs text-[#0b2545] font-mono-code">AIA 35 U.S.C. 102(b) - EXCEPTIONS (AIA 宽限期及例外)</span>
+                                <button onclick="copyStatuteText(this)" class="text-[10px] text-[#0096b1] font-bold hover:underline flex items-center gap-1"><i class="fa-regular fa-copy"></i> 复制中英对照</button>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs leading-relaxed">
+                                <div class="statute-eng text-slate-600 pr-2 border-r border-slate-200/60 font-mono-code">
+                                    <strong>(1) DISCLOSURES MADE 1 YEAR OR LESS BEFORE EFFECTIVE FILING DATE.—</strong> A disclosure made 1 year or less before the effective filing date of a claimed invention shall not be prior art to the claimed invention under subsection (a)(1) if—<br>
+                                    <strong>(A)</strong> the disclosure was made by the inventor or joint inventor or by another who obtained the subject matter disclosed directly or indirectly from the inventor or a joint inventor; or<br>
+                                    <strong>(B)</strong> the subject matter disclosed had, before such disclosure, been publicly disclosed by the inventor or a joint inventor or another who obtained the subject matter disclosed directly or indirectly from the inventor or a joint inventor.<br><br>
+                                    <strong>(2) DISCLOSURES APPEARING IN APPLICATIONS AND PATENTS.—</strong> A disclosure shall not be prior art under subsection (a)(2) if—<br>
+                                    <strong>(A)</strong> the subject matter disclosed was obtained directly or indirectly from the inventor; or<br>
+                                    <strong>(B)</strong> the subject matter disclosed had, before such subject matter was effectively filed under subsection (a)(2), been publicly disclosed by the inventor; or<br>
+                                    <strong>(C)</strong> the subject matter disclosed and the claimed invention, not later than the effective filing date, were owned by the same person or subject to an obligation of assignment to the same person.
+                                </div>
+                                <div class="statute-chi text-slate-700 font-sans">
+                                    <strong>(1) 在有效申请日前一年或更短时间内做出的公开披露。——</strong> 在要求保护的发明的有效申请日之前一年或更短时间内做出的公开披露，如果在以下情况下，在第(a)(1)款下不构成现有技术：<br>
+                                    <strong>(A)</strong> 该公开披露是由发明人、共同发明人，或直接或间接从发明人或共同发明人处获取该披露主题的他人做出的；或<br>
+                                    <strong>(B)</strong> 被公开披露的主题，在所述公开披露日之前，已被发明人、共同发明人，或直接或间接从发明人或共同发明人处获取该主题的他人向公众公开（publicly disclosed）。<br><br>
+                                    <strong>(2) 出现于美国申请及专利中的公开披露。——</strong> 出现于第(a)(2)款中的公开披露，如果在以下情况下，不构成该要求保护的发明的现有技术：<br>
+                                    <strong>(A)</strong> 被公开披露的主题，是直接或间接从发明人或共同发明人处获取的；<br>
+                                    <strong>(B)</strong> 被公开披露的主题，在依据第(a)(2)款被有效递交之前，已被发明人、共同发明人，或直接或间接从发明人或共同发明人处获取该主题的他人向公众公开；或<br>
+                                    <strong>(C)</strong> 被公开披露的主题以及要求保护的发明，在要求保护的发明的有效申请日不晚于此时，归<strong>同一人所有（owned by the same person）</strong>，或者承担向同一人转让的义务。
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 102(d) -->
+                        <div class="statute-card bg-slate-50 border border-slate-200 rounded-xl p-4 transition-all" data-text="AIA 102 d PATENTS AND PUBLISHED APPLICATIONS EFFECTIVE AS PRIOR ART actual filing date claim right of priority section 119 earliest such application describes 现有技术起算点 秘密现有技术 追溯 实际递交日 优先权 最早此种申请">
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2 mb-3">
+                                <span class="font-bold text-xs text-[#0b2545] font-mono-code">AIA 35 U.S.C. 102(d) - PATENTS EFFECTIVE AS PRIOR ART</span>
+                                <button onclick="copyStatuteText(this)" class="text-[10px] text-[#0096b1] font-bold hover:underline flex items-center gap-1"><i class="fa-regular fa-copy"></i> 复制中英对照</button>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs leading-relaxed">
+                                <div class="statute-eng text-slate-600 pr-2 border-r border-slate-200/60 font-mono-code">
+                                    For purposes of determining whether a patent or application for patent is prior art to a claimed invention under subsection (a)(2), such patent or application shall be considered effectively filed with respect to any subject matter described in the patent or application—<br>
+                                    <strong>(1)</strong> as of the actual filing date of the patent or the application for patent; or<br>
+                                    <strong>(2)</strong> if the patent or application for patent is entitled to claim a right of priority under section 119, 365(a), 365(b), 386(a), or 386(b), or to the benefit of an earlier filing date under section 120, 121, 365(c), or 386(c), as of the filing date of the earliest such application that describes the subject matter.
+                                </div>
+                                <div class="statute-chi text-slate-700 font-sans">
+                                    为了在第(a)(2)款下确定美国专利或专利申请是否构成要求保护的发明的现有技术，该专利或申请中描述的任何主题，应在以下日期被视为已被<strong>有效递交（effectively filed）</strong>：<br>
+                                    <strong>(1)</strong> 该专利或专利申请的实际递交日（actual filing date）；或<br>
+                                    <strong>(2)</strong> 如果该专利或专利申请有权依据第119、365(a)、365(b)、386(a)或386(b)条要求在先申请的优先权，或依据第120、121、365(c)或386(c)条享有较早递交日的利益，应以描述该主题的<strong>最早此种申请的递交日（filing date of the earliest such application）</strong>为准。
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- 现有技术细节卡 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-                    <div class="flex items-center space-x-2 pb-3 border-b border-slate-100">
-                        <span class="w-3 h-6 bg-amber-500 rounded-full"></span>
-                        <h3 class="text-xs font-bold uppercase text-[#0b2545]">Step 2: 对比文献属性 (Reference Facts)</h3>
+                    <!-- ================= AIA 103 ================= -->
+                    <div id="statute-sec-aia-103" class="statute-group hidden space-y-4">
+                        <div class="statute-card bg-slate-50 border border-slate-200 rounded-xl p-4 transition-all" data-text="AIA 103 Obviousness conditions patentability non-obvious subject matter differences between claimed invention and prior art as a whole PHOSITA obvious manner in which the invention was made 显而易见性 创造性 整体 差异 本领域普通技术人员 发明完成的方式 否定">
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2 mb-3">
+                                <span class="font-bold text-xs text-[#0b2545] font-mono-code">AIA 35 U.S.C. 103 - CONDITIONS FOR PATENTABILITY; NON-OBVIOUS SUBJECT MATTER</span>
+                                <button onclick="copyStatuteText(this)" class="text-[10px] text-[#0096b1] font-bold hover:underline flex items-center gap-1"><i class="fa-regular fa-copy"></i> 复制中英对照</button>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs leading-relaxed">
+                                <div class="statute-eng text-slate-600 pr-2 border-r border-slate-200/60 font-mono-code">
+                                    A patent for a claimed invention may not be obtained, notwithstanding that the claimed invention is not identically disclosed as set forth in section 102, if the differences between the claimed invention and the prior art are such that the claimed invention as a whole would have been obvious before the effective filing date of the claimed invention to a person having ordinary skill in the art to which the claimed invention pertains. Patentability shall not be negated by the manner in which the invention was made.
+                                </div>
+                                <div class="statute-chi text-slate-700 font-sans">
+                                    尽管要求保护的发明未在第102条规定的现有技术中被等同公开（identically disclosed），但如果该要求保护的发明与现有技术之间的差异，使得要求保护的发明作为一个整体（as a whole），在<strong>有效申请日（EFD）之前</strong>，对于该发明所属技术领域的<strong>普通技术人员（PHOSITA）</strong>来说是<strong>显而易见的（obvious）</strong>，则不能获得该发明专利。可专利性不得因发明完成的方式（the manner in which the invention was made）而被否定。
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="space-y-4 text-xs">
-                        <!-- 来源类型选择 -->
-                        <div>
-                            <label class="block font-bold text-slate-600 mb-2">对比文献来源类型</label>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                                <label class="flex items-center p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:border-[#0096b1] transition" id="sb-label-us-pat">
-                                    <input type="radio" name="sb-ref-type" value="us_patent" checked onchange="toggleSandboxFields()" class="mr-2 text-[#0096b1] focus:ring-0">
-                                    <div>
-                                        <p class="font-bold text-[#0b2545]">美国授权/公开专利</p>
-                                        <p class="text-[9px] text-slate-400">可能适用 102(a)(2) 秘密现有技术</p>
-                                    </div>
-                                </label>
-                                <label class="flex items-center p-3 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer hover:border-[#0096b1] transition" id="sb-label-foreign-pat">
-                                    <input type="radio" name="sb-ref-type" value="foreign_patent" onchange="toggleSandboxFields()" class="mr-2 text-[#0096b1] focus:ring-0">
-                                    <div>
-                                        <p class="font-bold text-[#0b2545]">国外专利 (如中国/欧专局)</p>
-                                        <p class="text-[9px] text-slate-400">仅能在公开日适用 102(a)(1)</p>
-                                    </div>
-                                </label>
+                    <!-- ================= PRE-AIA 102 ================= -->
+                    <div id="statute-sec-pre-102" class="statute-group hidden space-y-4">
+                        <!-- Pre 102(a) -->
+                        <div class="statute-card bg-slate-50 border border-slate-200 rounded-xl p-4 transition-all" data-text="Pre-AIA 102 a NOVELTY Invention by another in US or publication abroad known or used by others in this country printed publication foreign country before the invention 旧法 新颖性 他人知晓 他人使用 境内 知晓使用 印刷出版物 境外发表 发明完成日之前">
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2 mb-3">
+                                <span class="font-bold text-xs text-[#0b2545] font-mono-code">Pre-AIA 35 U.S.C. 102(a) - INVENTION BY ANOTHER IN US OR PUBLICATION ABROAD</span>
+                                <button onclick="copyStatuteText(this)" class="text-[10px] text-[#0096b1] font-bold hover:underline flex items-center gap-1"><i class="fa-regular fa-copy"></i> 复制中英对照</button>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs leading-relaxed">
+                                <div class="statute-eng text-slate-600 pr-2 border-r border-slate-200/60 font-mono-code">
+                                    <strong>A person shall be entitled to a patent unless—</strong><br>
+                                    <strong>(a)</strong> the invention was known or used by others in this country, or patented or described in a printed publication in this or a foreign country, before the invention thereof by the applicant for patent.
+                                </div>
+                                <div class="statute-chi text-slate-700 font-sans">
+                                    <strong>任何人均有权获得专利，除非——</strong><br>
+                                    <strong>(a)</strong> 在专利申请人完成发明之前，该发明已<strong>在美国境内（in this country）</strong>为他人所知晓或使用，或者已在<strong>本国或外国</strong>被专利化或在印刷出版物中描述。
+                                </div>
                             </div>
                         </div>
 
-                        <!-- 动态填写日期 -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block font-bold text-slate-600 mb-1">公开/公告公布日 *</label>
-                                <input type="date" id="sb-ref-pub" onchange="runSandboxCalc()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none" value="2019-12-01">
+                        <!-- Pre 102(b) -->
+                        <div class="statute-card bg-slate-50 border border-slate-200 rounded-xl p-4 transition-all" data-text="Pre-AIA 102 b public use sale publication 1 year before US filing in this country printed publication foreign country more than one year prior 旧法 102(b) 法定阻碍 公开使用 在售 境内 境外 印刷出版物 一年前">
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2 mb-3">
+                                <span class="font-bold text-xs text-[#0b2545] font-mono-code">Pre-AIA 35 U.S.C. 102(b) - PUBLIC USE, SALE OR PUBLICATION ONE YEAR BEFORE FILING</span>
+                                <button onclick="copyStatuteText(this)" class="text-[10px] text-[#0096b1] font-bold hover:underline flex items-center gap-1"><i class="fa-regular fa-copy"></i> 复制中英对照</button>
                             </div>
-                            <div id="sb-field-usfiled">
-                                <label class="block font-bold text-slate-600 mb-1">美国本土递交日 (Actual Filed) *</label>
-                                <input type="date" id="sb-ref-usfiled" onchange="runSandboxCalc()" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-slate-800 focus:outline-none" value="2019-03-15">
-                            </div>
-                        </div>
-
-                        <!-- 外国优先权判定 -->
-                        <div id="sb-panel-priority" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="font-bold text-[#0b2545] flex items-center gap-1.5">
-                                    <i class="fa-solid fa-plane-arrival text-[#0096b1]"></i> 要求了外国优先权?
-                                </span>
-                                <input type="checkbox" id="sb-has-priority" onchange="toggleSandboxPriority()" class="rounded text-[#0096b1] focus:ring-0">
-                            </div>
-                            <div id="sb-priority-fields" class="hidden space-y-3 pt-2 border-t border-slate-200">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                    <div>
-                                        <label class="block text-[10px] font-semibold text-slate-500 mb-1">最早在先外国申请日 (Priority Date)</label>
-                                        <input type="date" id="sb-ref-priority" onchange="runSandboxCalc()" class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-slate-800 focus:outline-none" value="2018-12-01">
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10px] font-semibold text-slate-500 mb-1">优先权所属国 (Country)</label>
-                                        <input type="text" id="sb-ref-priority-country" class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-slate-800 focus:outline-none" value="CN (中国)">
-                                    </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs leading-relaxed">
+                                <div class="statute-eng text-slate-600 pr-2 border-r border-slate-200/60 font-mono-code">
+                                    <strong>(b)</strong> the invention was patented or described in a printed publication in this or a foreign country or in public use or on sale in this country, more than one year prior to the date of the application for patent in the United States.
                                 </div>
-                                <label class="flex items-start p-2 bg-amber-50 hover:bg-amber-100 rounded border border-amber-200 cursor-pointer">
-                                    <input type="checkbox" id="sb-priority-described" checked onchange="runSandboxCalc()" class="mt-0.5 mr-2 rounded text-[#0096b1]">
-                                    <span class="text-[10px] text-amber-800">
-                                        确认对比文献的外国优先权文本中，已<b>完整描述（Described）</b>了本案所涉争议权利要求特征。
-                                    </span>
-                                </label>
+                                <div class="statute-chi text-slate-700 font-sans">
+                                    <strong>(b)</strong> 在向美国提交专利申请之日的<strong>一年前（more than one year prior）</strong>，该发明已在本国或外国被专利化或在印刷出版物中描述，或者已在<strong>美国境内（in this country）</strong>被公开使用或在售。
+                                </div>
                             </div>
                         </div>
 
-                        <!-- 豁免例外勾选 (Attribution, Shielding, etc.) -->
-                        <div class="space-y-2 pt-2">
-                            <label class="block font-bold text-slate-600 mb-1">主张 102(b) 排除例外 (Exceptions)</label>
-                            
-                            <!-- Invention Source / Attribution -->
-                            <label class="flex items-start p-2.5 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer">
-                                <input type="checkbox" id="sb-opt-attribution" onchange="runSandboxCalc()" class="mt-1 mr-2 rounded text-[#0096b1]">
-                                <div>
-                                    <span class="font-bold text-slate-800">1.130(a) 归属自公开豁免 (Attribution Exception)</span>
-                                    <p class="text-[10px] text-slate-400 mt-0.5">该文献内容直接或间接派生于我方发明人，或该发表即为我方自己的自泄密披露。</p>
+                        <!-- Pre 102(d) -->
+                        <div class="statute-card bg-slate-50 border border-slate-200 rounded-xl p-4 transition-all" data-text="Pre-AIA 102 d foreign patenting statutory bar applicant legal representatives foreign country more than twelve months prior to the date US filing 旧法 国外授权法定阻碍 申请人 12个月 授权 申请日之前 丧失可专利性">
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2 mb-3">
+                                <span class="font-bold text-xs text-[#0b2545] font-mono-code">Pre-AIA 35 U.S.C. 102(d) - LOSS OF RIGHT TO FOREIGN PATENTING (旧法自身国外授权阻碍)</span>
+                                <button onclick="copyStatuteText(this)" class="text-[10px] text-[#0096b1] font-bold hover:underline flex items-center gap-1"><i class="fa-regular fa-copy"></i> 复制中英对照</button>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs leading-relaxed">
+                                <div class="statute-eng text-slate-600 pr-2 border-r border-slate-200/60 font-mono-code">
+                                    <strong>(d)</strong> the invention was first patented or caused to be patented, or was the subject of an inventor's certificate, by the applicant or his legal representatives or assigns in a foreign country prior to the date of the application for patent in this country on an application for patent or inventor's certificate filed more than twelve months before the filing of the application in the United States.
                                 </div>
-                            </label>
-
-                            <!-- Prior Shielding Disclosure -->
-                            <label class="flex items-start p-2.5 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer">
-                                <input type="checkbox" id="sb-opt-shielding" onchange="runSandboxCalc()" class="mt-1 mr-2 rounded text-[#0096b1]">
-                                <div>
-                                    <span class="font-bold text-slate-800">1.130(b) 先行公开屏蔽盾 (Shielding Exception)</span>
-                                    <p class="text-[10px] text-slate-400 mt-0.5">在对方文献102(d)现有技术起算点前，我方早已对相同内容进行了合规公共公开。</p>
+                                <div class="statute-chi text-slate-700 font-sans">
+                                    <strong>(d)</strong> 申请人或其法定代表人、受让人，在其向美国递交申请日之前，已在外国使该发明首先获得专利或导致其获得专利，或使其成为发明人证书的主题，且该外国申请或发明人证书是在向美国递交申请日<strong>12个月之前（more than twelve months）</strong>递交的。
                                 </div>
-                            </label>
-
-                            <!-- Common Ownership -->
-                            <label id="sb-panel-ownership" class="flex items-start p-2.5 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer">
-                                <input type="checkbox" id="sb-opt-ownership" onchange="runSandboxCalc()" class="mt-1 mr-2 rounded text-[#0096b1]">
-                                <div>
-                                    <span class="font-bold text-slate-800">102(b)(2)(C) 共同所有权 (Common Ownership / JRA)</span>
-                                    <p class="text-[10px] text-slate-400 mt-0.5">在不晚于我方 EFD 时，该对比文献与本案属于同一权利实体或受联合研究协议约束。</p>
-                                </div>
-                            </label>
+                            </div>
                         </div>
 
+                        <!-- Pre 102(e) -->
+                        <div class="statute-card bg-slate-50 border border-slate-200 rounded-xl p-4 transition-all" data-text="Pre-AIA 102 e secret prior art US patent published US application by another filed in United States WIPO PCT international application designated United States English language Hilmer Doctrine 旧法 102(e) 秘密现有技术 美国授权专利 在先递交 英文公开 指定美国 希尔默退化">
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2 mb-3">
+                                <span class="font-bold text-xs text-[#0b2545] font-mono-code">Pre-AIA 35 U.S.C. 102(e) - SECRET PRIOR ART (旧法秘密现有技术及英文PCT限制)</span>
+                                <button onclick="copyStatuteText(this)" class="text-[10px] text-[#0096b1] font-bold hover:underline flex items-center gap-1"><i class="fa-regular fa-copy"></i> 复制中英对照</button>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs leading-relaxed">
+                                <div class="statute-eng text-slate-600 pr-2 border-r border-slate-200/60 font-mono-code">
+                                    <strong>(e)</strong> the invention was described in —<br>
+                                    <strong>(1)</strong> an application for patent, published under section 122(b), by another filed in the United States before the invention by the applicant for patent; or<br>
+                                    <strong>(2)</strong> a patent granted on an application for patent by another filed in the United States before the invention by the applicant for patent, except that an international application filed under the treaty defined in section 351(g) shall have the effects for the purposes of this subsection of an application filed in the United States only if the international application designated the United States and was published under Article 21(2) of such treaty in the English language.
+                                </div>
+                                <div class="statute-chi text-slate-700 font-sans">
+                                    <strong>(e)</strong> 该发明被描述于以下文献中 ——<br>
+                                    <strong>(1)</strong> 在专利申请人完成发明之前，由<strong>他人（by another）</strong>在美国递交并依据第122(b)条公布的专利申请中；或<br>
+                                    <strong>(2)</strong> 在专利申请人完成发明之前，由他人在美国递交并获得授权的专利中；但依据第351(g)条所定义的条约递交的国际申请（PCT），只有在其<strong>指定了美国（designated the United States）</strong>且依据该条约第21(2)条以<strong>英文公开（in the English language）</strong>的情况下，为了本款之目的，才具有在美国递交之申请的效力。
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- ================= PRE-AIA 103 ================= -->
+                    <div id="statute-sec-pre-103" class="statute-group hidden space-y-4">
+                        <div class="statute-card bg-slate-50 border border-slate-200 rounded-xl p-4 transition-all" data-text="Pre-AIA 103 Obviousness old law conditions patentability identically disclosed prior art differences whole obvious at the time the invention was made PHOSITA manner of invention 旧法创造性 显而易见 差异 整体 发明完成之时 本领域普通技术人员">
+                            <div class="flex justify-between items-center border-b border-slate-200 pb-2 mb-3">
+                                <span class="font-bold text-xs text-[#0b2545] font-mono-code">Pre-AIA 35 U.S.C. 103 - OBVIOUSNESS UNDER OLD LAW</span>
+                                <button onclick="copyStatuteText(this)" class="text-[10px] text-[#0096b1] font-bold hover:underline flex items-center gap-1"><i class="fa-regular fa-copy"></i> 复制中英对照</button>
+                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 text-xs leading-relaxed">
+                                <div class="statute-eng text-slate-600 pr-2 border-r border-slate-200/60 font-mono-code">
+                                    <strong>(a)</strong> A patent may not be obtained though the invention is not identically disclosed or described as set forth in section 102 of this title, if the differences between the subject matter sought to be patented and the prior art are such that the subject matter as a whole would have been obvious at the time the invention was made to a person having ordinary skill in the art to which said subject matter pertains. Patentability shall not be negated by the manner in which the invention was made.
+                                </div>
+                                <div class="statute-chi text-slate-700 font-sans">
+                                    <strong>(a)</strong> 尽管被寻求保护的发明未在第102条规定的现有技术中被等同公开（identically disclosed），但如果被寻求保护的主题与现有技术之间的差异，使得被寻求保护的主题作为一个整体，在<strong>发明完成之时（at the time the invention was made）</strong>，对于该主题所属技术领域的普通技术人员来说是显而易见的，则不能获得专利。可专利性不得因发明完成的方式而被否定。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
-            <!-- 右侧输出判定书与动态 Sandbox SVG (占 7 列) -->
-            <div class="xl:col-span-7 space-y-6 flex flex-col justify-between">
-                
-                <!-- 动态 Sandbox SVG 时间轴 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col flex-grow">
-                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                        <span class="text-xs font-bold text-[#0b2545] flex items-center gap-1.5">
-                            <span class="w-2 h-4 bg-[#0096b1] rounded"></span> 实时沙盘 SVG 时间线渲染 (Live Diagnostic Timeline)
-                        </span>
-                        <span class="text-[10px] bg-slate-100 text-slate-500 font-mono-code px-2 py-0.5 rounded">Live Vector</span>
-                    </div>
-
-                    <!-- Sandbox SVG Canvas -->
-                    <div class="flex-grow flex items-center justify-center py-6 bg-slate-50 rounded-xl mt-4 border border-slate-100">
-                        <div class="w-full min-h-[220px] max-h-[260px] relative">
-                            <svg id="svg-sandbox-canvas" class="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                                <!-- Sandbox JS Timeline goes here -->
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 审查结论与代理人答辩词生成 -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
-                        <span class="text-xs font-bold uppercase text-[#0b2545] flex items-center gap-1.5">
-                            <i class="fa-solid fa-file-invoice text-emerald-600"></i> 沙盘法理判定报告 (Examiner Sandbox Diagnostic Report)
-                        </span>
-                        <button onclick="copySandboxReport()" class="text-xs text-[#0096b1] hover:text-[#00b4d8] font-bold flex items-center gap-1">
-                            <i class="fa-solid fa-copy"></i> 一键复制判决意见
-                        </button>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                            <p class="text-slate-400 font-bold mb-1">主控法条/条款:</p>
-                            <p class="text-slate-800 font-bold font-mono-code text-[13px]" id="sb-out-statute">-</p>
-                        </div>
-                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                            <p class="text-slate-400 font-bold mb-1">102(d) 法定现有技术日期:</p>
-                            <p class="text-indigo-600 font-bold font-mono-code text-[13px]" id="sb-out-date">-</p>
-                        </div>
-                        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200">
-                            <p class="text-slate-400 font-bold mb-1">沙盘最终裁决结论:</p>
-                            <p class="text-[#0b2545] font-extrabold font-mono-code text-[13px]" id="sb-out-verdict">-</p>
-                        </div>
-                    </div>
-
-                    <div class="space-y-1">
-                        <span class="text-[11px] font-bold text-slate-400 block uppercase">Examiner Analysis Detail (深度审查法理详析):</span>
-                        <div id="sb-out-detail" class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs font-mono-code whitespace-pre-wrap leading-relaxed text-slate-700 min-h-[140px]">
-                            等待输入参数...
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
         </div>
 
-        <!-- ==================== SECTION 3: 审查员上岗模拟自测区 ==================== -->
-        <div id="section-exam-room" class="hidden space-y-6">
+        <!-- ==================== TAB 5: QUALIFYING QUIZ ROOM ==================== -->
+        <div id="tab-quiz" class="hidden space-y-6">
             <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
                 <div class="border-b border-slate-100 pb-3 flex items-center space-x-2">
                     <i class="fa-solid fa-clipboard-question text-[#0096b1] text-lg"></i>
                     <h2 class="text-sm font-extrabold text-[#0b2545] uppercase">
-                        USPTO First-Inventor-to-File (FITF) Examiner Qualifying Quiz (上岗考评实验室)
+                        USPTO First-Inventor-to-File (FITF) 审查员资格考试模拟考场
                     </h2>
                 </div>
                 <p class="text-xs text-slate-500">
-                    本测验严格遵循美专局 102/103 审查员指导大纲。选择您的答案，我们将实时在网页底部给出权威 MPEP 标准解析（不使用干扰弹窗）：
+                    本测验严格遵循美专局 102/103 审查员指导大纲。选择您的答案，标准解析将在网页底部实时展开，帮助您攻克跨境申报难关：
                 </p>
 
-                <!-- Quiz List -->
+                <!-- 考题列表 -->
                 <div class="space-y-6 pt-2">
-                    
-                    <!-- Question 1 -->
+                    <!-- Q1 -->
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
                         <div class="flex items-center space-x-2">
                             <span class="bg-[#0b2545] text-white text-[10px] font-bold px-2 py-0.5 rounded">Q1</span>
-                            <h4 class="text-xs font-bold text-slate-800">AIA下，一件要求了中国优先权（优先权日为 2018年3月1日）的美国授权专利（美国递交日为 2019年2月15日）。该文献作为 102(a)(2) 的秘密现有技术起算日是何时？（前提：优先权原说明书记载了相关技术特征）</h4>
+                            <h4 class="text-xs font-bold text-slate-800">AIA新法下，在后公开的一件美国公开专利（Smith），其美国本土递交日为 2019年2月15日，声称要求了 2018年3月1日 的中国优先权。该文献在 AIA 102(a)(2) 下的秘密现有技术起算日是何时？（前提：中国优先权原说明书已描述对应特征）</h4>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
                             <button onclick="submitQuizAnswer(1, 'A')" class="w-full text-left p-3.5 bg-white hover:bg-slate-100 rounded-lg border border-slate-200 transition">
-                                <b>A. 2019年2月15日 (美递交日)</b> - 因 Hilmer 学说限制，其 102 效力无法追溯。
+                                <b>A. 2019年2月15日 (美国本土递交日)</b> - 因希尔默（Hilmer）限制，无法追溯国外优先权。
                             </button>
                             <button onclick="submitQuizAnswer(1, 'B')" class="w-full text-left p-3.5 bg-white hover:bg-slate-100 rounded-lg border border-slate-200 transition">
-                                <b>B. 2018年3月1日 (中国优先权日)</b> - 因为 AIA 102(d) 彻底废除了 Hilmer Doctrine。
+                                <b>B. 2018年3月1日 (中国优先权日)</b> - 依据新法 102(d)，Hilmer 限制已被彻底废除。
                             </button>
                         </div>
                         <div id="quiz-explain-1" class="hidden p-3.5 bg-white rounded-lg border text-xs leading-relaxed"></div>
                     </div>
 
-                    <!-- Question 2 -->
+                    <!-- Q2 -->
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
                         <div class="flex items-center space-x-2">
                             <span class="bg-[#0b2545] text-white text-[10px] font-bold px-2 py-0.5 rounded">Q2</span>
-                            <h4 class="text-xs font-bold text-slate-800">在后公开的一件外国专利（如中国专利），其申请日早于美国申请案的EFD，但在美国申请案EFD之后才进行公开。该中国专利是否构成合格的美国 102 现有技术？</h4>
+                            <h4 class="text-xs font-bold text-slate-800">在后公开的一件外国普通公开文献（如中国国家知识产权局 CN 公开的普通专利），其中国递交日早于我方案申请，但在我方申请（EFD）之后才进行公开。该中国文献在美是否构成合格的新颖性障碍？</h4>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
                             <button onclick="submitQuizAnswer(2, 'A')" class="w-full text-left p-3.5 bg-white hover:bg-slate-100 rounded-lg border border-slate-200 transition">
-                                <b>A. 不构成。</b> 外国专利在美绝不能构成 102(a)(2) 秘密现有技术，在 EFD 后公开也不适用 102(a)(1)。
+                                <b>A. 不构成现有技术。</b> 外国文献在美绝不享有 102(a)(2) / 102(e) 秘密追溯，在后公开亦不适用 102(a)(1)。
                             </button>
                             <button onclick="submitQuizAnswer(2, 'B')" class="w-full text-left p-3.5 bg-white hover:bg-slate-100 rounded-lg border border-slate-200 transition">
-                                <b>B. 构成。</b> 只要递交日期在美案之前，就能直接追溯新颖性阻碍。
+                                <b>B. 构成现有技术。</b> 只要其国外原始申请日早于我方案，就可以依据 102(d) 或 102(e) 进行阻碍。
                             </button>
                         </div>
                         <div id="quiz-explain-2" class="hidden p-3.5 bg-white rounded-lg border text-xs leading-relaxed"></div>
                     </div>
 
-                    <!-- Question 3 -->
+                    <!-- Q3 -->
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3">
                         <div class="flex items-center space-x-2">
                             <span class="bg-[#0b2545] text-white text-[10px] font-bold px-2 py-0.5 rounded">Q3</span>
-                            <h4 class="text-xs font-bold text-slate-800">在 102(b)(1)(B) 宽限期第三方公开屏蔽例外（Intervening Disclosure Shield）中，若我方发明人于 2019年2月1日公开了技术。第三方于 2019年5月1日也公开了完全相同的主题。我方于 2019年10月1日提交美案。第三方的公开是否能作为 102(a)(1) 现有技术？</h4>
+                            <h4 class="text-xs font-bold text-slate-800">在 102(b)(1)(B) 宽限期第三方公开屏蔽例外（Intervening Disclosure Shield）中，若我方发明人于 2019年2月1日 公开了技术。第三方于 2019年5月1日 独立公开了完全相同的主题。我方于 2019年10月1日 提交了美申请案。第三方的公开是否会破坏我方美案的新颖性？</h4>
                         </div>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-3.5 text-xs">
                             <button onclick="submitQuizAnswer(3, 'A')" class="w-full text-left p-3.5 bg-white hover:bg-slate-100 rounded-lg border border-slate-200 transition">
-                                <b>A. 能够阻碍。</b> 第三方的公开独立发生，且由于已经公开发表，依然构成现有技术。
+                                <b>A. 能够破坏。</b> 因为第三方的公开独立于我方发生，且同样已向公众开放。
                             </button>
                             <button onclick="submitQuizAnswer(3, 'B')" class="w-full text-left p-3.5 bg-white hover:bg-slate-100 rounded-lg border border-slate-200 transition">
-                                <b>B. 不能阻碍。</b> 被我方 2月1日 的先行自披露成功屏蔽，豁免剔除现有技术。
+                                <b>B. 无法破坏。</b> 被我方案 2月1日 抢先发布的自披露“成功屏蔽”，依法予以豁免剔除。
                             </button>
                         </div>
                         <div id="quiz-explain-3" class="hidden p-3.5 bg-white rounded-lg border text-xs leading-relaxed"></div>
                     </div>
-
                 </div>
             </div>
         </div>
 
     </main>
 
-    <!-- 底部 -->
-    <footer class="bg-[#0b2545] border-t border-slate-700 py-6 mt-12 text-slate-300 text-xs text-center md:text-left">
+    <!-- 页脚 -->
+    <footer class="bg-[#0b2545] border-t border-slate-700 py-6 mt-12 text-slate-300 text-xs text-center md:text-left shadow-inner">
         <div class="max-w-[1600px] mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-3">
-            <p>© 2026 USPTO FITF 跨境优先权深度交互教学工作站. Finnegan Theme Optimized.</p>
-            <p class="text-[10px] text-slate-400">Leahy-Smith America Invents Act (AIA) 35 U.S.C. 102 / 103 Standard Course.</p>
+            <p>© 2026 USPTO AIA/Pre-AIA 跨境现有技术诊断与双语对照数据库工作站. Finnegan Theme adapt.</p>
+            <p class="text-[10px] text-slate-400">本系统算法、双语底表与诊断报告完全严格参照美国 MPEP 指南与 Leahy-Smith 专利法编译。</p>
         </div>
     </footer>
 
-    <!-- ========================================== CORE JS ENGINE ========================================== -->
+    <!-- ========================================== JAVASCRIPT LOGIC ========================================== -->
     <script>
-        // 1. USPTO FITF PPT 官方原案教学数据库 (Cases 1 - 5)
+        // Tab Page Switching
+        function switchTab(tabId) {
+            const tabs = ['governing-law', 'ref-date', 'scenarios', 'statutes', 'quiz'];
+            tabs.forEach(t => {
+                const el = document.getElementById(`tab-${t}`);
+                const btn = document.getElementById(`tab-btn-${t}`);
+                if (t === tabId) {
+                    el.classList.remove('hidden');
+                    btn.classList.add('bg-[#0096b1]', 'text-white');
+                    btn.classList.remove('text-slate-200', 'hover:text-white');
+                } else {
+                    el.classList.add('hidden');
+                    btn.classList.remove('bg-[#0096b1]', 'text-white');
+                    btn.classList.add('text-slate-200', 'hover:text-white');
+                }
+            });
+            if (tabId === 'governing-law') calcGoverningLaw();
+            if (tabId === 'ref-date') calcPriorArtSandbox();
+            if (tabId === 'scenarios') selectSlideCase(1);
+        }
+
+        // Governing Law Option Toggles
+        function toggleLawPriority() {
+            const hasPriority = document.getElementById('law-has-priority').checked;
+            const panel = document.getElementById('law-priority-panel');
+            if (hasPriority) panel.classList.remove('hidden');
+            else panel.classList.add('hidden');
+            calcGoverningLaw();
+        }
+
+        // ==================== TAB 1: GOVERNING LAW LOGIC ====================
+        function calcGoverningLaw() {
+            const usFiledStr = document.getElementById('law-us-filed').value;
+            const hasPriority = document.getElementById('law-has-priority').checked;
+            const priorityStr = document.getElementById('law-priority-date').value;
+            const hasNewMatter = document.getElementById('law-has-new-matter').checked;
+
+            const nodeFiling = document.getElementById('gov-node-filing');
+            const valFiling = document.getElementById('gov-val-filing');
+            const nodePriority = document.getElementById('gov-node-priority');
+            const valPriority = document.getElementById('gov-val-priority');
+            const nodeNewmatter = document.getElementById('gov-node-newmatter');
+            const valNewmatter = document.getElementById('gov-val-newmatter');
+            const nodeResult = document.getElementById('gov-node-result');
+            const textResult = document.getElementById('gov-text-result');
+            const valResult = document.getElementById('gov-val-result');
+            const reportContent = document.getElementById('gov-report-content');
+
+            if (!usFiledStr) {
+                reportContent.innerText = "请输入实际美国递交日以启动诊断。";
+                return;
+            }
+
+            const usFiled = new Date(usFiledStr);
+            const aiaThreshold = new Date('2013-03-16');
+            let isFiledAfterThreshold = usFiled >= aiaThreshold;
+
+            // Reset node styles
+            [nodeFiling, nodePriority, nodeNewmatter, nodeResult].forEach(n => {
+                n.className = "w-80 p-3 rounded-xl border-2 text-center transition-all duration-300 shadow-sm flow-node-inactive";
+            });
+
+            let finalLaw = "Pre-AIA";
+            let rationale = "";
+
+            // Step 1: Filing Date check
+            nodeFiling.classList.remove('flow-node-inactive');
+            if (isFiledAfterThreshold) {
+                nodeFiling.classList.add('flow-node-pass');
+                valFiling.innerText = "Yes (>= 2013-03-16)";
+                
+                // Step 2: Priority Check
+                nodePriority.classList.remove('flow-node-inactive');
+                if (hasPriority && priorityStr) {
+                    const priorityDate = new Date(priorityStr);
+                    const isPriorityBeforeThreshold = priorityDate < aiaThreshold;
+                    
+                    if (isPriorityBeforeThreshold) {
+                        nodePriority.classList.add('flow-node-pass');
+                        valPriority.innerText = `Yes (${priorityStr} < 3/16/13)`;
+
+                        // Step 3: Support Check (MPEP 2159)
+                        nodeNewmatter.classList.remove('flow-node-inactive');
+                        if (hasNewMatter) {
+                            nodeNewmatter.classList.add('flow-node-block');
+                            valNewmatter.innerText = "Yes (Lacks Support)";
+                            
+                            finalLaw = "AIA";
+                            nodeResult.classList.add('flow-node-block');
+                            textResult.innerText = "Governed by AIA";
+                            valResult.innerText = "AIA (3(n)(1) New Matter Active)";
+                            
+                            rationale = `【风险专利法规诊断意见书】
+==================================================
+◆ 最终适用法律：35 U.S.C. 102/103 (新法 AIA 适用)
+◆ 关键诊断特征：过渡期转换申请案 (Transition App with New Matter)
+==================================================
+【法理解构路径】
+1. 实际递交日：风险专利实际美国递交日为 ${usFiledStr} (处于 2013-03-16 之后)。
+2. 优先权追溯：该案声称了在先优先权 (${priorityStr})，该优先权日早于 AIA 生效临界日。
+3. 3(n)(1) New Matter 触发：由于权利要求中至少包含一项未被在先说明书完全支持的特征。
+4. 根据 AIA 3(n)(1) 规定：一旦过渡申请案中曾经包含过 unsupported claim，该申请永久、不可逆地被拖入【AIA 新法】管辖！
+
+💡 【防御与无效实务 (Defense Target)】：
+安全！由于该风险专利永久属于 AIA 新法，我们可以采用新法最强评述进行攻击：
+(1) 检索全球任何地点的口头学术演讲、销售、展会公开，不再受旧法的美国地理范围局限。
+(2) 可以使用在先美案的【外国优先权日】作为 102(d) 起算点砸掉该专利，成功避开 Hilmer Doctrine 希尔默限制！`;
+                        } else {
+                            nodeNewmatter.classList.add('flow-node-pass');
+                            valNewmatter.innerText = "No (Fully Supported)";
+
+                            finalLaw = "Pre-AIA";
+                            nodeResult.classList.add('flow-node-pass');
+                            textResult.innerText = "Governed by Pre-AIA";
+                            valResult.innerText = "Pre-AIA (Fully Supported Transition)";
+
+                            rationale = `【风险专利法规诊断意见书】
+==================================================
+◆ 最终适用法律：Pre-AIA 35 U.S.C. 102/103 (旧法适用)
+◆ 关键诊断特征：合格过渡期申请案 (Transition App Fully Supported)
+==================================================
+【法理解构路径】
+1. 实际递交日：该美案实际递交于 2013-03-16 之后 (${usFiledStr})。
+2. 优先权追溯：声称了 2013-03-16 之前的国外/本国优先权 (${priorityStr})。
+3. 支持性校验：全部 claimed subject matter 均受到了早期说明书的完整支持 (无 New Matter)。
+4. 根据 AIA 3(n)(1) 及 MPEP 2159，该过渡申请案将维持适用【旧法 Pre-AIA】。
+
+💡 【防御与无效实务 (Defense Target)】：
+注意！这是无效代理中非常经典的“盲区”。该风险专利虽为 2013 年后申请，但其管辖权属于旧法：
+(1) 境外发生的口头学术会议、境外产品演示展销等，【不可用】作为新颖性/法定阻碍引证。
+(2) 对方有权通过向美专局提交 Rule 131 宣誓书，证明发明完成日提前（Swear Back）来克服我方引证。
+(3) 如果引用另一件在后公开的在先美案来评述该风险专利，我方对比引证案的现有技术效日起算点绝不能追溯到其中国优先权日（Hilmer 限制强行剥离其外国优先权）！`;
+                        }
+                    } else {
+                        // Priority also after threshold
+                        nodePriority.classList.add('flow-node-block');
+                        valPriority.innerText = `No (Priority ${priorityStr} >= 3/16/13)`;
+                        
+                        finalLaw = "AIA";
+                        nodeResult.classList.add('flow-node-block');
+                        textResult.innerText = "Governed by AIA";
+                        valResult.innerText = "AIA (Pure AIA Patent)";
+                        
+                        rationale = `【风险专利法规诊断意见书】
+==================================================
+◆ 最终适用法律：35 U.S.C. 102/103 (新法 AIA 适用)
+◆ 关键诊断特征：纯粹的新法专利 (Pure Post-AIA Patent)
+==================================================
+该案的递交日为 ${usFiledStr}，且最早优先权日为 ${priorityStr}，两个日期都落入 2013-03-16 之后，完全且无争议地由新法管辖。`;
+                    }
+                } else {
+                    nodePriority.classList.add('flow-node-block');
+                    valPriority.innerText = "No Priority Claimed";
+                    
+                    finalLaw = "AIA";
+                    nodeResult.classList.add('flow-node-block');
+                    textResult.innerText = "Governed by AIA";
+                    valResult.innerText = "AIA (Pure AIA Patent)";
+                    
+                    rationale = `【风险专利法规诊断意见书】
+==================================================
+◆ 最终适用法律：35 U.S.C. 102/103 (新法 AIA 适用)
+◆ 关键诊断特征：纯粹的新法专利 (无在先优先权)
+==================================================
+该案递交日落入 2013-03-16 之后，无在先优先权声明，无争议地由 AIA 新法管辖。`;
+                }
+            } else {
+                nodeFiling.classList.add('flow-node-block');
+                valFiling.innerText = "No (< 2013-03-16)";
+                
+                finalLaw = "Pre-AIA";
+                nodeResult.classList.add('flow-node-pass');
+                textResult.innerText = "Governed by Pre-AIA";
+                valResult.innerText = "Pre-AIA (Pure Pre-AIA Patent)";
+                
+                rationale = `【风险专利法规诊断意见书】
+==================================================
+◆ 最终适用法律：Pre-AIA 35 U.S.C. 102/103 (旧法适用)
+◆ 关键诊断特征：纯粹的旧法专利 (Pure Pre-AIA Patent)
+==================================================
+由于实际美国递交日 ${usFiledStr} 早于 2013-03-16，无条件、100% 适用于 Pre-AIA（旧法）。`;
+            }
+
+            reportContent.innerText = rationale;
+            
+            // Sync current active law to Sandbox Baseline
+            const sandboxLawEl = document.getElementById('sb-subject-law');
+            if (sandboxLawEl) {
+                sandboxLawEl.innerText = finalLaw;
+                if (finalLaw === "Pre-AIA") {
+                    sandboxLawEl.className = "w-full bg-rose-50 border border-rose-200 rounded px-2.5 py-1.5 font-bold text-rose-700 text-center";
+                    document.getElementById('sb-panel-swearback').classList.remove('hidden');
+                } else {
+                    sandboxLawEl.className = "w-full bg-teal-50 border border-teal-200 rounded px-2.5 py-1.5 font-bold text-teal-700 text-center";
+                    document.getElementById('sb-panel-swearback').classList.add('hidden');
+                }
+            }
+        }
+
+        function loadGovCase(type) {
+            const filedInput = document.getElementById('law-us-filed');
+            const hasPriority = document.getElementById('law-has-priority');
+            const priorityInput = document.getElementById('law-priority-date');
+            const newMatterCheck = document.getElementById('law-has-new-matter');
+
+            newMatterCheck.checked = false;
+
+            if (type === 'pure-pre') {
+                filedInput.value = "2012-10-15";
+                hasPriority.checked = true;
+                priorityInput.value = "2011-12-01";
+            } else if (type === 'transition-supported') {
+                filedInput.value = "2014-06-15";
+                hasPriority.checked = true;
+                priorityInput.value = "2012-10-10";
+            } else if (type === 'transition-unsupported') {
+                filedInput.value = "2014-06-15";
+                hasPriority.checked = true;
+                priorityInput.value = "2012-10-10";
+                newMatterCheck.checked = true;
+            } else if (type === 'pure-aia') {
+                filedInput.value = "2016-03-10";
+                hasPriority.checked = true;
+                priorityInput.value = "2015-05-20";
+            }
+            toggleLawPriority();
+        }
+
+        // ==================== TAB 2: REFERENCE DATE SANDBOX LOGIC ====================
+        function toggleRefType() {
+            const refType = document.querySelector('input[name="sb-ref-type"]:checked').value;
+            const panelFiled = document.getElementById('sb-panel-filed');
+            const panelPriority = document.getElementById('sb-panel-priority');
+            const panelPct = document.getElementById('sb-panel-pct');
+
+            const lblUs = document.getElementById('sb-lbl-us');
+            const lblPct = document.getElementById('sb-lbl-pct');
+            const lblForeign = document.getElementById('sb-lbl-foreign');
+
+            [lblUs, lblPct, lblForeign].forEach(l => l.className = "flex flex-col items-center p-2.5 bg-slate-50 border border-slate-200 rounded-lg cursor-pointer text-center hover:border-[#0096b1]");
+
+            if (refType === 'us_patent') {
+                panelFiled.classList.remove('hidden');
+                panelPriority.classList.remove('hidden');
+                panelPct.classList.add('hidden');
+                lblUs.className = "flex flex-col items-center p-2.5 bg-[#0096b1]/5 border-2 border-[#0096b1] rounded-lg cursor-pointer text-center text-[#0f766e] font-bold";
+            } else if (refType === 'pct_app') {
+                panelFiled.classList.remove('hidden');
+                panelPriority.classList.remove('hidden');
+                panelPct.classList.remove('hidden');
+                lblPct.className = "flex flex-col items-center p-2.5 bg-[#0096b1]/5 border-2 border-[#0096b1] rounded-lg cursor-pointer text-center text-[#0f766e] font-bold";
+            } else if (refType === 'foreign_patent') {
+                panelFiled.classList.add('hidden');
+                panelPriority.classList.add('hidden');
+                panelPct.classList.add('hidden');
+                lblForeign.className = "flex flex-col items-center p-2.5 bg-amber-50 border-2 border-amber-500 rounded-lg cursor-pointer text-center text-amber-800 font-bold";
+            }
+            calcPriorArtSandbox();
+        }
+
+        function toggleRefPriority() {
+            const hasPriority = document.getElementById('sb-ref-has-priority').checked;
+            const inputs = document.getElementById('sb-priority-inputs');
+            if (hasPriority) inputs.classList.remove('hidden');
+            else inputs.classList.add('hidden');
+            calcPriorArtSandbox();
+        }
+
+        function toggleSwearback() {
+            const hasSwear = document.getElementById('sb-use-swearback').checked;
+            const inputs = document.getElementById('sb-swearback-inputs');
+            if (hasSwear) inputs.classList.remove('hidden');
+            else inputs.classList.add('hidden');
+            calcPriorArtSandbox();
+        }
+
+        // 核心测算沙盘算法逻辑
+        function calcPriorArtSandbox() {
+            const subjectEfdStr = document.getElementById('sb-subject-efd').value;
+            const refType = document.querySelector('input[name="sb-ref-type"]:checked').value;
+            const pubDateStr = document.getElementById('sb-ref-pub-date').value;
+            const filedDateStr = document.getElementById('sb-ref-filed-date').value;
+            const hasPriority = document.getElementById('sb-ref-has-priority').checked;
+            const priorityDateStr = document.getElementById('sb-ref-priority-date').value;
+            const priorityCountry = document.getElementById('sb-ref-priority-country').value || "CN";
+            const prioritySupported = document.getElementById('sb-ref-priority-supported').checked;
+
+            const pctEnglish = document.getElementById('sb-pct-english').checked;
+            const pctUsDesignated = document.getElementById('sb-pct-us-designated').checked;
+
+            const useSwearback = document.getElementById('sb-use-swearback').checked;
+            const swearConceptionStr = document.getElementById('sb-swear-conception').value;
+            const swearRtpStr = document.getElementById('sb-swear-rtp').value;
+            const swearDiligence = document.getElementById('sb-swear-diligence').checked;
+
+            const reportEl = document.getElementById('ref-report-content');
+            const sandboxLawEl = document.getElementById('sb-subject-law');
+
+            if (!subjectEfdStr || !pubDateStr) {
+                reportEl.innerText = "请输入有效申请日与公开日以运行测算。";
+                return;
+            }
+
+            const subjectEfd = new Date(subjectEfdStr);
+            const aiaThreshold = new Date('2013-03-16');
+            const isAia = subjectEfd >= aiaThreshold;
+
+            sandboxLawEl.innerText = isAia ? "AIA (新法)" : "Pre-AIA (旧法)";
+            sandboxLawEl.className = isAia ? "w-full bg-teal-50 border border-teal-200 rounded px-2.5 py-1.5 font-bold text-teal-700 text-center" : "w-full bg-rose-50 border border-rose-200 rounded px-2.5 py-1.5 font-bold text-rose-700 text-center";
+
+            if (!isAia) {
+                document.getElementById('sb-panel-swearback').classList.remove('hidden');
+            } else {
+                document.getElementById('sb-panel-swearback').classList.add('hidden');
+            }
+
+            let effectivePriorArtDate = null;
+            let timelineEvents = [];
+            let legalOutcome = "";
+            let coreStatute = "";
+            let diagnosticDetails = [];
+
+            // 1年宽限期回推
+            const graceStart = new Date(subjectEfd);
+            graceStart.setFullYear(graceStart.getFullYear() - 1);
+            const graceStartStr = graceStart.toISOString().split('T')[0];
+
+            timelineEvents.push({ date: subjectEfdStr, label: "本发案申请 (Subject EFD)", type: "subject" });
+            timelineEvents.push({ date: graceStartStr, label: isAia ? "Grace Period Start (宽限期起点)" : "Critical Date (法定一年前死线)", type: "grace" });
+
+            // 计算现有技术生效日 (Prior Art Date)
+            if (refType === 'foreign_patent') {
+                // 外国普通公开专利只能是公开发表日 (Printed Publication)
+                effectivePriorArtDate = new Date(pubDateStr);
+                coreStatute = isAia ? "35 U.S.C. 102(a)(1)" : "Pre-AIA 35 U.S.C. 102(a)/(b)";
+                timelineEvents.push({ date: pubDateStr, label: "外国公开公告日 (Printed Publication)", type: "ref" });
+
+                diagnosticDetails.push(`【文献法律属性】：国外普通专利文献 (如 CN, EP 公开案)`);
+                diagnosticDetails.push(`【生效起算法则】：无论是新法 AIA 还是旧法 Pre-AIA，国外专利绝不具有“秘密在先申请”地位（无 102(a)(2) 或旧 102(e) 追溯）。其生效日有且仅有【公开公告日（${pubDateStr}）】。`);
+            } else if (refType === 'us_patent') {
+                if (isAia) {
+                    coreStatute = "35 U.S.C. 102(a)(2)";
+                    if (hasPriority && priorityDateStr && prioritySupported) {
+                        effectivePriorArtDate = new Date(priorityDateStr);
+                        timelineEvents.push({ date: priorityDateStr, label: "102(d) 追溯在先外国优先权日", type: "ref_priority" });
+                        timelineEvents.push({ date: filedDateStr, label: "美实际递交日", type: "ref_filed" });
+                        timelineEvents.push({ date: pubDateStr, label: "PGPub 美在后公开日", type: "ref" });
+                        diagnosticDetails.push(`【Hilmer学说消除 (102(d))】：在 AIA 新法下，Hilmer Doctrine 彻底废止。在先美案若披露了一致的技术特征，其秘密现有技术效力可以直接追溯回【在先外国优先权日（${priorityDateStr}）】。`);
+                    } else {
+                        effectivePriorArtDate = new Date(filedDateStr);
+                        timelineEvents.push({ date: filedDateStr, label: "102(d) 实际美国递交日 (优先权未受支持)", type: "ref_priority" });
+                        timelineEvents.push({ date: pubDateStr, label: "PGPub 美在后公开日", type: "ref" });
+                        diagnosticDetails.push(`【新法102(d)】：由于优先权文本未支持核心Claim特征，其生效日落回其【实际美国本土递交日（${filedDateStr}）】。`);
+                    }
+                } else {
+                    // Pre-AIA 102(e) 美国专利
+                    coreStatute = "Pre-AIA 35 U.S.C. 102(e)";
+                    effectivePriorArtDate = new Date(filedDateStr); // 绝不能追溯外国优先权
+                    timelineEvents.push({ date: filedDateStr, label: "102(e) 美实际递交日 (Hilmer 强行剥离优先权)", type: "ref_priority" });
+                    timelineEvents.push({ date: pubDateStr, label: "美在后公开日", type: "ref" });
+                    if (hasPriority) {
+                        diagnosticDetails.push(`【Hilmer学说锁死限制】：在旧法 Pre-AIA 102(e) 下，希尔默限制生效。即使该美案声称了早期的外国优先权 (${priorityDateStr})，其作为现有技术效力的起点也【绝对无法追溯】！只能锁死在【美国本土实际递交日 (${filedDateStr})】。`);
+                    }
+                }
+            } else if (refType === 'pct_app') {
+                if (isAia) {
+                    coreStatute = "35 U.S.C. 102(a)(2) & 102(d)";
+                    if (hasPriority && priorityDateStr && prioritySupported) {
+                        effectivePriorArtDate = new Date(priorityDateStr);
+                        timelineEvents.push({ date: priorityDateStr, label: "102(d) PCT追溯国外优先权", type: "ref_priority" });
+                        timelineEvents.push({ date: filedDateStr, label: "PCT 国际申请日", type: "ref_filed" });
+                        timelineEvents.push({ date: pubDateStr, label: "WIPO 国际公开日", type: "ref" });
+                    } else {
+                        effectivePriorArtDate = new Date(filedDateStr);
+                        timelineEvents.push({ date: filedDateStr, label: "102(d) PCT 国际申请日", type: "ref_priority" });
+                        timelineEvents.push({ date: pubDateStr, label: "WIPO 国际公开日", type: "ref" });
+                    }
+                    diagnosticDetails.push(`【AIA 语言解绑】：新法下，任何语言公开（如中文）指定美的 PCT 国际申请均可以其国际申请日/国外优先权日为起算点，不发生降级退化。`);
+                } else {
+                    // Pre-AIA 102(e) PCT 英文公开贬值退化校验
+                    coreStatute = "Pre-AIA 35 U.S.C. 102(e)";
+                    if (pctUsDesignated && pctEnglish) {
+                        effectivePriorArtDate = new Date(filedDateStr);
+                        timelineEvents.push({ date: filedDateStr, label: "102(e) PCT 国际申请日 (英文公开)", type: "ref_priority" });
+                        timelineEvents.push({ date: pubDateStr, label: "WIPO 国际公开日", type: "ref" });
+                        diagnosticDetails.push(`【旧法 102(e) 合规】：由于该 PCT 指定了美国且以【英文】形式进行了国际公开，满足旧法下不发生退化的严苛标准。`);
+                    } else {
+                        effectivePriorArtDate = new Date(pubDateStr);
+                        timelineEvents.push({ date: pubDateStr, label: "102(e) 退化至公开/实际美授权公开日", type: "ref_priority" });
+                        diagnosticDetails.push(`【旧法 PCT 贬值退化触发】：该 PCT 并非以英文公开（例如中文公开）。依据 Pre-AIA 102(e) 致命规定，非英文公开导致其失去国际申请日效力，现有技术效日起算点被强制向后推延并退化至其【美国实际国家公开/授权日（${pubDateStr}）】。这极大地削弱了该 PCT 对我方案的阻碍效力！`);
+                    }
+                }
+            }
+
+            const priorArtEffectiveDateStr = effectivePriorArtDate.toISOString().split('T')[0];
+
+            // 2. 时间比对与驳回判定
+            if (effectivePriorArtDate >= subjectEfd) {
+                legalOutcome = "Cleared (安全，不构成现有技术)";
+                diagnosticDetails.push(`\n【最终裁决】：✔ 通关安全！`);
+                diagnosticDetails.push(`【法理解构】：候选对比文献的合规现有技术起算日 (${priorArtEffectiveDateStr}) 晚于或等于本案有效申请日 EFD (${subjectEfdStr})。根据美国法理，该文献在新旧法体系下均无法作为评述本案新颖性的现有技术。`);
+            } else {
+                // 生效日早于我方申请日，构成潜在障碍。旧法下校验 Rule 131 Swear Back
+                if (!isAia && useSwearback && swearConceptionStr && swearRtpStr) {
+                    const conception = new Date(swearConceptionStr);
+                    const rtp = new Date(swearRtpStr);
+
+                    timelineEvents.push({ date: swearConceptionStr, label: "发明人构思日 (Rule 131 Conception)", type: "conception" });
+                    timelineEvents.push({ date: swearRtpStr, label: "付诸实践日 (Rule 131 RTP)", type: "rtp" });
+
+                    if (conception < effectivePriorArtDate) {
+                        if (rtp < effectivePriorArtDate) {
+                            legalOutcome = "Cleared via Swear-Back (通过宣誓退回排除)";
+                            diagnosticDetails.push(`\n【最终裁决】：✔ 通过 Rule 131 宣誓退回排除！`);
+                            diagnosticDetails.push(`【宣誓退回成立】：由于我方发明的【实际付诸实践日 (RTP: ${swearRtpStr})】在对方现有技术日期 (${priorArtEffectiveDateStr}) 之前就已经完成。我方发明早于现有技术，宣誓大获成功。`);
+                        } else if (swearDiligence) {
+                            legalOutcome = "Cleared via Swear-Back (通过构思及持续勤勉宣誓克服)";
+                            diagnosticDetails.push(`\n【最终裁决】：✔ 通过 Conception & Continuous Diligence 宣誓排除！`);
+                            diagnosticDetails.push(`【宣誓退回成立】：虽然我方实际 RTP (${swearRtpStr}) 处于对方现有技术日之后，但我方的【发明构思日 (Conception: ${swearConceptionStr})】早于该文献生效。且在【临界期（对方生效日前一刻至我方递交前）】保持了合理的“持续勤勉义务（Diligence）”。向美专局提交 Rule 131 宣誓成功！该现有技术被当场克服排除。`);
+                        } else {
+                            legalOutcome = "Prior Art Block (宣誓失败：缺乏勤勉义务)";
+                            diagnosticDetails.push(`\n【最终裁决】：❌ 现有技术阻碍成立 (131宣誓失败)！`);
+                            diagnosticDetails.push(`【宣誓失败剖析】：我方虽有更早的构思日 (${swearConceptionStr})，但由于实际付诸实践日迟延，且在此期间未能保持 MPEP 所要求的“连续勤勉义务”（如因研发停滞、缺乏日志证明），宣誓被拒，驳回成立。`);
+                        }
+                    } else {
+                        legalOutcome = "Prior Art Block (宣誓失败：构思在后)";
+                        diagnosticDetails.push(`\n【最终裁决】：❌ 现有技术阻碍成立 (131宣誓失败)！`);
+                        diagnosticDetails.push(`【宣誓失败剖析】：我方发明构思日 (${swearConceptionStr}) 晚于现有技术的法定生效日 (${priorArtEffectiveDateStr})。在此情形下，即便美案适用旧法，由于发明并未在先，亦无法完成 Swear Back。`);
+                    }
+                } else {
+                    legalOutcome = "Prior Art Block (构成现有技术障碍)";
+                    diagnosticDetails.push(`\n【最终裁决】：❌ 现有技术阻碍成立！`);
+                    diagnosticDetails.push(`【法理解构】：该文献现有技术起算点 (${priorArtEffectiveDateStr}) 处于本案申请日 (${subjectEfdStr}) 之前。无 102(b) 豁免例外事实。`);
+                    if (!isAia) {
+                        diagnosticDetails.push(`💡 实务支引：由于本案适用旧法，如果我方真实发明完成日早于对方，建议在左侧控制台开启“Rule 131 宣誓退回”并输入研发日志日期进行答辩克服。`);
+                    }
+                }
+            }
+
+            // 写报告
+            reportEl.innerText = `==================================================
+◆ 主控法条：${coreStatute}
+◆ 现有技术起算点：${priorArtEffectiveDateStr}
+◆ 最终诊断结论：${legalOutcome}
+==================================================
+【跨境现有技术法理解构路径】
+${diagnosticDetails.join('\n')}`;
+
+            // Draw Timeline
+            renderInteractiveTimeline(timelineEvents, graceStartStr, subjectEfdStr, 'svg-sandbox-canvas');
+        }
+
+        // ==================== TIMELINE VECTOR GENERATOR ====================
+        function renderInteractiveTimeline(datesArray, graceStartStr, subjectEfdStr, canvasId) {
+            const svg = document.getElementById(canvasId);
+            if (!svg) return;
+            svg.innerHTML = '';
+
+            const parsedDates = datesArray.map(d => ({ ...d, val: new Date(d.date) }));
+            parsedDates.sort((a,b) => a.val - b.val);
+
+            const minTime = parsedDates[0].val.getTime();
+            const maxTime = parsedDates[parsedDates.length - 1].val.getTime();
+            const timeDiff = maxTime - minTime || 1;
+
+            const xStart = 80;
+            const xEnd = 680;
+            const widthScale = xEnd - xStart;
+
+            function getX(dateObj) {
+                const t = dateObj.getTime();
+                return xStart + ((t - minTime) / timeDiff) * widthScale;
+            }
+
+            const axisY = 160;
+
+            // Main dashed axis
+            const mainLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            mainLine.setAttribute("x1", "20");
+            mainLine.setAttribute("y1", axisY);
+            mainLine.setAttribute("x2", "740");
+            mainLine.setAttribute("y2", axisY);
+            mainLine.setAttribute("stroke", "#cbd5e1");
+            mainLine.setAttribute("stroke-width", "3");
+            mainLine.setAttribute("stroke-dasharray", "4 2");
+            svg.appendChild(mainLine);
+
+            // Grace period shade
+            if (graceStartStr && subjectEfdStr) {
+                const gStartVal = new Date(graceStartStr);
+                const gEndVal = new Date(subjectEfdStr);
+                if (gStartVal >= parsedDates[0].val && gStartVal <= parsedDates[parsedDates.length - 1].val) {
+                    const gxStart = getX(gStartVal);
+                    const gxEnd = getX(gEndVal);
+
+                    const graceRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+                    graceRect.setAttribute("x", gxStart);
+                    graceRect.setAttribute("y", "40");
+                    graceRect.setAttribute("width", gxEnd - gxStart);
+                    graceRect.setAttribute("height", "180");
+                    graceRect.setAttribute("fill", "#2dd4bf");
+                    graceRect.setAttribute("fill-opacity", "0.08");
+                    graceRect.setAttribute("stroke", "#2dd4bf");
+                    graceRect.setAttribute("stroke-dasharray", "3 3");
+                    svg.appendChild(graceRect);
+
+                    const graceText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                    graceText.setAttribute("x", gxStart + (gxEnd - gxStart)/2);
+                    graceText.setAttribute("y", "55");
+                    graceText.setAttribute("fill", "#0f766e");
+                    graceText.setAttribute("font-size", "10");
+                    graceText.setAttribute("font-weight", "bold");
+                    graceText.setAttribute("text-anchor", "middle");
+                    graceText.textContent = "AIA 1-Year Grace / Pre-AIA 102(b) Critical Window";
+                    svg.appendChild(graceText);
+                }
+            }
+
+            let topOffset = 110;
+            let bottomOffset = 210;
+
+            parsedDates.forEach((d, idx) => {
+                const cx = getX(d.val);
+                const isTop = idx % 2 === 0;
+                const labelY = isTop ? (topOffset - (idx * 16)) : (bottomOffset + ((idx - 1) * 16));
+
+                // connecting lines
+                const pole = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                pole.setAttribute("x1", cx);
+                pole.setAttribute("y1", axisY);
+                pole.setAttribute("x2", cx);
+                pole.setAttribute("y2", labelY);
+                pole.setAttribute("stroke", "#94a3b8");
+                pole.setAttribute("stroke-dasharray", "2 2");
+                svg.appendChild(pole);
+
+                // Nodes with specific styles
+                const dot = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                dot.setAttribute("cx", cx);
+                dot.setAttribute("cy", axisY);
+                dot.setAttribute("r", d.type === 'subject' ? "7" : "5");
+
+                let color = "#0b2545";
+                if (d.type === 'subject') color = "#ef4444";
+                else if (d.type === 'ref') color = "#f59e0b";
+                else if (d.type === 'ref_priority') color = "#6366f1";
+                else if (d.type === 'inventor_disclosure') color = "#06b6d4";
+                else if (d.type === 'conception') color = "#a855f7";
+                else if (d.type === 'rtp') color = "#ec4899";
+                else if (d.type === 'grace') color = "#10b981";
+
+                dot.setAttribute("fill", color);
+                svg.appendChild(dot);
+
+                const gText = document.createElementNS("http://www.w3.org/2000/svg", "g");
+                gText.setAttribute("transform", `translate(${cx}, ${labelY})`);
+
+                const textDate = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                textDate.setAttribute("x", "0");
+                textDate.setAttribute("y", isTop ? "-6" : "12");
+                textDate.setAttribute("text-anchor", "middle");
+                textDate.setAttribute("font-size", "9");
+                textDate.setAttribute("font-weight", "800");
+                textDate.setAttribute("fill", color);
+                textDate.textContent = d.date;
+                gText.appendChild(textDate);
+
+                const textLabel = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                textLabel.setAttribute("x", "0");
+                textLabel.setAttribute("y", isTop ? "-16" : "22");
+                textLabel.setAttribute("text-anchor", "middle");
+                textLabel.setAttribute("font-size", "8.5");
+                textLabel.setAttribute("font-weight", "600");
+                textLabel.setAttribute("fill", "#475569");
+                textLabel.textContent = d.label;
+                gText.appendChild(textLabel);
+
+                svg.appendChild(gText);
+            });
+        }
+
+        function loadRefCase(type) {
+            const pub = document.getElementById('sb-ref-pub-date');
+            const filed = document.getElementById('sb-ref-filed-date');
+            const priBox = document.getElementById('sb-ref-has-priority');
+            const priDate = document.getElementById('sb-ref-priority-date');
+            const priCountry = document.getElementById('sb-ref-priority-country');
+            const priSupp = document.getElementById('sb-ref-priority-supported');
+
+            const pctEng = document.getElementById('sb-pct-english');
+            const pctUs = document.getElementById('sb-pct-us-designated');
+
+            const useSwear = document.getElementById('sb-use-swearback');
+            const swearCon = document.getElementById('sb-swear-conception');
+            const swearRtp = document.getElementById('sb-swear-rtp');
+
+            useSwear.checked = false;
+
+            if (type === 'cn-patent') {
+                setSandboxRadio('foreign_patent');
+                pub.value = "2020-09-15";
+            } else if (type === 'us-with-cn-priority') {
+                setSandboxRadio('us_patent');
+                pub.value = "2020-09-15";
+                filed.value = "2019-03-15";
+                priBox.checked = true;
+                priDate.value = "2018-12-01";
+                priCountry.value = "CN (中国)";
+                priSupp.checked = true;
+            } else if (type === 'pct-non-english') {
+                setSandboxRadio('pct_app');
+                pub.value = "2020-09-15";
+                filed.value = "2019-03-15";
+                priBox.checked = true;
+                priDate.value = "2018-12-01";
+                priCountry.value = "CN (中国)";
+                priSupp.checked = true;
+                pctEng.checked = false; // Chinese 공개
+                pctUs.checked = true;
+            } else if (type === 'swearback-test') {
+                // To trigger swearback, we need Pre-AIA on Subject EFD
+                document.getElementById('sb-subject-efd').value = "2012-10-15";
+                setSandboxRadio('us_patent');
+                pub.value = "2013-05-15";
+                filed.value = "2011-12-12"; // prior art date
+                priBox.checked = false;
+                useSwear.checked = true;
+                swearCon.value = "2011-10-01";
+                swearRtp.value = "2011-11-20";
+            }
+            toggleRefType();
+            toggleSwearback();
+        }
+
+        function setSandboxRadio(val) {
+            const radios = document.getElementsByName('sb-ref-type');
+            for (let r of radios) {
+                if (r.value === val) {
+                    r.checked = true;
+                    break;
+                }
+            }
+        }
+
+        // ==================== TAB 3: OFFICIAL SCENARIOS ====================
         const SlideCases = {
             1: {
-                title: "Scenario A: 经典公开出版物 (35 U.S.C. 102(a)(1))",
+                title: "Scenario A: 经典文献公开 (AIA 102(a)(1))",
                 statute: "35 U.S.C. 102(a)(1)",
                 verdict: "Prior Art Block (构成现有技术)",
-                subjectFact: "我方发明人申请案有效申请日 EFD 为 2013-11-01 (AIA 适用)。发明人名单：Taylor。",
-                refFact: "第三方发表的一篇科技文献，于 2013-03-01 正式出版发行，其早于本案的 EFD，且该文献不属于我方自公开或派生公开。",
-                talkingPath: "1. 检查适用法：EFD >= 2013-03-16，AIA 成立。\n2. 比对时间：文献发表日 (2013-03-01) 早于我方 EFD (2013-11-01)。\n3. 审查例外：本案 EFD 往前推算 1 年，宽限期起点为 2012-11-01。虽然该文献处于宽限期内，但其并非发明人所公开，也无证据表明是派生公开，故无 102(b)(1) 豁免，现有技术引用成立。",
-                talkingBackstory: "💡 Talking Point (幻灯片原版底注解密):\n根据 USPTO Slide 第 14 页，审查员被告知：对于 102(a)(1) 的“描述于印刷出版物中”，该发表一旦落在发明人 EFD 之前，且无法归属（Attribution）到发明人名下，即使在宽限期内，也必须用作新颖性驳回。本案例中 Taylor 的美案遭遇 102(a)(1) 无情阻击。",
-                // Dates used to draw proportional SVG timeline
+                subjectFact: "我方发明人申请案有效申请日 EFD 为 2013-11-01。发明人名单：Taylor。",
+                refFact: "第三方发表的一篇科技文献，于 2013-03-01 正式出版。该文献并非我方自公开，也非派生公开。",
+                talkingPath: "1. 确定适用法：EFD >= 2013-03-16，新法 AIA 适用。\n2. 比对日期：文献发表日 (2013-03-01) 确实早于我方 EFD (2013-11-01)。\n3. 宽限期校验：虽然文献落在 EFD 回推 1 年内的宽限窗口内（宽限期起点：2012-11-01）。但该公开由独立第三方做出且无法追溯到我方发明人（无 Attribution），不豁免。现有技术抗辩成立！",
+                talkingBackstory: "💡 PPT 官方底注解密：\n根据 USPTO Slide 第 14 页，对于 102(a)(1) 的印刷出版物。该发表一旦落在发明人 EFD 之前，且无法归属到发明人名下，即构成有效的新颖性阻断。Taylor 案被阻截驳回。",
                 dates: [
                     { date: "2012-11-01", label: "Grace Period Start (宽限期起点)", type: "grace" },
                     { date: "2013-03-01", label: "Ref Publication (第三方文献公开日)", type: "ref" },
@@ -555,572 +1502,200 @@
                 title: "Scenario B: 发明人自公开豁免 (102(b)(1)(A) Exception)",
                 statute: "35 U.S.C. 102(b)(1)(A)",
                 verdict: "Cleared via Exception (成功豁免排除)",
-                subjectFact: "我方发明人申请案有效申请日 EFD 为 2013-11-01 (AIA 适用)。发明人名单：Taylor。",
-                refFact: "Taylor 自己曾于 2013-03-01 在某国际研讨会上公开发表了技术演讲。后续被第三方引用作为对比文献引用。",
-                talkingPath: "1. 确定适用法：AIA FITF 适用。\n2. 时间轴测算：该文献公开日 (2013-03-01) 确实早于我方 EFD (2013-11-01)，潜在构成了 102(a)(1) 现有技术障碍。\n3. 宽限期审查：该公开日处于美案 EFD 1年内的宽限期（宽限期起点 2012-11-01）内。\n4. 归属抗辩：由于信息直接来源于本发案发明人本人，在美案申请时提交 37 CFR 1.130(a) 宣誓书。依据 102(b)(1)(A) 成功排除，新颖性清朗！",
-                talkingBackstory: "💡 Talking Point (幻灯片原版底注解密):\nSlide 第 22 页重点谈及：在 FITF 新法下，美国依然极具人性地为“自发表泄密”的发明人保留了 1 年的黄金自省期 (Grace Period)。任何在 EFD 之前 1 年内且源自发明人本人的公开行为，均可提交 1.130 宣誓书在审查中予以绝对剔除。这极大降低了中企赴美参展后因公开而导致申请死刑的悲剧发生。",
+                subjectFact: "我方发明人申请案 EFD 为 2013-11-01。发明人：Taylor。",
+                refFact: "Taylor 自己曾于 2013-03-01 在某行业论坛公开进行技术演讲，后被引证对抗本发明。",
+                talkingPath: "1. 适用法：AIA 新法管辖。\n2. 冲突校验：文献演讲日 (2013-03-01) 早于 EFD (2013-11-01)，潜在构成 102(a)(1) 阻碍。\n3. 豁免判定：由于该公开日处于美案 EFD 1年内的宽限黄金期，且信息直接源自发明人本人。在申请时提交 37 CFR 1.130(a) 宣誓。依据 102(b)(1)(A) 完美豁免！",
+                talkingBackstory: "💡 PPT 官方底注解密：\nSlide 第 22 页特别对审查员强调：AIA 赋予了自发表或自泄密发明人 1 年的黄金黄金保护期 (Grace Period)。只要是在 EFD 一年内源自发明人本人的公开行为，均可提交 1.130 宣誓书予以剔除。",
                 dates: [
                     { date: "2012-11-01", label: "Grace Period Start", type: "grace" },
-                    { date: "2013-03-01", label: "Taylor Public Speech (自公开演讲)", type: "inventor_disclosure" },
+                    { date: "2013-03-01", label: "Taylor Speech (发明人自公开)", type: "inventor_disclosure" },
                     { date: "2013-11-01", label: "Subject EFD (Taylor 申请日)", type: "subject" }
                 ],
                 graceStart: "2012-11-01",
                 subjectEfd: "2013-11-01"
             },
             3: {
-                title: "Scenario C: 先发制人屏蔽盾 (102(b)(1)(B) Shielding)",
+                title: "Scenario C: 抢跑自公开屏蔽盾 (102(b)(1)(B) Shielding)",
                 statute: "35 U.S.C. 102(b)(1)(B)",
-                verdict: "Disqualified via Shielding (屏蔽盾成立，排除在后文献)",
-                subjectFact: "我方发明人申请案有效申请日 EFD 为 2013-11-01 (AIA 适用)。发明人名单：Taylor。",
-                refFact: "第三方 Y 于 2013-06-01 公开了一篇包含完全相同主题的技术论文。而在此之前的 2013-03-01，我方 Taylor 曾在学术研讨会上公开发布了相关主题。",
-                talkingPath: "1. 审查第三方文献：Y 的公开日为 2013-06-01，潜在构成 102(a)(1) 阻碍。\n2. 校验宽限期：Y 的公开处于 2012-11-01 (宽限期起点) 与 2013-11-01 之间。\n3. 激活屏蔽盾：由于我方发明人 Taylor 在 Y 的公开日之前（即 2013-03-01）已经对“相同主题”进行了公共公开。在 Y 实施公开的那一刻，Y 撞上了我方的在先自公开屏蔽盾，依据 102(b)(1)(B)，Y 的论文不可再作为现有技术攻击 Taylor 案！",
-                talkingBackstory: "💡 Talking Point (幻灯片原版底注解密):\nSlide 第 29 页核心考点：这是 AIA 的重大规则创新。发明人的“自首发公开”相当于在宽限期内打出一发“防御光网/屏蔽盾”，拦截并隔离该自首发公开日之后发生的任何第三方同主题公开。注意：第三方公开必须与我方首发内容在实质上相同，否则不产生全屏蔽效果。",
+                verdict: "Excluded via Shielding (成功屏蔽在后公开)",
+                subjectFact: "我方发明人 Taylor 申请案 EFD 为 2013-11-01。",
+                refFact: "第三方 Y 于 2013-06-01 发表了相同技术。而在此前的 2013-03-01，我方 Taylor 已经在研讨会公开发布了相关主题。",
+                talkingPath: "1. 冲突分析：Y 论文 (2013-06-01) 潜在作为 102(a)(1) 障碍评述 Taylor 案。\n2. 校验宽限期：Y 公开日在宽限期窗口内。\n3. 触发屏蔽盾：由于我方发明人 Taylor 在 Y 的公开日之前（2013-03-01）已经对【相同主题】进行了公开。Y 在后公开在法律上被 Taylor 的在先盾所“屏蔽”。根据 102(b)(1)(B) 排除，Y 不构成现有技术！",
+                talkingBackstory: "💡 PPT 官方底注解密：\nSlide 第 29 页重点：这是新法最经典的“屏蔽盾”法则。发明人的自首发公开不仅自我豁免，还能在宽限窗口内防御此后发生的任何第三方同主题公开。但这极度依赖原案披露的完整一致性。",
                 dates: [
                     { date: "2012-11-01", label: "Grace Period Start", type: "grace" },
-                    { date: "2013-03-01", label: "Taylor Self Disclosure (我方首发盾)", type: "inventor_disclosure" },
-                    { date: "2013-06-01", label: "Third Party Y Pub (第三方干扰披露)", type: "ref" },
+                    { date: "2013-03-01", label: "Taylor Self Disclosure (我方自公开首发)", type: "inventor_disclosure" },
+                    { date: "2013-06-01", label: "Third Party Y Pub (第三方在后公开)", type: "ref" },
                     { date: "2013-11-01", label: "Subject EFD (Taylor 申请日)", type: "subject" }
                 ],
                 graceStart: "2012-11-01",
                 subjectEfd: "2013-11-01"
             },
             4: {
-                title: "Scenario D: 外国优先权在 102(d) 追溯阻击 (AIA Hilmer Abolished)",
+                title: "Scenario D: 102(d) 跨国优先权追溯 (AIA Hilmer Abolished)",
                 statute: "35 U.S.C. 102(a)(2) & 102(d)",
-                verdict: "Prior Art Block (在先专利102(d)追溯成功，构成阻碍)",
-                subjectFact: "我方发明人 Taylor 申请案有效申请日 EFD 为 2020-06-01。",
-                refFact: "第三方 Smith 拥有一项美国公开专利，其美国本土递交日为 2019-03-15，且该专利声明要求了 2018-12-01 的中国在先专利（CN）优先权（中国优先权原说明书中已经完全公开对应技术细节）。Smith 案于 2020-09-15 授权公开。",
-                talkingPath: "1. 法条适用：虽然 Smith 案在 Taylor 案 EFD 之后才公开，不符合 102(a)(1)；但因其为在后公开的美国在先专利文件，完全属于 102(a)(2) 潜在审查对象。\n2. 希尔默废除（102(d) 审查）：Smith 案由于声称了中国优先权，且说明书记载了一致特征。根据 102(d) 其秘密现有技术起算点成功追溯并前置到 2018-12-01！\n3. 冲突评判：2018-12-01 (Smith 102(d)日起算点) 早于我方 EFD (2020-06-01)。因此 Smith 案成为 Taylor 案合规的 102(a)(2) 新颖性现有技术阻碍，驳回成立！",
-                talkingBackstory: "💡 Talking Point (幻灯片原版底注解密):\n极其硬核！Slide 第 41 页隐藏底注指出：在旧法时期，Hilmer Doctrine 规定外国优先权不能追溯 102(e) 现有技术效力，这给予了中国申请人在美申请一定程度的历史性错位安全。而在新法 AIA 下，Hilmer 被彻底杀死。一件享有中国优先权并实质记载该技术的美案，将获得 102(d) 现有技术日起算点的全部溯及力，直接在 102(a)(2) 下提前阻击我方案。这是跨国企业必须防范的最可怕雷区。",
+                verdict: "Prior Art Block (102(d)追溯成功，阻击美案)",
+                subjectFact: "我方申请案有效申请日 EFD 为 2020-06-01。",
+                refFact: "第三方 Smith 拥有一项美国授权专利。其美国本土递交日为 2019-03-15，且声称要求了 2018-12-01 的中国在先专利（CN）优先权。Smith案在后于 2020-09-15 授权公开。",
+                talkingPath: "1. 条款适用：Smith 美案在后公开，在 102(a)(2) 下审查其秘密起算日。\n2. 希尔默废除校验：在 AIA 102(d) 体系下，由于希尔默被彻底消除，Smith 案作为现有技术效力的起点直接前置追溯到其【中国优先权日（2018-12-01）】。\n3. 比对：2018-12-01 早于我方 EFD (2020-06-01)。新颖性障碍成立，Taylor 案遭驳回！",
+                talkingBackstory: "💡 PPT 官方底注解密：\nSlide 第 41 页核心要害：在新法下，美专局通过 102(d) 给予了在先递交的外国优先权文本以绝对的新颖性追溯。这彻底终结了旧法下 Hilmer 限制。中国申请人的在先 CN 优先权，可作为强有力的美国 102(a)(2) 弹药直接消灭竞争对手的美国在后申请。",
                 dates: [
-                    { date: "2018-12-01", label: "Smith CN Priority Date (102(d)起算点)", type: "ref_priority" },
-                    { date: "2019-03-15", label: "Smith US Actual Filed Date (实际美申请日)", type: "ref_filed" },
+                    { date: "2018-12-01", label: "Smith CN Priority Date (102(d)生效起点)", type: "ref_priority" },
+                    { date: "2019-03-15", label: "Smith US Filed Date (实际美申请日)", type: "ref_filed" },
                     { date: "2020-06-01", label: "Taylor Subject EFD (本案有效申请日)", type: "subject" },
-                    { date: "2020-09-15", label: "Smith PGPub (在后美案公开日)", type: "ref" }
+                    { date: "2020-09-15", label: "Smith Patent Pub (美公开日)", type: "ref" }
                 ],
-                graceStart: "2019-06-01", // not within grace because the 102(d) date is Dec 2018, which is before the grace window of Taylor starting June 2019
+                graceStart: "2019-06-01",
                 subjectEfd: "2020-06-01"
             },
             5: {
-                title: "Scenario E: 专利屏蔽盾 (102(b)(2)(B) Exception)",
+                title: "Scenario E: 在先自公开排除他方在先专利 (102(b)(2)(B))",
                 statute: "35 U.S.C. 102(b)(2)(B)",
-                verdict: "Disqualified via Patent Shielding (成功豁免对方在先专利)",
-                subjectFact: "我方发明人 Taylor 申请案 EFD 为 2020-06-01。Taylor 团队于 2018-10-01 主动在网上公开发布了技术细节。",
-                refFact: "第三方 Smith 美案 102(d) 现有技术起算日为 2018-12-01（其享有中国优先权），并于 2020-09-15 公开。",
-                talkingPath: "1. 审查引证专利：Smith 案 102(d) 现有技术日期为 2018-12-01，早于本发案的 2020-06-01，潜在构成 102(a)(2) 驳回条件。\n2. 校验在先首发盾：但我方 Taylor 团队在 Smith 的 102(d) 现有技术日期之前（即 2018-10-01）已经在互联网上公开发布了相关主题（学术抢跑公开）。\n3. 启动102(b)(2)(B)豁免：因为 Taylor 进行了在先披露。Smith 案的秘密现有技术效力当场被 Taylor 的在先自公开成功斩断并“屏蔽”。虽然对方 102(d) 日期早于我方申请日，但对方依然因豁免而不可用作现有技术！",
-                talkingBackstory: "💡 Talking Point (幻灯片原版底注解密):\n根据 Slide 第 55 页，这是 102(b)(2) 系列豁免中最高阶、最高频的抗辩手法之一。在对方申请之前，只要我方抢跑首发了相同主题，就可以提交 1.130(b) 宣誓书成功击穿对方根据 102(a)(2) 扔过来的“秘密在先申请专利”。学术抢跑对跨国企业防身在美安全具有巨大的法律战略地位。",
+                verdict: "Disqualified via Patent Shielding (成功豁免对方专利)",
+                subjectFact: "我方案 Taylor EFD 为 2020-06-01。我方于 2018-10-01 主动在网络公开发表了技术细节。",
+                refFact: "第三方 Smith 拥有一项在后公开美国专利，其 102(d) 现有技术起算点（因其中国优先权）为 2018-12-01。",
+                talkingPath: "1. 对比：Smith 案的秘密起算日 (2018-12-01) 早于我方美案 EFD，潜在构成 102(a)(2) 障碍。\n2. 例外排查：虽然 Smith 秘密起算日更早，但我方 Taylor 团队在 Smith 的起算日前（2018-10-01）就已经首发公开了该技术。\n3. 结论：Smith 案的现有技术效力直接被 Taylor 提前自公开所“斩断”。依据 102(b)(2)(B) 豁免排除！",
+                talkingBackstory: "💡 PPT 官方底注解密：\nSlide 第 55 页高阶抗辩：这代表了 AIA 豁免机制的最精巧应用。我方的抢跑自公开，不仅对 102(a)(1) 公共文献有屏蔽作用，更是斩断、降解第三方 102(a)(2) 秘密在先美案专利效力的最强底牌。提前学术自公开发布，极具跨境防守战略意义。",
                 dates: [
-                    { date: "2018-10-01", label: "Taylor Academic Public Release (在先首发盾)", type: "inventor_disclosure" },
-                    { date: "2018-12-01", label: "Smith CN Priority / 102(d) Date (对方秘密申请)", type: "ref_priority" },
+                    { date: "2018-10-01", label: "Taylor Self Disclosure (我方学术首发自公开)", type: "inventor_disclosure" },
+                    { date: "2018-12-01", label: "Smith CN Priority / 102(d) Date (对方秘密递交日)", type: "ref_priority" },
                     { date: "2020-06-01", label: "Taylor Subject EFD (Taylor 递交日)", type: "subject" },
-                    { date: "2020-09-15", label: "Smith PGPub (对方在后公开)", type: "ref" }
+                    { date: "2020-09-15", label: "Smith Patent Pub (对方在后公开)", type: "ref" }
                 ],
                 graceStart: "2019-06-01",
                 subjectEfd: "2020-06-01"
             }
         };
 
-        // 动态计算日期像素位置的辅助函数
-        function parseDate(str) {
-            return new Date(str);
-        }
-
-        // 核心渲染引擎：将特定 Slide Case 的日期和事实绘制到 SVG canvas 上
-        function renderCaseTimeline(caseIndex, canvasId) {
-            const svg = document.getElementById(canvasId);
-            if (!svg) return;
-            svg.innerHTML = ''; // 清空原有图层
-
-            const caseData = SlideCases[caseIndex] || (canvasId === 'svg-sandbox-canvas' ? SandboxLiveCase : null);
-            if (!caseData) return;
-
-            const datesArray = caseData.dates;
-            const graceStartStr = caseData.graceStart;
-            const subjectEfdStr = caseData.subjectEfd;
-
-            // 1. 测算整体时间跨度，映射到 X 轴比例 (80px 到 X max)
-            const parsedDates = datesArray.map(d => ({ ...d, val: parseDate(d.date) }));
-            parsedDates.sort((a,b) => a.val - b.val);
-
-            const minTime = parsedDates[0].val.getTime();
-            const maxTime = parsedDates[parsedDates.length - 1].val.getTime();
-            const timeDiff = maxTime - minTime || 1; // 防止除 0
-
-            const xStart = 80;
-            const xEnd = 820;
-            const widthScale = xEnd - xStart;
-
-            function getX(dateObj) {
-                const t = dateObj.getTime();
-                return xStart + ((t - minTime) / timeDiff) * widthScale;
-            }
-
-            // 2. 绘制时间轴底线与主轴
-            const axisY = 240;
-            
-            // 绘制主坐标线 (背景网格线)
-            const mainLine = document.createElementNS("http://www.w3.org/2000/svg", "line");
-            mainLine.setAttribute("x1", "20");
-            mainLine.setAttribute("y1", axisY);
-            mainLine.setAttribute("x2", "880");
-            mainLine.setAttribute("y2", axisY);
-            mainLine.className.baseVal = "timeline-axis";
-            svg.appendChild(mainLine);
-
-            // 3. 绘制 AIA 一年黄金宽限期遮罩层 (Grace Period Window Box)
-            if (graceStartStr && subjectEfdStr) {
-                const gStartVal = parseDate(graceStartStr);
-                const gEndVal = parseDate(subjectEfdStr);
-                
-                // 仅当宽限期落在我们渲染的时间轴可视范围内时绘制
-                if (gStartVal >= parsedDates[0].val && gStartVal <= parsedDates[parsedDates.length - 1].val) {
-                    const gxStart = getX(gStartVal);
-                    const gxEnd = getX(gEndVal);
-
-                    const graceRect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-                    graceRect.setAttribute("x", gxStart);
-                    graceRect.setAttribute("y", "60");
-                    graceRect.setAttribute("width", gxEnd - gxStart);
-                    graceRect.setAttribute("height", "230");
-                    graceRect.setAttribute("fill", "#2dd4bf");
-                    graceRect.setAttribute("fill-opacity", "0.08");
-                    graceRect.setAttribute("stroke", "#2dd4bf");
-                    graceRect.setAttribute("stroke-dasharray", "3 3");
-                    graceRect.setAttribute("stroke-width", "1");
-                    svg.appendChild(graceRect);
-
-                    // 绘制宽限期区间顶部的文字说明
-                    const graceText = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                    graceText.setAttribute("x", gxStart + (gxEnd - gxStart)/2);
-                    graceText.setAttribute("y", "75");
-                    graceText.setAttribute("fill", "#0f766e");
-                    graceText.setAttribute("font-size", "10");
-                    graceText.setAttribute("font-weight", "bold");
-                    graceText.setAttribute("text-anchor", "middle");
-                    graceText.textContent = "AIA 1-Year Grace Period (1年黄金宽限期)";
-                    svg.appendChild(graceText);
-                }
-            }
-
-            // 4. 动态在轴上绘制各个日期的旗标和定点 (以防重叠，按奇偶行交错高度拉线)
-            let topLabelOffset = 180; // 向上拉出的高度基准
-            let bottomLabelOffset = 290; // 向下拉出的高度基准
-
-            parsedDates.forEach((d, idx) => {
-                const cx = getX(d.val);
-                
-                // 根据索引决定线拉向上还是拉向下，防止字重叠
-                const isTop = idx % 2 === 0;
-                const labelY = isTop ? (topLabelOffset - (idx * 20)) : (bottomLabelOffset + ((idx - 1) * 20));
-
-                // 4.1 绘制坐标点上的旗杆连接虚线
-                const pole = document.createElementNS("http://www.w3.org/2000/svg", "line");
-                pole.setAttribute("x1", cx);
-                pole.setAttribute("y1", axisY);
-                pole.setAttribute("x2", cx);
-                pole.setAttribute("y2", labelY);
-                pole.setAttribute("stroke", "#94a3b8");
-                pole.setAttribute("stroke-dasharray", "2 2");
-                pole.setAttribute("stroke-width", "1.5");
-                svg.appendChild(pole);
-
-                // 4.2 绘制坐标轴上的关键触点圆圈与光晕
-                const outerCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                outerCircle.setAttribute("cx", cx);
-                outerCircle.setAttribute("cy", axisY);
-                
-                // 根据不同事件类型赋予不同的亮色
-                let colorTheme = "#0b2545"; // Default Deep Navy
-                if (d.type === 'subject') colorTheme = "#ef4444"; // Subject EFD -> Red
-                else if (d.type === 'ref') colorTheme = "#f59e0b"; // Publication -> Amber
-                else if (d.type === 'inventor_disclosure') colorTheme = "#06b6d4"; // Shield -> Cyan
-                else if (d.type === 'ref_priority') colorTheme = "#6366f1"; // Priority -> Indigo
-                else if (d.type === 'grace') colorTheme = "#10b981"; // Grace -> Emerald
-
-                outerCircle.setAttribute("fill", colorTheme);
-                outerCircle.setAttribute("r", d.type === 'subject' ? "7" : "5.5");
-                svg.appendChild(outerCircle);
-
-                if (d.type === 'subject') {
-                    const glow = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-                    glow.setAttribute("cx", cx);
-                    glow.setAttribute("cy", axisY);
-                    glow.setAttribute("fill", "none");
-                    glow.setAttribute("stroke", "#ef4444");
-                    glow.setAttribute("stroke-width", "2");
-                    glow.className.baseVal = "glow-point";
-                    svg.appendChild(glow);
-                }
-
-                // 4.3 绘制标签文字卡片与日期
-                const gText = document.createElementNS("http://www.w3.org/2000/svg", "g");
-                gText.setAttribute("transform", `translate(${cx}, ${labelY})`);
-
-                // 绘制背景小标签
-                const textNode = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                textNode.setAttribute("x", "0");
-                textNode.setAttribute("y", isTop ? "-10" : "15");
-                textNode.setAttribute("text-anchor", "middle");
-                textNode.setAttribute("font-size", "10");
-                textNode.setAttribute("font-weight", "800");
-                textNode.setAttribute("fill", colorTheme);
-                textNode.textContent = d.date;
-                gText.appendChild(textNode);
-
-                const labelNode = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                labelNode.setAttribute("x", "0");
-                labelNode.setAttribute("y", isTop ? "-24" : "29");
-                labelNode.setAttribute("text-anchor", "middle");
-                labelNode.setAttribute("font-size", "9.5");
-                labelNode.setAttribute("font-weight", "600");
-                labelNode.setAttribute("fill", "#334155");
-                labelNode.textContent = d.label;
-                gText.appendChild(labelNode);
-
-                svg.appendChild(gText);
-            });
-        }
-
-        // 激活并选择一个官方经典 Slide Case
-        function selectSlideCase(index) {
-            // 切换高亮卡片样式
+        function selectSlideCase(idx) {
             for (let i = 1; i <= 5; i++) {
                 const card = document.getElementById(`case-card-${i}`);
                 if (card) {
-                    if (i === index) {
-                        card.className = "bg-white p-4 rounded-xl border-2 border-[#0096b1] cursor-pointer hover:shadow-md transition duration-200 flex flex-col justify-between";
-                    } else {
-                        card.className = "bg-white p-4 rounded-xl border border-slate-200 cursor-pointer hover:shadow-md transition duration-200 flex flex-col justify-between";
-                    }
+                    if (i === idx) card.className = "bg-white p-4 rounded-xl border-2 border-[#0096b1] cursor-pointer hover:shadow-md transition flex flex-col justify-between";
+                    else card.className = "bg-white p-4 rounded-xl border border-slate-200 cursor-pointer hover:shadow-md transition flex flex-col justify-between";
                 }
             }
 
-            const activeCase = SlideCases[index];
-            if (!activeCase) return;
+            const c = SlideCases[idx];
+            if (!c) return;
 
-            // 更新文本
-            document.getElementById('case-title-active').innerText = `Scenario ${String.fromCharCode(64 + index)}`;
-            document.getElementById('case-fact-subject').innerText = activeCase.subjectFact;
-            document.getElementById('case-fact-reference').innerText = activeCase.refFact;
-            document.getElementById('case-law-section').innerText = activeCase.statute;
-            document.getElementById('case-law-result').innerText = activeCase.verdict;
-            
-            document.getElementById('case-talking-path').innerText = activeCase.talkingPath;
-            document.getElementById('case-talking-backstory').innerText = activeCase.talkingBackstory;
+            document.getElementById('case-fact-subject').innerText = c.subjectFact;
+            document.getElementById('case-fact-reference').innerText = c.refFact;
+            document.getElementById('case-law-section').innerText = c.statute;
+            document.getElementById('case-law-result').innerText = c.verdict;
+            document.getElementById('case-talking-path').innerText = c.talkingPath;
+            document.getElementById('case-talking-backstory').innerText = c.talkingBackstory;
 
-            // 重新绘制时间轴
-            renderCaseTimeline(index, 'svg-timeline-canvas');
+            renderInteractiveTimeline(c.dates, c.graceStart, c.subjectEfd, 'svg-scenarios-canvas');
         }
 
-        // 切换不同的主区域 (教学、沙盘、自测)
-        function switchSection(secId) {
-            const sections = ['vis-hub', 'sandbox', 'exam-room'];
-            sections.forEach(s => {
-                const el = document.getElementById(`section-${s}`);
-                const btn = document.getElementById(`btn-${s}`);
-                if (s === secId) {
+        // ==================== TAB 4: BILINGUAL STATUTES DATABASE ====================
+        function switchSubStatute(subId) {
+            const groups = ['aia-102', 'aia-103', 'pre-102', 'pre-103'];
+            groups.forEach(g => {
+                const el = document.getElementById(`statute-sec-${g}`);
+                const btn = document.getElementById(`sub-tab-btn-${g}`);
+                if (g === subId) {
                     el.classList.remove('hidden');
-                    btn.classList.add('bg-[#0096b1]', 'text-white');
-                    btn.classList.remove('text-slate-200', 'hover:text-white');
+                    btn.className = "px-3.5 py-1.5 text-xs font-bold rounded-lg bg-[#0096b1] text-white transition-all";
                 } else {
                     el.classList.add('hidden');
-                    btn.classList.remove('bg-[#0096b1]', 'text-white');
-                    btn.classList.add('text-slate-200', 'hover:text-white');
+                    btn.className = "px-3.5 py-1.5 text-xs font-bold rounded-lg text-slate-600 hover:bg-slate-100 transition-all";
                 }
             });
-
-            // 如果切换到沙盘，自启动沙盘初算
-            if (secId === 'sandbox') {
-                runSandboxCalc();
-            }
         }
 
-        // 初始化加载第一个 Slide
-        selectSlideCase(1);
-    </script>
+        // Search highlight and filter
+        function filterStatutes() {
+            const val = document.getElementById('statute-search-input').value.toLowerCase().trim();
+            const cards = document.querySelectorAll('.statute-card');
 
-    <!-- ========================================== SANDBOX ENGINE ========================================== -->
-    <script>
-        let SandboxLiveCase = {}; // 存储当前沙盘动态事实和日期，以便重绘
+            cards.forEach(card => {
+                const dataText = card.getAttribute('data-text').toLowerCase();
+                const engText = card.querySelector('.statute-eng').innerText.toLowerCase();
+                const chiText = card.querySelector('.statute-chi').innerText.toLowerCase();
 
-        // 动态根据文献类型开启/隐藏美国递交日输入栏
-        function toggleSandboxFields() {
-            const refType = document.querySelector('input[name="sb-ref-type"]:checked').value;
-            const fieldUsFiled = document.getElementById('sb-field-usfiled');
-            const panelPriority = document.getElementById('sb-panel-priority');
-            const panelOwnership = document.getElementById('sb-panel-ownership');
-
-            const labelUsPat = document.getElementById('sb-label-us-pat');
-            const labelForeignPat = document.getElementById('sb-label-foreign-pat');
-
-            // 样式去激活
-            labelUsPat.classList.remove('border-[#0096b1]', 'bg-[#0096b1]/5');
-            labelForeignPat.classList.remove('border-amber-500', 'bg-amber-500/5');
-
-            if (refType === 'us_patent') {
-                fieldUsFiled.classList.remove('hidden');
-                panelPriority.classList.remove('hidden');
-                panelOwnership.classList.remove('hidden');
-                labelUsPat.classList.add('border-[#0096b1]', 'bg-[#0096b1]/5');
-            } else {
-                // 外国专利在美不享有 102(a)(2) 秘密在先权利
-                fieldUsFiled.classList.add('hidden');
-                panelPriority.classList.add('hidden');
-                panelOwnership.classList.add('hidden');
-                labelForeignPat.classList.add('border-amber-500', 'bg-amber-500/5');
-            }
-            runSandboxCalc();
-        }
-
-        // 优先权面板勾选展开
-        function toggleSandboxPriority() {
-            const hasPriority = document.getElementById('sb-has-priority').checked;
-            const fields = document.getElementById('sb-priority-fields');
-            if (hasPriority) {
-                fields.classList.remove('hidden');
-            } else {
-                fields.classList.add('hidden');
-            }
-            runSandboxCalc();
-        }
-
-        // 核心测算沙盘算法逻辑
-        function runSandboxCalc() {
-            const subjectEfdStr = document.getElementById('sb-subject-efd').value;
-            const refType = document.querySelector('input[name="sb-ref-type"]:checked').value;
-            const refPubStr = document.getElementById('sb-ref-pub').value;
-            const refUsFiledStr = document.getElementById('sb-ref-usfiled').value;
-            const subjectInventorStr = document.getElementById('sb-subject-inventor').value || "";
-
-            // 优先权相关
-            const hasPriority = document.getElementById('sb-has-priority').checked;
-            const refPriorityStr = document.getElementById('sb-ref-priority').value;
-            const refPriorityCountry = document.getElementById('sb-ref-priority-country').value || "CN (中国)";
-            const priorityDescribed = document.getElementById('sb-priority-described').checked;
-
-            // 排除例外
-            const optAttribution = document.getElementById('sb-opt-attribution').checked;
-            const optShielding = document.getElementById('sb-opt-shielding').checked;
-            const optOwnership = document.getElementById('sb-opt-ownership').checked;
-
-            // 界面绑定
-            const outStatute = document.getElementById('sb-out-statute');
-            const outDate = document.getElementById('sb-out-date');
-            const outVerdict = document.getElementById('sb-out-verdict');
-            const outDetail = document.getElementById('sb-out-detail');
-
-            if (!subjectEfdStr || !refPubStr) {
-                outDetail.innerText = "请输入本案有效申请日及引证文献的公开日。";
-                return;
-            }
-
-            const subjectEfd = parseDate(subjectEfdStr);
-            const refPub = parseDate(refPubStr);
-            const aiaThreshold = parseDate('2013-03-16');
-
-            // 判定 AIA 与 Pre-AIA 适用
-            const isAia = subjectEfd >= aiaThreshold;
-            if (!isAia) {
-                outStatute.innerText = "Pre-AIA (旧法)";
-                outDate.innerText = "N/A";
-                outVerdict.innerText = "旧法阻截 (Not Covered)";
-                outDetail.innerText = "【审查拦截】本发案申请 EFD 在 2013-03-16 之前，本系统当前专注于第一发明人申请制 (FITF) 核心大纲培训测算。\n💡 提示：请将本案有效申请日调节至 2013-03-16 之后，以启动 AIA 外国优先权及 102 诊断算法！";
-                
-                // 绘制一个空的或警告性 SVG
-                const svg = document.getElementById('svg-sandbox-canvas');
-                svg.innerHTML = `<text x="450" y="120" text-anchor="middle" font-size="14" fill="#ef4444" font-weight="bold">本发案属于 Pre-AIA 旧法管辖，请在左侧调整日期体验 FITF 新法沙盘</text>`;
-                return;
-            }
-
-            // 计算宽限期
-            const graceStart = new Date(subjectEfd);
-            graceStart.setFullYear(graceStart.getFullYear() - 1);
-            const graceStartStr = graceStart.toISOString().split('T')[0];
-
-            let activeStatute = "";
-            let priorArtEffectiveDate = null;
-            let dateLabel = "";
-            let rationaleList = [];
-            let isPriorArt = true; // 默认构成
-
-            // 临时构建时间轴日期数组
-            let sbDates = [
-                { date: graceStartStr, label: "Grace Period Start (宽限期起点)", type: "grace" },
-                { date: subjectEfdStr, label: "Subject EFD (本案申请日)", type: "subject" }
-            ];
-
-            // 1. 测算 102(a)(1) 还是 102(a)(2)
-            if (refType === 'us_patent') {
-                activeStatute = "35 U.S.C. 102(a)(2)";
-                
-                // 计算 102(d) Effectively Filed Date
-                if (hasPriority && refPriorityStr) {
-                    if (priorityDescribed) {
-                        priorArtEffectiveDate = parseDate(refPriorityStr);
-                        dateLabel = "对方在先外国优先权日 (102(d) Priority)";
-                        sbDates.push({ date: refPriorityStr, label: `Smith CN Priority (102(d) 起算点)`, type: "ref_priority" });
-                        sbDates.push({ date: refUsFiledStr, label: `Smith US Filed (美递交)`, type: "ref_filed" });
-                        sbDates.push({ date: refPubStr, label: `Smith Publication (美公开)`, type: "ref" });
-                    } else {
-                        priorArtEffectiveDate = parseDate(refUsFiledStr);
-                        dateLabel = "美实际递交日 (因优先权未公开对应特征而降级)";
-                        sbDates.push({ date: refUsFiledStr, label: `Smith US Filed (102(d) 起算点)`, type: "ref_priority" });
-                        sbDates.push({ date: refPubStr, label: `Smith Publication (美公开)`, type: "ref" });
-                    }
+                if (engText.includes(val) || chiText.includes(val) || dataText.includes(val)) {
+                    card.classList.remove('hidden');
+                    card.classList.add('opacity-100', 'scale-100');
                 } else {
-                    priorArtEffectiveDate = parseDate(refUsFiledStr);
-                    dateLabel = "美实际本土递交日 (102(d) Actual US Filed)";
-                    sbDates.push({ date: refUsFiledStr, label: `Smith US Filed (102(d) 起算点)`, type: "ref_priority" });
-                    sbDates.push({ date: refPubStr, label: `Smith Publication (美公开)`, type: "ref" });
+                    card.classList.add('hidden');
                 }
-            } else {
-                // 外国专利，不适用 102(a)(2)，只能看 102(a)(1) 公开日
-                activeStatute = "35 U.S.C. 102(a)(1)";
-                priorArtEffectiveDate = refPub;
-                dateLabel = "外国专利公开公布日 (102(a)(1) Pub Date)";
-                sbDates.push({ date: refPubStr, label: "Foreign Patent Pub (公开日)", type: "ref" });
-            }
-
-            const priorArtEffectiveDateStr = priorArtEffectiveDate.toISOString().split('T')[0];
-
-            // 2. 时间冲突比对
-            if (priorArtEffectiveDate >= subjectEfd) {
-                // 现有技术日晚于或等于我方申请，直接排除
-                isPriorArt = false;
-                rationaleList.push(`【判定结论】✔ 安全！该文献不构成合格的现有技术。`);
-                rationaleList.push(`【法理剖析】该文献的法定起算日 (${priorArtEffectiveDateStr}) 晚于或等于本案的有效申请日 EFD (${subjectEfdStr})，根据第一发明人申请制原则，无法对本发案形成新颖性追溯。`);
-                if (refType === 'foreign_patent') {
-                    rationaleList.push(`⚠️ 外国专利实务提示：由于国外在先专利（CN/EP等）不适用美专法 102(a)(2) “秘密现有技术”条款，它无法追溯其在中国的申请日。因为它的实际公开日晚于我方案，故新颖性无损。`);
-                }
-            } else {
-                // 现有技术日前置，构成潜在阻碍。继续排查豁免例外
-                rationaleList.push(`【判定结论】⚠️ 遭遇潜在驳回阻碍，进入 102(b) 例外豁免核算程序...`);
-                
-                if (activeStatute === "35 U.S.C. 102(a)(2)") {
-                    // 102(b)(2) Exceptions
-                    if (optAttribution) {
-                        isPriorArt = false;
-                        rationaleList.push(`✔ 成功排除！主张 102(b)(2)(A) Attribution Exception 归属例外成立。`);
-                        rationaleList.push(`【宣誓依据】向美专局提交 37 CFR 1.130(a) 宣誓证明：对方该专利申请中引用的技术特征，实质源自于我方 Taylor 团队的早期泄露或合作成果，依法予以豁免排除。`);
-                    } else if (optShielding) {
-                        isPriorArt = false;
-                        rationaleList.push(`✔ 成功排除！主张 102(b)(2)(B) Shielding Exception 屏蔽盾例外成立。`);
-                        rationaleList.push(`【宣誓依据】向美专局提交 37 CFR 1.130(b) 宣誓证明：在对方这件专利的 102(d) 现有技术起算点（${priorArtEffectiveDateStr}）之前，我方 Taylor 团队早已提前公开了对应的主题，成功截断、屏蔽了对方在先申请的效力。`);
-                    } else if (optOwnership) {
-                        isPriorArt = false;
-                        rationaleList.push(`✔ 成功排除！主张 102(b)(2)(C) 共同所有权/联合研发协议例外成立。`);
-                        rationaleList.push(`【审查程序】代理人在答辩书直接做出事实声明（Common Ownership Statement）：两案在不晚于本发案申请时，属于同一家集团或母公司，依据新法直接在 102 判定中被剔除。`);
-                    } else {
-                        rationaleList.push(`❌ 新颖性驳回成立！`);
-                        rationaleList.push(`【法理剖析】该对比专利申请由他人（By Another）提出，且其 102(d) 现有技术起算日 (${priorArtEffectiveDateStr}) 早于我方 EFD (${subjectEfdStr})。由于代理人未成功主张任何 102(b)(2) 宣誓豁免事实，该专利具有合规新颖性驳回效力。`);
-                    }
-                } else {
-                    // 102(b)(1) Exceptions (Grace Period Window)
-                    const isWithinGrace = refPub >= graceStart;
-                    if (!isWithinGrace) {
-                        rationaleList.push(`❌ 新颖性驳回成立！已构成长久性 102(a)(1) 现有技术阻碍。`);
-                        rationaleList.push(`【法理剖析】该引证文献公开日 (${refPubStr}) 发生在我方 EFD 之前，且处于美案 1年宽限期黄金窗口（起点为 ${graceStartStr}）以外。根据美专法，落在宽限期外的独立披露无法适用任何 1.130 宣誓豁免，为不可逆转的致命阻碍。`);
-                    } else {
-                        rationaleList.push(`🔍 发现对比文献公开于 1年宽限期窗口之内，检索豁免盾牌...`);
-                        if (optAttribution) {
-                            isPriorArt = false;
-                            rationaleList.push(`✔ 成功排除！主张 102(b)(1)(A) 归属泄密豁免成立。`);
-                            rationaleList.push(`【宣誓依据】提交 37 CFR 1.130(a) 宣誓：证明该宽限期内的公开系我方自己的公开发表或源自发明人的自披露，排除现有技术引用。`);
-                        } else if (optShielding) {
-                            isPriorArt = false;
-                            rationaleList.push(`✔ 成功排除！主张 102(b)(1)(B) 先发制人屏蔽盾成立。`);
-                            rationaleList.push(`【宣誓依据】提交 37 CFR 1.130(b) 宣誓：证明在第三方该公开日 (${refPubStr}) 之前，我方已经在宽限期内的更早日期完成了对同主题的合规首发公开。`);
-                        } else {
-                            rationaleList.push(`❌ 新颖性驳回成立！`);
-                            rationaleList.push(`【法理剖析】虽然第三方的公开动作处于宽限期内，但由于其系独立第三方做出，且我方申请时并未主张或声明任何合规的 1.130 宣誓事实，因此该文献保留完整的 102(a)(1) 攻击力。`);
-                        }
-                    }
-                }
-            }
-
-            // 更新沙盘输出数据
-            outStatute.innerText = activeStatute;
-            outDate.innerText = priorArtEffectiveDateStr + ` (${dateLabel})`;
-            outVerdict.innerText = isPriorArt ? "Prior Art Block (构成现有技术阻碍)" : "Cleared / Excluded (已清除/豁免)";
-            outDetail.innerText = rationaleList.join("\n\n");
-
-            // 保存沙盘状态并渲染 Sandbox Timeline
-            SandboxLiveCase = {
-                dates: sbDates,
-                graceStart: graceStartStr,
-                subjectEfd: subjectEfdStr
-            };
-            renderCaseTimeline(999, 'svg-sandbox-canvas'); // 999 标志位触发 SandboxLiveCase 绘制
+            });
         }
 
-        // 一键复制沙盘诊断书
-        function copySandboxReport() {
-            const report = document.getElementById('sb-out-detail').innerText;
-            const statute = document.getElementById('sb-out-statute').innerText;
-            const verdict = document.getElementById('sb-out-verdict').innerText;
-            
-            const fullText = `================ USPTO FITF Sandbox Diagnostic Report ================
-【主控法条条款】: ${statute}
-【判定裁决结论】: ${verdict}
-【深度审查详析】:
-${report}
-======================================================================`;
+        // One-click Copy for Statute Card Text
+        function copyStatuteText(button) {
+            const card = button.closest('.statute-card');
+            const eng = card.querySelector('.statute-eng').innerText;
+            const chi = card.querySelector('.statute-chi').innerText;
+            const header = card.querySelector('.font-mono-code').innerText;
 
-            const textarea = document.createElement('textarea');
-            textarea.value = fullText;
-            textarea.style.position = 'fixed';
-            document.body.appendChild(textarea);
-            textarea.select();
+            const fullText = `================ ${header} ================
+【English Original】:
+${eng}
+
+【司法级中文对照翻译】：
+${chi}
+===================================================================`;
+
+            const temp = document.createElement('textarea');
+            temp.value = fullText;
+            temp.style.position = 'fixed';
+            document.body.appendChild(temp);
+            temp.select();
             document.execCommand('copy');
-            document.body.removeChild(textarea);
+            document.body.removeChild(temp);
 
-            // 自定义 Toast
-            const toast = document.createElement('div');
-            toast.className = "fixed bottom-6 right-6 bg-[#0b2545] border border-slate-700 text-xs text-white px-5 py-3.5 rounded-xl shadow-2xl z-50 flex items-center gap-2";
-            toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400"></i> ✔ 沙盘审查诊断意见书已成功复制至剪贴板！`;
-            document.body.appendChild(toast);
-            setTimeout(() => { document.body.removeChild(toast); }, 3500);
+            // Flash toast
+            const originalText = button.innerHTML;
+            button.innerHTML = `<i class="fa-solid fa-check text-emerald-500"></i> 已复制对照原文！`;
+            button.className = "text-[10px] text-emerald-600 font-bold hover:underline flex items-center gap-1";
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.className = "text-[10px] text-[#0096b1] font-bold hover:underline flex items-center gap-1";
+            }, 2500);
         }
-    </script>
 
-    <!-- ========================================== QUIZ ENGINE ========================================== -->
-    <script>
+        // ==================== TAB 5: QUIZ LOGIC ====================
         const QuizExplainData = {
             1: {
                 correct: 'B',
-                A: "<b>❌ 回答错误！</b> 这是旧法（Pre-AIA 102(e)）时期的做法。你混淆了旧法 Hilmer 限制。在 AIA 下此条已失效。",
-                B: "<b>✔ 回答正确！AIA 下 Hilmer Doctrine 彻底废除。</b><br>根据 35 U.S.C. 102(d)，新法赋予了美国在先公开专利全额的‘全球优先权追溯力’。只要该在先美国专利合理声明并要求了在先中国专利优先权，且争议特征已被记载在优先权说明书中，则其 102(a)(2) 现有技术起算点可<b>直接、无损追溯回该在先中国申请日（2018年3月1日）</b>。这大幅强化了在先递交专利的阻击权！"
+                A: "<b>❌ 判定有误。</b> 您错用了 Pre-AIA 旧法的希尔默（Hilmer）思维。在旧法下，外国优先权日的确无法被 102(e) 所追溯，只能卡在其实际美国递交日。但风险专利适用于 AIA 新法时，该限制已不复存在。",
+                B: "<b>✔ 判定完全正确！AIA 新法彻底废除了 Hilmer Doctrine。</b><br>依据新法 35 U.S.C. 102(d)，美国公开专利如果声称了外国（如中国）优先权，且争议特征被原中国优先权说明书所披露支持，则其 102(a)(2) 秘密现有技术效力起算点<b>可以直接跨国追溯至中国优先权日（2018年3月1日）</b>。这为攻击在后美案提供了强大的在先中国优先权弹药支持。"
             },
             2: {
                 correct: 'A',
-                A: "<b>✔ 回答正确！外国专利（例如单纯中国专利申请）绝无 102(a)(2) 或旧法 102(e) 秘密现有技术效力。</b><br>在美专法下，102(a)(2) 仅向美国本土授权专利、公开专利申请及指定美国的 PCT 公开件豁免开放。因此，一件单纯的外国专利如果在我方申请 EFD 之后才公开，由于其不享有 102(a)(2) 在先递交保护，也因晚于我方 EFD 无法适用 102(a)(1) 公开，故其<b>在美绝不构成现有技术。</b> 这为跨国跨境申请人提供了强有力的防火墙安全！",
-                B: "<b>❌ 回答错误！</b> 你混淆了 102(a)(2) 秘密现有技术的空间准入资格。外国专利（未走PCT/美国通道的单纯国外公开）绝不能适用 102(a)(2) 进行追溯！"
+                A: "<b>✔ 判定完全正确！单纯的国外在先专利绝不具有“秘密现有技术”地位。</b><br>在美专利审查下，102(a)(2) 的秘密在先追溯范围，【仅限于】美国本土授权专利、美专利公开申请、以及指定美国的 PCT 公开件。普通的国外国家申请（如 CN）即使递交再早，若其在我方美案申请日之后才公开，由于无 102(a)(2) 地位，且其 102(a)(1) 公开发布日也在我方之后，因而<b>在美绝不构成对立现有技术障碍</b>。这保护了跨国申请人在美案递交时的空档新颖性安全。",
+                B: "<b>❌ 判定有误。</b> 秘密现有技术的空间和指定国门槛是极其严苛的。普通的国外专利（没有走PCT/美国国家阶段）在美无法享有 102(a)(2) / 102(e) 秘密起算追溯。"
             },
             3: {
                 correct: 'B',
-                A: "<b>❌ 回答错误！</b> 你低估了 102(b)(1)(B) 屏蔽盾的强大威力。我方在先披露已经永久性截断了对方在后披露的现有技术效力。",
-                B: "<b>✔ 回答正确！102(b)(1)(B) Intervening Disclosure Shield（屏蔽盾）完美成立。</b><br>根据 37 CFR 1.130(b) 和 MPEP 指南：我方发明人于 2019年2月1日 首发自公开了相同技术，虽然第三方于 2019年5月1日 独立进行了公开（处于美案申请前的一年宽限期内），但由于我方首发动作‘抢跑’在对方公开之前，我方在法律上构筑了抗原屏蔽盾，<b>第三方的公开不可作为现有技术攻击本案。</b>"
+                A: "<b>❌ 判定有误。</b> 您的判定低估了新法 102(b)(1)(B) 自首发屏蔽盾的绝对效力。第三方的公开已在法律上被阻断并豁免。",
+                B: "<b>✔ 判定完全正确！102(b)(1)(B) 抢跑屏蔽盾完美成立。</b><br>根据 37 CFR 1.130(b) 及 MPEP 指南：我方发明人于 2019年2月1日 抢先公开了技术。虽然第三方于 2019年5月1日 独立进行了同主题的公开（且处于宽限期内），但由于我方首发自公开动作“抢跑”在先，我方成功在 2月1日 降下了防卫屏蔽盾。<b>第三方的公开不可用于评述或破坏我方 10月1日 提交之美案的新颖性。</b>"
             }
         };
 
-        // 提交测验回答判定
         function submitQuizAnswer(quizId, option) {
-            const explainDiv = document.getElementById(`quiz-explain-${quizId}`);
-            if (!explainDiv) return;
+            const explain = document.getElementById(`quiz-explain-${quizId}`);
+            if (!explain) return;
 
-            const data = QuizExplainData[quizId];
-            const isCorrect = option === data.correct;
+            const d = QuizExplainData[quizId];
+            const isCorrect = option === d.correct;
 
-            explainDiv.classList.remove('hidden', 'bg-red-50', 'border-red-200', 'text-red-800', 'bg-green-50', 'border-green-200', 'text-green-800');
-            
+            explain.className = "p-3.5 rounded-lg border text-xs leading-relaxed mt-3 block";
             if (isCorrect) {
-                explainDiv.classList.add('bg-green-50', 'border-green-200', 'text-green-800');
-                explainDiv.innerHTML = data[option];
+                explain.classList.add('bg-green-50', 'border-green-200', 'text-green-800');
+                explain.innerHTML = d[option];
             } else {
-                explainDiv.classList.add('bg-red-50', 'border-red-200', 'text-red-800');
-                explainDiv.innerHTML = data[option];
+                explain.classList.add('bg-red-50', 'border-red-200', 'text-red-800');
+                explain.innerHTML = d[option];
             }
         }
+
+        // On Load Initializations
+        calcGoverningLaw();
+        calcPriorArtSandbox();
     </script>
 </body>
 </html>
