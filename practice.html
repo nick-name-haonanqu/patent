@@ -3,34 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>英语口语时态肌肉记忆训练营 Pro - Spoken English Tense Trainer</title>
+    <title>英语口语时态肌肉记忆与连读发音训练营 Pro</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+        
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #f8fafc;
         }
+
+        .font-mono-code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
         .animate-pulse-slow {
             animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
+
         @keyframes pulse {
             0%, 100% { opacity: 1; }
             50% { opacity: .6; }
         }
+
         .glassmorphism {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
+        }
+
+        .pron-sub-tab-active {
+            background-color: #4f46e5;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+        }
+
+        .pron-sub-tab-inactive {
+            background-color: #ffffff;
+            color: #475569;
+            border: 1px solid #e2e8f0;
+        }
+
+        .pron-sub-tab-inactive:hover {
+            background-color: #f1f5f9;
+        }
+
+        .voice-vibrating {
+            animation: vibrate 0.1s linear infinite;
+        }
+
+        @keyframes vibrate {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -1px) rotate(-1deg); }
+            30% { transform: translate(0px, 1px) rotate(0deg); }
+            50% { transform: translate(-1px, 1px) rotate(1deg); }
+            70% { transform: translate(1px, -1px) rotate(0deg); }
+            90% { transform: translate(-1px, -1px) rotate(-1deg); }
+            100% { transform: translate(1px, 1px) rotate(0deg); }
         }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col">
 
     <!-- Header -->
-    <header class="bg-gradient-to-r from-indigo-700 via-violet-700 to-indigo-800 text-white shadow-lg sticky top-0 z-40 glassmorphism">
+    <header class="bg-gradient-to-r from-indigo-800 via-violet-750 to-indigo-900 text-white shadow-lg sticky top-0 z-40">
         <div class="max-w-7xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
             <div class="flex items-center gap-3">
                 <div class="p-2.5 bg-white/10 rounded-xl backdrop-blur-sm border border-white/15">
@@ -38,9 +92,9 @@
                 </div>
                 <div>
                     <h1 class="text-xl sm:text-2xl font-bold tracking-tight flex items-center gap-2">
-                        英语口语时态肌肉记忆训练营 <span class="bg-rose-500 text-white text-[10px] px-2 py-0.5 rounded-full font-extrabold uppercase">API Pro</span>
+                        英语口语时态与发音肌肉重塑营 <span class="bg-rose-500 text-white text-[10px] px-2.5 py-1 rounded-full font-extrabold uppercase tracking-wider">Articulation Pro</span>
                     </h1>
-                    <p class="text-xs text-indigo-200 mt-0.5">多维实时 API 联动 · 深度重塑大脑时间轴</p>
+                    <p class="text-xs text-indigo-200 mt-0.5">时态物理反射 · 44全音标发音图谱剖析 · 连读滑动音 (W/Y-Glide) 专项暴破</p>
                 </div>
             </div>
             
@@ -48,11 +102,11 @@
                 <!-- API Settings Button -->
                 <button onclick="openApiSettings()" class="bg-white/10 hover:bg-white/15 active:scale-95 border border-white/20 px-3 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition">
                     <i data-lucide="settings" class="w-4 h-4"></i>
-                    <span>AI 配置中心</span>
+                    <span>AI 深度配置中心</span>
                 </button>
-                <div class="hidden md:flex items-center gap-2 bg-indigo-900/40 px-4 py-2 rounded-xl border border-indigo-400/20 text-xs font-medium">
+                <div class="hidden lg:flex items-center gap-2 bg-indigo-950/40 px-4 py-2 rounded-xl border border-indigo-400/20 text-xs font-medium">
                     <span class="w-2 h-2 bg-emerald-400 rounded-full animate-ping"></span>
-                    <span>状态：API 实时通信已就绪</span>
+                    <span>双端实时通信已就绪</span>
                 </div>
             </div>
         </div>
@@ -65,9 +119,9 @@
         <div class="lg:col-span-1 space-y-4">
             <!-- Navigation Card -->
             <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 glassmorphism">
-                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-2">功能模块</p>
+                <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-3 px-2">功能模块控制台</p>
                 <nav class="space-y-1">
-                    <button onclick="switchTab('trigger')" id="tab-trigger" class="tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm bg-indigo-50 text-indigo-600">
+                    <button onclick="switchTab('trigger')" id="tab-trigger" class="tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm text-slate-600 hover:bg-slate-50">
                         <div class="flex items-center gap-2.5">
                             <i data-lucide="alarm-clock" class="w-5 h-5"></i>
                             <span>1. 时间警报器</span>
@@ -80,7 +134,7 @@
                             <i data-lucide="search-code" class="w-5 h-5"></i>
                             <span>2. 词典 & 复读机</span>
                         </div>
-                        <span class="bg-violet-100 text-violet-800 text-[10px] px-2 py-0.5 rounded-full font-bold">API Dict</span>
+                        <span class="bg-violet-100 text-violet-800 text-[10px] px-2 py-0.5 rounded-full font-bold">Dict</span>
                     </button>
                     
                     <button onclick="switchTab('switcher')" id="tab-switcher" class="tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm text-slate-600 hover:bg-slate-50">
@@ -88,13 +142,21 @@
                             <i data-lucide="mic" class="w-5 h-5"></i>
                             <span>3. 自说自话 & AI教练</span>
                         </div>
-                        <span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">AI Voice</span>
+                        <span class="bg-emerald-100 text-emerald-800 text-[10px] px-2 py-0.5 rounded-full font-bold">Voice</span>
+                    </button>
+
+                    <button onclick="switchTab('pronunciation')" id="tab-pronunciation" class="tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm bg-indigo-50 text-indigo-600">
+                        <div class="flex items-center gap-2.5">
+                            <i data-lucide="speech" class="w-5 h-5"></i>
+                            <span>4. 全景音标发音与连读</span>
+                        </div>
+                        <span class="bg-amber-100 text-amber-800 text-[10px] px-2 py-0.5 rounded-full font-bold">Phonetics</span>
                     </button>
                     
                     <button onclick="switchTab('quiz')" id="tab-quiz" class="tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm text-slate-600 hover:bg-slate-50">
                         <div class="flex items-center gap-2.5">
                             <i data-lucide="check-square" class="w-5 h-5"></i>
-                            <span>4. 避坑大诊断 (12题)</span>
+                            <span>5. 避坑大诊断 (12题)</span>
                         </div>
                         <span class="bg-rose-100 text-rose-800 text-[10px] px-2 py-0.5 rounded-full font-bold">Quiz</span>
                     </button>
@@ -106,8 +168,8 @@
                 <div class="absolute -right-6 -bottom-6 text-slate-700/20 opacity-30">
                     <i data-lucide="award" class="w-32 h-32"></i>
                 </div>
-                <h3 class="font-bold text-base mb-1">今日修炼档案</h3>
-                <p class="text-xs text-slate-400 mb-4">目标：通过不规则动词的肌肉条件反射</p>
+                <h3 class="font-bold text-base mb-1">今日口语修炼档案</h3>
+                <p class="text-xs text-slate-400 mb-4">目标：时态物理条件反射 & 全音标发音纠偏</p>
                 <div class="space-y-4 relative z-10">
                     <div>
                         <div class="flex justify-between text-xs mb-1">
@@ -115,17 +177,17 @@
                             <span id="progress-percent" class="font-bold">0%</span>
                         </div>
                         <div class="w-full bg-slate-700 h-2.5 rounded-full overflow-hidden">
-                            <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-violet-500 h-full w-0 transition-all duration-500"></div>
+                            <div id="progress-bar" class="bg-gradient-to-r from-indigo-500 to-violet-550 h-full w-0 transition-all duration-500"></div>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 gap-2 pt-2 border-t border-slate-700/50 text-[11px]">
                         <div>
-                            <span class="text-slate-400 block">查词典次数</span>
-                            <span id="dict-count" class="font-bold text-yellow-300 text-sm">0</span>
+                            <span class="text-slate-400 block">实时词典查询</span>
+                            <span id="dict-count" class="font-bold text-yellow-300 text-sm">0 次</span>
                         </div>
                         <div>
-                            <span class="text-slate-400 block">AI 纠音成功</span>
-                            <span id="ai-count" class="font-bold text-emerald-400 text-sm">0次</span>
+                            <span class="text-slate-400 block">连读过关评测</span>
+                            <span id="ai-count" class="font-bold text-emerald-400 text-sm">0 次</span>
                         </div>
                     </div>
                 </div>
@@ -135,12 +197,12 @@
             <div class="bg-indigo-50 border border-indigo-100 p-4 rounded-2xl">
                 <h4 class="text-xs font-bold text-indigo-800 flex items-center gap-1.5 mb-1.5">
                     <i data-lucide="book-open" class="w-4 h-4"></i>
-                    <span>每日一句 · 时态拆解</span>
+                    <span>发音与时态小贴士</span>
                 </h4>
-                <p id="daily-quote" class="text-xs font-semibold text-slate-700 italic">"I thought you knew about the plan."</p>
+                <p id="daily-quote" class="text-xs font-semibold text-slate-700 italic">"Who /w/ are you waiting for?"</p>
                 <div class="mt-2 text-[11px] text-indigo-700 border-t border-indigo-200/50 pt-1.5 leading-relaxed">
-                    <span class="font-bold">时态解析：</span>
-                    <span id="daily-quote-desc">"I thought" 为一般过去时，其后的宾语从句动词 "knew" 也必须一致变为过去式。</span>
+                    <span class="font-bold">深度解析：</span>
+                    <span id="daily-quote-desc">当 /uː/ 遇到 /ɑː/，双唇需要快速滑过中间区域，声带不间断振动，中间会自动带出类似于拼音“hua”的 /w/ 滑音。</span>
                 </div>
             </div>
         </div>
@@ -149,14 +211,14 @@
         <div class="lg:col-span-3">
             
             <!-- MODULE 1: Trigger Board -->
-            <div id="panel-trigger" class="panel space-y-6">
+            <div id="panel-trigger" class="panel hidden space-y-6">
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                     <div class="flex items-center gap-2.5 mb-2">
                         <i data-lucide="alarm-clock" class="w-6 h-6 text-indigo-600"></i>
-                        <h2 class="text-xl font-bold">时间触发器警报 (Trigger Words)</h2>
+                        <h2 class="text-xl font-bold">时间触发器警报 (Tense Trigger Words)</h2>
                     </div>
                     <p class="text-sm text-slate-500 leading-relaxed">
-                        训练守则：在口语组织中，一旦你的大脑想到或听到以下“时间指标词”，<b>主语后紧随的动词必须瞬间、无条件切换为过去时态！</b>不要留任何反应时间。
+                        口语变音法则第一步：一旦大脑闪过下列时间指标，主语后面的动词必须**瞬间、无任何缓冲时间地**切换为一般过去时！让肌肉习惯强于大脑思考。
                     </p>
                 </div>
 
@@ -164,9 +226,9 @@
                 <div id="alarm-banner" class="hidden bg-rose-50 border-2 border-rose-500/30 p-5 rounded-2xl text-center flex flex-col items-center justify-center gap-2 transition duration-300">
                     <div class="flex items-center gap-2 text-rose-600 font-bold text-lg animate-bounce">
                         <i data-lucide="alert-triangle" class="w-6 h-6 fill-rose-100"></i>
-                        <span>🚨 过去式强制变音警报（Tense Triggered!）</span>
+                        <span>🚨 过去时态强制警戒 (Tense Triggered!)</span>
                     </div>
-                    <p class="text-sm text-rose-700 font-semibold" id="alarm-desc">只要你说出这个词，动词必须变过去式！</p>
+                    <p class="text-sm text-rose-700 font-semibold" id="alarm-desc">指令启动！下方口语表达核心动词已全部熔断变性。</p>
                 </div>
 
                 <!-- Grid of Triggers -->
@@ -176,7 +238,7 @@
                             <span class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition">Yesterday</span>
                             <span class="text-xs bg-indigo-50 px-2 py-0.5 rounded text-indigo-600 font-bold">昨天</span>
                         </div>
-                        <p class="text-xs text-slate-400">最经典触发词。动词秒变过去式。</p>
+                        <p class="text-xs text-slate-400">最常用的时间触发器。听到它，动词立刻切换过去式。</p>
                     </button>
 
                     <button onclick="triggerAlarm('Last week/night', '上周/昨晚', ['We went to a restaurant', 'It was extremely cold', 'I watched a nice movie'])" class="bg-white p-5 rounded-xl border border-slate-100 hover:border-indigo-400 hover:shadow-md transition text-left group">
@@ -184,15 +246,15 @@
                             <span class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition">Last ...</span>
                             <span class="text-xs bg-indigo-50 px-2 py-0.5 rounded text-indigo-600 font-bold">上个...</span>
                         </div>
-                        <p class="text-xs text-slate-400">Last night, Last week, Last year.</p>
+                        <p class="text-xs text-slate-400">Last night, Last week, Last Sunday. 强制过去信号。</p>
                     </button>
 
                     <button onclick="triggerAlarm('5 minutes ago', '五分钟前', ['I got your email', 'He left the office', 'We finished the call'])" class="bg-white p-5 rounded-xl border border-slate-100 hover:border-indigo-400 hover:shadow-md transition text-left group">
                         <div class="flex justify-between items-start mb-2">
                             <span class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition">... ago</span>
-                            <span class="text-xs bg-indigo-50 px-2 py-0.5 rounded text-indigo-600 font-bold">...以前</span>
+                            <span class="text-xs bg-indigo-50 px-2 py-0.5 rounded text-indigo-600 font-bold">...前</span>
                         </div>
-                        <p class="text-xs text-slate-400">时间差。哪怕一分钟以前也是过去。</p>
+                        <p class="text-xs text-slate-400">哪怕是一秒钟前，也是已经落定的客观历史时间轴。</p>
                     </button>
 
                     <button onclick="triggerAlarm('When I was...', '当我当年是...', ['I lived in Beijing', 'I thought it was difficult', 'I played a lot of games'])" class="bg-white p-5 rounded-xl border border-slate-100 hover:border-indigo-400 hover:shadow-md transition text-left group">
@@ -200,7 +262,7 @@
                             <span class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition">When I was...</span>
                             <span class="text-xs bg-indigo-50 px-2 py-0.5 rounded text-indigo-600 font-bold">当年...</span>
                         </div>
-                        <p class="text-xs text-slate-400">引导长串回忆叙述。后面全用过去时。</p>
+                        <p class="text-xs text-slate-400">叙事框架引导词。后文语流链条必须全程使用过去时。</p>
                     </button>
 
                     <button onclick="triggerAlarm('Just now', '刚才', ['I noticed some changes', 'I felt tired', 'I did a quick research'])" class="bg-white p-5 rounded-xl border border-slate-100 hover:border-indigo-400 hover:shadow-md transition text-left group">
@@ -208,23 +270,23 @@
                             <span class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition">Just now</span>
                             <span class="text-xs bg-indigo-50 px-2 py-0.5 rounded text-indigo-600 font-bold">刚才</span>
                         </div>
-                        <p class="text-xs text-slate-400">虽然离现在极近，但在物理上已结束。</p>
+                        <p class="text-xs text-slate-400">物理时间已经流逝，绝对不能用现在完成时。</p>
                     </button>
 
                     <button onclick="triggerAlarm('In 2024', '在2024年', ['I bought my computer', 'I joined this company', 'We moved to another place'])" class="bg-white p-5 rounded-xl border border-slate-100 hover:border-indigo-400 hover:shadow-md transition text-left group">
                         <div class="flex justify-between items-start mb-2">
                             <span class="text-lg font-bold text-slate-800 group-hover:text-indigo-600 transition">In [Past Year]</span>
-                            <span class="text-xs bg-indigo-50 px-2 py-0.5 rounded text-indigo-600 font-bold">过去特定年份</span>
+                            <span class="text-xs bg-indigo-50 px-2 py-0.5 rounded text-indigo-600 font-bold">过去年份</span>
                         </div>
-                        <p class="text-xs text-slate-400">明确的历史时间标志节点。</p>
+                        <p class="text-xs text-slate-400">明确的历史截止时间。新颖性变音立刻启动。</p>
                     </button>
                 </div>
 
                 <!-- Template practice card -->
                 <div id="practice-card" class="hidden bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
                     <div class="flex justify-between items-center pb-3 border-b border-slate-100">
-                        <h4 class="font-bold text-slate-800 text-sm">口语即兴跟读练习</h4>
-                        <span class="text-xs text-slate-400">大声跟读三遍，让发音成为物理反射！</span>
+                        <h4 class="font-bold text-slate-800 text-sm">口语即兴跟读肌肉练习</h4>
+                        <span class="text-xs text-slate-400">请高声连续朗读三遍，直至肌肉在触点自发反应。</span>
                     </div>
                     <div class="space-y-3" id="template-sentences">
                         <!-- Dynamic Sentences -->
@@ -242,7 +304,7 @@
                             <h2 class="text-xl font-bold">高频不规则动词肌肉复读机 (内置 API 词典)</h2>
                         </div>
                         <p class="text-sm text-slate-500 leading-relaxed">
-                            日常会话 80% 的不规则变音其实都被这几十个动词垄断了。本模块已成功连接至<b>免费国际词典 API</b>。
+                            英语口语80%的不规则变音其实都被高频动词垄断了。本模块支持一键调用**全球标准公共英语字典 API**，提供无损高保真原声音轨。
                         </p>
                     </div>
                     <button onclick="toggleHideVerbs()" id="toggle-hide-btn" class="bg-indigo-50 text-indigo-700 border border-indigo-200 px-3 py-2 rounded-xl text-xs font-semibold hover:bg-indigo-100 transition whitespace-nowrap">
@@ -254,13 +316,13 @@
                 <div class="bg-gradient-to-r from-violet-600 to-indigo-700 p-5 rounded-2xl text-white shadow-md space-y-3">
                     <h3 class="font-bold text-sm flex items-center gap-2">
                         <i data-lucide="book-open" class="w-4.5 h-4.5"></i>
-                        <span>实时 API 查词：检索任何动词的不规则变体与真人发音</span>
+                        <span>实时 API 查词：检索任何不规则动词与纯正美音</span>
                     </h3>
                     <div class="flex gap-2">
-                        <input type="text" id="dict-search-input" placeholder="输入任意动词原型，如 swim, run, catch..." class="flex-grow px-4 py-2.5 text-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-300">
+                        <input type="text" id="dict-search-input" placeholder="输入动词原形，如 swim, buy, speak, build..." class="flex-grow px-4 py-2.5 text-slate-800 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-yellow-300">
                         <button onclick="queryDictionaryApi()" class="bg-yellow-400 hover:bg-yellow-300 text-indigo-900 font-bold px-5 py-2.5 rounded-xl text-sm transition flex items-center gap-1.5 active:scale-95">
                             <i data-lucide="search" class="w-4 h-4"></i>
-                            <span>API 查询</span>
+                            <span>公共 API 检索</span>
                         </button>
                     </div>
                     
@@ -273,9 +335,9 @@
                 <!-- Verb Category Switcher -->
                 <div class="flex gap-2 bg-slate-200/60 p-1.5 rounded-xl max-w-lg">
                     <button onclick="switchVerbCategory('be')" id="verb-cat-be" class="verb-cat-btn flex-1 py-2 text-xs font-bold rounded-lg text-center transition bg-white text-slate-800 shadow-sm">Be 动词分裂</button>
-                    <button onclick="switchVerbCategory('action')" id="verb-cat-action" class="verb-cat-btn flex-1 py-2 text-xs font-bold rounded-lg text-center transition text-slate-600 hover:text-slate-800">三大行为之王</button>
-                    <button onclick="switchVerbCategory('think')" id="verb-cat-think" class="verb-cat-btn flex-1 py-2 text-xs font-bold rounded-lg text-center transition text-slate-600 hover:text-slate-800">思想与表达</button>
-                    <button onclick="switchVerbCategory('advanced')" id="verb-cat-advanced" class="verb-cat-btn flex-1 py-2 text-xs font-bold rounded-lg text-center transition text-slate-600 hover:text-slate-800">日常出行不规则</button>
+                    <button onclick="switchVerbCategory('action')" id="verb-cat-action" class="verb-cat-btn flex-1 py-2 text-xs font-bold rounded-lg text-center transition text-slate-600 hover:text-slate-800">行为动作之王</button>
+                    <button onclick="switchVerbCategory('think')" id="verb-cat-think" class="verb-cat-btn flex-1 py-2 text-xs font-bold rounded-lg text-center transition text-slate-600 hover:text-slate-800">思考思维动词</button>
+                    <button onclick="switchVerbCategory('advanced')" id="verb-cat-advanced" class="verb-cat-btn flex-1 py-2 text-xs font-bold rounded-lg text-center transition text-slate-600 hover:text-slate-800">日常出行必备</button>
                 </div>
 
                 <!-- Verb Cards Display -->
@@ -290,10 +352,10 @@
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
                     <div class="flex items-center gap-2.5 mb-2">
                         <i data-lucide="split" class="w-6 h-6 text-emerald-600"></i>
-                        <h2 class="text-xl font-bold">三态对照 (3-Tense Split) & AI 口语教练</h2>
+                        <h2 class="text-xl font-bold">同一场景下三时态极速连击 (Tense Shifting)</h2>
                     </div>
                     <p class="text-sm text-slate-500 leading-relaxed">
-                        这是最高阶的口语自我提升手段：在同一场景下，用<b>现在时（客观/习惯）、过去时（已发生动作）和将来时（规划/打算）</b>流畅变换。支持<b>免 Key 快速翻译 API</b> 与 <b>AI 纠音能力</b>。
+                        这是最高阶的脑力体操：同一场景和事实下，要求嘴巴迅速在**现在规律**、**过去已完成**、和**将来计划**之间敏捷切换！从句法逻辑上直接重组口语大脑。
                     </p>
                 </div>
 
@@ -318,41 +380,308 @@
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
                     <h3 class="font-bold text-sm text-slate-800 flex items-center gap-1.5">
                         <i data-lucide="languages" class="w-5 h-5 text-indigo-600"></i>
-                        <span>翻译翻译：把我的中文表达直接转成过去时</span>
+                        <span>输入中文，自动检测时态退格</span>
                     </h3>
-                    <p class="text-xs text-slate-400">使用国际免 Key 翻译 API，快速帮你找出英文表达中藏在动词后面的陷阱。</p>
+                    <p class="text-xs text-slate-400">调用 MyMemory 国际公用接口。尝试输入包含时间的中文（如“刚才我打扫了房间”），查阅如何正确使用过去式表达。</p>
                     <div class="flex gap-2">
-                        <input type="text" id="translate-input" placeholder="输入中文想法，例如：昨天下午我给朋友打了个电话..." class="flex-grow px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
+                        <input type="text" id="translate-input" placeholder="输入中文想法，例如：上个周末我和老同学聚了聚..." class="flex-grow px-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
                         <button onclick="translateAndShiftTense()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition active:scale-95 flex items-center gap-1">
                             <i data-lucide="sparkles" class="w-4 h-4"></i>
-                            <span>API 翻译</span>
+                            <span>免费翻译解析</span>
                         </button>
                     </div>
 
-                    <!-- Translation Results Shimmer Loading -->
                     <div id="translate-result" class="hidden p-4 rounded-xl border border-indigo-100 bg-indigo-50/40 space-y-2">
                         <!-- Filled dynamically -->
                     </div>
                 </div>
             </div>
 
-            <!-- MODULE 4: Tense Crash Quiz -->
+            <!-- MODULE 4: Comprehensive Phoneme & Glide Atlas -->
+            <div id="panel-pronunciation" class="panel space-y-6 animate-fade-in">
+                <!-- Header Description -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                    <div class="flex items-center gap-2.5 mb-2">
+                        <i data-lucide="speech" class="w-6 h-6 text-indigo-600"></i>
+                        <h2 class="text-xl font-bold">44个国际音标全景图谱与连读变音控制台</h2>
+                    </div>
+                    <p class="text-sm text-slate-500 leading-relaxed">
+                        本模块内置标准的 **「发音动作物理模拟分析仪」**，整合了英语全部 **20个元音** 与 **24个辅音**。
+                        点击下方全景音标按钮，系统将动态绘制唇部的开口度、扁圆度、舌尖接触点及声带振动频段。
+                    </p>
+                </div>
+
+                <!-- Sub-tabs for Pronunciation Module -->
+                <div class="flex flex-wrap gap-2 bg-slate-100 p-1.5 rounded-xl">
+                    <button onclick="switchPronCategory('all_phonemes')" id="pron-tab-all_phonemes" class="pron-sub-tab-active px-4 py-2 text-xs font-bold rounded-lg transition">
+                        🎯 44个全音标物理发音图谱
+                    </button>
+                    <button onclick="switchPronCategory('wglide')" id="pron-tab-wglide" class="pron-sub-tab-inactive px-4 py-2 text-xs font-bold rounded-lg transition">
+                        W-Glide 滑音插入
+                    </button>
+                    <button onclick="switchPronCategory('yglide')" id="pron-tab-yglide" class="pron-sub-tab-inactive px-4 py-2 text-xs font-bold rounded-lg transition">
+                        Y-Glide 滑音插入
+                    </button>
+                    <button onclick="switchPronCategory('hdropping')" id="pron-tab-hdropping" class="pron-sub-tab-inactive px-4 py-2 text-xs font-bold rounded-lg transition">
+                        H-Dropping 音击穿
+                    </button>
+                    <button onclick="switchPronCategory('flapt')" id="pron-tab-flapt" class="pron-sub-tab-inactive px-4 py-2 text-xs font-bold rounded-lg transition">
+                        Flap T 闪音
+                    </button>
+                </div>
+
+                <!-- MAIN WORKSPACE -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-6">
+                    
+                    <!-- WORKSPACE 1: IPA 44 All Phonemes Panel -->
+                    <div id="pron-all-phonemes-workspace" class="space-y-6">
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                            
+                            <!-- Left: 44 Phonemes Selector Grid -->
+                            <div class="lg:col-span-7 bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-4">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1">
+                                    <i data-lucide="grid" class="w-4 h-4 text-indigo-500"></i>
+                                    全景音标快捷检索板 (IPA Keyboard)
+                                </span>
+
+                                <!-- Vowels Category Block -->
+                                <div class="space-y-2">
+                                    <span class="text-[10px] text-indigo-800 font-extrabold uppercase block tracking-wider bg-indigo-50 px-2 py-0.5 rounded-md">Vowels 元音 (20)</span>
+                                    
+                                    <!-- Monophthongs -->
+                                    <div class="space-y-1">
+                                        <p class="text-[9px] text-slate-400 font-semibold pl-1">单元音 (Monophthongs)</p>
+                                        <div class="flex flex-wrap gap-1.5" id="monophthongs-btn-box">
+                                            <!-- Dynamic Vowel buttons -->
+                                        </div>
+                                    </div>
+
+                                    <!-- Diphthongs -->
+                                    <div class="space-y-1 pt-1">
+                                        <p class="text-[9px] text-slate-400 font-semibold pl-1">双元音 (Diphthongs)</p>
+                                        <div class="flex flex-wrap gap-1.5" id="diphthongs-btn-box">
+                                            <!-- Dynamic Diphthong buttons -->
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Consonants Category Block -->
+                                <div class="space-y-2 pt-2 border-t border-slate-200/50">
+                                    <span class="text-[10px] text-emerald-800 font-extrabold uppercase block tracking-wider bg-emerald-50 px-2 py-0.5 rounded-md">Consonants 辅音 (24)</span>
+                                    
+                                    <!-- Plosives & Affricates & Fricatives combined grid -->
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                        <div>
+                                            <p class="text-[9px] text-slate-400 font-semibold pl-1">阻碍音 (爆破 / 破擦 / 摩擦)</p>
+                                            <div class="flex flex-wrap gap-1.5 mt-1" id="obstruents-btn-box">
+                                                <!-- Dynamic buttons -->
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <p class="text-[9px] text-slate-400 font-semibold pl-1">共鸣音 (鼻音 / 似音 / 齿边音)</p>
+                                            <div class="flex flex-wrap gap-1.5 mt-1" id="sonorants-btn-box">
+                                                <!-- Dynamic buttons -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-[10px] text-slate-400 italic text-center">💡 蓝色底表示浊辅音(声带振动)，浅灰色底表示清辅音(送气不振动)</p>
+                            </div>
+
+                            <!-- Right: Anatomical Profiler Display -->
+                            <div class="lg:col-span-5 bg-white p-5 rounded-2xl border border-slate-100 flex flex-col justify-between space-y-4">
+                                <div class="space-y-3.5">
+                                    <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                                        <h4 class="font-extrabold text-slate-800 text-sm" id="phoneme-title">-</h4>
+                                        <span class="text-[10px] bg-indigo-100 text-indigo-800 font-bold px-2.5 py-0.5 rounded-full" id="phoneme-class-desc">-</span>
+                                    </div>
+
+                                    <!-- SVGs Simulator -->
+                                    <div class="grid grid-cols-2 gap-3">
+                                        <!-- Lips view -->
+                                        <div class="bg-slate-50 p-2 rounded-xl border border-slate-100 flex flex-col items-center justify-center h-[110px]">
+                                            <span class="text-[9px] font-bold text-slate-400 uppercase mb-1">1. 唇部正面口型 (Lips)</span>
+                                            <div class="w-[80px] h-[80px]" id="sim-lips-box">
+                                                <!-- Dynamic lips -->
+                                            </div>
+                                        </div>
+                                        <!-- Tongue/Alveolar view -->
+                                        <div class="bg-slate-50 p-2 rounded-xl border border-slate-100 flex flex-col items-center justify-center h-[110px] relative">
+                                            <span class="text-[9px] font-bold text-slate-400 uppercase mb-1">2. 声腔侧面阻碍 (Vocal)</span>
+                                            <div class="w-[80px] h-[80px]" id="sim-vocal-box">
+                                                <!-- Dynamic side articulation profiles -->
+                                            </div>
+                                            <!-- Vocal fold vibration state indicator -->
+                                            <div class="absolute bottom-2 right-2 flex items-center gap-1 bg-white/80 px-1.5 py-0.5 rounded-md border text-[8px] font-bold" id="vocal-wave-indicator">
+                                                <span>声带</span>
+                                                <span class="w-2 h-2 rounded-full bg-slate-300" id="vocal-indicator-dot"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Focus & Mistakes -->
+                                    <div class="space-y-2 text-xs">
+                                        <div class="bg-indigo-50/50 p-2 rounded-lg border border-indigo-100/60">
+                                            <span class="text-[10px] text-indigo-900 font-bold block">💡 极速发音物理要领 (Articulatory Instruction)：</span>
+                                            <p class="text-[11px] text-slate-700 leading-normal mt-0.5" id="phoneme-focus">-</p>
+                                        </div>
+                                        <div class="bg-rose-50 p-2.5 rounded-lg border border-rose-100">
+                                            <span class="text-[10px] text-rose-950 font-bold block flex items-center gap-1">
+                                                <i data-lucide="bug" class="w-3.5 h-3.5 text-rose-600"></i> 中式常见错音病灶 (Mistakes)：
+                                            </span>
+                                            <p class="text-[11px] text-slate-750 leading-normal mt-0.5" id="phoneme-mistake">-</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Action bar with Tense connection -->
+                                <div class="pt-3 border-t border-slate-100 space-y-2">
+                                    <div class="p-2 bg-slate-50 rounded-lg text-xs border border-slate-100">
+                                        <span class="text-[10px] font-bold text-slate-400 block mb-0.5">时态/口语拼读词跟读 (Tense Practicing Words)</span>
+                                        <p class="font-bold text-slate-800 italic" id="phoneme-practice-words">-</p>
+                                    </div>
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-[10px] text-slate-400">结合时态句子锤炼肌肉习惯</span>
+                                        <button onclick="speakSelectedPhoneme()" class="bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white text-xs px-3.5 py-2 rounded-xl font-bold flex items-center gap-1.5 transition">
+                                            <i data-lucide="volume-2" class="w-4 h-4"></i>
+                                            <span>发音及高频句朗读</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WORKSPACE 2: Glide and phonetic rules (Dynamic) -->
+                    <div id="pron-default-workspace" class="hidden space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                            
+                            <!-- Left Panel: Articulatory Illustration -->
+                            <div class="md:col-span-4 bg-slate-50 p-4 rounded-xl border border-slate-100 flex flex-col items-center justify-center min-h-[220px]">
+                                <span class="text-xs font-bold text-slate-400 mb-2 uppercase tracking-wider">声道滑轨机制 (Dynamic Oral Glide)</span>
+                                <div class="w-full max-w-[160px] h-[160px] relative" id="pron-svg-container">
+                                    <!-- SVGs injected dynamically by JS -->
+                                </div>
+                            </div>
+
+                            <!-- Right Panel: Rules explanation and phonetics breakdown -->
+                            <div class="md:col-span-8 space-y-3">
+                                <span class="text-xs bg-indigo-100 text-indigo-800 px-2.5 py-1 rounded-lg font-bold" id="pron-rule-badge">Phonetics Rule</span>
+                                <h3 class="text-lg font-black text-slate-800" id="pron-rule-title">-</h3>
+                                <p class="text-xs text-slate-500 leading-relaxed" id="pron-rule-desc">-</p>
+                                
+                                <div class="bg-indigo-50/50 border border-indigo-100/60 p-3 rounded-lg">
+                                    <span class="text-[10px] text-indigo-800 font-bold block">💡 变音动作要领：</span>
+                                    <p class="text-xs text-slate-700 leading-normal mt-0.5" id="pron-rule-tip">-</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Practice Section -->
+                        <div class="border-t border-slate-100 pt-5 space-y-4">
+                            <div class="flex justify-between items-center">
+                                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                                    <i data-lucide="volume-2" class="w-4 h-4 text-indigo-600"></i> 口语连读对照实战
+                                </span>
+                                <span class="text-[10px] text-slate-400 italic">点击右侧按钮跟读，注意捕捉滑动介音</span>
+                            </div>
+
+                            <div class="space-y-3" id="pron-sentences-box">
+                                <!-- Dynamic sentences for pronunciation -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Specialized "Hua" Glide Sandbox Playground -->
+                <div class="bg-gradient-to-br from-indigo-900 to-slate-900 p-6 rounded-2xl text-white shadow-xl space-y-4">
+                    <div class="flex items-center gap-2.5">
+                        <i data-lucide="activity" class="text-yellow-300 w-6 h-6 animate-pulse"></i>
+                        <h3 class="font-extrabold text-base text-yellow-300">"hua / wa" 滑音连读自主测试器</h3>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        当嘴唇从一个圆唇元音（如 /uː/, /oʊ/ 等）急速滑向后面的非圆唇元音时，如果发音连贯、声带不断，**发音器官自然会制造出一个 /w/ 的过渡滑音（即类似于汉语拼音 'hua' 或 'wa' 的声轨）。**
+                        请大声朗读下方精选的高频连读例句，体验“hua”音变。
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        <div class="bg-white/5 border border-white/10 p-4 rounded-xl flex flex-col justify-between">
+                            <div>
+                                <span class="text-[10px] text-yellow-300 font-bold uppercase tracking-wider block mb-1">例句一 (Who are you)</span>
+                                <p class="text-base font-black italic">Who /w/ are you?</p>
+                                <p class="text-[11px] text-slate-300 mt-1 leading-normal">自然连读发出类似 <b>"Who hua r you?"</b> 避免断裂成 "Who. Are. You."。</p>
+                            </div>
+                            <div class="flex justify-between items-center mt-3 pt-2 border-t border-white/5">
+                                <span class="text-[10px] text-emerald-400 font-bold">变音提示: /uː/ + /ɑː/ 产生 "hua" 音变</span>
+                                <button onclick="speakText('Who are you')" class="bg-yellow-400 hover:bg-yellow-300 text-indigo-950 p-1.5 rounded-lg transition">
+                                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/5 border border-white/10 p-4 rounded-xl flex flex-col justify-between">
+                            <div>
+                                <span class="text-[10px] text-yellow-300 font-bold uppercase tracking-wider block mb-1">例句二 (You are amazing)</span>
+                                <p class="text-base font-black italic">You /w/ are amazing.</p>
+                                <p class="text-[11px] text-slate-300 mt-1 leading-normal">自然连读产生 <b>"You hua r amazing."</b> 元音间的滑动十分丝滑。</p>
+                            </div>
+                            <div class="flex justify-between items-center mt-3 pt-2 border-t border-white/5">
+                                <span class="text-[10px] text-emerald-400 font-bold">变音提示: /uː/ + /ɑː/ 产生 "hua" 音变</span>
+                                <button onclick="speakText('You are amazing')" class="bg-yellow-400 hover:bg-yellow-300 text-indigo-950 p-1.5 rounded-lg transition">
+                                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/5 border border-white/10 p-4 rounded-xl flex flex-col justify-between">
+                            <div>
+                                <span class="text-[10px] text-yellow-300 font-bold uppercase tracking-wider block mb-1">例句三 (Two hours)</span>
+                                <p class="text-base font-black italic">Two /w/ hours ago.</p>
+                                <p class="text-[11px] text-slate-300 mt-1 leading-normal">自然连读产生类似 <b>"Two hua-wers ago."</b> 的动态音频流。</p>
+                            </div>
+                            <div class="flex justify-between items-center mt-3 pt-2 border-t border-white/5">
+                                <span class="text-[10px] text-emerald-400 font-bold">变音提示: /uː/ + /aʊ/ 产生 "hua" 音变</span>
+                                <button onclick="speakText('Two hours ago')" class="bg-yellow-400 hover:bg-yellow-300 text-indigo-950 p-1.5 rounded-lg transition">
+                                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bg-white/5 border border-white/10 p-4 rounded-xl flex flex-col justify-between">
+                            <div>
+                                <span class="text-[10px] text-yellow-300 font-bold uppercase tracking-wider block mb-1">例句四 (To our team)</span>
+                                <p class="text-base font-black italic">To /w/ our team.</p>
+                                <p class="text-[11px] text-slate-300 mt-1 leading-normal">自然连读产生 <b>"To hua r team."</b> 的极速美音音轨。</p>
+                            </div>
+                            <div class="flex justify-between items-center mt-3 pt-2 border-t border-white/5">
+                                <span class="text-[10px] text-emerald-400 font-bold">变音提示: /uː/ + /aʊ/ 产生 "hua" 音变</span>
+                                <button onclick="speakText('To our team')" class="bg-yellow-400 hover:bg-yellow-300 text-indigo-950 p-1.5 rounded-lg transition">
+                                    <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MODULE 5: Tense Crash Quiz -->
             <div id="panel-quiz" class="panel hidden space-y-6">
                 <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
                         <div class="flex items-center gap-2.5 mb-2">
                             <i data-lucide="shield-alert" class="w-6 h-6 text-rose-600"></i>
-                            <h2 class="text-xl font-bold">避坑大诊断：粉碎 12 大英语时态车祸现场</h2>
+                            <h2 class="text-xl font-bold">避坑大诊断：粉碎 12 大高难度时态病区</h2>
                         </div>
                         <p class="text-sm text-slate-500 leading-relaxed">
-                            中英文差异在否定、疑问、时间从句等复杂语境下最容易爆雷。全部做对，代表你的时态肌肉已基本完形！
+                            中英思维差异在虚拟、倒装、条件状语及否定中容易爆雷。本测试用于评估过去式在您大脑中的物理固化程度。
                         </p>
                     </div>
                     <!-- Master Score Tracker -->
                     <div class="bg-rose-50 border border-rose-100 p-3 rounded-xl flex items-center gap-2.5 flex-shrink-0">
                         <i data-lucide="trophy" class="w-8 h-8 text-yellow-500 fill-yellow-100"></i>
                         <div>
-                            <span class="text-[10px] text-slate-400 font-bold block">我的得分</span>
+                            <span class="text-[10px] text-slate-400 font-bold block">当前已答对</span>
                             <span id="quiz-correct-count" class="font-extrabold text-lg text-rose-600">0 / 12</span>
                         </div>
                     </div>
@@ -369,12 +698,12 @@
                     <div id="quiz-question-container" class="space-y-4">
                         <p class="text-sm text-rose-500 font-semibold flex items-center gap-1.5">
                             <i data-lucide="bug" class="w-4 h-4"></i>
-                            <span>找出以下口语场景下的时态病症：</span>
+                            <span>找出以下口语语境下的时态语法错误：</span>
                         </p>
                         <h3 id="quiz-wrong-sentence" class="text-lg md:text-xl font-bold text-slate-700 bg-rose-50/50 border border-rose-100 px-4 py-3.5 rounded-xl italic">
                             "I didn't went to the store yesterday."
                         </h3>
-                        <p id="quiz-chinese-meaning" class="text-xs text-slate-400">中文释义：我昨天没去过那个商店。</p>
+                        <p id="quiz-chinese-meaning" class="text-xs text-slate-400">中文释义：我昨天没有去过那家店。</p>
                         
                         <!-- Options list -->
                         <div class="space-y-2.5 pt-2" id="quiz-options">
@@ -389,11 +718,11 @@
 
                     <!-- Navigation -->
                     <div class="flex justify-between items-center pt-4 border-t border-slate-100">
-                        <button onclick="prevQuiz()" id="btn-quiz-prev" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-lg text-xs font-bold hover:bg-slate-200 transition disabled:opacity-50" disabled>
-                            上一题
+                        <button onclick="prevQuiz()" id="btn-quiz-prev" class="bg-slate-100 text-slate-600 px-4 py-2 rounded-lg text-xs font-bold hover:bg-slate-200 transition disabled:opacity-50 font-mono-code" disabled>
+                            上一题 PREV
                         </button>
-                        <button onclick="nextQuiz()" id="btn-quiz-next" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-indigo-700 transition">
-                            下一题
+                        <button onclick="nextQuiz()" id="btn-quiz-next" class="bg-indigo-600 text-white px-4 py-2 rounded-lg text-xs font-bold hover:bg-indigo-700 transition font-mono-code">
+                            下一题 NEXT
                         </button>
                     </div>
                 </div>
@@ -404,11 +733,11 @@
 
     <!-- Custom Modal for API Settings -->
     <div id="api-settings-modal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-white max-w-md w-full rounded-2xl shadow-xl border border-slate-100 p-6 space-y-4 animate-scale-up">
+        <div class="bg-white max-w-md w-full rounded-2xl shadow-xl border border-slate-100 p-6 space-y-4">
             <div class="flex justify-between items-center pb-3 border-b border-slate-100">
                 <h3 class="font-bold text-slate-800 flex items-center gap-1.5">
                     <i data-lucide="settings-2" class="text-indigo-600 w-5 h-5"></i>
-                    <span>AI 与 接口配置中心 (API Portal)</span>
+                    <span>AI 与 大语言模型接口配置 (API Portal)</span>
                 </h3>
                 <button onclick="closeApiSettings()" class="text-slate-400 hover:text-slate-600"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
@@ -423,7 +752,7 @@
                     <select id="api-provider" onchange="toggleApiCustomEndpoint()" class="w-full text-xs px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:border-indigo-500">
                         <option value="none">使用本地高保真模拟引擎 (免费/免Key)</option>
                         <option value="deepseek">DeepSeek AI (推荐)</option>
-                        <option value="openai">OpenAI (GPT-4o)</option>
+                        <option value="openai">OpenAI (GPT-4o-mini)</option>
                         <option value="custom">其他自定义中转 API</option>
                     </select>
                 </div>
@@ -459,10 +788,10 @@
     <div id="toast-container" class="fixed bottom-4 right-4 z-50 flex flex-col gap-2"></div>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-slate-400 py-6 text-center text-xs border-t border-slate-800 mt-auto">
+    <footer class="bg-slate-950 text-slate-400 py-6 text-center text-xs border-t border-slate-800 mt-auto">
         <div class="max-w-7xl mx-auto px-4 space-y-1">
-            <p>基于口语肌肉条件反射理论构建 · 每日打卡 5 分钟，彻底告别一般现在时统治大脑</p>
-            <p class="text-slate-600">&copy; 2026 Spoken English Tense System Pro. Active API Connections Verified.</p>
+            <p>基于口语肌肉条件反射与声位滑动转换机制构建 · 每天打卡训练5分钟，彻底粉碎英语口语及发音误区</p>
+            <p class="text-slate-600">&copy; 2026 Spoken English Muscle & Phonetics Training Hub. Active Connection.</p>
         </div>
     </footer>
 
@@ -475,13 +804,15 @@
             aiRecognitionSucceeded: 0,
             quizTested: Array(12).fill(false),
             dictLookups: 0,
-            aiCoachSuccesses: 0
+            aiCoachSuccesses: 0,
+            pronTested: Array(5).fill(false), 
+            phonemesTested: {} // Tracking how many individual phonemes tested
         };
 
         // Static Quotes Database (Fallback & Daily card)
         const localQuotes = [
-            { text: "I thought you knew about the plan.", desc: "'I thought' 决定了整个宾语从句处于过去时间轴，故从句动词必须变过去式 'knew'。" },
-            { text: "Yesterday, she got exactly what she deserved.", desc: "'Yesterday' 触发主语后的核心动词立刻变成过去式 'got'。" },
+            { text: "Who /w/ are you talking to?", desc: "连读 /uː/ + /ɑː/ 两个唇形相反的元音时，声带振动滑动，中间带出的 /w/ 滑音听起来极像 'hua'。" },
+            { text: "I thought you knew about the plan.", desc: "'I thought' 决定了整个从句处于过去的时间轴，故从句动词必须一致变为过去式 'knew'。" },
             { text: "I didn't notice any changes until they pointed them out.", desc: "在助动词 'didn't' 之后，动词 'notice' 强制恢复原形，而之后的从句再用过去式 'pointed'。" },
             { text: "If we had run faster, we would have caught the train.", desc: "虚拟语气（过去），使用 'had run' 表明对过去事实的假设。" }
         ];
@@ -494,8 +825,7 @@
                 presentHint: "习惯：平时早晨我喝黑咖啡。", presentTarget: "drink",
                 past: "But this morning, I drank a latte instead.",
                 pastHint: "过去：但今天早上我改喝了一杯拿铁。", pastTarget: "drank",
-                future: "Tomorrow, I think I will try their cold brew.",
-                futureHint: "将来：明天我估计会尝试冷萃。"
+                future: "Tomorrow, I think I will try their cold brew."
             },
             work: {
                 title: "办公状态 (Work Routine)", icon: "💻",
@@ -503,8 +833,7 @@
                 presentHint: "习惯：我周二通常居家办公。", presentTarget: "work",
                 past: "But yesterday, I worked at the office all day.",
                 pastHint: "过去：但昨天我整天都在办公室上班。", pastTarget: "worked",
-                future: "Next week, I am going to take a few days off.",
-                futureHint: "将来：下周，我打算请几天假。"
+                future: "Next week, I am going to take a few days off."
             },
             exercise: {
                 title: "运动健身 (Workout)", icon: "🏃",
@@ -512,8 +841,7 @@
                 presentHint: "习惯：我通常晚上去跑步。", presentTarget: "go",
                 past: "But last night, I did yoga instead.",
                 pastHint: "过去：但昨晚，我改做瑜伽了。", pastTarget: "did",
-                future: "This weekend, I will lift weights with my coach.",
-                futureHint: "将来：这周末，我将跟教练去练力量。"
+                future: "This weekend, I will lift weights with my coach."
             },
             shopping: {
                 title: "逛街买单 (Shopping)", icon: "🛍️",
@@ -521,8 +849,7 @@
                 presentHint: "习惯：我平时一般在网上下单买菜。", presentTarget: "buy",
                 past: "But earlier today, I bought some fresh fruit at the market.",
                 pastHint: "过去：但今天早些时候，我在市场买了些新鲜水果。", pastTarget: "bought",
-                future: "Next month, I think I will order everything online again.",
-                futureHint: "将来：下个月，我估计还是全部网购。"
+                future: "Next month, I think I will order everything online again."
             },
             travel: {
                 title: "假期出行 (Travel Holiday)", icon: "✈️",
@@ -530,8 +857,7 @@
                 presentHint: "习惯：过节时我通常喜欢去温暖的地方旅行。", presentTarget: "travel",
                 past: "But last year, I went to a snowy city in Switzerland.",
                 pastHint: "过去：但去年，我去了瑞士一个白雪皑皑的城市。", pastTarget: "went",
-                future: "For the next vacation, I will book a flight to Hawaii.",
-                futureHint: "将来：下次度假，我将订飞往夏威夷的机票。"
+                future: "For the next vacation, I will book a flight to Hawaii."
             },
             cooking: {
                 title: "厨房烹饪 (Kitchen Cooking)", icon: "🍳",
@@ -539,17 +865,15 @@
                 presentHint: "习惯：我平时总是自己做晚饭。", presentTarget: "cook",
                 past: "But last Sunday, I ordered takeout from my favorite restaurant.",
                 pastHint: "过去：但上周日，我从最爱的餐馆点了外卖。", pastTarget: "ordered",
-                future: "Tomorrow night, I will prepare a special feast for my friends.",
-                futureHint: "将来：明晚，我计划给朋友准备一餐特别的盛宴。"
+                future: "Tomorrow night, I will prepare a special feast for my friends."
             },
             meeting: {
                 title: "会议陈述 (Meeting Speech)", icon: "👥",
                 present: "I always present my slides in English during meetings.",
-                presentHint: "习惯：开会时我总是用英文汇报我的幻灯片。", presentTarget: "present",
+                presentHint: "习惯：开会时我总是用英文汇报我的研讨结果。", presentTarget: "present",
                 past: "But in this morning's sync, I spoke in Chinese instead.",
                 pastHint: "过去：但在今天早上的同步会中，我改用中文讲了。", pastTarget: "spoke",
-                future: "Next Monday, I will host the whole global sync session.",
-                futureHint: "将来：下周一，我将主持整个全球同步会议。"
+                future: "Next Monday, I will host the whole global sync session."
             },
             weekend: {
                 title: "周末生活 (Weekend Vibe)", icon: "🏡",
@@ -557,8 +881,7 @@
                 presentHint: "习惯：周六我平时一般都会睡个懒觉。", presentTarget: "sleep",
                 past: "But yesterday morning, I woke up at 6 AM to clean the house.",
                 pastHint: "过去：但昨天早上，我早上6点就爬起来打扫屋子了。", pastTarget: "woke",
-                future: "Next Saturday, I am going to spend the whole day in nature.",
-                futureHint: "将来：下周六，我准备整天泡在大自然里。"
+                future: "Next Saturday, I am going to spend the whole day in nature."
             }
         };
 
@@ -631,7 +954,7 @@
                 chinese: "自从2024年我到达这里之后，我一直在该俱乐部中。"
             },
             {
-                badge: " would rather 虚拟语气",
+                badge: "would rather 虚拟语气",
                 wrong: "I would rather you tell me the truth yesterday.",
                 explain: "“would rather” 后面引导的宾语从句若表示对过去事实的愿望，从句需用过去完成时（had done）。",
                 options: [
@@ -701,27 +1024,398 @@
         // 4 Category irregular verb list
         const verbsData = {
             be: [
-                { present: "am/is", past: "was", example: "I was exhausted.", exampleCN: "我当时筋疲力尽。", explain: "口语高频错。am/is 统一在过去式中收拢成 was。" },
-                { present: "are", past: "were", example: "They were late again.", exampleCN: "他们又迟到了。", explain: "are 必须变 were，发音类似于 /wɜːr/ 别读成 where。" },
-                { present: "am/is doing (进行)", past: "was/were doing", example: "We were arguing about it.", exampleCN: "我们当时正在为此事争论不休。", explain: "描写过去某一精确时间切片正在做的事情。" }
+                { present: "am/is", past: "was", example: "I was exhausted.", exampleCN: "我当时筋疲力尽。", explain: "口语最高频偏转。am/is 统一在过去式中收拢成 was。" },
+                { present: "are", past: "were", example: "They were late again.", exampleCN: "他们当时又迟到了。", explain: "are 变 were，发音类似于 /wɜːr/ 别读成 where。" },
+                { present: "am/is doing (进行)", past: "was/were doing", example: "We were arguing about it.", exampleCN: "我们当时正在为此事争执。", explain: "描述过去某特定时间切片中正在经历的事情。" }
             ],
             action: [
-                { present: "go (去)", past: "went", example: "I went to the dentist.", exampleCN: "我去看牙医了（别习惯性吐出 go yesterday）。", explain: "最高频位移动词，一有过去暗示，立刻变形为 went。" },
-                { present: "do (做)", past: "did", example: "He did a perfect job.", exampleCN: "他完成了一件极其完美的工作。", explain: "do-did 变化。提问、否定以及强调的主心骨。" },
-                { present: "have/has (拥有/吃)", past: "had", example: "I had some tea.", exampleCN: "我刚刚喝了些茶。", explain: "吃饭、开会、进行娱乐，均可使用 had 概括。" }
+                { present: "go (去)", past: "went", example: "I went to the dentist.", exampleCN: "我去看了牙医。", explain: "一有时间锚点，立刻转换为完全不同的 went 形式。" },
+                { present: "do (做)", past: "did", example: "He did a perfect job.", exampleCN: "他完成了一件极其完美的工作。", explain: "do-did 变化。过去时中提问、否定以及强调的核心。" },
+                { present: "have/has (拥有/吃)", past: "had", example: "I had some tea.", exampleCN: "我刚才喝了点茶。", explain: "吃饭、开会、经历，均可使用 had 进行极度平滑的概括。" }
             ],
             think: [
-                { present: "think (觉得)", past: "thought", example: "I thought you were in the UK.", exampleCN: "我（之前）一直以为你在英国呢（暗含现在才知道你不在）。", explain: "表示大脑中先前持有的看法，极其高频，gh不发音。" },
-                { present: "say (说)", past: "said", example: "The boss said it was okay.", exampleCN: "老板（当时）说这没问题。", explain: "注意 said 的读音是 /sed/，而不是 sayed 的长音。" }
+                { present: "think (觉得)", past: "thought", example: "I thought you were in China.", exampleCN: "我以为你还在中国呢（现在才知道不在）。", explain: "表示大脑中先前持有的看法，中气极强，gh不发音。" },
+                { present: "say (说)", past: "said", example: "The boss said it was okay.", exampleCN: "老板（当时）说没问题。", explain: "said 的标准读音是 /sed/，千万别拖长音发成 sayed。" }
             ],
             advanced: [
-                { present: "take (拿走/花费)", past: "took", example: "It took me three hours.", exampleCN: "这花了我三个小时。", explain: "常用于花费时间 took /tʊk/。" },
-                { present: "write (写)", past: "wrote", example: "I wrote an email to her.", exampleCN: "我给她写了一封邮件。", explain: "注意 o 的发音双元音化 wrote。" },
-                { present: "run (跑)", past: "ran", example: "I ran into my ex today.", exampleCN: "我今天偶遇了我的前度。", explain: "由 /ʌ/ 转化为口型更宽的扁音 /æ/。" }
+                { present: "take (拿走/花费)", past: "took", example: "It took me three hours.", exampleCN: "这花了我三个小时的时间。", explain: "表示消耗时间的过去高频词 took /tʊk/。" },
+                { present: "write (写)", past: "wrote", example: "I wrote an email to her.", exampleCN: "我刚才给她写了一封邮件。", explain: "注意 o 的饱满发音，双元音 wrote /roʊt/。" },
+                { present: "run (跑)", past: "ran", example: "I ran into my friend today.", exampleCN: "我今天偶遇了我的老朋友。", explain: "由 /ʌ/ 转换为口型最扁最宽的 /æ/ (ran)。" }
             ]
         };
 
-        // Custom Custom Toast System (Replacement of forbidden alert)
+        // Pronunciation Database for Tab 4 (Gliders)
+        const pronData = {
+            wglide: {
+                title: "W-Glide 滑音插入法 (声带过渡 'hua/wa' 奇迹)",
+                badge: "/w/ Insertion",
+                desc: "当一个单词以圆唇元音（如 /uː/ 'oo', /oʊ/ 'oh', /aʊ/ 'ow'）结尾，而紧随其后的单词是以元音开头时，为了避免发音气流骤然中断，发音器官会自动在中间滑出一个类似拼音 <b>'hua' (who are)</b> 或 <b>'wa' (go on)</b> 的 <b>/w/</b> 介音。",
+                tip: "声带不要停止振动！从圆唇元音快速过渡到下一个元音时，嘴唇自然缩成小圆孔滑向大开口，自然形成华丽平滑的 'hua' 音轨变体。",
+                svg: `
+                    <svg viewBox="0 0 100 100" class="w-full h-full text-indigo-600 fill-none" stroke="currentColor" stroke-width="2">
+                        <circle cx="50" cy="50" r="40" stroke-dasharray="4 4" class="text-slate-300"/>
+                        <circle cx="50" cy="50" r="28" stroke="currentColor" stroke-width="3" class="animate-pulse-slow"/>
+                        <circle cx="50" cy="50" r="10" stroke="#f59e0b" fill="#fef3c7" stroke-width="3"/>
+                        <path d="M50 10 L50 90 M10 50 L90 50" stroke="#cbd5e1" stroke-width="1"/>
+                        <text x="50" y="47" font-size="10" font-weight="extrabold" fill="#4f46e5" text-anchor="middle">/uː/</text>
+                        <text x="50" y="62" font-size="8" font-weight="extrabold" fill="#f59e0b" text-anchor="middle">"hua" (/w/)</text>
+                    </svg>
+                `,
+                sentences: [
+                    { original: "Who are you?", phonetics: "Who /w/ are you? [类似 Who-hua-r-you]", translation: "你是谁？", target: "Who are" },
+                    { original: "You are amazing.", phonetics: "You /w/ are amazing. [类似 You-hua-r-amazing]", translation: "你太棒了。", target: "You are" },
+                    { original: "Go on please.", phonetics: "Go /w/ on please. [类似 Go-won-please]", translation: "请继续。", target: "Go on" },
+                    { original: "Do it right now.", phonetics: "Do /w/ it right now. [类似 Do-wit-right-now]", translation: "立刻去办。", target: "Do it" }
+                ],
+                index: 0
+            },
+            yglide: {
+                title: "Y-Glide 滑音插入法 (元音连续过渡 'ya' 奇迹)",
+                badge: "/j/ Insertion",
+                desc: "当单词以扁唇元音（如 /iː/ 'ee', /eɪ/ 'ay', /aɪ/ 'ai'）结尾，而紧随其后的单词是以元音开头时，发音器官为了不中断气流，会自动在其间滑出类似于汉语拼音 <b>'ya'</b> 的 <b>/j/</b> 音轨。",
+                tip: "发音时嘴型保持扁平！舌头中部向上抬起，顺畅滑向下一个元音，自然制造出极为顺滑的 'ya' 音流。",
+                svg: `
+                    <svg viewBox="0 0 100 100" class="w-full h-full text-indigo-600 fill-none" stroke="currentColor" stroke-width="2">
+                        <circle cx="50" cy="50" r="40" stroke-dasharray="4 4" class="text-slate-300"/>
+                        <ellipse cx="50" cy="50" rx="35" ry="12" stroke="currentColor" stroke-width="3" class="animate-pulse-slow"/>
+                        <circle cx="50" cy="50" r="8" stroke="#10b981" fill="#ecfdf5" stroke-width="3"/>
+                        <text x="50" y="47" font-size="10" font-weight="extrabold" fill="#4f46e5" text-anchor="middle">/iː/</text>
+                        <text x="50" y="62" font-size="8" font-weight="extrabold" fill="#10b981" text-anchor="middle">"ya" (/j/)</text>
+                    </svg>
+                `,
+                sentences: [
+                    { original: "I am ready.", phonetics: "I /j/ am ready. [类似 I-yam-ready]", translation: "我准备好了。", target: "I am" },
+                    { original: "See it clearly.", phonetics: "See /j/ it clearly. [类似 See-yit-clearly]", translation: "看清楚。", target: "See it" },
+                    { original: "He always does that.", phonetics: "He /j/ always does that. [类似 He-yalways]", translation: "他总是这样。", target: "He always" },
+                    { original: "Say it again.", phonetics: "Say /j/ it again. [类似 Say-yit-again]", translation: "再说一遍。", target: "Say it" }
+                ],
+                index: 1
+            },
+            hdropping: {
+                title: "H-Dropping 音击穿 (弱代词弱读脱落法则)",
+                badge: "H-Deletion",
+                desc: "在快速口语交际中，像 him, her, have, has, had 等代词/助动词开头的弱读音 <b>/h/ 极度脆弱</b>。前方若紧随辅音，气流会直接击穿 /h/，只保留其后元音与前词的直接相连！",
+                tip: "完全放弃 /h/ 的吐气！例如 'Tell him' 直接发音为 'Tell-im'，'Ask her' 直接发音为 'Ask-er'。",
+                svg: `
+                    <svg viewBox="0 0 100 100" class="w-full h-full text-rose-600 fill-none" stroke="currentColor" stroke-width="2">
+                        <circle cx="50" cy="50" r="40" stroke-dasharray="4 4" class="text-slate-300"/>
+                        <line x1="25" y1="25" x2="75" y2="75" stroke="currentColor" stroke-width="4"/>
+                        <line x1="75" y1="25" x2="25" y2="75" stroke="currentColor" stroke-width="4"/>
+                        <circle cx="50" cy="50" r="14" stroke="#ef4444" fill="#fef2f2" stroke-width="2"/>
+                        <text x="50" y="54" font-size="12" font-weight="extrabold" fill="#ef4444" text-anchor="middle">/h/</text>
+                    </svg>
+                `,
+                sentences: [
+                    { original: "Tell him the truth.", phonetics: "Tell /h/im -> Tell-im [听起来像 'te-lim']", translation: "告诉他真相。", target: "Tell him" },
+                    { original: "Ask her out.", phonetics: "Ask /h/er -> Ask-er [听起来像 'as-ker']", translation: "约她出去。", target: "Ask her" },
+                    { original: "What have you done?", phonetics: "What /h/ave -> What-ave [听起来像 'wu-tav']", translation: "你都干了些什么？", target: "What have" },
+                    { original: "I had seen it.", phonetics: "I /h/ad -> I-ad [听起来像 'I-yad']", translation: "我（当时已经）看过了。", target: "I had" }
+                ],
+                index: 2
+            },
+            flapt: {
+                title: "Flap T 闪音法则 (极速美式连读技巧)",
+                badge: "Flap /t/ -> [d]",
+                desc: "当爆破辅音 /t/ 夹在两个元音（或者元音与弱读卷舌音 /r/）之间时，舌头不再做完全阻气爆破，而是轻快、极速地在牙龈边缘扫弹过一下，发音转化为一个非常温和轻柔的 <b>/d/（闪音/d/）</b>。",
+                tip: "舌尖轻轻弹击，不要送气！把 'Water' 读成 'Wah-der'，把 'Get it' 连读为 'Ge-dit'。",
+                svg: `
+                    <svg viewBox="0 0 100 100" class="w-full h-full text-indigo-600 fill-none" stroke="currentColor" stroke-width="2">
+                        <circle cx="50" cy="50" r="40" stroke-dasharray="4 4" class="text-slate-300"/>
+                        <path d="M30 65 Q50 30 70 65" stroke="currentColor" stroke-width="3" class="animate-pulse-slow"/>
+                        <circle cx="50" cy="45" r="8" stroke="#3b82f6" fill="#eff6ff" stroke-width="3"/>
+                        <text x="50" y="49" font-size="11" font-weight="bold" fill="#3b82f6" text-anchor="middle">/t/</text>
+                    </svg>
+                `,
+                sentences: [
+                    { original: "Shut up!", phonetics: "Shut-up -> Shu-dup [闪音化 /d/]", translation: "闭嘴！", target: "Shut up" },
+                    { original: "Get out of here.", phonetics: "Get-out -> Ge-dout [闪音化 /d/]", translation: "从这里出去。", target: "Get out" },
+                    { original: "Write it down.", phonetics: "Write-it -> Wri-dit [闪音化 /d/]", translation: "写下来。", target: "Write it" },
+                    { original: "A lot of people.", phonetics: "A lot of -> A lo-dof [闪音化 /d/]", translation: "许多人。", target: "lot of" }
+                ],
+                index: 3
+            }
+        };
+
+        // 44 Standard English Phonemes Comprehensive Database (Procedural SVG Parameters)
+        const ipaAllDatabase = {
+            // ================= MONOPHTHONGS =================
+            "i_long": {
+                ipa: "/iː/", cat: "monophthong", classDesc: "前元音 - 极高音级",
+                lipWidth: 44, lipHeight: 5, teethVisible: true, tongueContact: "none", tongueHeight: 25, voiced: true,
+                focus: "嘴角极度向两侧拉开，双唇扁平仅露微缝，声带强烈振动。牙齿微露。",
+                mistake: "中式发音常将其松弛化成了短音 /ɪ/ 或者汉语拼音中不绷紧的“衣”。",
+                words: "see, eat, keep, key", sentence: "She promised to keep the key safe."
+            },
+            "i_short": {
+                ipa: "/ɪ/", cat: "monophthong", classDesc: "前元音 - 半高音级",
+                lipWidth: 38, lipHeight: 12, teethVisible: true, tongueContact: "none", tongueHeight: 35, voiced: true,
+                focus: "口形比 /iː/ 放松，下颌微降。嘴角自然，声带振动，属于短促元音。",
+                mistake: "容易发成拖长的 /iː/，注意不要向后拉紧嘴角。",
+                words: "it, pig, big, busy", sentence: "It was a very busy morning."
+            },
+            "e_vowel": {
+                ipa: "/e/", cat: "monophthong", classDesc: "中前元音 - 中半开",
+                lipWidth: 36, lipHeight: 16, teethVisible: true, tongueContact: "none", tongueHeight: 45, voiced: true,
+                focus: "嘴角微扁，张嘴度约为一个食指指尖。舌尖轻抵下齿龈。",
+                mistake: "容易和 /æ/ 混淆导致大小苹果不分，或者发音过窄。",
+                words: "bed, head, leg, send", sentence: "Ted met his friend yesterday."
+            },
+            "ae_vowel": {
+                ipa: "/æ/", cat: "monophthong", classDesc: "低前元音 - 宽张口",
+                lipWidth: 42, lipHeight: 26, teethVisible: true, tongueContact: "none", tongueHeight: 65, voiced: true,
+                focus: "嘴角用力向两侧、向下巴扯开（扁平大嘴）。上下门齿间距两个手指，舌面贴低。",
+                mistake: "经常发成了窄音 /e/ (如 bad 读成了 bed)。嘴角没有两侧拉扯的力量。",
+                words: "cat, bad, map, family", sentence: "The fat cat ran after the rat."
+            },
+            "a_long": {
+                ipa: "/ɑː/", cat: "monophthong", classDesc: "后元音 - 开口喉音",
+                lipWidth: 28, lipHeight: 28, teethVisible: true, tongueContact: "none", tongueHeight: 70, voiced: true,
+                focus: "下巴完全放松自然下沉，声腔完全向后和向下打开，像看医生时发‘啊’。",
+                words: "father, car, hard, dark", sentence: "It is hard to start the car in the dark."
+            },
+            "o_short": {
+                ipa: "/ɒ/", cat: "monophthong", classDesc: "后元音 - 圆唇短音",
+                lipWidth: 24, lipHeight: 22, teethVisible: false, tongueContact: "none", tongueHeight: 65, voiced: true,
+                focus: "双唇略微收圆，下巴下拉。发音短促，舌身后缩。",
+                words: "not, hot, job, lock", sentence: "He got a hot coffee on his desk."
+            },
+            "o_long": {
+                ipa: "/ɔː/", cat: "monophthong", classDesc: "后元音 - 圆唇长音",
+                lipWidth: 18, lipHeight: 20, teethVisible: false, tongueContact: "none", tongueHeight: 50, voiced: true,
+                focus: "双唇收得比 /ɒ/ 更圆更突出，舌面中部凹下，舌身用力后缩，声带振动。",
+                words: "talk, law, door, ball", sentence: "I saw him walking toward the hall."
+            },
+            "u_short": {
+                ipa: "/ʊ/", cat: "monophthong", classDesc: "后元音 - 弱圆唇",
+                lipWidth: 20, lipHeight: 12, teethVisible: false, tongueContact: "none", tongueHeight: 40, voiced: true,
+                focus: "口形微开，双唇放松微圆。舌身向后缩，发音短促且带弹性。",
+                words: "look, good, book, pull", sentence: "He took a look at the good book."
+            },
+            "u_long": {
+                ipa: "/uː/", cat: "monophthong", classDesc: "后元音 - 紧圆唇",
+                lipWidth: 12, lipHeight: 8, teethVisible: false, tongueContact: "none", tongueHeight: 25, voiced: true,
+                focus: "双唇尽量向前收圆至最小针孔状。舌身后缩抬高，发音饱满且紧张度高。",
+                words: "too, rule, school, do", sentence: "Who is going to do it tomorrow?"
+            },
+            "v_wedge": {
+                ipa: "/ʌ/", cat: "monophthong", classDesc: "中元音 - 扁唇短音",
+                lipWidth: 32, lipHeight: 18, teethVisible: true, tongueContact: "none", tongueHeight: 55, voiced: true,
+                focus: "下颌微微张开，双唇完全放松微扁。发音从喉咙深处自然送出，短促干净。",
+                words: "cup, bus, sun, love", sentence: "My mother loves the summer sun."
+            },
+            "er_long": {
+                ipa: "/ɜː/", cat: "monophthong", classDesc: "中元音 - 卷舌长音",
+                lipWidth: 34, lipHeight: 12, teethVisible: true, tongueContact: "none", tongueHeight: 40, voiced: true,
+                focus: "嘴角放松不拉开，上下门齿微露。舌身中部微微卷起，声带不间断振动。",
+                words: "girl, work, shirt, bird", sentence: "The early bird caught the worm."
+            },
+            "schwa": {
+                ipa: "/ə/", cat: "monophthong", classDesc: "中元音 - 极弱懒音",
+                lipWidth: 30, lipHeight: 10, teethVisible: false, tongueContact: "none", tongueHeight: 50, voiced: true,
+                focus: "口腔和面部肌肉全放松，嘴巴微张。这是英语中最高频、最懒最弱的元音。",
+                words: "about, ago, mother, today", sentence: "We talked about the project today."
+            },
+
+            // ================= DIPHTHONGS =================
+            "ei_diph": {
+                ipa: "/eɪ/", cat: "diphthong", classDesc: "双元音 - 从开到闭",
+                lipWidth: 36, lipHeight: 14, teethVisible: true, tongueContact: "none", tongueHeight: 35, voiced: true,
+                focus: "起音为 /e/，然后嘴角向两侧快速滑动收窄，舌位滑至 /ɪ/。滑行过程气流不断。",
+                words: "say, game, play, day", sentence: "They played a nice game yesterday."
+            },
+            "ai_diph": {
+                ipa: "/aɪ/", cat: "diphthong", classDesc: "双元音 - 超大滑动",
+                lipWidth: 42, lipHeight: 24, teethVisible: true, tongueContact: "none", tongueHeight: 50, voiced: true,
+                focus: "起音时下巴完全下沉放松发 /a/，随后嘴巴快速收拢，舌位平滑滑向 /ɪ/。",
+                words: "my, high, write, buy", sentence: "Why did you try to slide by?"
+            },
+            "oi_diph": {
+                ipa: "/ɔɪ/", cat: "diphthong", classDesc: "双元音 - 圆唇到扁唇",
+                lipWidth: 26, lipHeight: 18, teethVisible: true, tongueContact: "none", tongueHeight: 40, voiced: true,
+                focus: "起音为圆唇 /ɔː/，接着双唇迅速向两边拉扁，向 /ɪ/ 音快速滑移。",
+                words: "boy, toy, noise, voice", sentence: "The boy pointed at the noisy toy."
+            },
+            "ou_diph": {
+                ipa: "/əʊ/", cat: "diphthong", classDesc: "双元音 - 弱开到圆唇",
+                lipWidth: 24, lipHeight: 14, teethVisible: false, tongueContact: "none", tongueHeight: 35, voiced: true,
+                focus: "起音为中元音 /ə/，然后双唇迅速收圆并向前突出，滑向弱圆唇 /ʊ/。",
+                words: "go, boat, cold, wrote", sentence: "I wrote a letter to him on the boat."
+            },
+            "au_diph": {
+                ipa: "/aʊ/", cat: "diphthong", classDesc: "双元音 - 宽张到饱圆",
+                lipWidth: 28, lipHeight: 22, teethVisible: false, tongueContact: "none", tongueHeight: 45, voiced: true,
+                focus: "起音为大开口 /a/，随后嘴唇迅速收拢卷成圆孔，顺畅滑向 /ʊ/ 终点。",
+                words: "now, cow, house, town", sentence: "Our house is down in the town."
+            },
+            "ia_diph": {
+                ipa: "/ɪ◂/", cat: "diphthong", classDesc: "双元音 - 集中滑动",
+                lipWidth: 38, lipHeight: 12, teethVisible: true, tongueContact: "none", tongueHeight: 40, voiced: true,
+                focus: "从弱扁唇的 /ɪ/ 起音，气流不断，下巴放松滑向最懒的中央元音 /ə/。",
+                words: "here, near, beer, clear", sentence: "Is it clear that you were near here?"
+            },
+            "ea_diph": {
+                ipa: "/eə/", cat: "diphthong", classDesc: "双元音 - 集中滑动",
+                lipWidth: 36, lipHeight: 15, teethVisible: true, tongueContact: "none", tongueHeight: 45, voiced: true,
+                focus: "起音为半开扁唇 /e/，保持舌尖平放，随后下巴放松回收滑向中元音 /ə/。",
+                words: "there, hair, care, share", sentence: "They shared their chairs over there."
+            },
+            "ua_diph": {
+                ipa: "/ʊə/", cat: "diphthong", classDesc: "双元音 - 圆到扁集中",
+                lipWidth: 20, lipHeight: 12, teethVisible: false, tongueContact: "none", tongueHeight: 40, voiced: true,
+                focus: "起音为圆唇 /ʊ/，接着迅速松开双唇，将气流完全滑向中央元音 /ə/ 结束。",
+                words: "sure, tour, poor, pure", sentence: "Are you sure the water is pure?"
+            },
+
+            // ================= CONSONANTS (Voiceless paired with Voiced) =================
+            "p_con": {
+                ipa: "/p/", cat: "consonants_obstruent", classDesc: "双唇爆破音 - 清音",
+                lipWidth: 30, lipHeight: 0, teethVisible: false, tongueContact: "none", tongueHeight: 70, voiced: false,
+                focus: "双唇紧闭，封锁所有气流，然后突然猛烈张开双唇，喷射出不带声带颤动的纯气流。",
+                words: "past, play, pay, cup", sentence: "He played a past record today."
+            },
+            "b_con": {
+                ipa: "/b/", cat: "consonants_obstruent", classDesc: "双唇爆破音 - 浊音",
+                lipWidth: 32, lipHeight: 0, teethVisible: false, tongueContact: "none", tongueHeight: 70, voiced: true,
+                focus: "口形同 /p/ 紧闭，在突然喷爆张开唇部的一瞬间，声带必须颤振发出声音。",
+                words: "bed, big, buy, boat", sentence: "The big boat belonged to his father."
+            },
+            "t_con": {
+                ipa: "/t/", cat: "consonants_obstruent", classDesc: "舌尖齿龈爆破音 - 清音",
+                lipWidth: 35, lipHeight: 8, teethVisible: true, tongueContact: "alveolar", tongueHeight: 30, voiced: false,
+                focus: "舌尖紧贴上齿龈，积蓄气流。随后舌尖突然弹开，爆破送气，声带不颤动。",
+                words: "talk, take, time, boat", sentence: "It took them a long time to sync."
+            },
+            "d_con": {
+                ipa: "/d/", cat: "consonants_obstruent", classDesc: "舌尖齿龈爆破音 - 浊音",
+                lipWidth: 35, lipHeight: 8, teethVisible: true, tongueContact: "alveolar", tongueHeight: 30, voiced: true,
+                focus: "舌位与 /t/ 完全一致，舌尖抵住齿龈阻气。弹开的一瞬间声带强力颤振。",
+                words: "did, drank, dark, doctor", sentence: "David did all the work yesterday."
+            },
+            "k_con": {
+                ipa: "/k/", cat: "consonants_obstruent", classDesc: "舌后软腭爆破音 - 清音",
+                lipWidth: 34, lipHeight: 12, teethVisible: true, tongueContact: "velar", tongueHeight: 28, voiced: false,
+                focus: "舌后部往上顶起紧贴软腭，气流受阻。随后舌后部猛然下落，爆破喷气。",
+                words: "keep, key, dark, card", sentence: "Keep the key in the dark cabinet."
+            },
+            "g_con": {
+                ipa: "/g/", cat: "consonants_obstruent", classDesc: "舌后软腭爆破音 - 浊音",
+                lipWidth: 34, lipHeight: 12, teethVisible: true, tongueContact: "velar", tongueHeight: 28, voiced: true,
+                focus: "发音机制与 /k/ 相同，但当舌后部突然弹离软腭阻断气流时，声带要高频颤动。",
+                words: "go, game, good, dog", sentence: "He had a great game with his colleagues."
+            },
+            "f_con": {
+                ipa: "/f/", cat: "consonants_obstruent", classDesc: "唇齿摩擦音 - 清音",
+                lipWidth: 32, lipHeight: 4, teethVisible: true, tongueContact: "labiodental", tongueHeight: 65, voiced: false,
+                focus: "上齿轻轻咬住下嘴唇内侧，在缝隙中用力向外吹气，发出沙沙的摩擦气流音。",
+                words: "father, friend, free, off", sentence: "Five friends joined the official team."
+            },
+            "v_con": {
+                ipa: "/v/", cat: "consonants_obstruent", classDesc: "唇齿摩擦音 - 浊音",
+                lipWidth: 32, lipHeight: 4, teethVisible: true, tongueContact: "labiodental", tongueHeight: 65, voiced: true,
+                focus: "上齿紧压下唇，气流摩擦缝隙流出。摩擦的同时声带剧烈颤动，有明显的麻痒感。",
+                words: "voice, vase, heavy, love", sentence: "I love his voice and heavy passion."
+            },
+            "th_voiceless": {
+                ipa: "/θ/", cat: "consonants_obstruent", classDesc: "舌齿摩擦音 - 清音",
+                lipWidth: 36, lipHeight: 6, teethVisible: true, tongueContact: "dental-bite", tongueHeight: 50, voiced: false,
+                focus: "舌尖必须微微伸出，上下门齿轻轻夹咬住舌尖。用力送气使气流从齿缝摩擦而出。",
+                words: "think, thought, mouth, teeth", sentence: "I thought about it three thousand times."
+            },
+            "th_voiced": {
+                ipa: "/ð/", cat: "consonants_obstruent", classDesc: "舌齿摩擦音 - 浊音",
+                lipWidth: 36, lipHeight: 6, teethVisible: true, tongueContact: "dental-bite", tongueHeight: 50, voiced: true,
+                focus: "舌尖伸出被牙齿轻咬，牙齿与舌缝间摩擦气流，同时声带振动，能感到舌尖发麻。",
+                words: "they, other, mother, father", sentence: "They met my mother and father together."
+            },
+            "s_con": {
+                ipa: "/s/", cat: "consonants_obstruent", classDesc: "舌尖齿龈摩擦音 - 清音",
+                lipWidth: 38, lipHeight: 4, teethVisible: true, tongueContact: "alveolar-narrow", tongueHeight: 32, voiced: false,
+                focus: "舌尖轻快靠近齿龈但不贴死，形成极窄狭缝。气流强力摩擦，产生蛇一般的嘶嘶声。",
+                words: "see, school, sit, last", sentence: "She slept late last Sunday."
+            },
+            "z_con": {
+                ipa: "/z/", cat: "consonants_obstruent", classDesc: "舌尖齿龈摩擦音 - 浊音",
+                lipWidth: 38, lipHeight: 4, teethVisible: true, tongueContact: "alveolar-narrow", tongueHeight: 32, voiced: true,
+                focus: "口位与 /s/ 相同。气流通过齿缝时，声带协同开始共鸣颤动，牙齿间有震动感。",
+                words: "zoo, busy, nose, easy", sentence: "He was busy studying the zoo animals."
+            },
+            "sh_con": {
+                ipa: "/ʃ/", cat: "consonants_obstruent", classDesc: "舌叶后齿龈摩擦音 - 清音",
+                lipWidth: 26, lipHeight: 12, teethVisible: true, tongueContact: "palatal", tongueHeight: 35, voiced: false,
+                focus: "双唇略微撮圆并向前突出。舌身两侧贴紧上磨牙，气流摩擦舌面通道，呼出嘘声。",
+                words: "she, shirt, shopping, wash", sentence: "She went shopping for a new shirt."
+            },
+            "zh_con": {
+                ipa: "/ʒ/", cat: "consonants_obstruent", classDesc: "舌叶后齿龈摩擦音 - 浊音",
+                lipWidth: 26, lipHeight: 12, teethVisible: true, tongueContact: "palatal", tongueHeight: 35, voiced: true,
+                focus: "嘴唇前突，发音同 /ʃ/。气流穿过舌背上方的狭长通道摩擦，同时声带强颤动。",
+                words: "pleasure, measure, vision, casual", sentence: "It was a pleasure to watch his vision."
+            },
+            "h_con": {
+                ipa: "/h/", cat: "consonants_obstruent", classDesc: "声门摩擦气音 - 清音",
+                lipWidth: 32, lipHeight: 16, teethVisible: false, tongueContact: "none", tongueHeight: 60, voiced: false,
+                focus: "嘴部完全放松张开。不做任何口舌阻碍，直接自喉咙向外呼出一口气（呵气音）。",
+                words: "hair, head, house, hard", sentence: "He had a hard time in his house."
+            },
+            "tch_con": {
+                ipa: "/tʃ/", cat: "consonants_obstruent", classDesc: "破擦音 - 清音",
+                lipWidth: 26, lipHeight: 12, teethVisible: true, tongueContact: "alveolar-contact", tongueHeight: 30, voiced: false,
+                focus: "双唇微突。舌尖贴住上齿龈阻气（同/t/），但随后气流缓慢破裂摩擦而出（同/ʃ/）。",
+                words: "chair, catch, chat, watch", sentence: "We watched a nice chat on the chair."
+            },
+            "dj_con": {
+                ipa: "/dʒ/", cat: "consonants_obstruent", classDesc: "破擦音 - 浊音",
+                lipWidth: 26, lipHeight: 12, teethVisible: true, tongueContact: "alveolar-contact", tongueHeight: 30, voiced: true,
+                focus: "阻气起音位置同 /tʃ/。气流冲破阻碍并摩擦排出的瞬间，声带一定要持续颤振。",
+                words: "job, join, bridge, giant", sentence: "He joined a giant corporation."
+            },
+
+            // ================= SONORANTS =================
+            "m_con": {
+                ipa: "/m/", cat: "consonants_sonorant", classDesc: "双唇闭合鼻音 - 浊音",
+                lipWidth: 30, lipHeight: 0, teethVisible: false, tongueContact: "none", tongueHeight: 70, voiced: true,
+                focus: "双唇紧闭，软腭下垂，彻底通道闭合，让所有带声带颤鸣的声音从鼻腔共振流出。",
+                words: "my, manager, map, morning", sentence: "My manager sent a map this morning."
+            },
+            "n_con": {
+                ipa: "/n/", cat: "consonants_sonorant", classDesc: "舌尖齿龈鼻音 - 浊音",
+                lipWidth: 35, lipHeight: 6, teethVisible: true, tongueContact: "alveolar", tongueHeight: 30, voiced: true,
+                focus: "微张口，舌尖紧贴上齿龈，封死口腔通道，声音自声带震颤，全从鼻腔共振发出。",
+                words: "not, sun, run, learn", sentence: "He learned to run in the warm sun."
+            },
+            "ng_con": {
+                ipa: "/ŋ/", cat: "consonants_sonorant", classDesc: "舌后软腭鼻音 - 浊音",
+                lipWidth: 34, lipHeight: 10, teethVisible: true, tongueContact: "velar", tongueHeight: 28, voiced: true,
+                focus: "舌后部往上抬紧贴软腭（同/k/），把口腔完全阻断，使带声之气流完全涌入鼻腔发音。",
+                words: "running, song, morning, long", sentence: "He was running for a long time this morning."
+            },
+            "l_con": {
+                ipa: "/l/", cat: "consonants_sonorant", classDesc: "齿龈边音 - 浊音",
+                lipWidth: 36, lipHeight: 8, teethVisible: true, tongueContact: "alveolar", tongueHeight: 30, voiced: true,
+                focus: "舌尖抵住上齿龈。发音时气流从舌头两侧（边）流过，声带振动。有清晰和含混两种。",
+                words: "leg, lock, law, play", sentence: "Let us play a game on his leg."
+            },
+            "r_con": {
+                ipa: "/r/", cat: "consonants_sonorant", classDesc: "卷舌无摩擦音 - 浊音",
+                lipWidth: 22, lipHeight: 12, teethVisible: false, tongueContact: "retroflex", tongueHeight: 38, voiced: true,
+                focus: "双唇微撮起。舌尖向上卷起，靠近上齿龈后部，但切忌贴上！气流通过声带振动发出。",
+                words: "run, rule, write, record", sentence: "He tried to write the rules down."
+            },
+            "w_con": {
+                ipa: "/w/", cat: "consonants_sonorant", classDesc: "双唇半元音 - 浊音",
+                lipWidth: 10, lipHeight: 8, teethVisible: false, tongueContact: "none", tongueHeight: 40, voiced: true,
+                focus: "双唇极度收圆突出（同/uː/），然后随着气流振动声带，嘴角迅速向两侧滑开过渡。",
+                words: "woke, work, wash, week", sentence: "We worked for a full week."
+            },
+            "j_con": {
+                ipa: "/j/", cat: "consonants_sonorant", classDesc: "舌叶半元音 - 浊音",
+                lipWidth: 40, lipHeight: 6, teethVisible: true, tongueContact: "none", tongueHeight: 25, voiced: true,
+                focus: "双唇扁平（同/iː/）。舌面中部高拱向硬腭贴近，随后声带一震瞬间滑向后文元音。",
+                words: "yesterday, yellow, you, young", sentence: "Yesterday young boys met yellow birds."
+            }
+        };
+
+        // Custom Toast System (Forbidding alert)
         function showToast(message, type = "info") {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
@@ -749,17 +1443,13 @@
             container.appendChild(toast);
             lucide.createIcons();
             
-            // animate in
             setTimeout(() => {
                 toast.classList.remove('translate-y-2', 'opacity-0');
             }, 50);
 
-            // remove
             setTimeout(() => {
                 toast.classList.add('opacity-0', 'translate-y-2');
-                setTimeout(() => {
-                    toast.remove();
-                }, 300);
+                setTimeout(() => { toast.remove(); }, 300);
             }, 3500);
         }
 
@@ -771,6 +1461,8 @@
             loadQuiz();
             initDailyQuote();
             loadStoredApiSettings();
+            buildIpaKeyboard(); // Newly integrated all-phonemes keyboard
+            selectPhoneme('ae_vowel'); // select default starting phoneme
         });
 
         function initDailyQuote() {
@@ -795,6 +1487,9 @@
                 activeBtn.className = "tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm bg-violet-50 text-violet-700";
             } else if (tabId === 'switcher') {
                 activeBtn.className = "tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm bg-emerald-50 text-emerald-700";
+            } else if (tabId === 'pronunciation') {
+                activeBtn.className = "tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm bg-indigo-50 text-indigo-600";
+                switchPronCategory('all_phonemes'); 
             } else if (tabId === 'quiz') {
                 activeBtn.className = "tab-btn w-full flex items-center justify-between px-3 py-3 rounded-xl transition text-left font-semibold text-sm bg-rose-50 text-rose-700";
             }
@@ -807,19 +1502,23 @@
             const percentTxt = document.getElementById('progress-percent');
             
             let totalScore = 0;
-            if (userProgress.triggerCount > 0) totalScore += 25;
-            if (userProgress.dictLookups > 0) totalScore += 25;
-            if (userProgress.aiCoachSuccesses > 0) totalScore += 25;
+            if (userProgress.triggerCount > 0) totalScore += 20;
+            if (userProgress.dictLookups > 0) totalScore += 20;
+            if (userProgress.aiCoachSuccesses > 0) totalScore += 20;
             
+            // Pron tested including full phonetic atlas
+            const finishedPronCount = userProgress.pronTested.filter(Boolean).length;
+            totalScore += Math.round((finishedPronCount / 5) * 20);
+
             // Quiz score contribution
             const finishedQuizCount = userProgress.quizTested.filter(Boolean).length;
-            totalScore += Math.round((finishedQuizCount / 12) * 25);
+            totalScore += Math.round((finishedQuizCount / 12) * 20);
 
             bar.style.width = totalScore + '%';
             percentTxt.innerText = totalScore + '%';
             
-            document.getElementById('dict-count').innerText = userProgress.dictLookups;
-            document.getElementById('ai-count').innerText = `${userProgress.aiCoachSuccesses}次`;
+            document.getElementById('dict-count').innerText = `${userProgress.dictLookups} 次`;
+            document.getElementById('ai-count').innerText = `${userProgress.aiCoachSuccesses} 次`;
         }
 
         // API Configuration Settings Handlers
@@ -846,18 +1545,15 @@
                 keyBox.classList.add('hidden');
                 endpointBox.classList.add('hidden');
                 modelBox.classList.add('hidden');
-            } else if (provider === 'deepseek') {
+            } else {
                 keyBox.classList.remove('hidden');
-                endpointBox.classList.add('hidden');
-                modelBox.classList.add('hidden');
-            } else if (provider === 'openai') {
-                keyBox.classList.remove('hidden');
-                endpointBox.classList.add('hidden');
-                modelBox.classList.add('hidden');
-            } else if (provider === 'custom') {
-                keyBox.classList.remove('hidden');
-                endpointBox.classList.remove('hidden');
-                modelBox.classList.remove('hidden');
+                if (provider === 'custom') {
+                    endpointBox.classList.remove('hidden');
+                    modelBox.classList.remove('hidden');
+                } else {
+                    endpointBox.classList.add('hidden');
+                    modelBox.classList.add('hidden');
+                }
             }
         }
 
@@ -884,7 +1580,7 @@
 
             loadStoredApiSettings();
             closeApiSettings();
-            showToast("API 核心配置成功，接口通路已重塑！", "success");
+            showToast("API 核心接口通路已重建重构！", "success");
         }
 
         function loadStoredApiSettings() {
@@ -923,12 +1619,11 @@
                 return;
             }
 
-            // Show Loading shimmer state
             resultsBox.classList.remove('hidden');
             resultsBox.innerHTML = `
-                <div class="flex items-center justify-center py-4 gap-2">
+                <div class="flex items-center justify-center py-4 gap-2 text-indigo-200">
                     <div class="w-4 h-4 border-2 border-indigo-400 border-t-transparent rounded-full animate-spin"></div>
-                    <span class="text-slate-300">正在与国际公共词典 API 握手通信...</span>
+                    <span>正在连线国际公用词典 API 核心中枢...</span>
                 </div>
             `;
 
@@ -941,7 +1636,6 @@
                 const data = await response.json();
                 const wordData = data[0];
                 
-                // Parse Phonetics & Audio
                 let phonetic = wordData.phonetic || "";
                 let audioUrl = "";
                 
@@ -953,34 +1647,32 @@
                     if (matchAud) audioUrl = matchAud.audio;
                 }
 
-                // Extract Definitions
                 let definitionsHtml = "";
                 if (wordData.meanings && wordData.meanings.length > 0) {
                     const verbMeaning = wordData.meanings.find(m => m.partOfSpeech === "verb") || wordData.meanings[0];
                     if (verbMeaning && verbMeaning.definitions) {
                         verbMeaning.definitions.slice(0, 2).forEach((def, dIdx) => {
                             definitionsHtml += `
-                                <div class="bg-white/5 p-2 rounded-lg border border-white/5">
-                                    <span class="text-[10px] text-yellow-300 font-bold block">义项 ${dIdx + 1} (${verbMeaning.partOfSpeech})</span>
+                                <div class="bg-white/5 p-2.5 rounded-lg border border-white/5">
+                                    <span class="text-[10px] text-yellow-300 font-bold block">基本词义 ${dIdx + 1} (${verbMeaning.partOfSpeech})</span>
                                     <p class="text-slate-200 mt-0.5">${def.definition}</p>
-                                    ${def.example ? `<p class="text-slate-400 italic mt-0.5">例句: "${def.example}"</p>` : ""}
+                                    ${def.example ? `<p class="text-indigo-200 italic mt-0.5">例句: "${def.example}"</p>` : ""}
                                 </div>
                             `;
                         });
                     }
                 }
 
-                // Render dynamic output
                 resultsBox.innerHTML = `
                     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/10 pb-2.5">
                         <div>
                             <span class="text-lg font-black text-white capitalize">${wordData.word}</span>
-                            <span class="text-xs text-yellow-300 ml-1.5 font-semibold">${phonetic}</span>
+                            <span class="text-xs text-yellow-300 ml-1.5 font-semibold font-mono-code">${phonetic}</span>
                         </div>
                         ${audioUrl ? `
                             <button onclick="playUrlAudio('${audioUrl}')" class="bg-yellow-400 hover:bg-yellow-300 text-indigo-900 px-3 py-1.5 rounded-lg font-bold text-[10px] uppercase flex items-center gap-1 active:scale-95 transition">
                                 <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
-                                <span>真人原声发音</span>
+                                <span>听取标准原音</span>
                             </button>
                         ` : `
                             <span class="text-[10px] text-slate-400">暂无真人原声音频</span>
@@ -1000,7 +1692,7 @@
                 resultsBox.innerHTML = `
                     <div class="text-rose-300 flex items-center gap-1.5 py-2">
                         <i data-lucide="x-circle" class="w-4.5 h-4.5 flex-shrink-0"></i>
-                        <span>API 异常或未找到该动词。请确保输入拼写正确（必须为动词原形）。</span>
+                        <span>API 通信或查词库内未检测到对应动词，请确认动词原形无误。</span>
                     </div>
                 `;
                 lucide.createIcons();
@@ -1011,7 +1703,7 @@
             const audio = new Audio(url);
             audio.play().catch(err => {
                 console.error("Audio playback failed:", err);
-                showToast("音频流播放失败，可能是浏览器禁用了跨域多媒体。", "error");
+                showToast("音频通道暂被阻断，可在浏览器端解除自动播放拦截。", "error");
             });
         }
 
@@ -1023,7 +1715,7 @@
             const sentenceContainer = document.getElementById('template-sentences');
 
             banner.classList.remove('hidden');
-            desc.innerHTML = `你刚发出了过去时间指令 <span class="bg-rose-200 text-rose-900 px-2 py-0.5 rounded-md font-bold text-sm">${word} (${chinese})</span>！请大声朗读以下句子：`;
+            desc.innerHTML = `您刚激活了强力历史时间信号： <span class="bg-rose-200 text-rose-900 px-2 py-0.5 rounded-md font-bold text-sm">${word} (${chinese})</span>！请大声读出下方变音句子。`;
             
             sentenceContainer.innerHTML = '';
             sentences.forEach((sentence) => {
@@ -1033,7 +1725,7 @@
                 const rest = parts.slice(2).join(' ');
 
                 const row = document.createElement('div');
-                row.className = "flex flex-col sm:flex-row sm:items-center justify-between p-3.5 bg-slate-50 border border-slate-100 rounded-xl gap-3 hover:bg-slate-100/50 transition";
+                row.className = "flex flex-col sm:flex-row sm:items-center justify-between p-3.5 bg-slate-50 border border-slate-100 rounded-xl gap-3 hover:bg-slate-100/50 transition animate-fade-in";
                 row.innerHTML = `
                     <div class="text-sm font-semibold text-slate-800 leading-relaxed">
                         <span class="text-rose-600 font-bold">${word},</span> ${subject} <span class="bg-yellow-200 text-slate-900 px-1.5 py-0.5 rounded font-extrabold shadow-sm">${pastVerb}</span> ${rest}.
@@ -1061,7 +1753,7 @@
             const btn = document.getElementById('toggle-hide-btn');
             if (verbsHideState) {
                 btn.className = "bg-rose-50 text-rose-700 border border-rose-200 px-3 py-2 rounded-xl text-xs font-semibold hover:bg-rose-100 transition whitespace-nowrap";
-                btn.innerText = "👁️ 盲测模式中 (点击显现)";
+                btn.innerText = "👁️ 盲测模式开启 (点击还原)";
             } else {
                 btn.className = "bg-indigo-50 text-indigo-700 border border-indigo-200 px-3 py-2 rounded-xl text-xs font-semibold hover:bg-indigo-100 transition whitespace-nowrap";
                 btn.innerText = "👁️ 盲测模式 (隐藏过去式)";
@@ -1087,7 +1779,7 @@
                 card.className = "bg-white p-4 rounded-xl border border-slate-100 shadow-sm hover:shadow transition flex flex-col justify-between gap-3";
                 
                 const pastDisplay = verbsHideState 
-                    ? `<span id="hidden-verb-${index}" onclick="revealVerb(${index}, '${item.past}')" class="cursor-pointer bg-slate-900 text-slate-900 px-3 py-0.5 rounded font-extrabold select-none hover:bg-slate-800 hover:text-slate-300">点击显现</span>`
+                    ? `<span id="hidden-verb-${index}" onclick="revealVerb(${index}, '${item.past}')" class="cursor-pointer bg-slate-900 text-slate-900 px-3 py-0.5 rounded font-extrabold select-none hover:bg-slate-800 hover:text-slate-300">点击释出过去式</span>`
                     : `<span class="bg-rose-100 text-rose-700 px-3 py-0.5 rounded font-extrabold">${item.past}</span>`;
 
                 card.innerHTML = `
@@ -1106,7 +1798,7 @@
                         <span>💡 ${item.explain}</span>
                         <button onclick="speakText('${item.example}')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-2 py-1.5 rounded-lg flex items-center gap-1 transition">
                             <i data-lucide="volume-2" class="w-3.5 h-3.5"></i>
-                            <span>读出声音</span>
+                            <span>跟读</span>
                         </button>
                     </div>
                 `;
@@ -1117,7 +1809,7 @@
 
         function revealVerb(idx, answer) {
             const el = document.getElementById(`hidden-verb-${idx}`);
-            el.className = "bg-rose-100 text-rose-700 px-3 py-0.5 rounded font-extrabold animate-pulse";
+            el.className = "bg-rose-100 text-rose-700 px-3 py-0.5 rounded font-extrabold";
             el.innerText = answer;
         }
 
@@ -1128,7 +1820,7 @@
                 utterance.rate = 0.85;
                 window.speechSynthesis.speak(utterance);
             } else {
-                showToast("您的浏览器未搭载系统语音合成模块，推荐在 Chrome 中使用。", "error");
+                showToast("您的浏览器未装配系统发声引擎。", "error");
             }
         }
 
@@ -1138,20 +1830,19 @@
             const resultBox = document.getElementById('translate-result');
 
             if (!input) {
-                showToast("请输入需要翻译的中文想法！", "warning");
+                showToast("请输入需要分析翻译的中文！", "warning");
                 return;
             }
 
             resultBox.classList.remove('hidden');
             resultBox.innerHTML = `
-                <div class="flex items-center gap-2 py-2">
+                <div class="flex items-center gap-2 py-2 text-indigo-800">
                     <div class="w-4 h-4 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
-                    <span class="text-xs text-indigo-800 font-bold">正在联络 MyMemory 翻译中枢接口...</span>
+                    <span class="text-xs font-bold">正在联络 MyMemory 核心翻译通道...</span>
                 </div>
             `;
 
             try {
-                // Free public translation API
                 const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(input)}&langpair=zh-CN|en-US`);
                 if (!response.ok) {
                     throw new Error("Translation API Response Error");
@@ -1160,20 +1851,17 @@
                 const data = await response.json();
                 const translatedText = data.responseData.translatedText;
 
-                // Simple regex parser for English tenses to simulate structural shift
-                let rawWords = translatedText.split(' ');
-                
                 resultBox.innerHTML = `
                     <div class="space-y-2 text-xs">
                         <div>
-                            <span class="text-[10px] bg-indigo-200 text-indigo-900 font-bold px-2 py-0.5 rounded uppercase">API 翻译直出</span>
+                            <span class="text-[10px] bg-indigo-200 text-indigo-900 font-bold px-2 py-0.5 rounded uppercase">API 直译英语对照</span>
                             <p class="text-sm font-bold text-slate-800 mt-1 italic">"${translatedText}"</p>
                         </div>
                         <div class="border-t border-indigo-100 pt-2 mt-2 space-y-1.5">
-                            <span class="text-[10px] bg-rose-100 text-rose-800 font-extrabold px-2 py-0.5 rounded uppercase">自主纠正肌肉警报</span>
+                            <span class="text-[10px] bg-rose-100 text-rose-800 font-extrabold px-2 py-0.5 rounded uppercase">肌肉警戒提示</span>
                             <p class="text-slate-600 leading-relaxed">
-                                如果你翻译出的句意描述的是<b>过去发生的动作（如昨天、刚才）</b>，请立刻在大脑中检查动词！
-                                例如，把动词原型自动切换为不规则过去式，确保说出口的是纯正的过去时态。
+                                请在开口之前，极速核查该动作是否对应<b>“过去的时间”（刚才、刚才、以前）</b>！
+                                如果是，请毫不犹豫地把直译句子中的第一动词原型瞬间降格变性，换成对应的过去不规则形式，阻断原型直接溜出口腔。
                             </p>
                         </div>
                     </div>
@@ -1184,14 +1872,300 @@
                 resultBox.innerHTML = `
                     <div class="text-xs text-rose-600 font-semibold flex items-center gap-1.5 py-1">
                         <i data-lucide="alert-circle" class="w-4 h-4 flex-shrink-0"></i>
-                        <span>API 通信偶发故障，请稍后再试或点击重新查询。</span>
+                        <span>API 中断，请确认您的网络连通度。</span>
                     </div>
                 `;
                 lucide.createIcons();
             }
         }
 
-        // MODULE 3: LLM Coach & Local Simulator Core Logic
+        // MODULE 4: IPA 44 Keyboard Generation and Selection
+        let activeSelectedPhonemeKey = 'ae_vowel';
+
+        function buildIpaKeyboard() {
+            const monophthongsBox = document.getElementById('monophthongs-btn-box');
+            const diphthongsBox = document.getElementById('diphthongs-btn-box');
+            const obstruentsBox = document.getElementById('obstruents-btn-box');
+            const sonorantsBox = document.getElementById('sonorants-btn-box');
+
+            monophthongsBox.innerHTML = '';
+            diphthongsBox.innerHTML = '';
+            obstruentsBox.innerHTML = '';
+            sonorantsBox.innerHTML = '';
+
+            Object.keys(ipaAllDatabase).forEach(key => {
+                const item = ipaAllDatabase[key];
+                
+                const btn = document.createElement('button');
+                btn.id = `btn-ipa-${key}`;
+                btn.onclick = () => selectPhoneme(key);
+                
+                // Color coding for voiceless vs voiced consonants
+                let baseStyle = "px-2.5 py-1.5 text-xs font-extrabold rounded-lg border transition hover:border-indigo-400 active:scale-95 ";
+                if (item.cat.startsWith('consonants')) {
+                    if (item.voiced) {
+                        baseStyle += "bg-sky-50 text-sky-800 border-sky-100";
+                    } else {
+                        baseStyle += "bg-slate-100 text-slate-700 border-slate-200";
+                    }
+                } else {
+                    // Vowels are voiced
+                    baseStyle += "bg-indigo-50 text-indigo-800 border-indigo-100";
+                }
+
+                btn.className = baseStyle;
+                btn.innerHTML = `<span class="block">${item.ipa}</span>`;
+
+                if (item.cat === 'monophthong') {
+                    monophthongsBox.appendChild(btn);
+                } else if (item.cat === 'diphthong') {
+                    diphthongsBox.appendChild(btn);
+                } else if (item.cat === 'consonants_obstruent') {
+                    obstruentsBox.appendChild(btn);
+                } else if (item.cat === 'consonants_sonorant') {
+                    sonorantsBox.appendChild(btn);
+                }
+            });
+        }
+
+        // SELECTING AND RENDERING PARAMETRIC PHONEME ANATOMY
+        function selectPhoneme(key) {
+            activeSelectedPhonemeKey = key;
+            const data = ipaAllDatabase[key];
+            if (!data) return;
+
+            // Update Active Keyboard State Style
+            Object.keys(ipaAllDatabase).forEach(k => {
+                const btn = document.getElementById(`btn-ipa-${k}`);
+                if (btn) {
+                    btn.classList.remove('ring-2', 'ring-indigo-600', 'scale-105', 'shadow-sm');
+                }
+            });
+            const activeBtn = document.getElementById(`btn-ipa-${key}`);
+            if (activeBtn) {
+                activeBtn.classList.add('ring-2', 'ring-indigo-600', 'scale-105', 'shadow-sm');
+            }
+
+            // Update anatomical texts
+            document.getElementById('phoneme-title').innerText = `${data.ipa} ${key.replace('_vowel','').replace('_con','').replace('_diph','').replace('_long','ː').replace('_short','').toUpperCase()}`;
+            document.getElementById('phoneme-class-desc').innerText = data.classDesc;
+            document.getElementById('phoneme-focus').innerText = data.focus;
+            document.getElementById('phoneme-mistake').innerText = data.mistake;
+            document.getElementById('phoneme-practice-words').innerText = data.words;
+
+            // DRAW PARAMETRIC SVGS
+            drawParametricLips(data.lipWidth, data.lipHeight, data.teethVisible, data.lipWidth > 38);
+            drawParametricSideProfile(data.tongueHeight, data.tongueContact, data.voiced);
+
+            // Update Voice fold indicator
+            const dot = document.getElementById('vocal-indicator-dot');
+            if (data.voiced) {
+                dot.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 voice-vibrating";
+                document.getElementById('vocal-wave-indicator').classList.add('border-emerald-300');
+                document.getElementById('vocal-wave-indicator').classList.remove('border-slate-200');
+            } else {
+                dot.className = "w-2 h-2 rounded-full bg-slate-300";
+                document.getElementById('vocal-wave-indicator').classList.remove('border-emerald-300');
+                document.getElementById('vocal-wave-indicator').classList.add('border-slate-200');
+            }
+
+            userProgress.phonemesTested[key] = true;
+        }
+
+        // Procedural Lips Drawing Engine
+        function drawParametricLips(w, h, teeth, isFlat) {
+            const container = document.getElementById('sim-lips-box');
+            
+            // Limit lip dimensions
+            const scaleW = w * 0.9;
+            const scaleH = h * 0.95;
+            const cx = 40;
+            const cy = 40;
+
+            const halfW = scaleW / 2;
+            const halfH = scaleH / 2;
+
+            let teethSvg = '';
+            if (teeth) {
+                teethSvg = `
+                    <!-- Upper teeth -->
+                    <rect x="${cx - halfW + 6}" y="${cy - 3}" width="${halfW * 2 - 12}" height="6" fill="#f8fafc" stroke="#e2e8f0" stroke-width="0.5" rx="1" />
+                    <!-- Lower teeth -->
+                    <rect x="${cx - halfW + 8}" y="${cy + 2}" width="${halfW * 2 - 16}" height="4" fill="#f1f5f9" stroke="#e2e8f0" stroke-width="0.5" rx="1" />
+                `;
+            }
+
+            // Draw dental bite or labio-dental specific indicators
+            let customArtElement = '';
+            if (activeSelectedPhonemeKey === 'th_voiceless' || activeSelectedPhonemeKey === 'th_voiced') {
+                // Show tongue tip peeking through teeth
+                customArtElement = `<ellipse cx="${cx}" cy="${cy + 2}" rx="${halfW - 8}" ry="3" fill="#fda4af" stroke="#f43f5e" stroke-width="1" />`;
+            } else if (activeSelectedPhonemeKey === 'f_con' || activeSelectedPhonemeKey === 'v_con') {
+                // Show upper teeth overlapping lower lip
+                teethSvg = `<rect x="${cx - 12}" y="${cy - 4}" width="24" height="7" fill="#ffffff" stroke="#cbd5e1" stroke-width="1" rx="1" />`;
+            }
+
+            const svgHtml = `
+                <svg viewBox="0 0 80 80" class="w-full h-full text-indigo-600 fill-none" stroke="currentColor" stroke-width="1.5">
+                    <!-- Cavity dark background -->
+                    <ellipse cx="${cx}" cy="${cy}" rx="${halfW}" ry="${halfH}" fill="#1e1b4b" />
+                    
+                    ${teethSvg}
+                    ${customArtElement}
+
+                    <!-- Top Lip path -->
+                    <path d="M ${cx - halfW} ${cy} Q ${cx - halfW / 2} ${cy - halfH - 4} ${cx} ${cy - halfH / 2} Q ${cx + halfW / 2} ${cy - halfH - 4} ${cx + halfW} ${cy} Q ${cx} ${cy - 1} ${cx - halfW} ${cy}" fill="#f43f5e" stroke="#db2777" stroke-width="1.5" />
+                    <!-- Bottom Lip path -->
+                    <path d="M ${cx - halfW} ${cy} Q ${cx} ${cy + halfH + 6} ${cx + halfW} ${cy} Q ${cx} ${cy + 1} ${cx - halfW} ${cy}" fill="#f43f5e" stroke="#db2777" stroke-width="1.5" />
+                </svg>
+            `;
+            container.innerHTML = svgHtml;
+        }
+
+        // Procedural Vocal Profile (Side View Tongue articulations)
+        function drawParametricSideProfile(tongueHeight, tongueContact, voiced) {
+            const container = document.getElementById('sim-vocal-box');
+
+            // Draw different side profiles based on articulation type
+            let contactIndicator = '';
+            let tongueCurve = `M15,70 C22,60 40,${tongueHeight} 60,${tongueHeight} C70,${tongueHeight + 5} 75,55 75,70`; // default tongue path
+
+            if (tongueContact === 'alveolar') {
+                // Tongue tip raised to alveolar ridge
+                tongueCurve = `M15,70 C22,58 35,42 50,28 C52,26 56,23 60,25 C64,28 66,45 75,70`;
+                contactIndicator = `<circle cx="56" cy="24" r="3" fill="#f43f5e" class="animate-ping" />`;
+            } else if (tongueContact === 'alveolar-contact') {
+                // Touch the ridge directly
+                tongueCurve = `M15,70 C22,58 35,40 54,24 C56,22 59,25 61,32 C64,45 75,70`;
+                contactIndicator = `<circle cx="54" cy="23" r="3.5" fill="#f43f5e" />`;
+            } else if (tongueContact === 'velar') {
+                // Back of tongue touches velum
+                tongueCurve = `M15,70 C18,48 26,30 38,28 C41,27 44,38 55,55 C65,65 75,70`;
+                contactIndicator = `<circle cx="38" cy="27" r="3" fill="#f43f5e" class="animate-ping" />`;
+            } else if (tongueContact === 'palatal') {
+                // Tongue raised to hard palate
+                tongueCurve = `M15,70 C22,50 34,34 46,32 C50,31 54,42 62,56 C70,66 75,70`;
+                contactIndicator = `<circle cx="46" cy="31" r="3" fill="#f43f5e" class="animate-ping" />`;
+            } else if (tongueContact === 'dental-bite') {
+                // Tongue flat extending out between teeth
+                tongueCurve = `M15,70 C25,60 44,48 58,45 C66,44 68,49 58,54 C48,58 75,70`;
+                contactIndicator = `<circle cx="62" cy="45" r="3.5" fill="#f43f5e" />`;
+            } else if (tongueContact === 'labiodental') {
+                // Flat low tongue, emphasis on lower lip touch
+                tongueCurve = `M15,70 C22,62 40,58 55,58 C62,58 68,62 75,70`;
+                contactIndicator = `<ellipse cx="62" cy="60" rx="3.5" ry="1.5" fill="#e11d48" />`;
+            } else if (tongueContact === 'retroflex') {
+                // Tongue curled backward
+                tongueCurve = `M15,70 C22,60 38,44 45,46 C48,48 40,32 44,34 C48,36 62,58 75,70`;
+                contactIndicator = `<circle cx="42" cy="32" r="3" fill="#f43f5e" />`;
+            }
+
+            const svgHtml = `
+                <svg viewBox="0 0 80 80" class="w-full h-full text-indigo-600 fill-none" stroke="currentColor" stroke-width="1.5">
+                    <!-- Mouth profile (Palate/Teeth base) -->
+                    <!-- Hard/Soft Palate curve -->
+                    <path d="M10,20 L30,20 C42,20 54,23 58,28 L62,35 L68,35" stroke="#cbd5e1" stroke-width="2" />
+                    <!-- Throat down -->
+                    <path d="M10,20 L10,75 M75,70 L75,75" stroke="#cbd5e1" stroke-dasharray="1.5 1.5" />
+
+                    <!-- Alveolar ridge indicator -->
+                    <rect x="56" y="22" width="4" height="4" fill="#cbd5e1" stroke="none" />
+
+                    <!-- Upper teeth node -->
+                    <line x1="60" y1="28" x2="62" y2="40" stroke="#94a3b8" stroke-width="2.5" />
+                    <!-- Lower teeth node -->
+                    <line x1="60" y1="58" x2="61" y2="48" stroke="#94a3b8" stroke-width="2" />
+
+                    <!-- Parametric Tongue profile -->
+                    <path d="${tongueCurve}" fill="#fecdd3" stroke="#f43f5e" stroke-width="2" />
+
+                    ${contactIndicator}
+
+                    <!-- Vocal fold vibrating icon if voiced -->
+                    ${voiced ? `
+                        <path d="M8,44 Q11,42 12,44 T16,44" stroke="#10b981" stroke-width="1.5" class="voice-vibrating" />
+                        <path d="M8,48 Q11,46 12,48 T16,48" stroke="#10b981" stroke-width="1" class="voice-vibrating" />
+                    ` : ''}
+                </svg>
+            `;
+            container.innerHTML = svgHtml;
+        }
+
+        // SPEAK CHOSEN PHONEME AUDIO
+        function speakSelectedPhoneme() {
+            const data = ipaAllDatabase[activeSelectedPhonemeKey];
+            if (!data) return;
+
+            let speakTextStr = `The sound ${data.ipa.replace('ː',' long')}. Typical words: ${data.words}. Practice sentence: ${data.sentence}`;
+            speakText(speakTextStr);
+        }
+
+        // MODULE 5: SWITCH PRON CATEGORY IN TAB 4
+        let activePronKey = 'all_phonemes';
+
+        function switchPronCategory(key) {
+            activePronKey = key;
+            document.querySelectorAll('.pron-sub-tab-active, .pron-sub-tab-inactive').forEach(btn => {
+                btn.className = "pron-sub-tab-inactive px-4 py-2 text-xs font-bold rounded-lg transition";
+            });
+            document.getElementById(`pron-tab-${key}`).className = "pron-sub-tab-active px-4 py-2 text-xs font-bold rounded-lg transition";
+            
+            // Toggle workspaces
+            const defaultWorkspace = document.getElementById('pron-default-workspace');
+            const allPhonemesWorkspace = document.getElementById('pron-all-phonemes-workspace');
+
+            if (key === 'all_phonemes') {
+                defaultWorkspace.classList.add('hidden');
+                allPhonemesWorkspace.classList.remove('hidden');
+                selectPhoneme(activeSelectedPhonemeKey); // Restore selected phoneme diagram
+                userProgress.pronTested[4] = true;
+                updateProgress();
+            } else {
+                allPhonemesWorkspace.classList.add('hidden');
+                defaultWorkspace.classList.remove('hidden');
+                loadPronRule(key);
+            }
+        }
+
+        function loadPronRule(key) {
+            const data = pronData[key];
+            document.getElementById('pron-svg-container').innerHTML = data.svg;
+            document.getElementById('pron-rule-badge').innerText = data.badge;
+            document.getElementById('pron-rule-title').innerHTML = data.title;
+            document.getElementById('pron-rule-desc').innerHTML = data.desc;
+            document.getElementById('pron-rule-tip').innerHTML = data.tip;
+
+            const sentenceBox = document.getElementById('pron-sentences-box');
+            sentenceBox.innerHTML = '';
+
+            data.sentences.forEach((sentence, sIdx) => {
+                const row = document.createElement('div');
+                row.className = "flex flex-col sm:flex-row sm:items-center justify-between p-3.5 bg-slate-50 border border-slate-100 rounded-xl gap-3 hover:bg-slate-100/50 transition";
+                
+                // Highlight glide trigger words
+                const highlighted = sentence.original.replace(sentence.target, `<span class="bg-yellow-200 text-slate-900 px-1 rounded font-extrabold">${sentence.target}</span>`);
+                
+                row.innerHTML = `
+                    <div class="space-y-0.5">
+                        <p class="text-sm font-extrabold text-slate-800">${highlighted}</p>
+                        <p class="text-xs text-slate-500 font-mono-code">${sentence.phonetics}</p>
+                        <p class="text-[10px] text-slate-400">释义: ${sentence.translation}</p>
+                    </div>
+                    <div class="flex gap-2 self-end sm:self-auto">
+                        <button onclick="speakText('${sentence.original}')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 p-2 rounded-lg transition" title="听音跟读">
+                            <i data-lucide="volume-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+                sentenceBox.appendChild(row);
+            });
+            lucide.createIcons();
+
+            userProgress.pronTested[data.index] = true;
+            updateProgress();
+        }
+
+        // MODULE 3: Scenario Changer
         let activeScenarioKey = 'coffee';
 
         function switchScenario(key) {
@@ -1215,28 +2189,27 @@
                 <div class="space-y-4">
                     <!-- Present -->
                     <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1 relative group">
-                        <span class="absolute right-3 top-3 text-[10px] bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-bold uppercase">一般现在时 (事实)</span>
-                        <p class="text-[10px] text-slate-400">客观常态/日常规律</p>
+                        <span class="absolute right-3 top-3 text-[10px] bg-indigo-100 text-indigo-800 px-1.5 py-0.5 rounded font-bold uppercase">一般现在时 (习惯)</span>
+                        <p class="text-[10px] text-slate-400">客观常态/规律性动作</p>
                         <p class="text-sm font-bold text-slate-800">${data.present}</p>
-                        <p class="text-[10px] text-slate-400">💡 义：${data.presentHint}</p>
+                        <p class="text-[10px] text-slate-400">💡 习惯释：${data.presentHint}</p>
                         <button onclick="speakText('${data.present}')" class="absolute right-3 bottom-3 opacity-0 group-hover:opacity-100 transition text-indigo-600 hover:text-indigo-800"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
                     </div>
 
                     <!-- Past -->
                     <div class="p-4 bg-rose-50/50 rounded-xl border border-rose-100 space-y-1 relative group">
-                        <span class="absolute right-3 top-3 text-[10px] bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded font-bold uppercase">一般过去时 (主战场)</span>
-                        <p class="text-[10px] text-rose-500 font-bold flex items-center gap-1">🚨 特别警报：动词必须完成不规则物理变性！</p>
+                        <span class="absolute right-3 top-3 text-[10px] bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded font-bold uppercase">一般过去时 (主焦点)</span>
+                        <p class="text-[10px] text-rose-500 font-bold flex items-center gap-1">🚨 警报提示：核心动词必须完成不规则物理发音形变</p>
                         <p class="text-sm font-bold text-slate-800">${data.past}</p>
-                        <p class="text-[10px] text-slate-400">💡 义：${data.pastHint}</p>
+                        <p class="text-[10px] text-slate-400">💡 过去释：${data.pastHint}</p>
                         <button onclick="speakText('${data.past}')" class="absolute right-3 bottom-3 opacity-0 group-hover:opacity-100 transition text-indigo-600 hover:text-indigo-800"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
                     </div>
 
                     <!-- Future -->
                     <div class="p-4 bg-slate-50 rounded-xl border border-slate-100 space-y-1 relative group">
-                        <span class="absolute right-3 top-3 text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold uppercase">一般将来时 (计划)</span>
-                        <p class="text-[10px] text-slate-400">打算、计划、推测</p>
+                        <span class="absolute right-3 top-3 text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold uppercase">一般将来时 (打算)</span>
+                        <p class="text-[10px] text-slate-400">将来的规划/假设</p>
                         <p class="text-sm font-bold text-slate-800">${data.future}</p>
-                        <p class="text-[10px] text-slate-400">💡 义：${data.futureHint}</p>
                         <button onclick="speakText('${data.future}')" class="absolute right-3 bottom-3 opacity-0 group-hover:opacity-100 transition text-indigo-600 hover:text-indigo-800"><i data-lucide="volume-2" class="w-4 h-4"></i></button>
                     </div>
                 </div>
@@ -1246,18 +2219,17 @@
                     <div class="space-y-1.5 flex-grow z-10">
                         <h4 class="font-bold text-sm text-yellow-300 flex items-center gap-1.5">
                             <i data-lucide="mic" class="w-4 h-4"></i>
-                            <span>AI 语音时态校正测试</span>
+                            <span>AI 语音连读时态自测</span>
                         </h4>
-                        <p class="text-xs text-slate-300">请大声读出上方包含过去时的句子（注意过去式动词重读发音）：</p>
-                        <p class="text-[11px] text-indigo-300 font-semibold" id="api-status-hint">
-                            ${activeApiProvider !== 'none' ? '🚀 真实 AI 接口对齐：由云端大模型对你的时态和语调进行高级诊断' : '💡 当前使用本地自检引擎：您可以配置自己的 AI Key 以启用大模型精细判卷'}
+                        <p class="text-xs text-slate-300">请高声读出上述**过去时**的句子（注意过去式动词的重音起伏）：</p>
+                        <p class="text-[10px] text-indigo-300 font-semibold" id="api-status-hint">
+                            ${activeApiProvider !== 'none' ? '🚀 真实 AI 机制校验启动：大模型实时核查变音语轨' : '💡 当前处于本地极速检测：若绑定 Key，即可启动大语言模型智能诊断纠音'}
                         </p>
                         
-                        <!-- Live speech feedback -->
                         <div id="speech-live-box" class="hidden mt-3 bg-slate-850 p-3 rounded-xl border border-slate-700 text-xs space-y-2">
                             <div>
-                                <span class="text-slate-400 font-bold block mb-0.5">识别出的文本:</span>
-                                <p class="text-yellow-100 italic" id="live-speech-txt">"Listening..."</p>
+                                <span class="text-slate-400 font-bold block mb-0.5">识别到的音频流:</span>
+                                <p class="text-yellow-100 italic font-bold" id="live-speech-txt">"正在倾听..."</p>
                             </div>
                             <div id="speech-check-result" class="font-bold"></div>
                         </div>
@@ -1266,7 +2238,7 @@
                         <button id="mic-btn" onclick="toggleSpeechRecognition()" class="w-16 h-16 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white rounded-full flex items-center justify-center shadow-lg hover:shadow-indigo-500/20 transition duration-150">
                             <i id="mic-icon" data-lucide="mic" class="w-7 h-7"></i>
                         </button>
-                        <span id="mic-status-label" class="text-[11px] text-slate-400 font-bold">点击开始录音</span>
+                        <span id="mic-status-label" class="text-[11px] text-slate-400 font-bold">点击开启听音自测</span>
                     </div>
                 </div>
             `;
@@ -1280,7 +2252,7 @@
         function toggleSpeechRecognition() {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             if (!SpeechRecognition) {
-                showToast("您的浏览器不支持 Web Speech 语音引擎。建议使用最新版本的 Chrome 或 Edge。", "error");
+                showToast("您的浏览器缺少必要的 Web Speech 听写组件。", "error");
                 return;
             }
 
@@ -1294,11 +2266,11 @@
                     isRecording = true;
                     document.getElementById('mic-btn').className = "w-16 h-16 bg-rose-600 animate-pulse text-white rounded-full flex items-center justify-center shadow-lg transition";
                     document.getElementById('mic-icon').setAttribute('data-lucide', 'mic-off');
-                    document.getElementById('mic-status-label').innerText = "录音中，请大声朗读";
+                    document.getElementById('mic-status-label').innerText = "录音中，请全力读音";
                     document.getElementById('mic-status-label').className = "text-[11px] text-rose-400 font-bold animate-pulse";
                     
                     document.getElementById('speech-live-box').classList.remove('hidden');
-                    document.getElementById('live-speech-txt').innerText = "正在倾听您的发音，请开口...";
+                    document.getElementById('live-speech-txt').innerText = "正在捕捉声音信号...";
                     document.getElementById('speech-check-result').innerHTML = "";
                     lucide.createIcons();
                 };
@@ -1310,8 +2282,8 @@
                 };
 
                 recognition.onerror = (event) => {
-                    console.error("Speech Recognition Error:", event.error);
-                    document.getElementById('live-speech-txt').innerText = `听写服务中断: ${event.error}`;
+                    console.error("Speech error:", event.error);
+                    document.getElementById('live-speech-txt').innerText = `听音信号微弱: ${event.error}`;
                     stopRecordingUI();
                 };
 
@@ -1331,7 +2303,7 @@
             isRecording = false;
             document.getElementById('mic-btn').className = "w-16 h-16 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full flex items-center justify-center shadow-lg transition";
             document.getElementById('mic-icon').setAttribute('data-lucide', 'mic');
-            document.getElementById('mic-status-label').innerText = "点击开始录音";
+            document.getElementById('mic-status-label').innerText = "点击开启听音自测";
             document.getElementById('mic-status-label').className = "text-[11px] text-slate-400 font-bold";
             lucide.createIcons();
         }
@@ -1339,30 +2311,28 @@
         async function processOralResult(spokenText) {
             const resultBox = document.getElementById('speech-check-result');
             
-            // If API Settings is set, invoke real AI model
             if (activeApiProvider !== 'none' && activeApiKey) {
                 resultBox.className = "text-[11px] text-yellow-300 flex items-center gap-1.5";
                 resultBox.innerHTML = `
                     <div class="w-3.5 h-3.5 border-2 border-yellow-300 border-t-transparent rounded-full animate-spin"></div>
-                    <span>大模型正在对您的时态语流进行诊断...</span>
+                    <span>大语言模型正在连线校验变音细节...</span>
                 `;
                 
                 try {
                     const aiReport = await callLlmOralCoach(spokenText, scenarioData[activeScenarioKey].past);
                     resultBox.className = "text-xs space-y-1.5 pt-2 border-t border-slate-700 text-emerald-400";
                     resultBox.innerHTML = `
-                        <p class="font-extrabold text-xs flex items-center gap-1">🚀 真实 AI 诊断报告报告：</p>
+                        <p class="font-extrabold text-xs">🚀 真实 AI 诊断建议：</p>
                         <p class="text-slate-300 text-[11px] italic">"${aiReport}"</p>
                     `;
                     userProgress.aiCoachSuccesses++;
                     updateProgress();
                 } catch (err) {
                     console.error(err);
-                    showToast("AI 模型服务连接超时，降级至本地诊断。", "warning");
+                    showToast("大模型通信遇到障碍，自动重定向至本地纠偏。", "warning");
                     localSelfCheck(spokenText);
                 }
             } else {
-                // Local self check
                 localSelfCheck(spokenText);
             }
         }
@@ -1378,8 +2348,8 @@
             if (isMatch) {
                 resultBox.className = "text-emerald-400 text-xs flex items-center gap-1.5 mt-2";
                 resultBox.innerHTML = `
-                    <i data-lucide="check-circle-2" class="w-4 h-4 fill-emerald-950"></i>
-                    <span>诊断合格！系统在您的语流中捕获了正确的过去式不规则变音【${data.pastTarget}】！肌肉记忆良好。</span>
+                    <i data-lucide="check-circle" class="w-4 h-4 fill-emerald-950"></i>
+                    <span>本地检测过关！您的发音序列中正确包含过去变音【${data.pastTarget}】！</span>
                 `;
                 userProgress.aiCoachSuccesses++;
                 updateProgress();
@@ -1387,23 +2357,22 @@
                 resultBox.className = "text-rose-400 text-xs flex items-center gap-1.5 mt-2";
                 resultBox.innerHTML = `
                     <i data-lucide="x-circle" class="w-4 h-4 fill-rose-950"></i>
-                    <span>未捕获过去时变性！您是否误说成了原型？不规则变形发音是英语时态的核心物理肌肉。</span>
+                    <span>未在语轨中检测到变音！您可能误发成了动词原形，请注意发音形变肌肉习惯。</span>
                 `;
             }
             lucide.createIcons();
         }
 
-        // Call Custom Compatible LLM API
         async function callLlmOralCoach(userSpoken, targetSentence) {
-            const prompt = `你是一位严厉的英语口语时态纠音教练。
-目标句意: "${targetSentence}"
-用户实际说出的录音听写文本: "${userSpoken}"
-请对用户的发音做出客观时态层面的诊断，用中文一句话指出他有没有读对不规则过去式动词，他的语法有没有错，并给出改进建议，控制在80字以内。`;
+            const prompt = `您是一位敏锐且温和的英语口语纠音专家。
+目标过去时态句子: "${targetSentence}"
+用户实际说出的听写文本: "${userSpoken}"
+请诊断用户是否发对了过去不规则形式，用中文极简的一句话指出他读音时态的利弊并给予鼓励，控制在70字内。`;
 
             const payload = {
                 model: activeApiModel,
                 messages: [
-                    { role: "system", content: "You are a helpful and concise English oral tutor." },
+                    { role: "system", content: "You are a professional, encouraging English speech coach." },
                     { role: "user", content: prompt }
                 ],
                 temperature: 0.3
@@ -1426,7 +2395,7 @@
             return resData.choices[0].message.content;
         }
 
-        // MODULE 4: Quiz Logic
+        // MODULE 5: Quiz Driver
         let currentQuizIndex = 0;
         let selectedOptionIdx = null;
 
@@ -1435,7 +2404,7 @@
             document.getElementById('quiz-index-indicator').innerText = `${currentQuizIndex + 1} / ${quizQuestions.length}`;
             document.getElementById('quiz-badge').innerText = data.badge;
             document.getElementById('quiz-wrong-sentence').innerText = `"${data.wrong}"`;
-            document.getElementById('quiz-chinese-meaning').innerText = `💡 真实中文含义：${data.chinese}`;
+            document.getElementById('quiz-chinese-meaning').innerText = `💡 事实中文含义：${data.chinese}`;
             
             const feedback = document.getElementById('quiz-feedback');
             feedback.className = "hidden";
@@ -1448,7 +2417,7 @@
             data.options.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.onclick = () => submitAnswer(idx, opt.correct);
-                btn.className = "w-full p-3.5 border border-slate-100 hover:border-indigo-200 rounded-xl text-left font-semibold text-sm transition flex justify-between items-center bg-slate-50 text-slate-700";
+                btn.className = "w-full p-3.5 border border-slate-100 hover:border-indigo-200 rounded-xl text-left font-semibold text-sm transition flex justify-between items-center bg-slate-50 text-slate-700 animate-fade-in";
                 btn.innerHTML = `
                     <span>${opt.text}</span>
                     <div class="w-5 h-5 border border-slate-300 rounded-full flex items-center justify-center"></div>
@@ -1459,9 +2428,9 @@
             document.getElementById('btn-quiz-prev').disabled = currentQuizIndex === 0;
             const nextBtn = document.getElementById('btn-quiz-next');
             if (currentQuizIndex === quizQuestions.length - 1) {
-                nextBtn.innerText = "完成训练营挑战";
+                nextBtn.innerText = "完成训练营答辩";
             } else {
-                nextBtn.innerText = "下一题";
+                nextBtn.innerText = "下一题 NEXT";
             }
         }
 
@@ -1494,7 +2463,7 @@
                 feedback.innerHTML = `
                     <i data-lucide="sparkles" class="w-5 h-5 text-emerald-500 flex-shrink-0"></i>
                     <div>
-                        <p class="font-extrabold mb-0.5">回答正确！时态条件反射极好！</p>
+                        <p class="font-extrabold mb-0.5">回答正确！本能时态反射完好！</p>
                         <p>${data.explain}</p>
                     </div>
                 `;
@@ -1503,7 +2472,7 @@
                 feedback.innerHTML = `
                     <i data-lucide="alert-circle" class="w-5 h-5 text-rose-500 flex-shrink-0"></i>
                     <div>
-                        <p class="font-extrabold mb-0.5">哎呀，落入思维陷阱了！注意规则：</p>
+                        <p class="font-extrabold mb-0.5">时态雷区！避坑提示：</p>
                         <p>${data.explain}</p>
                     </div>
                 `;
@@ -1511,10 +2480,6 @@
 
             userProgress.quizTested[currentQuizIndex] = true;
             
-            // Calculate correct score sum
-            const activeCorrectCount = userProgress.quizTested.filter((status, index) => status && quizQuestions[index].options.find(o => o.correct).text === document.getElementById('quiz-options').children[quizQuestions[index].options.findIndex(o => o.correct)].innerText.trim()).length;
-            
-            // Update simple count
             let solvedTotal = userProgress.quizTested.filter(Boolean).length;
             document.getElementById('quiz-correct-count').innerText = `${solvedTotal} / 12`;
 
@@ -1527,7 +2492,7 @@
                 currentQuizIndex++;
                 loadQuiz();
             } else {
-                showToast("恭喜您！顺利通关 12 大时态避坑诊断关卡！请坚持每天热身跟读！", "success");
+                showToast("恭喜完成 12 大时态避坑重症检测！请坚持日常打卡训练发音！", "success");
             }
         }
 
