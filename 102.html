@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USPTO FITF 35 U.S.C. 102(a)(1) & (a)(2) 智能测算工作站</title>
+    <title>USPTO FITF 跨境专利法理智能测算工作站 - Finnegan Theme</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -14,67 +14,74 @@
     <style>
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: #f4f6f9; /* Fresh, crisp background */
+            background-color: #f0f4f8; /* Fresh Light Soft Background */
         }
         .font-mono-code {
             font-family: 'JetBrains Mono', 'Courier New', Courier, monospace;
         }
         /* Finnegan Theme Flowchart Nodes (Light Mode Optimized) */
+        .flow-node-inactive {
+            border-color: #cbd5e1 !important;
+            background-color: #f8fafc !important;
+            color: #64748b !important;
+        }
         .flow-node-active {
             border-color: #0096b1 !important; /* Premium Teal */
-            background-color: #e6f7f9 !important;
-            color: #085a6a !important;
+            background-color: #f0fdfa !important;
+            color: #0f766e !important;
             box-shadow: 0 4px 15px rgba(0, 150, 177, 0.15);
         }
         .flow-node-pass {
             border-color: #10b981 !important; /* Elegant Emerald */
-            background-color: #ecfdf5 !important;
-            color: #065f46 !important;
+            background-color: #f0fdf4 !important;
+            color: #15803d !important;
             box-shadow: 0 4px 15px rgba(16, 185, 129, 0.15);
         }
         .flow-node-block {
             border-color: #ef4444 !important; /* Rose Red Alert */
             background-color: #fef2f2 !important;
-            color: #991b1b !important;
+            color: #b91c1c !important;
             box-shadow: 0 4px 15px rgba(239, 68, 68, 0.15);
         }
     </style>
 </head>
 <body class="text-slate-700 min-h-screen flex flex-col antialiased">
 
-    <!-- 头部区域 (Finnegan Deep Navy Theme) -->
-    <header class="bg-[#0b2545] border-b border-slate-200 sticky top-0 z-50 text-white shadow-md">
-        <div class="max-w-[1500px] mx-auto px-4 py-4 sm:px-6 flex flex-col lg:flex-row items-center justify-between gap-4">
+    <!-- 头部区域 (Finnegan Pure Deep Navy & Teal Theme) -->
+    <header class="bg-[#0b2545] border-b-4 border-[#0096b1] sticky top-0 z-50 text-white shadow-lg">
+        <div class="max-w-[1550px] mx-auto px-4 py-4 sm:px-6 flex flex-col lg:flex-row items-center justify-between gap-4">
             <div class="flex items-center space-x-3.5">
-                <div class="bg-[#0096b1] p-2.5 rounded-xl text-white shadow-lg shadow-[#0096b1]/20">
-                    <i class="fa-solid fa-scale-balanced text-xl"></i>
+                <div class="bg-[#0096b1] p-3 rounded-xl text-white shadow-lg shadow-[#0096b1]/30">
+                    <i class="fa-solid fa-globe text-2xl"></i>
                 </div>
                 <div>
-                    <h1 class="font-extrabold text-lg tracking-tight text-white flex items-center gap-2">
-                        USPTO FITF Prior Art Diagnostic Workstation
-                        <span class="bg-[#0096b1]/20 text-[#00b4d8] text-[10px] px-2 py-0.5 rounded font-semibold border border-[#0096b1]/30">Finnegan IP Edition</span>
+                    <h1 class="font-extrabold text-xl tracking-tight text-white flex items-center gap-2">
+                        USPTO FITF Prior Art & Cross-Border Priority Workstation
+                        <span class="bg-[#0096b1]/20 text-[#00b4d8] text-[10px] px-2 py-0.5 rounded font-bold border border-[#0096b1]/40">Finnegan Global-IP Edition</span>
                     </h1>
-                    <p class="text-xs text-slate-300">基于美国第一发明人申请制 (FITF) 35 U.S.C. 102(a)(1) & (a)(2) 官方审查指南高保真精细算力引擎</p>
+                    <p class="text-xs text-slate-300">
+                        基于 35 U.S.C. 102/103 官方指南，深度整合外国专利资格判定与 Hilmer Doctrine（希尔默学说废除）核心算法
+                    </p>
                 </div>
             </div>
             
             <!-- 导航选项卡 -->
-            <div class="flex space-x-1 bg-[#134074] p-1 rounded-xl border border-slate-700/50">
-                <button onclick="switchTab('sandbox')" id="tab-btn-sandbox" class="px-4 py-2 text-xs font-semibold rounded-lg bg-[#0096b1] text-white transition-all shadow-md">
-                    <i class="fa-solid fa-square-poll-horizontal mr-1.5"></i>交互测算沙盘
+            <div class="flex space-x-1 bg-[#134074] p-1.5 rounded-xl border border-slate-700/50">
+                <button onclick="switchTab('sandbox')" id="tab-btn-sandbox" class="px-5 py-2 text-xs font-bold rounded-lg bg-[#0096b1] text-white transition-all shadow-md">
+                    <i class="fa-solid fa-calculator mr-1.5"></i>跨境测算沙盘
                 </button>
-                <button onclick="switchTab('scenarios')" id="tab-btn-scenarios" class="px-4 py-2 text-xs font-semibold rounded-lg text-slate-200 hover:text-white transition-all">
-                    <i class="fa-solid fa-graduation-cap mr-1.5"></i>官方经典 Scenario 训练
+                <button onclick="switchTab('scenarios')" id="tab-btn-scenarios" class="px-5 py-2 text-xs font-bold rounded-lg text-slate-200 hover:text-white transition-all">
+                    <i class="fa-solid fa-graduation-cap mr-1.5"></i>外国优先权典型场景
                 </button>
-                <button onclick="switchTab('knowledge')" id="tab-btn-knowledge" class="px-4 py-2 text-xs font-semibold rounded-lg text-slate-200 hover:text-white transition-all">
-                    <i class="fa-solid fa-book-open-reader mr-1.5"></i>102 审查指南底表拆解
+                <button onclick="switchTab('knowledge')" id="tab-btn-knowledge" class="px-5 py-2 text-xs font-bold rounded-lg text-slate-200 hover:text-white transition-all">
+                    <i class="fa-solid fa-book-open-reader mr-1.5"></i>跨境现有技术底表解构
                 </button>
             </div>
         </div>
     </header>
 
     <!-- 主体工作区 -->
-    <main class="flex-grow max-w-[1500px] w-full mx-auto px-4 py-6 sm:px-6 flex flex-col gap-6">
+    <main class="flex-grow max-w-[1550px] w-full mx-auto px-4 py-6 sm:px-6 flex flex-col gap-6">
 
         <!-- ==================== WORKSPACE 1: SANDBOX DIAGNOSTIC ==================== -->
         <div id="tab-sandbox" class="grid grid-cols-1 xl:grid-cols-12 gap-6">
@@ -85,163 +92,233 @@
                 <!-- 本案申请人基本事实 (Claimed Invention Facts) -->
                 <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
                     <div class="flex items-center space-x-2 pb-3 border-b border-slate-100">
-                        <span class="w-2.5 h-5 bg-[#0096b1] rounded-full"></span>
-                        <h2 class="text-xs font-bold uppercase tracking-widest text-[#0b2545]">Step 1: 拟审查本案基本事实 (Subject Application)</h2>
+                        <span class="w-3 h-6 bg-[#0096b1] rounded-full"></span>
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-[#0b2545]">Step 1: 拟审查本案基本事实 (Subject Application)</h2>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">
                                 有效申请日 (EFD) <span class="text-rose-500">*</span>
                             </label>
-                            <input type="date" id="subject-efd" onchange="runDiagnostic()" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-xs px-3 py-2 text-slate-800 focus:ring-1 focus:ring-[#0096b1] focus:border-[#0096b1] focus:outline-none" value="2020-06-01">
-                            <span class="text-[9px] text-slate-400 mt-1 block">AIA/Pre-AIA 界限: 2013-03-16</span>
+                            <input type="date" id="subject-efd" onchange="runDiagnostic()" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-xs px-3 py-2.5 text-slate-800 focus:ring-1 focus:ring-[#0096b1] focus:border-[#0096b1] focus:outline-none" value="2020-06-01">
+                            <span class="text-[9px] text-slate-400 mt-1 block">AIA新旧法物理分水岭: 2013-03-16</span>
                         </div>
                         <div>
-                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">发明人名单 (Inventorship)</label>
-                            <input type="text" id="subject-inventor" oninput="runDiagnostic()" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-xs px-3 py-2 text-slate-800 focus:ring-1 focus:ring-[#0096b1] focus:border-[#0096b1] focus:outline-none" value="John Smith, David May" placeholder="逗号分隔英文姓名">
-                            <span class="text-[9px] text-slate-400 mt-1 block">比对 102(a)(2) "By Another"</span>
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1">发明人名单 (Inventorship)</label>
+                            <input type="text" id="subject-inventor" oninput="runDiagnostic()" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-xs px-3 py-2.5 text-slate-800 focus:ring-1 focus:ring-[#0096b1] focus:border-[#0096b1] focus:outline-none" value="John Smith, David May" placeholder="逗号分隔英文姓名">
+                            <span class="text-[9px] text-slate-400 mt-1 block">判定 102(a)(2) 的 "By Another"</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- 潜在现有技术文献基本事实 (Potential Reference Facts) -->
-                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-5">
                     <div class="flex items-center space-x-2 pb-3 border-b border-slate-100">
-                        <span class="w-2.5 h-5 bg-amber-500 rounded-full"></span>
-                        <h2 class="text-xs font-bold uppercase tracking-widest text-amber-600">Step 2: 潜在现有技术事实 (Reference Facts)</h2>
+                        <span class="w-3 h-6 bg-amber-500 rounded-full"></span>
+                        <h2 class="text-xs font-bold uppercase tracking-wider text-amber-700">Step 2: 潜在现有技术属性 (Reference Facts)</h2>
                     </div>
 
-                    <!-- 现有技术分类 (根据官方102(a)(1)与(a)(2)严格区分) -->
+                    <!-- 现有技术分类 (外国专利与美国本土专利等细分) -->
                     <div>
-                        <label class="block text-[11px] font-semibold text-slate-500 mb-2">潜在现有技术检索/公开渠道</label>
-                        <div class="grid grid-cols-2 gap-3">
-                            <label class="flex items-center p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-slate-300 transition" id="ref-type-1-label">
-                                <input type="radio" name="ref-type" value="102a1" checked onchange="toggleRefFields('102a1')" class="mr-2.5 text-[#0096b1] focus:ring-0">
+                        <label class="block text-[11px] font-bold text-slate-600 mb-2">潜在现有技术来源与地域性质</label>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <!-- 美国专利/本土公开 -->
+                            <label class="flex items-center p-3.5 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-slate-300 transition" id="ref-type-us-label">
+                                <input type="radio" name="ref-type" value="us_patent" checked onchange="toggleRefFields('us_patent')" class="mr-2.5 text-[#0096b1] focus:ring-0">
                                 <div>
-                                    <p class="text-xs font-bold text-[#0b2545]">102(a)(1) 公共公开渠道</p>
-                                    <p class="text-[9px] text-slate-500">论文、公共使用、在售、网页披露等</p>
+                                    <p class="text-xs font-bold text-[#0b2545]">美国专利 / 已公开申请</p>
+                                    <p class="text-[9px] text-slate-500">符合新法 102(a)(2) 审查要件</p>
                                 </div>
                             </label>
-                            <label class="flex items-center p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-slate-300 transition" id="ref-type-2-label">
-                                <input type="radio" name="ref-type" value="102a2" onchange="toggleRefFields('102a2')" class="mr-2.5 text-[#0096b1] focus:ring-0">
+                            
+                            <!-- 指定美国且国际公开的PCT -->
+                            <label class="flex items-center p-3.5 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-slate-300 transition" id="ref-type-pct-label">
+                                <input type="radio" name="ref-type" value="pct_patent" onchange="toggleRefFields('pct_patent')" class="mr-2.5 text-[#0096b1] focus:ring-0">
                                 <div>
-                                    <p class="text-xs font-bold text-[#0b2545]">102(a)(2) 专利文献渠道</p>
-                                    <p class="text-[9px] text-slate-500">US专利、已公开US申请、指定US的PCT</p>
+                                    <p class="text-xs font-bold text-[#0b2545]">WIPO PCT 国际公开申请</p>
+                                    <p class="text-[9px] text-slate-500">须视“指定美国”及“公开语言”而定</p>
+                                </div>
+                            </label>
+                            
+                            <!-- 外国专利（如CN、EP、JP专利） -->
+                            <label class="flex items-center p-3.5 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-slate-300 transition" id="ref-type-foreign-label">
+                                <input type="radio" name="ref-type" value="foreign_patent" onchange="toggleRefFields('foreign_patent')" class="mr-2.5 text-[#0096b1] focus:ring-0">
+                                <div>
+                                    <p class="text-xs font-bold text-amber-700">外国专利 (如CN/EP/JP)</p>
+                                    <p class="text-[9px] text-slate-500">仅按 102(a)(1) 公开日论处，无102(a)(2)追溯</p>
+                                </div>
+                            </label>
+                            
+                            <!-- 其它公开披露 -->
+                            <label class="flex items-center p-3.5 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-slate-300 transition" id="ref-type-other-label">
+                                <input type="radio" name="ref-type" value="other_literature" onchange="toggleRefFields('other_literature')" class="mr-2.5 text-[#0096b1] focus:ring-0">
+                                <div>
+                                    <p class="text-xs font-bold text-[#0b2545]">非专利文献 / 其它披露</p>
+                                    <p class="text-[9px] text-slate-500">论文、在售、国际网页等公开渠道</p>
                                 </div>
                             </label>
                         </div>
                     </div>
 
-                    <!-- 日期输入区 -->
+                    <!-- 动态日期填写框 -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div id="field-pub-date">
-                            <label class="block text-[11px] font-semibold text-slate-500 mb-1" id="label-pub-date">公开/发表日期 *</label>
-                            <input type="date" id="ref-pub-date" onchange="runDiagnostic()" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-xs px-3 py-2 text-slate-800 focus:outline-none" value="2019-12-01">
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1" id="label-pub-date">公开发表/专利公告日 *</label>
+                            <input type="date" id="ref-pub-date" onchange="runDiagnostic()" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-xs px-3 py-2.5 text-slate-800 focus:outline-none" value="2019-12-01">
                         </div>
-                        <div id="field-filed-date" class="hidden">
-                            <label class="block text-[11px] font-semibold text-slate-500 mb-1">专利有效递交日 (Effectively Filed) *</label>
-                            <input type="date" id="ref-filed-date" onchange="runDiagnostic()" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-xs px-3 py-2 text-slate-800 focus:outline-none" value="2019-03-15">
-                            <span class="text-[9px] text-slate-400 mt-1 block">102(d) 涵盖美在先外国及合规在先优先权日</span>
+                        <div id="field-filed-date">
+                            <label class="block text-[11px] font-bold text-slate-600 mb-1" id="label-filed-date">美国本土递交日 (Actual US Filed) *</label>
+                            <input type="date" id="ref-filed-date" onchange="runDiagnostic()" class="w-full bg-slate-50 border border-slate-200 rounded-lg text-xs px-3 py-2.5 text-slate-800 focus:outline-none" value="2019-03-15">
                         </div>
                     </div>
 
-                    <!-- 人物与所有权等事实 (用于判定 Exception 例外) -->
-                    <div class="space-y-3 pt-2">
-                        <label class="block text-[11px] font-semibold text-slate-500">文献作者/发明人与所有权比对</label>
-                        
-                        <div class="grid grid-cols-1 gap-2 bg-slate-50 p-3.5 rounded-xl border border-slate-200">
-                            <div>
-                                <label class="block text-[10px] text-slate-500 mb-1">文献作者/发明人名单 (Authors/Inventors of Reference)</label>
-                                <input type="text" id="ref-inventor" oninput="runDiagnostic()" class="w-full bg-white border border-slate-200 rounded-lg text-[11px] px-2.5 py-1.5 text-slate-800 focus:outline-none" value="Alex Rogers" placeholder="例如: David May, Alex Rogers">
-                            </div>
+                    <!-- 外国优先权 (Foreign Priority) 核算控制台 (最核心实务痛点：新法废除 Hilmer / 旧法保留 Hilmer) -->
+                    <div id="panel-foreign-priority" class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3.5">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-[#0b2545] flex items-center gap-1.5">
+                                <i class="fa-solid fa-plane-arrival text-[#0096b1]"></i> 该在先美案是否要求了外国优先权?
+                            </span>
+                            <input type="checkbox" id="has-foreign-priority" onchange="togglePriorityFields()" class="rounded text-[#0096b1] focus:ring-0 w-4.5 h-4.5 cursor-pointer">
                         </div>
 
-                        <!-- 动态豁免事实宣誓声明 (102(b) exceptions elements) -->
-                        <div class="space-y-2 pt-2" id="panel-exceptions">
+                        <!-- 优先权细节 -->
+                        <div id="priority-fields" class="hidden space-y-3 pt-2 border-t border-slate-200">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-[10px] font-semibold text-slate-500 mb-1">最早在先外国申请日 (Priority Date)</label>
+                                    <input type="date" id="ref-priority-date" onchange="runDiagnostic()" class="w-full bg-white border border-slate-200 rounded-lg text-xs px-2.5 py-1.5 text-slate-800 focus:outline-none" value="2018-12-01">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-semibold text-slate-500 mb-1">优先权所属国 (Country)</label>
+                                    <input type="text" id="ref-priority-country" class="w-full bg-white border border-slate-200 rounded-lg text-xs px-2.5 py-1.5 text-slate-800 focus:outline-none" value="CN (中国)">
+                                </div>
+                            </div>
+                            
+                            <!-- 102(d) 记载一致性校验 -->
+                            <label class="flex items-start p-2 bg-amber-50 hover:bg-amber-100 rounded-lg border border-amber-200 cursor-pointer transition">
+                                <input type="checkbox" id="priority-is-described" checked onchange="runDiagnostic()" class="mt-0.5 mr-2 rounded text-[#0096b1] focus:ring-0">
+                                <div class="text-[10px] text-amber-800 leading-normal">
+                                    <strong>35 U.S.C. 102(d) 记载一致性约束：</strong> 确认对比文献中所引用的争议技术方案，是否已被**清晰记载（Described）**在外国优先权的在先申请文本中？
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- PCT 专属属性 -->
+                    <div id="panel-pct-attributes" class="hidden bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-3">
+                        <span class="text-xs font-bold text-[#0b2545] block">WIPO PCT 国际申请专有审核属性</span>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" id="pct-designates-us" checked onchange="runDiagnostic()" class="mr-2 rounded text-[#0096b1] focus:ring-0">
+                                <span class="text-xs font-semibold text-slate-700">该PCT指定了美国 (Designates US)</span>
+                            </label>
+                            <label class="flex items-center cursor-pointer">
+                                <input type="checkbox" id="pct-is-english" checked onchange="runDiagnostic()" class="mr-2 rounded text-[#0096b1] focus:ring-0">
+                                <span class="text-xs font-semibold text-slate-700">以英文形式国际公开 (English Pub)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- 发明人比对与所有权情况 -->
+                    <div class="space-y-3">
+                        <label class="block text-[11px] font-bold text-slate-600">文献作者与所有权要素 (用于 102(b) 豁免判定)</label>
+                        
+                        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                            <label class="block text-[10px] text-slate-500 mb-1">文献发明人 / 作者 (Reference Authors)</label>
+                            <input type="text" id="ref-inventor" oninput="runDiagnostic()" class="w-full bg-white border border-slate-200 rounded-lg text-xs px-2.5 py-1.5 text-slate-800 focus:outline-none" value="Alex Rogers" placeholder="例如: David May, Alex Rogers">
+                        </div>
+
+                        <!-- 动态豁免事实宣誓声明 (102(b) exceptions) -->
+                        <div class="space-y-2 pt-1" id="panel-exceptions">
                             <!-- 102(b)(1)(A) / 102(b)(2)(A) Attribution Exception -->
-                            <label class="flex items-start p-2.5 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 cursor-pointer">
+                            <label class="flex items-start p-2.5 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 cursor-pointer transition">
                                 <input type="checkbox" id="exception-attribution" onchange="runDiagnostic()" class="mt-1 mr-2.5 rounded text-[#0096b1] focus:ring-0">
                                 <div>
-                                    <span class="text-xs font-semibold text-slate-800">1.130(a) 发明人源自性公开豁免 (Attribution Exception)</span>
-                                    <p class="text-[10px] text-slate-500 mt-0.5">证明该对比披露的主题直接或间接来源于本发案发明人（即本案自披露，或他人自本案处获取泄露并转述）。</p>
+                                    <span class="text-xs font-bold text-slate-800">1.130(a) 发明人源自性公开豁免 (Attribution Exception)</span>
+                                    <p class="text-[10px] text-slate-500 mt-0.5">该潜在现有技术中披露的主题直接或间接来源于本发案发明人（即该案属于本案发明人自己的自披露，或他人从我方不当派生获取）。</p>
                                 </div>
                             </label>
 
                             <!-- 102(b)(1)(B) / 102(b)(2)(B) Shielding Exception -->
-                            <label class="flex items-start p-2.5 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 cursor-pointer">
+                            <label class="flex items-start p-2.5 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 cursor-pointer transition">
                                 <input type="checkbox" id="exception-shielding" onchange="runDiagnostic()" class="mt-1 mr-2.5 rounded text-[#0096b1] focus:ring-0">
                                 <div>
-                                    <span class="text-xs font-semibold text-slate-800">1.130(b) 发明人先行公开屏蔽盾 (Shielding Exception)</span>
-                                    <p class="text-[10px] text-slate-500 mt-0.5">证明在该潜在对比披露/递交之前，本发案发明人已经对**相同主题**进行了更早的公共公开。</p>
+                                    <span class="text-xs font-bold text-slate-800">1.130(b) 发明人先行公开屏蔽盾 (Shielding Exception)</span>
+                                    <p class="text-[10px] text-slate-500 mt-0.5">在第三方的该公开日/递交日之前，本案发明人已经对**完全相同的主题**进行了合规的公共披露（构筑先行盾牌）。</p>
                                 </div>
                             </label>
 
                             <!-- 102(b)(2)(C) Common Ownership (Only applicable to 102(a)(2) references) -->
-                            <label id="panel-common-ownership" class="hidden flex items-start p-2.5 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 cursor-pointer">
+                            <label id="panel-common-ownership" class="flex items-start p-2.5 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 cursor-pointer transition">
                                 <input type="checkbox" id="exception-ownership" onchange="runDiagnostic()" class="mt-1 mr-2.5 rounded text-[#0096b1] focus:ring-0">
                                 <div>
-                                    <span class="text-xs font-semibold text-slate-800">102(b)(2)(C) 共同所有权或联合研究协议豁免 (Common Ownership / JRA)</span>
-                                    <p class="text-[10px] text-slate-500 mt-0.5">证明该文献与本案在不晚于本案有效申请日（EFD）时，属于同一主体所有或受联合开发协议（JRA）约束。</p>
+                                    <span class="text-xs font-bold text-slate-800">102(b)(2)(C) 共同所有权或联合研究协议 (Common Ownership / JRA)</span>
+                                    <p class="text-[10px] text-slate-500 mt-0.5">该文献与本发案在**不晚于本发案的有效申请日(EFD)**时，均属于同一个权利实体所有，或受联合开发协议（JRA）的合规约束。</p>
                                 </div>
                             </label>
                         </div>
                     </div>
                 </div>
-
             </div>
 
-            <!-- 右侧：动态流程决策判定图 (占据 7 列) -->
+            <!-- 右侧：动态流程决策判定图 (占 7 列) -->
             <div class="xl:col-span-7 space-y-6 flex flex-col justify-between">
                 
                 <!-- 审查决策图谱 (Decision Flowchart) -->
                 <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col flex-grow">
                     <div class="flex items-center justify-between pb-4 border-b border-slate-100">
                         <div class="flex items-center space-x-2">
-                            <span class="w-2.5 h-5 bg-[#0096b1] rounded-full"></span>
-                            <h2 class="text-xs font-bold uppercase tracking-widest text-[#0b2545]">AIA FITF 官方审查决策树 (AIA Statutory Flowchart)</h2>
+                            <span class="w-3 h-6 bg-[#0096b1] rounded-full"></span>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-[#0b2545]">AIA FITF 国际优先权与跨境审查决策树</h2>
                         </div>
-                        <span class="text-[10px] text-[#0096b1] font-mono-code">AIA 35 U.S.C. 102(a)/(b)</span>
+                        <span class="text-[10px] text-[#0096b1] font-mono-code font-bold bg-[#0096b1]/10 px-2 py-0.5 rounded border border-[#0096b1]/20">AIA & 102(d) Logic</span>
                     </div>
 
-                    <!-- 动态高保真流程网格 -->
+                    <!-- 动态高保真流程图 -->
                     <div class="flex-grow flex flex-col justify-center items-center py-6 space-y-4">
                         
-                        <!-- 节点 1: AIA 适用性判断 -->
-                        <div id="node-aia-check" class="w-72 p-3 rounded-xl border border-slate-200 bg-white text-center transition-all duration-300 text-slate-800">
-                            <span class="text-[10px] text-[#0096b1] font-semibold tracking-wider block">Stage 1: AIA Applicability</span>
+                        <!-- 节点 1: AIA 适用性 -->
+                        <div id="node-aia-check" class="w-80 p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm">
+                            <span class="text-[9px] font-bold tracking-wider block opacity-70">Stage 1: AIA Applicability</span>
                             <p class="text-xs font-bold mt-1 text-[#0b2545]">Subject EFD On/After 3/16/2013?</p>
-                            <span id="node-aia-val" class="text-[10px] font-mono-code bg-slate-100 px-2 py-0.5 rounded text-slate-500 inline-block mt-1">Pending...</span>
+                            <span id="node-aia-val" class="text-[10px] font-mono-code bg-slate-100 px-2.5 py-0.5 rounded text-slate-500 inline-block mt-1.5">Pending...</span>
                         </div>
 
-                        <!-- 箭头向下 -->
-                        <div class="text-slate-400"><i class="fa-solid fa-arrow-down-long"></i></div>
+                        <div class="text-slate-300"><i class="fa-solid fa-chevron-down text-sm"></i></div>
 
-                        <!-- 节点 2: 文献法定识别 (102a1 / 102a2) -->
-                        <div id="node-ref-check" class="w-80 p-3 rounded-xl border border-slate-200 bg-white text-center transition-all duration-300 text-slate-800">
-                            <span class="text-[10px] text-amber-600 font-semibold tracking-wider block">Stage 2: Reference Category</span>
-                            <p class="text-xs font-bold mt-1 text-[#0b2545]" id="node-ref-text">Check Statutory Subsection Basis</p>
-                            <span id="node-ref-val" class="text-[10px] font-mono-code bg-slate-100 px-2 py-0.5 rounded text-slate-500 inline-block mt-1">Checking Dates...</span>
+                        <!-- 节点 2: 现有技术类型及国籍性质评估 -->
+                        <div id="node-ref-check" class="w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm">
+                            <span class="text-[9px] font-bold tracking-wider block opacity-70">Stage 2: Reference Category</span>
+                            <p class="text-xs font-bold mt-1 text-[#0b2545]" id="node-ref-text">Analyzing Statutory Subsection Basis</p>
+                            <span id="node-ref-val" class="text-[10px] font-mono-code bg-slate-100 px-2.5 py-0.5 rounded text-slate-500 inline-block mt-1.5">Analyzing...</span>
                         </div>
 
-                        <!-- 箭头向下 -->
-                        <div class="text-slate-400"><i class="fa-solid fa-arrow-down-long"></i></div>
+                        <div class="text-slate-300"><i class="fa-solid fa-chevron-down text-sm"></i></div>
 
-                        <!-- 节点 3: 102(b) 豁免检查 (Exceptions) -->
-                        <div id="node-exception-check" class="w-80 p-3 rounded-xl border border-slate-200 bg-white text-center transition-all duration-300 text-slate-800">
-                            <span class="text-[10px] text-emerald-600 font-semibold tracking-wider block">Stage 3: Statutory Exceptions</span>
-                            <p class="text-xs font-bold mt-1 text-[#0b2545]">Do 102(b) Prior Art Exceptions Apply?</p>
-                            <span id="node-exception-val" class="text-[10px] font-mono-code bg-slate-100 px-2 py-0.5 rounded text-slate-500 inline-block mt-1">Evaluating Declarations...</span>
+                        <!-- 节点 3: 102(d) 现有技术生效日与外国优先权判定 (核心计算点) -->
+                        <div id="node-date-check" class="w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm">
+                            <span class="text-[9px] font-bold tracking-wider block opacity-70">Stage 3: Prior Art Date Calculation (102(d) / Hilmer Check)</span>
+                            <p class="text-xs font-bold mt-1 text-[#0b2545]">Effectively Filed Date vs Subject EFD</p>
+                            <span id="node-date-val" class="text-[10px] font-mono-code bg-slate-100 px-2.5 py-0.5 rounded text-slate-500 inline-block mt-1.5">Calculating...</span>
                         </div>
 
-                        <!-- 箭头向下 -->
-                        <div class="text-slate-400"><i class="fa-solid fa-arrow-down-long"></i></div>
+                        <div class="text-slate-300"><i class="fa-solid fa-chevron-down text-sm"></i></div>
 
-                        <!-- 节点 4: 最终裁断结论 -->
-                        <div id="node-final-ruling" class="w-72 p-3.5 rounded-xl border border-slate-200 bg-white text-center transition-all duration-300 text-slate-800">
-                            <span class="text-[10px] text-slate-500 font-semibold tracking-wider block">Final Status</span>
+                        <!-- 节点 4: Exceptions 排除例外 -->
+                        <div id="node-exception-check" class="w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm">
+                            <span class="text-[9px] font-bold tracking-wider block opacity-70">Stage 4: 102(b) Exclusions / 1.130 Swear Back</span>
+                            <p class="text-xs font-bold mt-1 text-[#0b2545]">Do Exceptions Disqualify Reference?</p>
+                            <span id="node-exception-val" class="text-[10px] font-mono-code bg-slate-100 px-2.5 py-0.5 rounded text-slate-500 inline-block mt-1.5">Evaluating...</span>
+                        </div>
+
+                        <div class="text-slate-300"><i class="fa-solid fa-chevron-down text-sm"></i></div>
+
+                        <!-- 节点 5: 最终裁断结论 -->
+                        <div id="node-final-ruling" class="w-80 p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm">
+                            <span class="text-[9px] font-bold tracking-wider block opacity-70">Final Ruling Summary</span>
                             <p class="text-xs font-extrabold mt-1 text-[#0b2545]" id="node-final-text">Ready</p>
-                            <span id="node-final-val" class="text-[10px] font-mono-code bg-slate-100 px-2 py-0.5 rounded text-slate-500 inline-block mt-1">Standard Office Action</span>
+                            <span id="node-final-val" class="text-[10px] font-mono-code bg-slate-100 px-2.5 py-0.5 rounded text-slate-500 inline-block mt-1.5">-</span>
                         </div>
 
                     </div>
@@ -251,34 +328,34 @@
                 <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
                     <div class="flex items-center justify-between pb-3 border-b border-slate-100">
                         <div class="flex items-center space-x-2">
-                            <span class="w-2.5 h-5 bg-[#0096b1] rounded-full"></span>
-                            <h3 class="text-xs font-bold uppercase tracking-widest text-[#0b2545]">FITF 审查裁决报告书 (Examiner Office Action Report)</h3>
+                            <span class="w-3 h-6 bg-[#0096b1] rounded-full"></span>
+                            <h3 class="text-xs font-bold uppercase tracking-wider text-[#0b2545]">跨境现有技术诊断书 (Office Action Diagnostics)</h3>
                         </div>
-                        <button onclick="copyAction()" class="text-xs text-[#0096b1] hover:text-[#00b4d8] font-semibold flex items-center gap-1 transition">
-                            <i class="fa-solid fa-copy"></i> 复制判定意见
+                        <button onclick="copyAction()" class="text-xs text-[#0096b1] hover:text-[#00b4d8] font-bold flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-copy"></i> 一键复制判决意见
                         </button>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
                         <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                            <p class="text-slate-500 font-semibold mb-1">主诉依据：</p>
+                            <p class="text-slate-500 font-semibold mb-1">主控法条/子款：</p>
                             <p class="text-slate-800 font-bold font-mono-code" id="out-statute">-</p>
                         </div>
                         <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-                            <p class="text-slate-500 font-semibold mb-1">宽限窗口 / 临界日：</p>
-                            <p class="text-slate-800 font-bold font-mono-code" id="out-critical-date">-</p>
+                            <p class="text-slate-500 font-semibold mb-1">法定现有技术起算点 (102(d))：</p>
+                            <p class="text-slate-800 font-bold font-mono-code text-indigo-600" id="out-critical-date">-</p>
                         </div>
                         <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
                             <p class="text-slate-500 font-semibold mb-1">测算判定结论：</p>
-                            <p class="text-[#0b2545] font-bold font-mono-code" id="out-verdict">-</p>
+                            <p class="text-[#0b2545] font-extrabold font-mono-code" id="out-verdict">-</p>
                         </div>
                     </div>
 
                     <!-- 官方标准法律评述书 -->
                     <div>
-                        <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Examiner Analysis & Rationale (审查详析逻辑)：</p>
-                        <div id="out-rationale" class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed font-mono-code whitespace-pre-wrap">
-                            等待数据输入...
+                        <p class="text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-2">Examiner Analysis & Rationale (代理人/审查员高精度法理阐释)：</p>
+                        <div id="out-rationale" class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs text-slate-700 leading-relaxed font-mono-code whitespace-pre-wrap min-h-[140px]">
+                            等待数据输入以启动测算...
                         </div>
                     </div>
                 </div>
@@ -292,80 +369,80 @@
             <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
                 <div class="border-b border-slate-100 pb-3 mb-4">
                     <h2 class="text-sm font-bold text-[#0b2545] flex items-center gap-2">
-                        <i class="fa-solid fa-graduation-cap text-[#0096b1]"></i> USPTO FITF Comprehensive Training - 官方典型考量案例
+                        <i class="fa-solid fa-graduation-cap text-[#0096b1]"></i> USPTO FITF Global Training PPT - 跨境/外国优先权官方演练
                     </h2>
-                    <p class="text-xs text-slate-500 mt-1">这些案例全部取自美国专利商标局 (USPTO) 面向 Examiners 的第一发明人申请制官方实务演练，点击经典场景可即刻将其参数载入测算，直观比对决策树逻辑：</p>
+                    <p class="text-xs text-slate-500 mt-1">这些案例严格契合 USPTO 官方第一发明人申请制 (FITF) 培训指南，尤其是关于外国专利与外国优先权在 102(d) 及 Hilmer 废除下的实务对抗，点击即可导入测算沙盘比对：</p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                     
-                    <!-- Scenario 1 -->
-                    <div onclick="loadOfficialScenario('scen1')" class="bg-slate-50 hover:bg-slate-100 p-4 rounded-xl border border-slate-200 cursor-pointer transition flex flex-col justify-between shadow-sm">
+                    <!-- Scenario 1: CN priority 102(d) -->
+                    <div onclick="loadOfficialScenario('scen_priority_cn')" class="bg-slate-50 hover:bg-slate-100 p-4 rounded-xl border border-slate-200 cursor-pointer transition flex flex-col justify-between shadow-sm border-l-4 border-l-[#0096b1]">
                         <div>
-                            <span class="text-[9px] font-bold bg-amber-500/10 text-amber-700 border border-amber-500/20 px-2 py-0.5 rounded font-mono-code">AIA 102(a)(1)</span>
-                            <h4 class="text-xs font-bold text-[#0b2545] mt-2">场景一：宽限期内第三人披露 (No Exception)</h4>
-                            <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                                申请人 (Taylor) 有效递交日为 2020-06-01，第三人 (Smith) 于 2019-12-01 发表了一篇公开披露相同发明主题的论文。Taylor 能否排除该文献？
+                            <span class="text-[9px] font-bold bg-teal-50 text-teal-700 border border-teal-200 px-2 py-0.5 rounded font-mono-code">AIA 102(a)(2) & 102(d)</span>
+                            <h4 class="text-xs font-bold text-[#0b2545] mt-2">场景一：要求了外国优先权（中国）的美国公开申请</h4>
+                            <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
+                                本发案有效申请日（EFD）为 2020-06-01。对比文献为一件美国公开专利，其美国递交日为 2019-03-15，但它声称了一项 2018-12-01 的中国在先优先权且已在说明书中公开对应主题。在新法 AIA 下，该对比案现有技术日起算至何时？
                             </p>
                         </div>
-                        <p class="text-[10px] text-[#0096b1] font-semibold mt-3 flex items-center gap-1 justify-end">
-                            载入测算场景 <i class="fa-solid fa-arrow-right"></i>
+                        <p class="text-[10px] text-[#0096b1] font-bold mt-3 flex items-center gap-1 justify-end">
+                            导入优先权测算 <i class="fa-solid fa-arrow-right"></i>
                         </p>
                     </div>
 
-                    <!-- Scenario 2 -->
-                    <div onclick="loadOfficialScenario('scen2')" class="bg-slate-50 hover:bg-slate-100 p-4 rounded-xl border border-slate-200 cursor-pointer transition flex flex-col justify-between shadow-sm">
+                    <!-- Scenario 2: Hilmer active -->
+                    <div onclick="loadOfficialScenario('scen_priority_pre_aia')" class="bg-slate-50 hover:bg-slate-100 p-4 rounded-xl border border-slate-200 cursor-pointer transition flex flex-col justify-between shadow-sm border-l-4 border-l-amber-500">
                         <div>
-                            <span class="text-[9px] font-bold bg-emerald-500/10 text-emerald-700 border border-emerald-500/20 px-2 py-0.5 rounded font-mono-code">AIA 102(b)(1)(A)</span>
-                            <h4 class="text-xs font-bold text-[#0b2545] mt-2">场景二：发明人源自性公开豁免 (Attribution Exception)</h4>
-                            <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                                Taylor 于 2019-12-01 在学术会议上公开了技术 X，并于 2020-06-01 提交美国专利申请。该 102(a)(1) 潜在现有技术符合宽限期自公开原则。
+                            <span class="text-[9px] font-bold bg-amber-50 text-amber-700 border border-amber-200 px-2 py-0.5 rounded font-mono-code">Pre-AIA 102(e) Hilmer Active</span>
+                            <h4 class="text-xs font-bold text-[#0b2545] mt-2">场景二：旧法下的希尔默阻碍（Hilmer Doctrine）</h4>
+                            <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
+                                沿用场景一的事实，如果我们将本案的 EFD 设置为旧法时期（如 2011-06-01）。根据当时希尔默学说，该美国在先对比文献的 102(e) 生效日是否能追溯至 2010 年的中国优先权日？结果对中国申请人有什么历史性保护？
                             </p>
                         </div>
-                        <p class="text-[10px] text-[#0096b1] font-semibold mt-3 flex items-center gap-1 justify-end">
-                            载入测算场景 <i class="fa-solid fa-arrow-right"></i>
+                        <p class="text-[10px] text-[#0096b1] font-bold mt-3 flex items-center gap-1 justify-end">
+                            导入优先权测算 <i class="fa-solid fa-arrow-right"></i>
                         </p>
                     </div>
 
-                    <!-- Scenario 3 -->
-                    <div onclick="loadOfficialScenario('scen3')" class="bg-slate-50 hover:bg-slate-100 p-4 rounded-xl border border-slate-200 cursor-pointer transition flex flex-col justify-between shadow-sm">
+                    <!-- Scenario 3: Foreign Patent CN published after EFD -->
+                    <div onclick="loadOfficialScenario('scen_foreign_cn_post')" class="bg-slate-50 hover:bg-slate-100 p-4 rounded-xl border border-slate-200 cursor-pointer transition flex flex-col justify-between shadow-sm border-l-4 border-l-[#0b2545]">
                         <div>
-                            <span class="text-[9px] font-bold bg-emerald-500/10 text-emerald-700 border border-emerald-500/20 px-2 py-0.5 rounded font-mono-code">AIA 102(b)(1)(B)</span>
-                            <h4 class="text-xs font-bold text-[#0b2545] mt-2">场景三：学术抢跑与“屏蔽盾”保护 (Shielding Exception)</h4>
-                            <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                                发明人 Taylor 率先于 2019-10-01 在网上自公开。随后第三人 Smith 在 2019-12-01 发表相同论文。Taylor 于 2020-06-01 递交申请。
+                            <span class="text-[9px] font-bold bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded font-mono-code">AIA 102(a)(2) Inapplicable</span>
+                            <h4 class="text-xs font-bold text-[#0b2545] mt-2">场景三：在先申请、在后公开的外国专利（CN）</h4>
+                            <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
+                                本案 EFD 为 2020-06-01。对比文献为一件中国本土专利，其递交于 2019-03-15，并在 2020-09-15（本案申请后）于中国国知局公开。该中国专利是否能凭借 102(a)(2) 阻碍本发案？（最典型跨国代理人高频雷区）
                             </p>
                         </div>
-                        <p class="text-[10px] text-[#0096b1] font-semibold mt-3 flex items-center gap-1 justify-end">
-                            载入测算场景 <i class="fa-solid fa-arrow-right"></i>
+                        <p class="text-[10px] text-[#0096b1] font-bold mt-3 flex items-center gap-1 justify-end">
+                            导入优先权测算 <i class="fa-solid fa-arrow-right"></i>
                         </p>
                     </div>
 
-                    <!-- Scenario 4 -->
-                    <div onclick="loadOfficialScenario('scen4')" class="bg-slate-50 hover:bg-slate-100 p-4 rounded-xl border border-slate-200 cursor-pointer transition flex flex-col justify-between shadow-sm">
+                    <!-- Scenario 4: Foreign Patent CN published before EFD -->
+                    <div onclick="loadOfficialScenario('scen_foreign_cn_pre')" class="bg-slate-50 hover:bg-slate-100 p-4 rounded-xl border border-slate-200 cursor-pointer transition flex flex-col justify-between shadow-sm border-l-4 border-l-teal-600">
                         <div>
-                            <span class="text-[9px] font-bold bg-[#0b2545]/10 text-[#0b2545] border border-[#0b2545]/20 px-2 py-0.5 rounded font-mono-code">AIA 102(a)(2)</span>
-                            <h4 class="text-xs font-bold text-[#0b2545] mt-2">场景四：第三人在先递交的未公开专利案 (Secret Art)</h4>
-                            <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                                Taylor 申请日为 2020-06-01。Smith 在 2019-03-15 在先递交了US专利申请（于 2020-09-15 才公开）。Smith 案件构成 Taylor 的 102(a)(2) 阻碍。
+                            <span class="text-[9px] font-bold bg-teal-50 text-teal-700 border border-teal-200 px-2 py-0.5 rounded font-mono-code">AIA 102(a)(1) Applicable</span>
+                            <h4 class="text-xs font-bold text-[#0b2545] mt-2">场景四：在本发案申请前已公开的外国专利</h4>
+                            <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
+                                本案 EFD 为 2020-06-01。对比文献为一件中国专利，于 2019-12-01 已经公开。由于该外国专利公开在 EFD 之前，它是否构成 102(a)(1) 的合规公开，起算时间如何？
                             </p>
                         </div>
-                        <p class="text-[10px] text-[#0096b1] font-semibold mt-3 flex items-center gap-1 justify-end">
-                            载入测算场景 <i class="fa-solid fa-arrow-right"></i>
+                        <p class="text-[10px] text-[#0096b1] font-bold mt-3 flex items-center gap-1 justify-end">
+                            导入优先权测算 <i class="fa-solid fa-arrow-right"></i>
                         </p>
                     </div>
 
-                    <!-- Scenario 5 -->
-                    <div onclick="loadOfficialScenario('scen5')" class="bg-slate-50 hover:bg-slate-100 p-4 rounded-xl border border-slate-200 cursor-pointer transition flex flex-col justify-between shadow-sm">
+                    <!-- Scenario 5: PCT with English vs Non-English -->
+                    <div onclick="loadOfficialScenario('scen_pct_non_english')" class="bg-slate-50 hover:bg-slate-100 p-4 rounded-xl border border-slate-200 cursor-pointer transition flex flex-col justify-between shadow-sm border-l-4 border-l-[#0096b1]">
                         <div>
-                            <span class="text-[9px] font-bold bg-[#0096b1]/10 text-[#0096b1] border border-[#0096b1]/20 px-2 py-0.5 rounded font-mono-code">AIA 102(b)(2)(C)</span>
-                            <h4 class="text-xs font-bold text-[#0b2545] mt-2">场景五：共同所有权/共同研发协议豁免 (Common Ownership)</h4>
-                            <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                                承接场景四：若 Smith 的在先申请案与 Taylor 在本案有效递交日不晚于此时，均属于同一家公司（或属于联合研究协议约束范围）。
+                            <span class="text-[9px] font-bold bg-slate-100 text-slate-700 border border-slate-300 px-2 py-0.5 rounded font-mono-code">Pre-AIA vs AIA PCT</span>
+                            <h4 class="text-xs font-bold text-[#0b2545] mt-2">场景五：PCT 国际申请作为现有技术的“退化机制”</h4>
+                            <p class="text-[11px] text-slate-500 mt-1.5 leading-relaxed">
+                                一件 PCT 国际申请（非英文，例如指定美国的中、日文 PCT）。在 AIA 和 Pre-AIA 下，它的“秘密现有技术（Secret Art）”效日起始时间会如何因语言、指定美国状态而发生“贬值退化”？
                             </p>
                         </div>
-                        <p class="text-[10px] text-[#0096b1] font-semibold mt-3 flex items-center gap-1 justify-end">
-                            载入测算场景 <i class="fa-solid fa-arrow-right"></i>
+                        <p class="text-[10px] text-[#0096b1] font-bold mt-3 flex items-center gap-1 justify-end">
+                            导入优先权测算 <i class="fa-solid fa-arrow-right"></i>
                         </p>
                     </div>
 
@@ -378,79 +455,80 @@
             
             <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-6">
                 <div class="border-b border-slate-100 pb-3">
-                    <h2 class="text-sm font-bold text-[#0b2545] uppercase tracking-widest flex items-center gap-2">
-                        <i class="fa-solid fa-sitemap text-[#0096b1]"></i> AIA 35 U.S.C. 102 现有技术与例外核心法理底表
+                    <h2 class="text-sm font-bold text-[#0b2545] uppercase tracking-wider flex items-center gap-2">
+                        <i class="fa-solid fa-sitemap text-[#0096b1]"></i> 跨境外国优先权 & 外国现有技术核心法理对照底表
                     </h2>
                     <p class="text-xs text-slate-500 mt-1">
-                        依据 USPTO 官方审查培训精细解构的 FITF 权威审查底表矩阵：
+                        归纳自美国最高法院、联邦巡回上诉法院（CAFC）判例及 USPTO 审查培训大纲：
                     </p>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 text-xs">
                     
-                    <!-- 102(a)(1) & 102(b)(1) 知识解构 -->
+                    <!-- 102(d) 废除 Hilmer 深度剖析 -->
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4 shadow-sm">
                         <h3 class="text-xs font-extrabold text-[#0096b1] border-b border-slate-200 pb-2 flex justify-between items-center">
-                            <span>102(a)(1) & 102(b)(1) Public Disclosures</span>
-                            <span class="text-[9px] bg-[#0096b1]/10 text-[#0096b1] px-1.5 py-0.5 rounded font-mono-code">公共公开与例外</span>
+                            <span>AIA 35 U.S.C. 102(d) & 优先权规则</span>
+                            <span class="text-[9px] bg-[#0096b1]/10 text-[#0096b1] px-1.5 py-0.5 rounded font-mono-code">AIA System</span>
                         </h3>
                         
                         <div class="space-y-3">
                             <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
-                                <p class="font-bold text-[#0b2545]">102(a)(1) 法定条件：</p>
-                                <p class="text-slate-600 mt-1 leading-relaxed">在 claimed invention <b>有效申请日之前</b>，在世界任何地方被专利、公开出版物描述、公开使用、在售、或以其他方式对公众可得（otherwise available to the public）。</p>
+                                <p class="font-bold text-[#0b2545] flex items-center gap-1">
+                                    <i class="fa-solid fa-gavel text-slate-400"></i> Hilmer Doctrine 废止：
+                                </p>
+                                <p class="text-slate-600 mt-1.5 leading-relaxed">
+                                    在旧法下，在先美案的现有技术效力不能追溯到外国优先权日。<strong>而在 AIA 102(d) 体系下，这一学说被完全废除。</strong> 
+                                    一件在先递交、在后公开的美国专利（102(a)(2)），如果合理声明了在先外国（如CN、EP、JP）优先权，只要优先权日早于本发案的 EFD，且该优先权文本描述了争议技术，则该对比案的 102(d) 现有技术起算点可直接**推演并溯及到在先外国优先权日**！对海外专利阻击具有毁灭性打击。
+                                </p>
                             </div>
                             <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
-                                <p class="font-bold text-[#0b2545]">102(b)(1)(A) Exception (归属豁免)：</p>
-                                <p class="text-slate-600 mt-1 leading-relaxed">公开日期必须在 1 年的宽限期（Grace Period）内，并且该公开直接或间接来源于本发案发明人或共同发明人。通常需提交 37 CFR 1.130(a) 宣誓书。</p>
-                            </div>
-                            <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
-                                <p class="font-bold text-[#0b2545]">102(b)(1)(B) Exception (屏蔽盾豁免)：</p>
-                                <p class="text-slate-600 mt-1 leading-relaxed">在第三方的 102(a)(1) 公开日期之前，本发案发明人已经对相同的主题进行了公共披露（先发制人）。通常需提交 37 CFR 1.130(b) 证明材料。</p>
+                                <p class="font-bold text-[#0b2545]">102(d) 溯及成立的 ministerial（形式）与实质性要求：</p>
+                                <p class="text-slate-600 mt-1.5 leading-relaxed">
+                                    该美国公开专利案必须：（1）正式声明了该外国优先权（满足35 U.S.C. 119/365）；并且（2）争议的技术主题已被**记载（Disclosed / Described）**在在先外国专利申请案的说明书中。但不强制要求在先优先权说明书完全满足 112 节的 Enablement（可实施性）要求。
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- 102(a)(2) & 102(b)(2) 知识解构 -->
+                    <!-- 外国专利的法律地位解构 -->
                     <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-4 shadow-sm">
                         <h3 class="text-xs font-extrabold text-amber-600 border-b border-slate-200 pb-2 flex justify-between items-center">
-                            <span>102(a)(2) & 102(b)(2) U.S. Patent Documents</span>
-                            <span class="text-[9px] bg-amber-500/10 text-amber-700 px-1.5 py-0.5 rounded font-mono-code">专利在先递交与例外</span>
+                            <span>外国专利文献（e.g. 中国/欧专局/日本专利）在美地位</span>
+                            <span class="text-[9px] bg-amber-500/10 text-amber-700 px-1.5 py-0.5 rounded font-mono-code">Foreign Patents Only</span>
                         </h3>
 
                         <div class="space-y-3">
                             <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
-                                <p class="font-bold text-[#0b2545]">102(a)(2) 法定条件：</p>
-                                <p class="text-slate-600 mt-1 leading-relaxed">在 claimed invention 有效申请日之前，由 **他人（another）** 递交并于在后公开的：US专利、US专利公开申请、或者指定美国并以英文公开的 PCT 国际申请。其起算点为其有效递交日（102(d)）。</p>
+                                <p class="font-bold text-[#0b2545]">外国专利绝不具备 102(a)(2) 效力（不追溯优先权或申请日）：</p>
+                                <p class="text-slate-600 mt-1.5 leading-relaxed">
+                                    35 U.S.C. 102(a)(2) 仅针对**美国专利、美国专利公开申请、以及指定美国的 PCT 国际公开申请**。
+                                    单纯的外国专利申请（如一件没有向美国或 PCT 申报的单纯中国、欧洲专利公开申请），不管其递交或优先权有多早，在没有在美国正式被批准或在国际上以美国指定公开前，**绝无法**在 102(a)(2) 下用作在先申请现有技术。
+                                </p>
                             </div>
                             <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
-                                <p class="font-bold text-[#0b2545]">102(b)(2)(A) Exception (归属豁免)：</p>
-                                <p class="text-slate-600 mt-1 leading-relaxed">披露的主题来源于本发案发明人（他人是通过不当获取或授权代为申请的在先递交）。</p>
-                            </div>
-                            <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
-                                <p class="font-bold text-[#0b2545]">102(b)(2)(B) Exception (屏蔽盾豁免)：</p>
-                                <p class="text-slate-600 mt-1 leading-relaxed">在对方 102(a)(2) 有效递交日之前，本发案发明人或共同发明人已经公共公开了相同主题。</p>
-                            </div>
-                            <div class="bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
-                                <p class="font-bold text-[#0b2545]">102(b)(2)(C) Exception (共同所有权豁免)：</p>
-                                <p class="text-slate-600 mt-1 leading-relaxed">两件发明不晚于本发案有效申请日时共同为一方所有或处于联合研究协议 (JRA) 的共同研发范围内。在审查中，常通过出具共同所有权声明解决此驳回。</p>
+                                <p class="font-bold text-[#0b2545]">外国专利仅能作为 102(a)(1) 的“公开发表”依据：</p>
+                                <p class="text-slate-600 mt-1.5 leading-relaxed">
+                                    外国专利唯有在其**公开或公告日（Publication / Grant Date）**之后，才能作为 102(a)(1) 的“世界任何地方的专利或公开出版物描述”去构成本发案的现有技术阻碍。
+                                    因此：如果某中国专利在 2019 递交、2020年9月（本案申请后）公开，它是**绝不可能**由于它的 2019 申请日比我们早而构成我们的新颖性阻碍的。这为海外优先权保护筑起了稳固防线！
+                                </p>
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <!-- 37 CFR 1.130 声明与证明指南 -->
-                <div class="bg-slate-50 p-5 rounded-xl border border-slate-200 space-y-3 text-xs shadow-sm">
-                    <h3 class="text-xs font-extrabold text-[#0b2545] border-b border-slate-200 pb-2">
-                        <i class="fa-solid fa-file-signature text-[#0096b1] mr-1.5"></i> 克服 102(a) 现有技术驳回的官方应对指南 (CFR 1.130 Declarations)
+                <!-- 应对与策略指南 -->
+                <div class="bg-[#0b2545]/5 p-5 rounded-xl border border-[#0b2545]/10 space-y-3 text-xs shadow-sm">
+                    <h3 class="text-xs font-extrabold text-[#0b2545] border-b border-slate-200 pb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-shield-halved text-[#0096b1]"></i> 跨国代理实务实战与破局对策 (IPR & Attorney Playbook)
                     </h3>
-                    <p class="text-slate-600">
-                        当审查员在 Office Action 中基于 102(a)(1) 或 102(a)(2) 的文献提出驳回时，申请人可在不修改权利要求的情况下，通过提交相应的 CFR 1.130 宣誓书来撤销驳回：
+                    <p class="text-slate-600 leading-relaxed">
+                        当你在美遭到审查员引用在先美国专利（其具有更早的中国/国外优先权）进行驳回时，应当启动如下审查抗辩：
                     </p>
-                    <ul class="list-disc pl-5 text-slate-600 space-y-2 pt-1">
-                        <li><strong>37 CFR 1.130(a) Declaration (Attribution)</strong>：用于证明该在先潜在现有技术的主题在法律上实为本发案发明人的自公开作品，应当予以剔除。如果文献的作者/发明人名单中包含了本发案的部分发明人，且无其他无关第三方作者，此事实记录在案时通常**无需**提供复杂的证据，审查员应主动不作为现有技术处理。</li>
-                        <li><strong>37 CFR 1.130(b) Declaration (Prior Public Disclosure)</strong>：用于向审查员证明本发案发明人更早地进行了公共公开，筑起了先行屏蔽保护盾。申请人必须随案附上该在先自公开出版物、视频或演讲证明的副本，并清楚划定自公开的主题与第三方现有技术主题在实质技术特征上的一致性。</li>
+                    <ul class="list-disc pl-5 text-slate-600 space-y-2.5 pt-1.5">
+                        <li><strong>优先权核查阻击 (Priority Disclosure Attack)</strong>：深入检索并翻译该美国专利公开所声称的在先中国/国外原始申请文件。核对该中国原案文本是否真的对审查员引用的争议技术点进行了实质记载。如果原始中国案并没有详细描述该特征，则此美国对比文献无法享受 102(d) 溯及力，其现有技术日将被迫退回美国本土递交日，从而可能晚于我方 EFD 而被彻底踢出。</li>
+                        <li><strong>宽限期与归属反击 (Attribution Swear-Back)</strong>：若该美国对比文献 102(d) 生效日虽落入我方 EFD 之前，但处于我方 EFD 之前的一年宽限期内。查明该文献的国外原作者是否与我方团队存在合作、不当获取、或是我方之前的自披露，通过提交 37 CFR 1.130(a) 宣誓书进行归属排除。</li>
                     </ul>
                 </div>
             </div>
@@ -460,10 +538,10 @@
     </main>
 
     <!-- 页脚 (Finnegan Deep Navy Theme) -->
-    <footer class="bg-[#0b2545] border-t border-slate-700 py-6 mt-12 text-slate-300 text-xs text-center md:text-left">
-        <div class="max-w-[1500px] mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-3">
-            <p>© 2026 USPTO FITF 102(a) 智能测算工作站. 标准契合 Leahy-Smith America Invents Act (AIA) 35 U.S.C. 102 / 103 审查指南.</p>
-            <p class="text-[10px] text-slate-400">本系统供专业专利工程师、IPR、美专执业律师作为辅助决策测算，不代表针对具体案件的最终法学代理意见。</p>
+    <footer class="bg-[#0b2545] border-t border-slate-700 py-6 mt-12 text-slate-300 text-xs text-center md:text-left shadow-inner">
+        <div class="max-w-[1550px] mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-3">
+            <p>© 2026 USPTO FITF 跨境优先权智能测算平台. Leahy-Smith America Invents Act (AIA) 35 U.S.C. 102 / 103 权威校验.</p>
+            <p class="text-[10px] text-slate-400">本工作站旨在提供专业的美国专利合规测算与教学演示，不构成具体个案的最终法学代理或法律咨询意见。</p>
         </div>
     </footer>
 
@@ -472,7 +550,7 @@
         // 动态文字及报告存储
         let activeReportText = "";
 
-        // 在窗口加载后立即执行一次初始化计算
+        // 窗口加载时自动初算一次
         window.onload = function() {
             runDiagnostic();
         };
@@ -495,37 +573,87 @@
             });
         }
 
+        // 展开与折叠优先权配置项
+        function togglePriorityFields() {
+            const hasPriority = document.getElementById('has-foreign-priority').checked;
+            const fields = document.getElementById('priority-fields');
+            if (hasPriority) {
+                fields.classList.remove('hidden');
+            } else {
+                fields.classList.add('hidden');
+            }
+            runDiagnostic();
+        }
+
         // 切换文献类型相关的额外字段显隐
         function toggleRefFields(type) {
             const fieldPub = document.getElementById('field-pub-date');
             const fieldFiled = document.getElementById('field-filed-date');
             const labelPub = document.getElementById('label-pub-date');
+            const labelFiled = document.getElementById('label-filed-date');
+            
+            const panelPriority = document.getElementById('panel-foreign-priority');
+            const panelPct = document.getElementById('panel-pct-attributes');
             const panelOwnership = document.getElementById('panel-common-ownership');
 
-            const tab1Label = document.getElementById('ref-type-1-label');
-            const tab2Label = document.getElementById('ref-type-2-label');
+            const tabUsLabel = document.getElementById('ref-type-us-label');
+            const tabPctLabel = document.getElementById('ref-type-pct-label');
+            const tabForeignLabel = document.getElementById('ref-type-foreign-label');
+            const tabOtherLabel = document.getElementById('ref-type-other-label');
 
-            if (type === '102a1') {
+            // 样式去激活
+            [tabUsLabel, tabPctLabel, tabForeignLabel, tabOtherLabel].forEach(lbl => {
+                lbl.classList.remove('border-[#0096b1]/50', 'bg-[#0096b1]/5', 'border-amber-500/50', 'bg-amber-500/5');
+            });
+
+            if (type === 'us_patent') {
                 fieldPub.classList.remove('hidden');
-                fieldFiled.classList.add('hidden');
-                labelPub.innerText = "公开/发表日期 *";
-                panelOwnership.classList.add('hidden');
-                
-                tab1Label.classList.add('border-[#0096b1]/50', 'bg-[#0096b1]/5');
-                tab2Label.classList.remove('border-[#0096b1]/50', 'bg-[#0096b1]/5');
-            } else {
-                fieldPub.classList.remove('hidden'); // 102a2 在后公开日仍要存在
                 fieldFiled.classList.remove('hidden');
                 labelPub.innerText = "授权公开/申请公开日 *";
+                labelFiled.innerText = "美国实际递交日 (Actual US Filed) *";
+                panelPriority.classList.remove('hidden');
+                panelPct.classList.add('hidden');
                 panelOwnership.classList.remove('hidden');
 
-                tab2Label.classList.add('border-[#0096b1]/50', 'bg-[#0096b1]/5');
-                tab1Label.classList.remove('border-[#0096b1]/50', 'bg-[#0096b1]/5');
+                tabUsLabel.classList.add('border-[#0096b1]/50', 'bg-[#0096b1]/5');
+
+            } else if (type === 'pct_patent') {
+                fieldPub.classList.remove('hidden');
+                fieldFiled.classList.remove('hidden');
+                labelPub.innerText = "国际公开公布日 (WIPO Publication) *";
+                labelFiled.innerText = "PCT国际递交日 (PCT Filing Date) *";
+                panelPriority.classList.remove('hidden');
+                panelPct.classList.remove('hidden');
+                panelOwnership.classList.remove('hidden');
+
+                tabPctLabel.classList.add('border-[#0096b1]/50', 'bg-[#0096b1]/5');
+
+            } else if (type === 'foreign_patent') {
+                fieldPub.classList.remove('hidden');
+                fieldFiled.classList.add('hidden'); // 外国专利在美不审查其本土 filing 追溯
+                labelPub.innerText = "外国专利公开/公告公布日 *";
+                panelPriority.classList.add('hidden');
+                panelPct.classList.add('hidden');
+                panelOwnership.classList.add('hidden'); // 外国专利不存在共同所有权102(b)(2)(C)豁免问题
+
+                tabForeignLabel.classList.add('border-amber-500/50', 'bg-amber-500/5');
+
+            } else {
+                // other literature / non-patent
+                fieldPub.classList.remove('hidden');
+                fieldFiled.classList.add('hidden');
+                labelPub.innerText = "公开发表日期 (Publication Date) *";
+                panelPriority.classList.add('hidden');
+                panelPct.classList.add('hidden');
+                panelOwnership.classList.add('hidden');
+
+                tabOtherLabel.classList.add('border-[#0096b1]/50', 'bg-[#0096b1]/5');
             }
+
             runDiagnostic();
         }
 
-        // 核心测算决策引擎
+        // 核心跨境测算诊断决策引擎
         function runDiagnostic() {
             const efdStr = document.getElementById('subject-efd').value;
             const refType = document.querySelector('input[name="ref-type"]:checked').value;
@@ -534,17 +662,31 @@
             const subjectInventorStr = document.getElementById('subject-inventor').value || "";
             const refInventorStr = document.getElementById('ref-inventor').value || "";
 
+            // 优先权相关输入
+            const hasPriority = document.getElementById('has-foreign-priority').checked;
+            const refPriorityDateStr = document.getElementById('ref-priority-date').value;
+            const refPriorityCountry = document.getElementById('ref-priority-country').value || "CN (中国)";
+            const priorityIsDescribed = document.getElementById('priority-is-described').checked;
+
+            // PCT相关输入
+            const pctDesignatesUS = document.getElementById('pct-designates-us').checked;
+            const pctIsEnglish = document.getElementById('pct-is-english').checked;
+
+            // 豁免选项
             const optAttribution = document.getElementById('exception-attribution').checked;
             const optShielding = document.getElementById('exception-shielding').checked;
             const optOwnership = document.getElementById('exception-ownership').checked;
 
-            // DOM 节点绑定
+            // 决策树节点绑定
             const nAiaCheck = document.getElementById('node-aia-check');
             const nAiaVal = document.getElementById('node-aia-val');
             
             const nRefCheck = document.getElementById('node-ref-check');
             const nRefText = document.getElementById('node-ref-text');
             const nRefVal = document.getElementById('node-ref-val');
+
+            const nDateCheck = document.getElementById('node-date-check');
+            const nDateVal = document.getElementById('node-date-val');
 
             const nExceptionCheck = document.getElementById('node-exception-check');
             const nExceptionVal = document.getElementById('node-exception-val');
@@ -558,15 +700,16 @@
             const outVerdict = document.getElementById('out-verdict');
             const outRationale = document.getElementById('out-rationale');
 
-            // 流程图节点状态重置 (Light Mode Optimized)
-            [nAiaCheck, nRefCheck, nExceptionCheck, nFinalRuling].forEach(n => {
-                n.className = "w-72 p-3 rounded-xl border border-slate-200 bg-white text-center transition-all duration-300 text-slate-800 shadow-sm";
+            // 初始化所有决策节点为未激活
+            [nAiaCheck, nRefCheck, nDateCheck, nExceptionCheck, nFinalRuling].forEach(n => {
+                n.className = "w-80 p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm flow-node-inactive";
             });
-            nRefCheck.className = "w-80 p-3 rounded-xl border border-slate-200 bg-white text-center transition-all duration-300 text-slate-800 shadow-sm";
-            nExceptionCheck.className = "w-80 p-3 rounded-xl border border-slate-200 bg-white text-center transition-all duration-300 text-slate-800 shadow-sm";
+            nRefCheck.className = "w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm flow-node-inactive";
+            nDateCheck.className = "w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm flow-node-inactive";
+            nExceptionCheck.className = "w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm flow-node-inactive";
 
             if (!efdStr || !refPubDateStr) {
-                outRationale.innerText = "请输入本案有效申请日及对比文献的日期要素以启动测算。";
+                outRationale.innerText = "请输入拟审查本案的有效申请日(EFD)以及对比文献的公开日以启动计算。";
                 return;
             }
 
@@ -574,7 +717,7 @@
             const aiaThreshold = new Date('2013-03-16');
             const refPubDate = new Date(refPubDateStr);
 
-            // 1年宽限期界线（一年前的同日）
+            // 一年宽限期基准临界日（Subject EFD 往前推一年）
             const oneYearPrior = new Date(efd);
             oneYearPrior.setFullYear(oneYearPrior.getFullYear() - 1);
             const oneYearPriorStr = oneYearPrior.toISOString().split('T')[0];
@@ -583,246 +726,362 @@
             let activeStatute = "-";
             let rationaleList = [];
             
-            // 姓名预清洗
+            // 发明人名单预处理
             const cleanArray = (str) => str.split(',').map(s => s.trim().toLowerCase()).filter(s => s !== "");
             const subjectInventors = cleanArray(subjectInventorStr);
             const refInventors = cleanArray(refInventorStr);
 
-            // 判定是否是"他人" (by another)
-            // 只要文献的发明人名单不完全等于本发案申请人名单，或者文献作者包含其他人，即属于 another
+            // 检查是否由“他人 (by another)”做出：若名单并非完全同一且子集完全重合，则视为他人
             const isAnother = refInventors.length === 0 || !refInventors.every(name => subjectInventors.includes(name)) || subjectInventors.length !== refInventors.length;
 
             // --- STAGE 1: AIA 适用性排查 ---
-            if (efd < aiaThreshold) {
+            const isAIA = efd >= aiaThreshold;
+            if (!isAIA) {
+                nAiaCheck.classList.remove('flow-node-inactive');
                 nAiaCheck.classList.add('flow-node-block');
-                nAiaVal.innerText = "Pre-AIA Applies";
+                nAiaVal.innerText = "Pre-AIA (旧法适用)";
                 
-                outStatute.innerText = "Pre-AIA Law";
+                outStatute.innerText = "Pre-AIA / Hilmer Active";
                 outCriticalDate.innerText = "N/A";
                 outVerdict.innerText = "非 AIA 判定";
-                outRationale.innerText = "【审查员警告】本案的有效递交日（EFD）在 2013 年 3 月 16 日之前，落入 Pre-AIA（旧法）法条管辖范畴！\n\nAIA 102(a)(1)及102(a)(2)不适用于本案。请您修改左侧 Step 1 的 EFD 为 2013-03-16 以后的日期进行 AIA 核心审查指南逻辑演练。";
                 
-                nRefCheck.querySelector('p').innerText = "Process Stopped";
-                nExceptionCheck.querySelector('p').innerText = "Process Stopped";
-                nFinalText.innerText = "Application Subject to Pre-AIA";
+                nRefText.innerText = "Process Halts (Pre-AIA Rules)";
+                nRefVal.innerText = "Not Under FITF";
+                nDateVal.innerText = "Hilmer Active";
+                nExceptionVal.innerText = "-";
+                nFinalText.innerText = "Subject to Pre-AIA";
+                nFinalVal.innerText = "AIA Non-Compliant";
+
+                let preAiaMsg = "【审查提示】本案的有效递交日（EFD）在 2013 年 3 月 16 日之前，落入旧法（Pre-AIA）的管辖区！\n\n";
+                preAiaMsg += "在旧法管辖下，判定 102(e) 美国专利现有技术效力时，严格执行 Hilmer 学说（希尔默学说）：\n";
+                preAiaMsg += "即使对比案声称了国外优先权（如 2010 年的中国优先权），由于 Hilmer 阻碍，该国外优先权日【绝对无法】作为 102(e) 的现有技术起算点。其现有技术日起始时间必须为其实际在美国递交的日子。\n\n";
+                preAiaMsg += "💡 建议：请把 Step 1 本案的 EFD 修改至 2013-03-16 之后，以进行第一发明人申请制 (FITF) 跨境优先权法理实战分析。";
+                
+                outRationale.innerText = preAiaMsg;
                 return;
             } else {
+                nAiaCheck.classList.remove('flow-node-inactive');
                 nAiaCheck.classList.add('flow-node-pass');
-                nAiaVal.innerText = "AIA Applicable";
+                nAiaVal.innerText = "AIA FITF 适用 (EFD >= 2013-03-16)";
             }
 
-            // --- STAGE 2: 现有技术法定要件匹配 (102a1 vs 102a2) ---
-            if (refType === '102a1') {
-                activeStatute = "35 U.S.C. 102(a)(1)";
-                nRefText.innerText = "Evaluating Under 102(a)(1)";
+            // --- STAGE 2 & 3: 确定现有技术起算点与核心法理计算 ---
+            // 现有技术起算点（Prior Art Date Under 102(d) / 102(a)(1)）
+            let priorArtDate = null;
+            let priorArtDateType = ""; 
+            let errorFlag = false;
 
-                // 102(a)(1) 核心条件：公开发表早于本案递交
-                if (refPubDate >= efd) {
-                    nRefCheck.classList.add('flow-node-pass');
-                    nRefVal.innerText = "Cleared (Published on/after EFD)";
-                    
-                    verdict = "Cleared";
-                    rationaleList.push(`【判定结论】✔ 该文献不构成 102(a)(1) 现有技术。`);
-                    rationaleList.push(`【法理详析】该潜在现有技术的公开日 (${refPubDateStr}) 晚于或等于本发案有效申请日 EFD (${efdStr})。102(a)(1) 仅追溯在有效申请日【之前】已经公共可得的披露。`);
-                    
-                    nExceptionCheck.querySelector('p').innerText = "Exceptions Check Skipped";
-                    nExceptionVal.innerText = "-";
-                    nFinalRuling.classList.add('flow-node-pass');
-                    nFinalText.innerText = "Not Prior Art (102(a)(1))";
-                    nFinalVal.innerText = "Cleared";
-                } else {
-                    // 落入潜在现有技术，审查 102(b)(1) 宽限期例外
-                    nRefCheck.classList.add('flow-node-active');
-                    nRefVal.innerText = "Potential 102(a)(1) Art";
+            nArefCheck = nRefCheck; // alias
 
-                    const isWithinGracePeriod = refPubDate >= oneYearPrior;
+            // 102(a)(2) 判定：仅当文献类型为美国专利或指定美国的PCT时，才有可能适用
+            let isPotential102a2 = false;
 
-                    if (!isWithinGracePeriod) {
-                        // 宽限期外，无法主张任何 102(b)(1) 豁免例外
-                        nExceptionCheck.classList.add('flow-node-block');
-                        nExceptionVal.innerText = "Outside Grace Period (No Exceptions)";
-                        
-                        verdict = "Prior Art Block";
-                        rationaleList.push(`【判定结论】❌ 构成 102(a)(1) 合规现有技术障碍。`);
-                        rationaleList.push(`【法理详析】该文献的公开日 (${refPubDateStr}) 早于本发案有效递交日 EFD (${efdStr})，且处于一年的法定宽限期窗外（宽限期起始于临界日: ${oneYearPriorStr}）。`);
-                        rationaleList.push(`在此种情形下，申请人无法依据 102(b)(1) 提出任何归属豁免或屏蔽盾豁免，该文献构成不可撤回的现有技术评述基础。`);
+            if (refType === 'us_patent') {
+                isPotential102a2 = true;
+                nRefCheck.classList.remove('flow-node-inactive');
+                nRefCheck.classList.add('flow-node-active');
+                nRefText.innerText = "美案评估: 35 U.S.C. 102(a)(2)";
+                nRefVal.innerText = "Eligible for 102(a)(2)";
 
-                        nFinalRuling.classList.add('flow-node-block');
-                        nFinalText.innerText = "102(a)(1) Rejection Defensible";
-                        nFinalVal.innerText = "Reject Claim";
+                // 计算 102(d) 的 Effectively Filed Date
+                if (hasPriority && refPriorityDateStr) {
+                    if (priorityIsDescribed) {
+                        priorArtDate = new Date(refPriorityDateStr);
+                        priorArtDateType = "外国优先权日 (102(d) Priority Date)";
                     } else {
-                        // 宽限期内，检查例外
-                        nExceptionCheck.classList.add('flow-node-active');
-                        nExceptionVal.innerText = "Evaluating 102(b)(1) Exceptions...";
-
-                        if (optAttribution) {
-                            nExceptionCheck.className = "w-80 p-3 rounded-xl border border-slate-200 bg-white text-center transition-all duration-300 flow-node-pass";
-                            nExceptionVal.innerText = "Disqualified via 102(b)(1)(A)";
-
-                            verdict = "Disqualified via Exception";
-                            rationaleList.push(`【判定结论】✔ 成功克服！现有技术效力已被 102(b)(1)(A) 规则排除。`);
-                            rationaleList.push(`【法理详析】虽然该文献于本发案申请前公开 (${refPubDateStr})，但该日期落在一年的宽限期内（${oneYearPriorStr} 之后）。`);
-                            rationaleList.push(`申请人已成功主张“102(b)(1)(A) 归属豁免”——证明该公开披露的主题实则直接或间接源自本发案发明人。该文献在法律上不构成评述本案的现有技术。`);
-                            
-                            nFinalRuling.classList.add('flow-node-pass');
-                            nFinalText.innerText = "Disqualified under 102(b)(1)(A)";
-                            nFinalVal.innerText = "Withdraw Rejection";
-                        } else if (optShielding) {
-                            nExceptionCheck.className = "w-80 p-3 rounded-xl border border-slate-200 bg-white text-center transition-all duration-300 flow-node-pass";
-                            nExceptionVal.innerText = "Disqualified via 102(b)(1)(B)";
-
-                            verdict = "Disqualified via Exception";
-                            rationaleList.push(`【判定结论】✔ 成功克服！现有技术效力已被 102(b)(1)(B) 先行公开盾牌排除。`);
-                            rationaleList.push(`【法理详析】该文献落入宽限期范围内。由于申请人成功主张并在审查案卷中证明：在第三方的该公开日之前，本发案发明人团队已经提前公开了完全相同的主题内容（屏蔽盾生效），根据 102(b)(1)(B) 规则，对方的宽限期公开被彻底排除。`);
-
-                            nFinalRuling.classList.add('flow-node-pass');
-                            nFinalText.innerText = "Disqualified under 102(b)(1)(B)";
-                            nFinalVal.innerText = "Withdraw Rejection";
-                        } else {
-                            nExceptionCheck.className = "w-80 p-3 rounded-xl border border-slate-200 bg-white text-center transition-all duration-300 flow-node-block";
-                            nExceptionVal.innerText = "No Exceptions Active (Within Grace)";
-
-                            verdict = "Prior Art Block";
-                            rationaleList.push(`【判定结论】❌ 构成 102(a)(1) 现有技术障碍。`);
-                            rationaleList.push(`【法理详析】该文献于宽限期内公开 (${refPubDateStr})，属于第三方独立完成且未获派生的公共披露，且本发案在此公开日之前未行使先行公开屏蔽。因此依法满足 102(a)(1) 全套法定要件。`);
-                            rationaleList.push(`【官方实务指引】由于该文献发表在宽限期内，建议考量该论文披露的内容是否系不当获取本发案团队研发成果？若属于派生行为，可着手准备 37 CFR 1.130(a) 宣誓书证明来源并提起 Derivation 派生审查程序。`);
-
-                            nFinalRuling.classList.add('flow-node-block');
-                            nFinalText.innerText = "102(a)(1) Rejection Maintained";
-                            nFinalVal.innerText = "Maintain Rejection";
-                        }
+                        priorArtDate = new Date(refFiledDateStr);
+                        priorArtDateType = "美国递交日 (因优先权未记载争议特征，降级至US Filed Date)";
+                    }
+                } else {
+                    if (!refFiledDateStr) {
+                        errorFlag = true;
+                    } else {
+                        priorArtDate = new Date(refFiledDateStr);
+                        priorArtDateType = "美国本土实际递交日 (Actual US Filed Date)";
                     }
                 }
-            } else {
-                // 102(a)(2) 在先递交在后公开之“秘密现有技术”
-                activeStatute = "35 U.S.C. 102(a)(2)";
-                nRefText.innerText = "Evaluating Under 102(a)(2)";
 
-                if (!refFiledDateStr) {
+            } else if (refType === 'pct_patent') {
+                // PCT 国际申请
+                nRefCheck.classList.remove('flow-node-inactive');
+                nRefCheck.classList.add('flow-node-active');
+                nRefText.innerText = "PCT评估: 35 U.S.C. 102(a)(2)";
+
+                if (pctDesignatesUS) {
+                    isPotential102a2 = true;
+                    nRefVal.innerText = "Eligible (PCT Designates US)";
+                    
+                    // 计算 102(d)
+                    if (hasPriority && refPriorityDateStr) {
+                        if (priorityIsDescribed) {
+                            priorArtDate = new Date(refPriorityDateStr);
+                            priorArtDateType = "PCT优先权日 (102(d) Priority Date)";
+                        } else {
+                            priorArtDate = new Date(refFiledDateStr);
+                            priorArtDateType = "PCT国际递交日 (因优先权不合规降级)";
+                        }
+                    } else {
+                        if (!refFiledDateStr) {
+                            errorFlag = true;
+                        } else {
+                            priorArtDate = new Date(refFiledDateStr);
+                            priorArtDateType = "PCT国际递交日 (PCT Filing Date)";
+                        }
+                    }
+                } else {
+                    isPotential102a2 = false;
+                    nRefCheck.classList.remove('flow-node-active');
                     nRefCheck.classList.add('flow-node-block');
-                    nRefVal.innerText = "Filing Date Required";
-                    outRationale.innerText = "判定 102(a)(2) 类别专利文献，必须提供其“有效递交日 (Effectively Filed Date)”。";
-                    return;
+                    nRefVal.innerText = "Ineligible (未指定美国，仅能按公开日102(a)(1)论处)";
+                    priorArtDate = refPubDate;
+                    priorArtDateType = "单纯公开公布日 (非美国指定，降至102(a)(1)规则)";
                 }
 
-                const refFiledDate = new Date(refFiledDateStr);
+            } else if (refType === 'foreign_patent') {
+                // 外国专利 (例如 CN 专利)
+                isPotential102a2 = false;
+                nRefCheck.classList.remove('flow-node-inactive');
+                nRefCheck.classList.add('flow-node-block');
+                nRefText.innerText = "外国专利评估: 仅限 35 U.S.C. 102(a)(1)";
+                nRefVal.innerText = "外国专利非 102(a)(2) 秘密现有技术，无递交/优先权追溯力";
+                
+                priorArtDate = refPubDate;
+                priorArtDateType = "单纯国外公开/公告公布日 (102(a)(1) Basis)";
 
-                if (refFiledDate >= efd) {
-                    nRefCheck.classList.add('flow-node-pass');
-                    nRefVal.innerText = "Cleared (Filed on/after EFD)";
+            } else {
+                // 其它非专利文献
+                isPotential102a2 = false;
+                nRefCheck.classList.remove('flow-node-inactive');
+                nRefCheck.classList.add('flow-node-active');
+                nRefText.innerText = "非专利评估: 35 U.S.C. 102(a)(1)";
+                nRefVal.innerText = "Public Disclosure (Only 102(a)(1))";
+                
+                priorArtDate = refPubDate;
+                priorArtDateType = "公开发表日 (Publication Date)";
+            }
 
-                    verdict = "Cleared";
-                    rationaleList.push(`【判定结论】✔ 该专利文献不构成 102(a)(2) 在先递交现有技术。`);
-                    rationaleList.push(`【法理详析】对比文献的有效专利递交日 (${refFiledDateStr}) 晚于或等于本发案有效申请日 EFD (${efdStr})。由于其并未排在您的有效申请日之前，在法律上没有任何回溯对抗效力。`);
+            if (errorFlag) {
+                nDateCheck.classList.add('flow-node-block');
+                nDateVal.innerText = "Error: Missing Filed Date";
+                outRationale.innerText = "【输入错误】要求评述 102(a)(2) 类型的专利文献时，必须填写其递交日（Filing Date）要素。";
+                return;
+            }
 
-                    nExceptionCheck.querySelector('p').innerText = "Exceptions Check Skipped";
-                    nExceptionVal.innerText = "-";
-                    nFinalRuling.classList.add('flow-node-pass');
-                    nFinalText.innerText = "Not Prior Art (102(a)(2))";
-                    nFinalVal.innerText = "Cleared";
-                } else if (!isAnother) {
-                    // 如果不是 another，即完全相同的发明人名单
-                    nRefCheck.classList.add('flow-node-pass');
-                    nRefVal.innerText = "Excluded (Not By Another)";
+            const priorArtDateStr = priorArtDate.toISOString().split('T')[0];
 
-                    verdict = "Excluded";
-                    rationaleList.push(`【判定结论】✔ 该文献不满足 102(a)(2) 核心要件。`);
-                    rationaleList.push(`【法理详析】该在先递交的专利文献发明人名单 (${refInventorStr}) 与本发案一致 (${subjectInventorStr})。`);
-                    rationaleList.push(`35 U.S.C. 102(a)(2) 强制要求文献发明人必须为“他人 (by another)”。本案属于相同发明人自递交案，审查员无法在 102(a)(2) 下予以引用。`);
+            // --- STAGE 3: 日期对抗计算 ---
+            nDateCheck.classList.remove('flow-node-inactive');
+            const isPriorToSubject = priorArtDate < efd;
 
-                    nExceptionCheck.querySelector('p').innerText = "Exceptions Check Skipped";
-                    nExceptionVal.innerText = "-";
-                    nFinalRuling.classList.add('flow-node-pass');
-                    nFinalText.innerText = "Same Inventorship (102(a)(2) Inapplicable)";
-                    nFinalVal.innerText = "Cleared";
-                } else {
-                    // 构成 102(a)(2) 潜在现有技术，审查 102(b)(2) 例外
-                    nRefCheck.classList.add('flow-node-active');
-                    nRefVal.innerText = "Potential 102(a)(2) Art";
+            if (!isPriorToSubject) {
+                // 现有技术日期（不论是公开发布日还是102(d)计算所得日）晚于或等于本案有效申请日 EFD
+                nDateCheck.classList.add('flow-node-pass');
+                nDateVal.innerText = `Cleared (Prior Art Date: ${priorArtDateStr} >= EFD)`;
 
-                    nExceptionCheck.classList.add('flow-node-active');
-                    nExceptionVal.innerText = "Evaluating 102(b)(2) Exceptions...";
+                verdict = "Cleared";
+                activeStatute = isPotential102a2 ? "35 U.S.C. 102(a)(2)" : "35 U.S.C. 102(a)(1)";
+                
+                rationaleList.push(`【判定结论】✔ 安全！该文献不构成合格的现有技术。`);
+                rationaleList.push(`【法理详析】经算法精密核算，该文献的法定起算日 (${priorArtDateStr}) 晚于或等于本发案的有效申请日 EFD (${efdStr})。`);
+                if (isPotential102a2) {
+                    rationaleList.push(`根据 102(d) 规则，其虽试图要求在先递交效力，但算得的 Effectively Filed Date 并未抢在我方 EFD 之前。新颖性安全无虞。`);
+                } else if (refType === 'foreign_patent') {
+                    rationaleList.push(`⚠️ 重点提示：该在先文献是一件国外专利（例如 CN 专利）。根据美国 AIA 专利法规定，国外专利公开案绝不能在 102(a)(2) 下追溯其申请日或优先权日，它在美唯一的现有技术效日起始日只能是其公开公告日 (${refPubDateStr})。由于其公开日在您的 EFD (${efdStr}) 之后，因此不具有任何杀伤力。`);
+                }
 
-                    if (optAttribution) {
-                        nExceptionCheck.className = "w-80 p-3 rounded-xl border border-slate-200 bg-white text-center transition-all duration-300 flow-node-pass";
-                        nExceptionVal.innerText = "Excluded via 102(b)(2)(A)";
+                nExceptionCheck.querySelector('p').innerText = "Exceptions Bypassed";
+                nExceptionVal.innerText = "-";
+                nFinalRuling.classList.add('flow-node-pass');
+                nFinalText.innerText = "Not Prior Art";
+                nFinalVal.innerText = "Allowed / Withdraw Block";
 
-                        verdict = "Disqualified via Exception";
-                        rationaleList.push(`【判定结论】✔ 成功克服！102(a)(2) 潜在专利阻碍已被豁免排除。`);
-                        rationaleList.push(`【法理详析】该他人递交案虽然有效申请在先。但申请人已成功主张“102(b)(2)(A) 归属例外”，证明其递交的公开内容源于本发案研发实体，成功将该文献剔除。`);
+            } else {
+                // 现有技术日期抢在本案 EFD 之前，构成了潜在的现有技术阻碍。必须进入 STAGE 4 进行 Exceptions 判定
+                nDateCheck.classList.add('flow-node-active');
+                nDateVal.innerText = `Potential Block (Art Date: ${priorArtDateStr} < EFD)`;
+
+                nExceptionCheck.classList.remove('flow-node-inactive');
+                nExceptionCheck.classList.add('flow-node-active');
+                nExceptionVal.innerText = "Evaluating 102(b) Exclusions...";
+
+                // 根据是否属于 102(a)(2) 适用类型，选择不同的 Exception 匹配算法
+                if (isPotential102a2) {
+                    // 102(a)(2) 分支
+                    activeStatute = "35 U.S.C. 102(a)(2)";
+                    
+                    if (!isAnother) {
+                        // 发明人完全一致，不构成他人
+                        nExceptionCheck.className = "w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm flow-node-pass";
+                        nExceptionVal.innerText = "Excluded via Same Inventorship";
+
+                        verdict = "Cleared via Exclusivity";
+                        rationaleList.push(`【判定结论】✔ 成功排除阻碍！该文献不属于他人的公开。`);
+                        rationaleList.push(`【法理详析】根据 35 U.S.C. 102(a)(2) 的法定限制，该条款强制要求在先递交的文件必须为“他人 (by another)”的作品。当前录入的文献发明人名单与本发案完全相同，属于本发案的“自递交案”，依法不构成针对本案的新颖性评述基础。`);
 
                         nFinalRuling.classList.add('flow-node-pass');
-                        nFinalText.innerText = "Disqualified under 102(b)(2)(A)";
-                        nFinalVal.innerText = "Withdraw Rejection";
-                    } else if (optShielding) {
-                        nExceptionCheck.className = "w-80 p-3 rounded-xl border border-slate-200 bg-white text-center transition-all duration-300 flow-node-pass";
-                        nExceptionVal.innerText = "Excluded via 102(b)(2)(B)";
+                        nFinalText.innerText = "Same Inventorship Disqualification";
+                        nFinalVal.innerText = "Allowed";
 
-                        verdict = "Disqualified via Exception";
-                        rationaleList.push(`【判定结论】✔ 成功克服！102(a)(2) 阻碍已被 102(b)(2)(B) 屏蔽盾排除。`);
-                        rationaleList.push(`【法理详析】在他人专利递交日 (${refFiledDateStr}) 之前，本发案发明人已经将相同主题向公众进行了自公开披露，依据屏蔽盾规则排除对方效力。`);
-
-                        nFinalRuling.classList.add('flow-node-pass');
-                        nFinalText.innerText = "Disqualified under 102(b)(2)(B)";
-                        nFinalVal.innerText = "Withdraw Rejection";
-                    } else if (optOwnership) {
-                        nExceptionCheck.className = "w-80 p-3 rounded-xl border border-slate-200 bg-white text-center transition-all duration-300 flow-node-pass";
-                        nExceptionVal.innerText = "Excluded via 102(b)(2)(C)";
-
-                        verdict = "Disqualified via Exception";
-                        rationaleList.push(`【判定结论】✔ 成功克服！102(a)(2) 阻碍已被“共同所有权”排除。`);
-                        rationaleList.push(`【法理详析】经核查，对方的在先递交案与本案不晚于本发案 EFD 时处于同一个专利权实体名下，或者受 Joint Research Agreement (JRA) 合同保护。属于典型的 102(b)(2)(C) 例外排除。`);
-
-                        nFinalRuling.classList.add('flow-node-pass');
-                        nFinalText.innerText = "Disqualified under 102(b)(2)(C)";
-                        nFinalVal.innerText = "Withdraw Rejection";
                     } else {
-                        nExceptionCheck.className = "w-80 p-3 rounded-xl border border-slate-200 bg-white text-center transition-all duration-300 flow-node-block";
-                        nExceptionVal.innerText = "No Exceptions Active";
+                        // 审查 102(b)(2)(A), (B), (C) 豁免
+                        if (optAttribution) {
+                            nExceptionCheck.className = "w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm flow-node-pass";
+                            nExceptionVal.innerText = "Excluded via 102(b)(2)(A)";
+
+                            verdict = "Disqualified via Exception";
+                            rationaleList.push(`【判定结论】✔ 成功克服！102(a)(2) 驳回威胁已被 102(b)(2)(A) 豁免排除。`);
+                            rationaleList.push(`【法理详析】申请人成功证明该第三方的在先美国递交文件所公开的内容直接或间接派生、源自本案发明人。因此在法律上该文献的 102(a)(2) 地位被撤销，不能阻碍本案。`);
+
+                            nFinalRuling.classList.add('flow-node-pass');
+                            nFinalText.innerText = "Disqualified under 102(b)(2)(A)";
+                            nFinalVal.innerText = "Allowed / Sworn Out";
+
+                        } else if (optShielding) {
+                            nExceptionCheck.className = "w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm flow-node-pass";
+                            nExceptionVal.innerText = "Excluded via 102(b)(2)(B)";
+
+                            verdict = "Disqualified via Exception";
+                            rationaleList.push(`                            rationaleList.push(`【判定结论】✔ 成功克服！现有技术效力已被 102(b)(2)(B) 屏蔽盾排除。`);
+                            rationaleList.push(`【法理详析】在对方美国专利的 102(d) 现有技术起算点 (${priorArtDateStr}) 之前，本发案发明人已经对相同的主题进行了公共公开。由于我方“学术抢跑公开”抢在对方递交之前，我方在法律上筑起了抗原屏蔽盾，对方在先申请无法对我案产生阻碍效力。`);
+
+                            nFinalRuling.classList.add('flow-node-pass');
+                            nFinalText.innerText = "Disqualified under 102(b)(2)(B)";
+                            nFinalVal.innerText = "Allowed / Shield Active";
+
+                        } else if (optOwnership) {
+                            nExceptionCheck.className = "w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm flow-node-pass";
+                            nExceptionVal.innerText = "Excluded via 102(b)(2)(C)";
+
+                            verdict = "Disqualified via Exception";
+                            rationaleList.push(`【判定结论】✔ 成功克服！该在先递交案已被“共同所有权/合同豁免”排除。`);
+                            rationaleList.push(`【法理详析】在不晚于本发案的有效申请日（EFD: ${efdStr}）时，该在先美国专利申请与本发案均属于同一个受让人（即同一家公司）所有，或者落入双方合规的联合研发协议（JRA）框架内。`);
+                            rationaleList.push(`根据美国第一发明人申请制 102(b)(2)(C) 的法定豁免规则，该在先递交的“秘密现有技术”在判定新颖性和创造性时被完全剔除。`);
+
+                            nFinalRuling.classList.add('flow-node-pass');
+                            nFinalText.innerText = "Excluded under 102(b)(2)(C)";
+                            nFinalVal.innerText = "Allowed / JRA Excluded";
+
+                        } else {
+                            // 无豁免，驳回成立
+                            nExceptionCheck.className = "w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm flow-node-block";
+                            nExceptionVal.innerText = "No Exclusions Active";
+
+                            verdict = "Prior Art Block";
+                            rationaleList.push(`【判定结论】❌ 构成 35 U.S.C. 102(a)(2) 的合规新颖性阻碍。`);
+                            rationaleList.push(`【法理详析】该美国专利/公开文件是由他人（By Another）递交，且其法定 Effectively Filed Date (${priorArtDateStr}) 抢先早于本发案的有效递交日 EFD (${efdStr})。`);
+                            
+                            if (hasPriority) {
+                                rationaleList.push(`⚠️ 外国优先权核准提示：该对比案声称了在先的外国优先权（${refPriorityCountry}：${refPriorityDateStr}）。因系统开启了 AIA 102(d) 校验（即废除了希尔默学说），该在先优先权文本中已对核心技术进行了实质披露。`);
+                                rationaleList.push(`因此，该对比文献的现有技术日起始日被合规推演前置到了它的**外国优先权申请日 (${refPriorityDateStr})**。这对您的美国申请产生了毁灭性的追溯阻击。`);
+                            }
+
+                            rationaleList.push(`目前系统未检测到或主张任何 102(b)(2) 豁免事实（如共同所有权、自披露、屏蔽盾等）。因此，本案将会遭到美国审查员基于 102(a)(2) 提出的新颖性驳回（Office Action Block）。`);
+
+                            nFinalRuling.classList.add('flow-node-block');
+                            nFinalText.innerText = "102(a)(2) Rejection Maintained";
+                            nFinalVal.innerText = "Action Required / Rejection Defensible";
+                        }
+                    }
+
+                } else {
+                    // 102(a)(1) 分支
+                    activeStatute = "35 U.S.C. 102(a)(1)";
+
+                    // 检查是否落入 1 年宽限期 Grace Period
+                    const isWithinGrace = refPubDate >= oneYearPrior;
+
+                    if (!isWithinGrace) {
+                        // 宽限期外，无任何例外保护
+                        nExceptionCheck.className = "w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm flow-node-block";
+                        nExceptionVal.innerText = "Outside Grace Period (No Exceptions)";
 
                         verdict = "Prior Art Block";
-                        rationaleList.push(`【判定结论】❌ 构成 102(a)(2) 现有技术障碍（在先递交专利）。`);
-                        rationaleList.push(`【法理详析】该专利文献由他人递交，且有效申请日 (${refFiledDateStr}) 早于本发案有效递交日 EFD (${efdStr})，在法律上具有 102(a)(2) 先占地位。`);
-                        rationaleList.push(`且目前申请人未主张或建立任何 102(b)(2) 例外规则（如共同所有权、归属例外等）。因此驳回有效。`);
+                        rationaleList.push(`【判定结论】❌ 构成 35 U.S.C. 102(a)(1) 的合规现有技术障碍。`);
+                        rationaleList.push(`【法理详析】该现有技术的公开日 (${refPubDateStr}) 早于本发案有效递交日 EFD (${efdStr})，且处于一年的法定宽限期窗外（宽限期起点临界日为: ${oneYearPriorStr}）。`);
+                        rationaleList.push(`在此种情形下，根据美专法，申请人没有任何法律途径可以依据 102(b)(1) 提出自公开豁免或屏蔽盾证明，该文献构成不可逾越的新颖性障碍。`);
 
                         nFinalRuling.classList.add('flow-node-block');
-                        nFinalText.innerText = "102(a)(2) Rejection Maintained";
-                        nFinalVal.innerText = "Maintain Rejection";
+                        nFinalText.innerText = "102(a)(1) Rejection Maintained";
+                        nFinalVal.innerText = "Rejection Sustained";
+
+                    } else {
+                        // 宽限期内，审查 102(b)(1)(A) 或 (B) 豁免
+                        if (optAttribution) {
+                            nExceptionCheck.className = "w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm flow-node-pass";
+                            nExceptionVal.innerText = "Excluded via 102(b)(1)(A)";
+
+                            verdict = "Disqualified via Exception";
+                            rationaleList.push(`【判定结论】✔ 成功克服！102(a)(1) 威胁已被 102(b)(1)(A) 规则剔除。`);
+                            rationaleList.push(`【法理详析】该文献的公开披露日虽然早于本发案申请 (${refPubDateStr})，但该日期处于一年的宽限期窗口内（处于 ${oneYearPriorStr} 之后）。且我方已成功声明并准备了 37 CFR 1.130(a) 宣誓证明：该公开披露的主题实则直接或间接源自本发案研发实体自己的公开行为。因此不作为现有技术对待。`);
+
+                            nFinalRuling.classList.add('flow-node-pass');
+                            nFinalText.innerText = "Excluded under 102(b)(1)(A)";
+                            nFinalVal.innerText = "Allowed / Sworn Out";
+
+                        } else if (optShielding) {
+                            nExceptionCheck.className = "w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm flow-node-pass";
+                            nExceptionVal.innerText = "Excluded via 102(b)(1)(B)";
+
+                            verdict = "Disqualified via Exception";
+                            rationaleList.push(`【判定结论】✔ 成功克服！现有技术效力已被 102(b)(1)(B) 屏蔽盾排除。`);
+                            rationaleList.push(`【法理详析】该公开披露处于宽限期内。因申请人已向美专局提交 37 CFR 1.130(b) 宣誓书，证明在对方进行此宽限期公开 (${refPubDateStr}) 之前，我方团队早已提前对相同主题进行了首发自公开，以此成功截断、屏蔽了对方的披露。`);
+
+                            nFinalRuling.classList.add('flow-node-pass');
+                            nFinalText.innerText = "Excluded under 102(b)(1)(B)";
+                            nFinalVal.innerText = "Allowed / Shield Active";
+
+                        } else {
+                            // 宽限期内，但无任何宣誓主张
+                            nExceptionCheck.className = "w-[340px] p-3.5 rounded-xl border-2 text-center transition-all duration-300 shadow-sm flow-node-block";
+                            nExceptionVal.innerText = "No Sworn Claims Active (Within Grace)";
+
+                            verdict = "Prior Art Block";
+                            rationaleList.push(`【判定结论】❌ 构成 35 U.S.C. 102(a)(1) 现有技术障碍。`);
+                            rationaleList.push(`【法理详析】虽然该现有技术处于一年的宽限期内（${oneYearPriorStr} 之后），但由于它是由不具关联关系的第三方独立做出发表，且申请人目前没有任何有效的 37 CFR 1.130 宣誓主张。因此其完全具备现有技术资格，新颖性驳回成立。`);
+                            rationaleList.push(`💡 代理人实务提示：由于文献公开在宽限期内，建议立即自查研发记录，研判对方的发表是否源自于我方的不当泄露，如果是，可着手补充 1.130(a) 发明人源自性公开宣誓证明。`);
+
+                            nFinalRuling.classList.add('flow-node-block');
+                            nFinalText.innerText = "102(a)(1) Rejection Defensible";
+                            nFinalVal.innerText = "Action Required / Rejection Stands";
+                        }
                     }
                 }
             }
 
             // 更新输出结果
             outStatute.innerText = activeStatute;
-            outCriticalDate.innerText = oneYearPriorStr;
+            outCriticalDate.innerText = priorArtDateStr + ` (${priorArtDateType})`;
             outVerdict.innerText = verdict;
             outRationale.innerText = rationaleList.join("\n\n");
 
-            // 保存全局报告，供一键复制
-            activeReportText = `================ USPTO FITF 35 U.S.C. 102 审查报告 ================
-【Subject Application / 本案基本 facts】
-- 有效递交日 (EFD): ${efdStr} (AIA 适用)
-- 发明人 (Inventorship): ${subjectInventorStr}
+            // 保存全局判定报告以便一键复制
+            activeReportText = `================ USPTO FITF 跨境优先权与 102/103 审查判定意见书 ================
+【Subject Application / 本案基本事实】
+- 本发案有效申请日 (EFD): ${efdStr} (AIA FITF 适用)
+- 本案发明人 (Inventors): ${subjectInventorStr}
 
 【Potential Reference / 潜在现有技术】
-- 评估法条基础: ${activeStatute}
-- 公开/发表日期: ${refPubDateStr}
-- 专利有效申请日 (EFD): ${refType === '102a2' ? refFiledDateStr : 'N/A'}
-- 作者/发明人 (Ref Authors): ${refInventorStr}
+- 文献法定评估基础: ${activeStatute}
+- 该对比案来源与类型: ${refType}
+- 文献公开/发表日期: ${refPubDateStr}
+- 实际本土递交日 (Actual Filed): ${refFiledDateStr || 'N/A'}
+- 外国优先权情况 (Foreign Priority): ${hasPriority ? `要求了${refPriorityCountry}优先权 (日期: ${refPriorityDateStr}), 优先权文本记载一致性: ${priorityIsDescribed ? '已确认' : '否'}` : '无'}
+- 文献测算所得 102(d) 现有技术日起算点: ${priorArtDateStr} (${priorArtDateType})
+- 文献作者名单 (Authors): ${refInventorStr}
 
-【102(b) Exception / 豁免主张】
-- 102(b)(1)(A) / (b)(2)(A) Attribution Exception: ${optAttribution ? '已主张' : '无'}
-- 102(b)(1)(B) / (b)(2)(B) Shielding Exception: ${optShielding ? '已主张' : '无'}
-- 102(b)(2)(C) Common Ownership: ${refType === '102a2' ? (optOwnership ? '已主张' : '无') : '不适用'}
+【102(b) Exclusions / 宽限期豁免宣誓情况】
+- 1.130(a) 发明人源自性自公开豁免 (Attribution Exception): ${optAttribution ? '已激活' : '无'}
+- 1.130(b) 首发公开抗原屏蔽盾 (Shielding Exception): ${optShielding ? '已激活' : '无'}
+- 102(b)(2)(C) 共同所有权 / 合同豁免: ${optOwnership ? '已激活' : '不适用/未激活'}
 
-【Examiner Final Decision / 审查判定】
-- 结论: ${verdict}
-- 详细评述逻辑:
+【Final Office Action Ruling / 审查详析结论】
+- 判定状态: ${verdict}
+- 详细法理阐述与代理人抗辩指引:
 ${rationaleList.join("\n")}
-====================================================================`;
+=============================================================================================`;
         }
 
-        // 加载 USPTO 官方 Comprehensive Training PPT 经典实战场景
+        // 加载 USPTO 官方 Comprehensive Training 跨境经典实战场景
         function loadOfficialScenario(scenKey) {
             const subjectEfd = document.getElementById('subject-efd');
             const subjectInventor = document.getElementById('subject-inventor');
@@ -830,75 +1089,98 @@ ${rationaleList.join("\n")}
             const refFiledDate = document.getElementById('ref-filed-date');
             const refInventor = document.getElementById('ref-inventor');
 
+            const hasPriority = document.getElementById('has-foreign-priority');
+            const priorityDate = document.getElementById('ref-priority-date');
+            const priorityCountry = document.getElementById('ref-priority-country');
+            const priorityIsDescribed = document.getElementById('priority-is-described');
+
+            const pctDesignatesUs = document.getElementById('pct-designates-us');
+            const pctIsEnglish = document.getElementById('pct-is-english');
+
             const optAttribution = document.getElementById('exception-attribution');
             const optShielding = document.getElementById('exception-shielding');
             const optOwnership = document.getElementById('exception-ownership');
 
-            // 初始化所有豁免选项为 false
+            // 统一初始化
             optAttribution.checked = false;
             optShielding.checked = false;
             optOwnership.checked = false;
+            hasPriority.checked = false;
+            pctDesignatesUs.checked = true;
+            pctIsEnglish.checked = true;
 
-            if (scenKey === 'scen1') {
-                // 场景一：宽限期内第三人公开
+            if (scenKey === 'scen_priority_cn') {
+                // 场景一：要求了中国优先权的美案在先公开申请 (新法 102(d))
                 subjectEfd.value = "2020-06-01";
                 subjectInventor.value = "Taylor";
                 
-                // 102a1 模式
-                setRefRadio('102a1');
-                refPubDate.value = "2019-12-01";
+                setRefRadio('us_patent');
+                refPubDate.value = "2020-09-15"; // 本案递交后公开
+                refFiledDate.value = "2019-03-15"; // 本案前实际美申请
+                
+                hasPriority.checked = true;
+                priorityDate.value = "2018-12-01"; // 抢在本发案前更早的中国优先权
+                priorityCountry.value = "CN (中国)";
+                priorityIsDescribed.checked = true;
                 refInventor.value = "Smith";
 
-            } else if (scenKey === 'scen2') {
-                // 场景二：自公开 Attribution
-                subjectEfd.value = "2020-06-01";
+            } else if (scenKey === 'scen_priority_pre_aia') {
+                // 场景二：旧法下的希尔默学说
+                subjectEfd.value = "2011-06-01"; // 强行设在旧法时代
                 subjectInventor.value = "Taylor";
                 
-                // 102a1 模式
-                setRefRadio('102a1');
-                refPubDate.value = "2019-12-01";
-                refInventor.value = "Taylor"; // 相同发明人
-                optAttribution.checked = true; // 豁免激活
-
-            } else if (scenKey === 'scen3') {
-                // 场景三：Shielding 屏蔽盾
-                subjectEfd.value = "2020-06-01";
-                subjectInventor.value = "Taylor";
+                setRefRadio('us_patent');
+                refPubDate.value = "2011-09-15"; 
+                refFiledDate.value = "2010-03-15"; 
                 
-                // 102a1 模式
-                setRefRadio('102a1');
-                refPubDate.value = "2019-12-01";
-                refInventor.value = "Smith";
-                optShielding.checked = true; // 激活屏蔽盾
-
-            } else if (scenKey === 'scen4') {
-                // 场景四：102a2 在先递交在后公开 (Secret Art)
-                subjectEfd.value = "2020-06-01";
-                subjectInventor.value = "Taylor";
-                
-                // 102a2 模式
-                setRefRadio('102a2');
-                refPubDate.value = "2020-09-15"; // 申请后公开
-                refFiledDate.value = "2019-03-15"; // 在先申请日
+                hasPriority.checked = true;
+                priorityDate.value = "2009-12-01"; 
+                priorityCountry.value = "CN (中国)";
+                priorityIsDescribed.checked = true;
                 refInventor.value = "Smith";
 
-            } else if (scenKey === 'scen5') {
-                // 场景五：共同所有权排除
+            } else if (scenKey === 'scen_foreign_cn_post') {
+                // 场景三：在先申请、在后公开的外国单纯 CN 专利（在美不具备秘密现有技术资格）
                 subjectEfd.value = "2020-06-01";
                 subjectInventor.value = "Taylor";
                 
-                // 102a2 模式
-                setRefRadio('102a2');
+                setRefRadio('foreign_patent');
+                refPubDate.value = "2020-09-15"; // 我们递交后公开，我们在前
+                // 它的中国申请日本身为 2019-03-15 (由 toggleRefFields 会自动禁用 US Filed Date 输入，防范把其视作102(a)(2))
+                refInventor.value = "Smith";
+
+            } else if (scenKey === 'scen_foreign_cn_pre') {
+                // 场景四：在我们递交前就已经公开公告的外国中国专利 (只能算 102(a)(1) 公开日论处)
+                subjectEfd.value = "2020-06-01";
+                subjectInventor.value = "Taylor";
+                
+                setRefRadio('foreign_patent');
+                refPubDate.value = "2019-12-01"; // 发生在我们 EFD 之前
+                refInventor.value = "Smith";
+
+            } else if (scenKey === 'scen_pct_non_english') {
+                // 场景五：非英文指定美国的 PCT
+                subjectEfd.value = "2020-06-01";
+                subjectInventor.value = "Taylor";
+                
+                setRefRadio('pct_patent');
                 refPubDate.value = "2020-09-15";
-                refFiledDate.value = "2019-03-15";
+                refFiledDate.value = "2019-03-15"; // PCT 国际递交日
+                
+                hasPriority.checked = true;
+                priorityDate.value = "2018-12-01"; // 优先权日
+                priorityIsDescribed.checked = true;
+                
+                pctDesignatesUs.checked = true;
+                pctIsEnglish.checked = false; // 勾选非英文
                 refInventor.value = "Smith";
-                optOwnership.checked = true; // 激活共同所有权
             }
 
-            // 返回测算面板并自动刷新
+            // 同步 UI 状态
+            togglePriorityFields();
             switchTab('sandbox');
             runDiagnostic();
-            showNotification(`已为您成功载入：${getScenarioTitle(scenKey)}！`);
+            showNotification(`已为您成功加载经典实战案：${getScenarioTitle(scenKey)}！`);
         }
 
         // 辅助切换 Radio Button
@@ -913,19 +1195,19 @@ ${rationaleList.join("\n")}
             }
         }
 
-        // 获取场景名称，方便提示
+        // 获取场景名称以便提示
         function getScenarioTitle(scenKey) {
             const mapping = {
-                'scen1': "场景一 (宽限期内第三人无豁免公开)",
-                'scen2': "场景二 (发明人源自性公开豁免)",
-                'scen3': "场景三 (学术抢跑与屏蔽盾机制)",
-                'scen4': "场景四 (在先递交在后公开秘密现有技术)",
-                'scen5': "场景五 (102(b)(2)(C) 共同所有权豁免)"
+                'scen_priority_cn': "在美要求中国优先权对比案 (AIA 102(d))",
+                'scen_priority_pre_aia': "旧法希尔默学说 (Pre-AIA Hilmer Active)",
+                'scen_foreign_cn_post': "在后公开国外专利 (AIA 102(a)(2) 不适用)",
+                'scen_foreign_cn_pre': "在先公开国外专利 (AIA 102(a)(1) 适用)",
+                'scen_pct_non_english': "指定美国非英文 PCT 特性"
             };
             return mapping[scenKey] || "演示场景";
         }
 
-        // 复制报告到剪贴板 (避开 iframe 权限限制)
+        // 复制诊断报告到剪贴板
         function copyAction() {
             if (!activeReportText) return;
             const textarea = document.createElement('textarea');
@@ -936,9 +1218,9 @@ ${rationaleList.join("\n")}
             try {
                 const successful = document.execCommand('copy');
                 if (successful) {
-                    showNotification('✔ 102 官方标准审查诊断判定书已成功复制到剪贴板！');
+                    showNotification('✔ 102/103 跨境专利审查诊断判定书已复制到剪贴板！');
                 } else {
-                    showNotification('复制失败，请手动选取文本。');
+                    showNotification('复制失败，请手动选择文本。');
                 }
             } catch (err) {
                 showNotification('复制失败: ' + err);
