@@ -1,1 +1,412 @@
+<!-- ... existing code ... -->
+                    <!-- Dynamic Table Grid -->
+                    <div class="md:col-span-8 space-y-3">
+                        <div class="overflow-x-auto border border-slate-100 rounded-xl bg-slate-50/50">
+                            <table class="w-full text-left text-xs text-slate-600 border-collapse">
+                                <thead class="bg-slate-100/80 text-[10px] font-bold text-slate-500 uppercase border-b border-slate-250">
+                                    <tr>
+                                        <th class="px-3 py-2 w-[28%]">项目名称</th>
+                                        <th class="px-3 py-2 w-[18%]">优先权日 (PD)</th>
+                                        <th class="px-3 py-2 w-[18%]">PCT 递交日</th>
+                                        <th class="px-3 py-2 w-[18%]">实际/计划进入</th>
+                                        <th class="px-3 py-2 w-[14%] text-center">个性化加速方案</th>
+                                        <th class="px-2 py-2 text-center w-[4%]">操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="portfolioTableBody" class="divide-y divide-slate-100 bg-white">
+                                    <!-- Dynamic rows from JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="flex justify-end">
+<!-- ... existing code ... -->
+    <script>        // --- DATASET & STATES ---        
+        let state = {
+            route: 'epo',        // 'epo' or 'cnipa'
+            dest: 'epo',         // 'epo' or 'us'
+            entity: 'large',     // 'large', 'small', 'micro'
+            activeNodeIndex: 0,            
+            // Core Calculator Anchors (Multi-Anchor Mode)
+            priorityDate: '',      // PD (Anchor 1) - String "YYYY-MM-DD"
+            pctFilingDate: '',     // PCTD (Anchor 2) - Manual lock or empty
+            nationalEntryDate: '',  // ENTRYD (Anchor 3) - Manual lock or empty
 
+            // Remedy Scenario State
+            remedyScenario: 'none', // 'none', 'priority', 'epo-31m', 'us-30m', 'epo-oa', 'us-oa'
+            includeRemedyInTotal: false,
+
+            // EPO Options (Form 1200 Section 12)
+            waiver12_1: false,   // Early processing
+            waiver12_2: false,   // Waive Rule 161/162 & Rule 70(2)
+            paceEnabled: false,  // PACE Acceleration Request (EPO)
+            epoPphEnabled: false, // PPH into Europe (Only available if route is 'cnipa')            
+            
+            // US Options
+            claimsCount: 20,
+            hasMultipleDependents: false,
+            usPphEnabled: false,    // PPH into US
+            usTrackOneEnabled: false, // USPTO Track One (Prioritized Exam)
+
+            // --- PORTFOLIO SYSTEM STATES ---            
+            portfolioJurisdiction: 'us', // 'us' or 'epo'
+            portfolioItems: [
+                { id: 1, name: '多孔微孔陶瓷雾化芯(A10)', pd: '2025-01-10', pctd: '2026-01-05', entryd: '2026-06-12', accelUs: 'none', accelEpo: 'none' },
+                { id: 2, name: '感受器侧向对称发热总成', pd: '2025-10-18', pctd: '2026-07-02', entryd: '', accelUs: 'pph', accelEpo: 'pace' },
+                { id: 3, name: '阶梯式风道双腔烟弹防冷凝', pd: '2024-03-22', pctd: '2025-03-15', entryd: '2025-09-20', accelUs: 'trackone', accelEpo: 'both' }
+            ]
+        };
+
+        // Static configuration of standard Fixed Stages
+<!-- ... existing code ... -->
+        function setWaiver(type, checked) {
+            if (type === '12_1') state.waiver12_1 = checked;
+            if (type === '12_2') state.waiver12_2 = checked;
+            renderTimeline();
+        }
+
+        function renderPortfolioTable() {
+            const tbody = document.getElementById('portfolioTableBody');
+            let html = "";
+            state.portfolioItems.forEach((item, index) => {
+                let accelSelectHtml = "";
+                if (state.portfolioJurisdiction === 'us') {
+                    // Render US Options: Standard, PPH, Track One
+                    let currentVal = item.accelUs || 'none';
+                    accelSelectHtml = `
+                    <select onchange="updatePortfolioItem(${item.id}, 'accelUs', this.value)" class="w-full bg-slate-50 border border-slate-200 rounded px-1.5 py-1 text-[10px] font-medium text-slate-700 outline-none focus:border-indigo-500 cursor-pointer shadow-sm">
+                        <option value="none" ${currentVal === 'none' ? 'selected' : ''}>普通排队</option>
+                        <option value="pph" ${currentVal === 'pph' ? 'selected' : ''}>PPH 快速</option>
+                        <option value="trackone" ${currentVal === 'trackone' ? 'selected' : ''}>Track One</option>
+                    </select>
+                    `;
+                } else {
+                    // Render EPO Options: Standard, PACE, PPH, Both
+                    let currentVal = item.accelEpo || 'none';
+                    accelSelectHtml = `
+                    <select onchange="updatePortfolioItem(${item.id}, 'accelEpo', this.value)" class="w-full bg-slate-50 border border-slate-200 rounded px-1.5 py-1 text-[10px] font-medium text-slate-700 outline-none focus:border-emerald-500 cursor-pointer shadow-sm">
+                        <option value="none" ${currentVal === 'none' ? 'selected' : ''}>普通排队</option>
+                        <option value="pace" ${currentVal === 'pace' ? 'selected' : ''}>PACE 加速</option>
+                        <option value="pph" ${currentVal === 'pph' ? 'selected' : ''}>中欧 PPH</option>
+                        <option value="both" ${currentVal === 'both' ? 'selected' : ''}>PACE+PPH</option>
+                    </select>
+                    `;
+                }
+
+                html += `
+                <tr class="hover:bg-slate-50/80 transition-all-300">
+                    <td class="px-3 py-2">
+                        <input type="text" value="${item.name}" onchange="updatePortfolioItem(${item.id}, 'name', this.value)" class="w-full bg-transparent outline-none font-medium text-slate-800 text-xs border-b border-transparent hover:border-slate-200 focus:border-indigo-500 focus:bg-white px-1 py-0.5 rounded">
+                    </td>
+                    <td class="px-3 py-2">
+                        <input type="date" value="${item.pd}" onchange="updatePortfolioItem(${item.id}, 'pd', this.value)" class="bg-transparent outline-none text-slate-600 text-xs hover:bg-white focus:bg-white px-1 py-0.5 rounded border border-transparent hover:border-slate-200">
+                    </td>
+                    <td class="px-3 py-2">
+                        <input type="date" value="${item.pctd}" onchange="updatePortfolioItem(${item.id}, 'pctd', this.value)" class="bg-transparent outline-none text-slate-600 text-xs hover:bg-white focus:bg-white px-1 py-0.5 rounded border border-transparent hover:border-slate-200">
+                    </td>
+                    <td class="px-3 py-2">
+                        <input type="date" value="${item.entryd}" onchange="updatePortfolioItem(${item.id}, 'entryd', this.value)" placeholder="未进入(自动预测)" class="bg-transparent placeholder-slate-400 outline-none text-slate-600 text-xs hover:bg-white focus:bg-white px-1 py-0.5 rounded border border-transparent hover:border-slate-200">
+                    </td>
+                    <td class="px-3 py-2 text-center">
+                        ${accelSelectHtml}
+                    </td>
+                    <td class="px-2 py-2 text-center">
+                        <button onclick="deletePortfolioItem(${item.id})" class="text-rose-500 hover:text-rose-700 font-bold text-xs p-1">✕</button>
+                    </td>
+                </tr>
+                `;
+            });
+            tbody.innerHTML = html;
+        }
+
+        function updatePortfolioItem(id, field, value) {
+            let item = state.portfolioItems.find(x => x.id === id);
+            if (item) {
+                item[field] = value;
+                renderPortfolioCalculations();
+            }
+        }
+
+        function deletePortfolioItem(id) {
+            state.portfolioItems = state.portfolioItems.filter(x => x.id !== id);
+            renderPortfolioTable();
+            renderPortfolioCalculations();
+        }
+
+        function addEmptyPortfolioRow() {
+            let maxId = state.portfolioItems.length > 0 ? Math.max(...state.portfolioItems.map(x => x.id)) : 0;
+            let today = new Date();
+            let pdDate = new Date(today.setMonth(today.getMonth() - 12));
+            state.portfolioItems.push({
+                id: maxId + 1,
+                name: `新递交专利项目 ${maxId + 1}`,
+                pd: formatDate(pdDate),
+                pctd: '',
+                entryd: '',
+                accelUs: 'none',
+                accelEpo: 'none'
+            });
+            renderPortfolioTable();
+            renderPortfolioCalculations();
+        }
+
+        function loadMockPortfolio() {
+            state.portfolioItems = [
+                { id: 1, name: '多孔微孔陶瓷雾化芯(A10)', pd: '2025-01-10', pctd: '2026-01-05', entryd: '2026-06-12', accelUs: 'none', accelEpo: 'none' },
+                { id: 2, name: '感受器侧向对称发热总成', pd: '2025-10-18', pctd: '2026-07-02', entryd: '', accelUs: 'pph', accelEpo: 'pace' },
+                { id: 3, name: '阶梯式风道双腔烟弹防冷凝', pd: '2024-03-22', pctd: '2025-03-15', entryd: '2025-09-20', accelUs: 'trackone', accelEpo: 'both' },
+                { id: 4, name: '磁吸式防漏液超声波震动座', pd: '2025-11-05', pctd: '', entryd: '', accelUs: 'none', accelEpo: 'pph' },
+                { id: 5, name: '温度阻值闭环精准控温电弧', pd: '2023-12-15', pctd: '2024-12-05', entryd: '2024-06-18', accelUs: 'pph', accelEpo: 'none' }
+            ];
+            renderPortfolioTable();
+            renderPortfolioCalculations();
+            showToast("成功装载电子烟Demo数据", "包含五件横跨不同发展阶段的专利。部分项目已自愿启用 PPH 或 Track One 加速通道。");
+        }
+
+        function parsePortfolioPaste() {
+            const rawText = document.getElementById('portfolioPasteArea').value.trim();
+            if (!rawText) {
+                showToast("解析错误", "请先在文本框内贴入以逗号或Tab键分隔的数据表格。");
+                return;
+            }
+
+            try {
+                const lines = rawText.split('\n');
+                let parsedItems = [];
+                let maxId = state.portfolioItems.length > 0 ? Math.max(...state.portfolioItems.map(x => x.id)) : 0;
+
+                lines.forEach((line) => {
+                    if (!line.trim()) return;
+                    let parts = line.split(/[\t,，;；\s]+/);
+                    if (parts.length > 0) {
+                        let name = parts[0] || `导入项目 ${maxId + 1}`;
+                        let pd = parts[1] || '';
+                        let pctd = parts[2] || '';
+                        let entryd = parts[3] || '';
+
+                        // Simple date validation
+                        let dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+                        if (pd && !dateRegex.test(pd)) pd = '';
+                        if (pctd && !dateRegex.test(pctd)) pctd = '';
+                        if (entryd && !dateRegex.test(entryd)) entryd = '';
+
+                        maxId++;
+                        parsedItems.push({ id: maxId, name, pd, pctd, entryd, accelUs: 'none', accelEpo: 'none' });
+                    }
+                });
+
+                if (parsedItems.length > 0) {
+                    state.portfolioItems = [...state.portfolioItems, ...parsedItems];
+                    renderPortfolioTable();
+                    renderPortfolioCalculations();
+                    showToast(`成功解析导入 ${parsedItems.length} 件专利`, "数据已无缝合并，默认均设为“普通排队”模式。您可以点击表格单独调整。");
+                    document.getElementById('portfolioPasteArea').value = "";
+                } else {
+                    showToast("解析失败", "格式不匹配，请确认为：项目名,YYYY-MM-DD,YYYY-MM-DD,YYYY-MM-DD");
+                }
+            } catch (err) {
+                showToast("解析发生异常", err.toString());
+            }
+        }
+
+        // Predict stage of a single item at a given evaluation point (T)
+        function predictPatentStage(item, jurisdiction, evalDateStr) {
+            let evalDate = new Date(evalDateStr);
+            let pd = new Date(item.pd);
+
+            // Determine Entry Date (Actual or Estimated)
+            let entryd;
+            if (item.entryd) {
+                entryd = new Date(item.entryd);
+            } else {
+                let offset = jurisdiction === 'epo' ? 31 : 30;
+                entryd = addMonths(item.pd, offset);
+            }
+
+            // Extract Case-Specific Accel Choices
+            let accelUs = item.accelUs || 'none';
+            let accelEpo = item.accelEpo || 'none';
+
+            if (jurisdiction === 'us') {
+                // US Stages with Case-Specific Offsets
+                // 1. 国际阶段（未进美国）: Eval date is before Entry Date
+                if (evalDate < entryd) {
+                    return 1;
+                }
+                // 2. 国家阶段格式初审: Entry to Entry + 2 months
+                let limit2 = addMonths(formatDate(entryd), 2);
+                if (evalDate >= entryd && evalDate < limit2) {
+                    return 2;
+                }
+                
+                // 3. 审查排队与 PPH/Track-One 决策
+                // Standard: Entry + 2m to Entry + 6m
+                // PPH reduces queuing: Entry + 2m to Entry + 4m
+                // Track One slashes queuing: Entry + 2m to Entry + 3m
+                let queueMonths = 6;
+                if (accelUs === 'pph') queueMonths = 4;
+                if (accelUs === 'trackone') queueMonths = 3;
+
+                let limit3 = addMonths(formatDate(entryd), queueMonths);
+                if (evalDate >= limit2 && evalDate < limit3) {
+                    return 3;
+                }
+                
+                // 4. 实质审查与 OA 答辩
+                // Standard: Entry + 6m to Entry + 18m
+                // PPH shrinks exam time: Entry + 4m to Entry + 12m
+                // Track One shrinks exam time: Entry + 3m to Entry + 8m
+                let examMonths = 18;
+                if (accelUs === 'pph') examMonths = 12;
+                if (accelUs === 'trackone') examMonths = 8;
+
+                let limit4 = addMonths(formatDate(entryd), examMonths);
+                if (evalDate >= limit3 && evalDate < limit4) {
+                    return 4;
+                }
+                // 5. 授权领证与延续案布局: Entry onwards
+                return 5;
+            } else {
+                // EPO Stages with Case-Specific Offsets
+                // 1. 国际阶段（未进欧洲）
+                if (evalDate < entryd) {
+                    return 1;
+                }
+                // 2. 进入欧洲及 Rule 161 强制答辩
+                // Standard R161: Entry to Entry + 6 months
+                // PACE/PPH skips/compresses waiver time to 2 months
+                let r161Months = 6;
+                if (accelEpo !== 'none') r161Months = 2;
+
+                let limit2 = addMonths(formatDate(entryd), r161Months);
+                if (evalDate >= entryd && evalDate < limit2) {
+                    return 2;
+                }
+                // 3. 补充检索与 ESOP 发文
+                // Standard: Entry + 6m to Entry + 12m
+                // Accelerated: Entry + 2m to Entry + 6m
+                let searchMonths = 12;
+                if (accelEpo !== 'none') searchMonths = 6;
+
+                let limit3 = addMonths(formatDate(entryd), searchMonths);
+                if (evalDate >= limit2 && evalDate < limit3) {
+                    return 3;
+                }
+                // 4. 实质审查与答辩
+                // Standard: Entry + 12m to Entry + 30m
+                // PACE: Entry + 6m to Entry + 18m
+                // PPH: Entry + 6m to Entry + 20m
+                // Both: Entry + 6m to Entry + 15m
+                let examMonths = 30;
+                if (accelEpo === 'pace') examMonths = 18;
+                if (accelEpo === 'pph') examMonths = 20;
+                if (accelEpo === 'both') examMonths = 15;
+
+                let limit4 = addMonths(formatDate(entryd), examMonths);
+                if (evalDate >= limit3 && evalDate < limit4) {
+                    return 4;
+                }
+                // 5. 授权与德法意文领证
+                return 5;
+            }
+        }
+
+        function renderPortfolioCalculations() {
+            const jur = state.portfolioJurisdiction;
+            const stages = FIXED_STAGES[jur];
+
+            const currentPoint = "2026-07-15";
+            const sixMonthsPoint = "2027-01-15";
+            const oneYearPoint = "2027-07-15";
+
+            // Initialize aggregators
+            let countsCurrent = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+            let counts6M = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+            let counts1Y = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+
+            let detailsCurrent = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+            let details6M = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+            let details1Y = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+
+            state.portfolioItems.forEach(item => {
+                if (!item.pd) return; // Skip invalid items
+                
+                let sCurr = predictPatentStage(item, jur, currentPoint);
+                let s6M = predictPatentStage(item, jur, sixMonthsPoint);
+                let s1Y = predictPatentStage(item, jur, oneYearPoint);
+
+                countsCurrent[sCurr]++;
+                counts6M[s6M]++;
+                counts1Y[s1Y]++;
+
+                // Format decorated names with speedup badges for high-fidelity visualization
+                let labelAddon = "";
+                if (jur === 'us') {
+                    let accUs = item.accelUs || 'none';
+                    if (accUs === 'pph') {
+                        labelAddon = `<span class="ml-1.5 px-1 py-0.2 rounded text-[8px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200">PPH</span>`;
+                    } else if (accUs === 'trackone') {
+                        labelAddon = `<span class="ml-1.5 px-1 py-0.2 rounded text-[8px] font-black bg-amber-100 text-amber-800 border border-amber-200">Track One</span>`;
+                    }
+                } else {
+                    let accEpo = item.accelEpo || 'none';
+                    if (accEpo === 'pace') {
+                        labelAddon = `<span class="ml-1.5 px-1 py-0.2 rounded text-[8px] font-black bg-indigo-100 text-indigo-800 border border-indigo-200">PACE</span>`;
+                    } else if (accEpo === 'pph') {
+                        labelAddon = `<span class="ml-1.5 px-1 py-0.2 rounded text-[8px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200">中欧PPH</span>`;
+                    } else if (accEpo === 'both') {
+                        labelAddon = `<span class="ml-1.5 px-1 py-0.2 rounded text-[8px] font-black bg-purple-100 text-purple-800 border border-purple-200">PACE+PPH</span>`;
+                    }
+                }
+
+                let decoratedName = `<span class="inline-flex items-center">${item.name}${labelAddon}</span>`;
+
+                detailsCurrent[sCurr].push(decoratedName);
+                details6M[s6M].push(decoratedName);
+                details1Y[s1Y].push(decoratedName);
+            });
+
+            // Helper to render widget cards inside each column
+            function buildColumnHtml(countsMap, detailsMap) {
+                let html = "";
+                let totalCases = state.portfolioItems.length || 1;
+
+                stages.forEach(st => {                    let count = countsMap[st.id] || 0;
+                    let pct = Math.round((count / totalCases) * 100);
+                    let badgeColor = count > 0 ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-slate-100 text-slate-400 border-slate-200";
+                    let barColor = count > 0 ? "bg-emerald-500" : "bg-slate-200";
+
+                    let tooltipNames = detailsMap[st.id] && detailsMap[st.id].length > 0 
+                        ? `<div class="mt-1.5 text-[9px] text-slate-400 border-t border-slate-100 pt-1.5 flex flex-col gap-1">🔍 包含: ${detailsMap[st.id].join('、')}</div>` 
+                        : "";
+
+                    html += `
+                    <div class="bg-white p-3 rounded-xl border border-slate-100 shadow-sm hover:border-slate-250 transition-all-300">
+                        <div class="flex justify-between items-start gap-2">
+                            <div class="flex-grow">
+                                <span class="text-[10px] font-bold text-slate-800 block leading-snug">${st.id}. ${st.name}</span>
+                                <span class="text-[9px] text-slate-400 block mt-0.5 leading-normal">${st.desc}</span>
+                            </div>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${badgeColor}">${count} 件</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
+                            <div class="${barColor} h-full transition-all-300" style="width: ${pct}%"></div>
+                        </div>
+                        ${tooltipNames}
+                    </div>
+                    `;
+                });
+                return html;
+            }
+
+            document.getElementById('agg-port-current').innerHTML = buildColumnHtml(countsCurrent, detailsCurrent);
+            document.getElementById('agg-port-6m').innerHTML = buildColumnHtml(counts6M, details6M);
+            document.getElementById('agg-port-1y').innerHTML = buildColumnHtml(counts1Y, details1Y);
+        }
+
+        function renderPortfolioAll() {
+            renderPortfolioTable();
+            renderPortfolioCalculations();
+        }
+
+        // --- MASTER CALCULATION AND RENDER ---
+<!-- ... existing code ... -->
