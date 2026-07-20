@@ -1,4 +1,7 @@
-<!DOCTYPE html><html lang="zh-CN"><head>
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>海外专利路线、期限决策跟踪系统</title>
@@ -200,7 +203,6 @@
                             <option value="us-30m" class="text-rose-600">进入美国国家阶段 30 个月法定期限超期</option>
                             <option value="epo-oa" class="text-rose-600">欧洲答复官方检索意见(ESOP)或实质审查意见(OA)超期</option>
                             <option value="us-oa" class="text-rose-600">美国答复实质审查意见(OA)超期（超法定3个月未满6个月）</option>
-                            <option value="us-oa-abandoned" class="text-rose-600">美国答复实质审查意见(OA)超期（超过6个月导致彻底失效）</option>
                         </select>
                     </div>
 
@@ -226,6 +228,7 @@
                     <!-- Progress Connection Line -->
                     <div class="absolute top-[3.25rem] left-[5%] right-[5%] h-1 bg-slate-200 rounded z-0" id="timelineBgLine"></div>
                     <div class="absolute top-[3.25rem] left-[5%] h-1 bg-gradient-to-r from-emerald-400 to-indigo-500 rounded z-0 transition-all-300" id="timelineActiveLine" style="width: 20%;"></div>
+
                     <!-- Nodes Container -->
                     <div class="relative z-10 flex justify-between min-w-[750px]" id="timelineNodesContainer">
                         <!-- Dynamic rendering through JS -->
@@ -247,15 +250,19 @@
                 </div>
             </div>
 
-            <!-- Step 5: Portfolio Tracker & Forecaster (UPGRADED) -->
+            <!-- Step 5: Portfolio Tracker & Forecaster -->
             <div class="bg-white border border-slate-100 rounded-2xl p-5 shadow-sm relative overflow-hidden">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
                     <div>
                         <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
                             <svg class="w-4 h-4 text-emerald-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                            第五步：在案申请多案追踪与阶段预测 (支持个案独立提速)
+                            第五步：在案申请多案追踪与阶段预测
                         </h2>
-                        <p class="text-[10px] text-slate-500 mt-0.5">评估基准日：<span class="font-bold text-indigo-600">2026年7月15日</span>。支持单件案件下拉设置专属加速方案，实时影响右侧及半年、一年后的生命周期推演。</p>
+                        <p class="text-[10px] text-slate-500 mt-0.5">
+                            基准评估日期：<span class="font-bold text-indigo-600">2026年7月15日 (当前)</span>。
+                            支持Excel数据直接复制粘贴。
+                            <span id="saveStatus" class="ml-2 text-[9px] text-emerald-600 font-semibold hidden">💾 已自动保存</span>
+                        </p>
                     </div>
                     <!-- US/EU Toggle for Portfolio -->
                     <div class="inline-flex rounded-lg p-0.5 bg-slate-100 border border-slate-200" id="portfolioJurisdictionSelector">
@@ -264,48 +271,93 @@
                     </div>
                 </div>
 
-                <!-- Input area for Excel / CSV Bulk Paste -->
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
-                    <div class="md:col-span-4 space-y-3">
-                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-150 space-y-2">
-                            <label class="text-[11px] text-slate-500 font-bold block">📊 Excel/CSV 一键批量导入：</label>
-                            <textarea id="portfolioPasteArea" placeholder="每行一条格式: 项目名称, 优先权日(PD), PCT递交日, 国家进入日 (用逗号、Tab或空格隔开)" class="w-full h-28 p-2 text-[10px] font-mono border border-slate-200 rounded-md bg-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-100 resize-none"></textarea>
-                            <div class="flex gap-2">
-                                <button onclick="parsePortfolioPaste()" class="flex-grow bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-bold py-1 px-2 rounded-lg transition-all-300">智能解析导入</button>
-                                <button onclick="loadMockPortfolio()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold py-1 px-2 rounded-lg transition-all-300">加载电子烟Demo</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Dynamic Table Grid -->
-                    <div class="md:col-span-8 space-y-3">
-                        <div class="overflow-x-auto border border-slate-100 rounded-xl bg-slate-50/50">
-                            <table class="w-full text-left text-xs text-slate-600 border-collapse">
-                                <thead class="bg-slate-100/80 text-[10px] font-bold text-slate-500 uppercase border-b border-slate-250">
-                                    <tr>
-                                        <th class="px-3 py-2 w-[28%]">项目名称</th>
-                                        <th class="px-3 py-2 w-[18%]">优先权日 (PD)</th>
-                                        <th class="px-3 py-2 w-[18%]">PCT 递交日</th>
-                                        <th class="px-3 py-2 w-[18%]">实际/计划进入</th>
-                                        <th class="px-3 py-2 w-[14%] text-center">个性化加速方案</th>
-                                        <th class="px-2 py-2 text-center w-[4%]">操作</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="portfolioTableBody" class="divide-y divide-slate-100 bg-white">
-                                    <!-- Dynamic rows from JS -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="flex justify-end">
-                            <button onclick="addEmptyPortfolioRow()" class="text-[10px] text-indigo-600 font-semibold flex items-center gap-1 hover:underline">
-                                <span>➕ 手动新增一个空白案件</span>
-                            </button>
+                <!-- Input area for Excel / CSV Bulk Paste — full width on top -->
+                <div class="space-y-3 mb-3">
+                    <div class="bg-slate-50 p-3 rounded-xl border border-slate-150 space-y-2">
+                        <label class="text-[11px] text-slate-500 font-bold block">📊 Excel/CSV 一键批量导入：</label>
+                        <textarea id="portfolioPasteArea" placeholder="支持两种格式粘贴：&#10;1. CSV制表：雾化芯A10,2025-01-10,2026-01-05,,PPH,否,雾化芯技术,3&#10;2. JS对象：{ name:'雾化芯A10', pd:'2025-01-10', accel:'pph', group:'雾化芯技术', cnTotal:3 }&#10;每行一条，自动识别格式。项目组名含空格请用双引号包裹。" class="w-full h-28 p-2 text-[10px] font-mono border border-slate-200 rounded-md bg-white outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-100 resize-none"></textarea>
+                        <div class="flex gap-2 flex-wrap">
+                            <button onclick="parsePortfolioPaste()" class="bg-emerald-500 hover:bg-emerald-600 text-white text-[10px] font-bold py-1 px-3 rounded-lg transition-all-300">智能解析导入</button>
+                            <button onclick="loadMockPortfolio()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-[10px] font-bold py-1 px-3 rounded-lg transition-all-300" title="重置为示例数据（会覆盖当前数据）">加载电子烟Demo</button>
+                            <!-- 分隔 -->
+                            <span class="text-slate-200 self-center mx-1">|</span>
+                            <button onclick="exportPortfolioCSV()" class="text-[10px] text-slate-500 hover:text-emerald-600 font-semibold px-2 py-1 rounded hover:bg-emerald-50 transition-all-300" title="下载为CSV文件">📥 导出CSV</button>
+                            <button onclick="downloadCSVTemplate()" class="text-[10px] text-slate-500 hover:text-sky-600 font-semibold px-2 py-1 rounded hover:bg-sky-50 transition-all-300" title="下载带表头和示例的CSV模板">📋 下载模板</button>
+                            <label class="text-[10px] text-slate-500 hover:text-indigo-600 font-semibold px-2 py-1 rounded hover:bg-indigo-50 transition-all-300 cursor-pointer" title="从CSV/TXT文件导入">
+                                📤 导入文件
+                                <input type="file" id="portfolioFileInput" accept=".csv,.txt" onchange="importPortfolioFile(this)" class="hidden">
+                            </label>
+                            <button onclick="exportPortfolioJSON()" class="text-[10px] text-slate-500 hover:text-amber-600 font-semibold px-2 py-1 rounded hover:bg-amber-50 transition-all-300" title="备份为JSON（完整数据）">💾 备份JSON</button>
+                            <label class="text-[10px] text-slate-500 hover:text-amber-600 font-semibold px-2 py-1 rounded hover:bg-amber-50 transition-all-300 cursor-pointer" title="从JSON文件恢复数据">
+                                📂 恢复备份
+                                <input type="file" id="portfolioJSONInput" accept=".json" onchange="restorePortfolioJSON(this)" class="hidden">
+                            </label>
+                            <button onclick="clearAllPortfolio()" class="text-[10px] text-rose-500 hover:text-rose-700 font-semibold px-2 py-1 rounded hover:bg-rose-50 transition-all-300" title="清空所有案件数据">🗑 清空全部</button>
                         </div>
                     </div>
                 </div>
 
+                <!-- Dynamic Table — full width below, horizontally scrollable -->
+                <div class="space-y-3 mb-3">
+                    <div class="overflow-x-auto border border-slate-100 rounded-xl bg-white" style="max-height: 420px; overflow-y: auto;">
+                        <table class="w-full text-left text-xs text-slate-600 border-collapse" style="min-width: 780px; table-layout: auto;">
+                            <thead class="bg-slate-100/80 text-[10px] font-bold text-slate-500 uppercase border-b border-slate-200 sticky top-0 z-10">
+                                <tr>
+                                    <th class="px-3 py-2 whitespace-nowrap" style="min-width: 140px;">项目组</th>
+                                    <th class="px-3 py-2 whitespace-nowrap" style="min-width: 180px;">项目名称</th>
+                                    <th class="px-3 py-2 whitespace-nowrap">优先权日 (PD)</th>
+                                    <th class="px-3 py-2 whitespace-nowrap">PCT 递交日</th>
+                                    <th class="px-3 py-2 whitespace-nowrap">实际/计划进入日</th>
+                                    <th class="px-3 py-2 whitespace-nowrap">加速程序</th>
+                                    <th class="px-2 py-2 text-center whitespace-nowrap w-10">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="portfolioTableBody" class="divide-y divide-slate-100">
+                                <!-- Dynamic rows from JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] text-slate-400" id="tableRowCount"></span>
+                        <button onclick="addEmptyPortfolioRow()" class="text-[10px] text-indigo-600 font-semibold flex items-center gap-1 hover:underline">
+                            <span>➕ 手动新增一个空白案件</span>
+                        </button>
+                    </div>
+                </div>
+
                 <!-- Aggregated Dashboard Results -->
-                <div class="mt-5 pt-5 border-t border-slate-100 grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="mt-5 pt-5 border-t border-slate-100 space-y-5">
+
+                    <!-- KPI Summary Bar -->
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-800 flex items-center gap-2">
+                            <svg class="w-4 h-4 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                            在案管理看板
+                        </span>
+                        <button onclick="printManagementReport()" class="text-[9px] text-indigo-500 hover:text-indigo-700 font-semibold px-2 py-1 rounded hover:bg-indigo-50 transition-all-300 flex items-center gap-1">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>
+                            打印报表
+                        </button>
+                    </div>
+
+                    <!-- KPI Metrics Cards -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="kpiBar">
+                        <!-- Filled dynamically -->
+                    </div>
+
+                    <!-- Case Progress Gantt Timeline -->
+                    <div class="bg-white rounded-xl border border-slate-100 p-4">
+                        <h4 class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+                            <svg class="w-3.5 h-3.5 text-indigo-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            案件进展甘特图 & 预计授权时间
+                        </h4>
+                        <div id="ganttChart" class="space-y-2.5 text-[10px]">
+                            <!-- Filled dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- 3-Column Stage Distribution -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <!-- Column 1: Current Distribution -->
                     <div class="bg-slate-50/50 rounded-2xl p-4 border border-slate-100/80">
                         <div class="flex justify-between items-center mb-3">
@@ -339,6 +391,7 @@
                         </div>
                     </div>
                 </div>
+                </div>
             </div>
 
             <!-- Custom Notification Toast -->
@@ -356,6 +409,7 @@
                     </button>
                 </div>
             </div>
+
         </section>
 
         <!-- Right Details & Live Fee Panel (Lg: 4 cols) -->
@@ -424,7 +478,9 @@
                     </div>
                 </div>
             </div>
+
         </aside>
+
     </main>
 
     <!-- Footer -->
@@ -432,8 +488,202 @@
         <p>© 2026/2027 跨国专利保护策略、期限与超期救济交互决策系统。所有规费公式、减免比例、救济标准均对齐最新欧洲专利公约(EPC)、美国专利商标法案(AIA)及中国国家知识产权局新规。</p>
     </footer>
 
-    <!-- Javascript Logical Hub -->
     <script>
+        // --- LOCALSTORAGE PERSISTENCE ---
+        const STORAGE_KEY_PORTFOLIO = 'patent_tracker_portfolio_items';
+        const STORAGE_KEY_JURISDICTION = 'patent_tracker_portfolio_jurisdiction';
+        const STORAGE_KEY_LAST_SAVED = 'patent_tracker_last_saved';
+        const DEMO_ITEMS = [
+            { id: 1, name: 'A10 多孔微孔陶瓷雾化芯', pd: '2025-01-10', pctd: '2026-01-05', entryd: '2026-06-12', accel: 'none', waiveR161: false, group: '雾化芯技术', cnTotal: 3 },
+            { id: 2, name: 'A11 超声波震荡雾化', pd: '2025-10-18', pctd: '2026-07-02', entryd: '', accel: 'pph', waiveR161: false, group: '雾化芯技术', cnTotal: 3 },
+            { id: 3, name: '防冷凝烟弹结构', pd: '2024-03-22', pctd: '2025-03-15', entryd: '2025-09-20', accel: 'pace', waiveR161: true, group: '烟弹防漏', cnTotal: 2 },
+            { id: 4, name: '磁吸式防漏液底座', pd: '2025-11-05', pctd: '', entryd: '', accel: 'trackOne', waiveR161: false, group: '烟弹防漏', cnTotal: 2 },
+            { id: 5, name: '温控电弧发热总成', pd: '2023-12-15', pctd: '2024-12-05', entryd: '2024-06-18', accel: 'none', waiveR161: false, group: '', cnTotal: 0 }
+        ];
+
+        // Acceleration program definitions with time compression factors
+        const ACCEL_OPTIONS = {
+            'none': { label: '普通排队', short: '标准', desc: '无加速' },
+            'pace': { label: 'PACE (EPO)', short: 'PACE', desc: 'EPO免费优先审查，每轮OA 6-12M→3M内' },
+            'pph': { label: 'PPH 专利高速路', short: 'PPH', desc: '利用中欧PCT成果加速，US审查提速约50%' },
+            'trackOne': { label: 'Track One (USPTO)', short: 'Trk1', desc: 'USPTO优先审查，12月内终局决定' }
+        };
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem(STORAGE_KEY_PORTFOLIO, JSON.stringify(state.portfolioItems));
+                localStorage.setItem(STORAGE_KEY_JURISDICTION, state.portfolioJurisdiction);
+                localStorage.setItem(STORAGE_KEY_LAST_SAVED, new Date().toISOString());
+                showSaveIndicator();
+            } catch (e) {
+                console.warn('localStorage save failed (可能存储已满):', e);
+            }
+        }
+
+        function loadFromStorage() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY_PORTFOLIO);
+                const savedJur = localStorage.getItem(STORAGE_KEY_JURISDICTION);
+                if (saved) {
+                    state.portfolioItems = JSON.parse(saved);
+                    // Backward compat: ensure all items have accel, waiveR161, group, cnTotal fields
+                    state.portfolioItems.forEach(item => {
+                        if (!item.accel) item.accel = 'none';
+                        if (item.waiveR161 === undefined) item.waiveR161 = false;
+                        if (item.group === undefined) item.group = '';
+                        if (item.cnTotal === undefined) item.cnTotal = 0;
+                    });
+                }
+                if (savedJur && (savedJur === 'us' || savedJur === 'epo')) {
+                    state.portfolioJurisdiction = savedJur;
+                }
+                return !!saved;
+            } catch (e) {
+                console.warn('localStorage load failed:', e);
+                return false;
+            }
+        }
+
+        function showSaveIndicator() {
+            const el = document.getElementById('saveStatus');
+            if (!el) return;
+            el.classList.remove('hidden');
+            el.classList.add('animate-pulse');
+            clearTimeout(el._saveTimeout);
+            el._saveTimeout = setTimeout(() => {
+                el.classList.remove('animate-pulse');
+            }, 1500);
+        }
+
+        // --- EXPORT FUNCTIONS ---
+        function exportPortfolioCSV() {
+            if (state.portfolioItems.length === 0) {
+                showToast('无数据可导出', '请先添加至少一条案件数据。');
+                return;
+            }
+            let csv = '\uFEFF项目名称,优先权日(PD),PCT递交日,国家进入日,加速程序,放弃R161,项目组,国内申请总数\n';
+            state.portfolioItems.forEach(item => {
+                let accelLabel = (ACCEL_OPTIONS[item.accel] || ACCEL_OPTIONS['none']).label;
+                let waiveLabel = item.waiveR161 ? '是' : '否';
+                csv += `"${item.name}",${item.pd || ''},${item.pctd || ''},${item.entryd || ''},${accelLabel},${waiveLabel},"${item.group || ''}",${item.cnTotal || 0}\n`;
+            });
+            downloadFile(csv, `专利案件追踪_${formatDateForFile(new Date())}.csv`, 'text/csv;charset=utf-8');
+            showToast('导出成功', `已导出 ${state.portfolioItems.length} 条案件数据为CSV文件。`);
+        }
+
+        function downloadCSVTemplate() {
+            let csv = '\uFEFF项目名称,优先权日(PD),PCT递交日,国家进入日,加速程序,放弃R161,项目组,国内申请总数\n';
+            csv += '"A10 多孔微孔陶瓷雾化芯",2025-01-10,2026-01-05,2026-06-12,PPH,否,雾化芯技术,3\n';
+            csv += '"A11 超声波震荡雾化",2025-10-18,2026-07-02,,PACE,是,雾化芯技术,3\n';
+            csv += '"防冷凝烟弹结构",2024-03-22,,,,普通排队,否,烟弹防漏,2\n';
+            csv += '\n';
+            csv += '# 格式说明：\n';
+            csv += '# 列1：项目名称（必填，可含中文）\n';
+            csv += '# 列2：优先权日 PD，格式 YYYY-MM-DD（必填）\n';
+            csv += '# 列3：PCT递交日，格式 YYYY-MM-DD（选填）\n';
+            csv += '# 列4：国家进入日，格式 YYYY-MM-DD（选填）\n';
+            csv += '# 列5：加速程序 - 普通排队 / PACE (EPO) / PPH 专利高速路 / Track One (USPTO)\n';
+            csv += '# 列6：放弃R161 - 仅EPO有效，是 / 否\n';
+            csv += '# 列7：项目组名称 - 同一组用相同名称即可分组\n';
+            csv += '# 列8：国内申请总数 - 该项目组国内专利总申请量，用于计算海外转化率\n';
+            csv += '# 提示：用Excel打开编辑后另存为CSV，删除以#开头的注释行再导入\n';
+            downloadFile(csv, '专利案件导入模板.csv', 'text/csv;charset=utf-8');
+            showToast('模板已下载', 'CSV模板包含8列示例数据和格式说明，用Excel打开编辑后导入即可。');
+        }
+
+        function exportPortfolioJSON() {
+            if (state.portfolioItems.length === 0) {
+                showToast('无数据可导出', '请先添加至少一条案件数据。');
+                return;
+            }
+            const backup = {
+                version: 1,
+                exportedAt: new Date().toISOString(),
+                jurisdiction: state.portfolioJurisdiction,
+                items: state.portfolioItems
+            };
+            downloadFile(JSON.stringify(backup, null, 2), `专利案件备份_${formatDateForFile(new Date())}.json`, 'application/json');
+            showToast('备份成功', `已导出 ${state.portfolioItems.length} 条案件数据为JSON备份文件。`);
+        }
+
+        function importPortfolioFile(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const text = e.target.result;
+                document.getElementById('portfolioPasteArea').value = text;
+                parsePortfolioPaste();
+            };
+            reader.onerror = function() {
+                showToast('读取失败', '文件读取出错，请重试。');
+            };
+            reader.readAsText(file, 'UTF-8');
+            input.value = ''; // Reset so same file can be re-selected
+        }
+
+        function restorePortfolioJSON(input) {
+            const file = input.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const backup = JSON.parse(e.target.result);
+                    if (!backup.items || !Array.isArray(backup.items)) {
+                        throw new Error('无效的备份格式');
+                    }
+                    state.portfolioItems = backup.items;
+                    if (backup.jurisdiction && (backup.jurisdiction === 'us' || backup.jurisdiction === 'epo')) {
+                        state.portfolioJurisdiction = backup.jurisdiction;
+                        setPortfolioJurisdiction(backup.jurisdiction);
+                    }
+                    renderPortfolioTable();
+                    renderPortfolioCalculations();
+                    saveToStorage();
+                    showToast('恢复成功', `已从备份恢复 ${backup.items.length} 条案件数据。`);
+                } catch (err) {
+                    showToast('恢复失败', 'JSON文件格式不正确，请选择正确的备份文件。');
+                }
+            };
+            reader.onerror = function() {
+                showToast('读取失败', '文件读取出错，请重试。');
+            };
+            reader.readAsText(file, 'UTF-8');
+            input.value = '';
+        }
+
+        function clearAllPortfolio() {
+            if (state.portfolioItems.length === 0) {
+                showToast('无需清空', '当前没有案件数据。');
+                return;
+            }
+            if (!confirm(`确认要清空全部 ${state.portfolioItems.length} 条案件数据吗？\n\n此操作不可撤销。建议先导出备份。`)) return;
+            state.portfolioItems = [];
+            renderPortfolioTable();
+            renderPortfolioCalculations();
+            saveToStorage();
+            showToast('已清空', '全部案件数据已清除。');
+        }
+
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function formatDateForFile(date) {
+            const y = date.getFullYear();
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const d = String(date.getDate()).padStart(2, '0');
+            return `${y}${m}${d}`;
+        }
+
         // --- DATASET & STATES ---
         let state = {
             route: 'epo',        // 'epo' or 'cnipa'
@@ -464,11 +714,7 @@
 
             // --- PORTFOLIO SYSTEM STATES ---
             portfolioJurisdiction: 'us', // 'us' or 'epo'
-            portfolioItems: [
-                { id: 1, name: '多孔微孔陶瓷雾化芯(A10)', pd: '2025-01-10', pctd: '2026-01-05', entryd: '2026-06-12', accelUs: 'none', accelEpo: 'none' },
-                { id: 2, name: '感受器侧向对称发热总成', pd: '2025-10-18', pctd: '2026-07-02', entryd: '', accelUs: 'pph', accelEpo: 'pace' },
-                { id: 3, name: '阶梯式风道双腔烟弹防冷凝', pd: '2024-03-22', pctd: '2025-03-15', entryd: '2025-09-20', accelUs: 'trackone', accelEpo: 'both' }
-            ]
+            portfolioItems: []
         };
 
         // Static configuration of standard Fixed Stages
@@ -482,7 +728,7 @@
             ],
             epo: [
                 { id: 1, name: '国际阶段（未进欧洲）', desc: 'PD后31M内且未办理进入欧洲手续' },
-                { id: 2, name: '进入欧洲及 Rule 161 强制答辩', desc: '进入后0-6个月自愿/强制修正阶段，规避撤回风险' },
+                { id: 2, name: '进入欧洲及 Rule 161 答辩', desc: '进入后0-6个月自愿/强制修正阶段。若Form 1200勾选放弃R161则直接跳过，节省约5个月等待' },
                 { id: 3, name: '补充检索与 ESOP 发文', desc: '进入后6-12个月，EPO重新出具欧洲补充检索和书面意见' },
                 { id: 4, name: '实质审查与答辩', desc: '进入后12-30个月，对欧洲审查意见进行多轮答辩陈述' },
                 { id: 5, name: '授权与德法意文领证', desc: '收到拟授权(71(3))后翻译权利要求至德法文并缴纳领证费' }
@@ -516,7 +762,7 @@
                     '补缴继续处理罚金'
                 ],
                 getFees: (entity) => {
-                    let cost = 290;
+                    let cost = 290; 
                     if (entity === 'micro') cost = Math.round(290 * 0.7); // Micro entity 30% reduction in Europe
                     return { cost, curr: 'EUR', name: '欧洲进一步处理基本罚金 (Rule 135 EPC)' };
                 }
@@ -568,24 +814,9 @@
                     let cost = Math.round(baseFee * factor);
                     return { cost, curr: 'USD', name: '美国审查意见答复补缴延期费（2个月延期）' };
                 }
-            },
-            'us-oa-abandoned': {
-                title: '美国答复 OA 超期 6 个月以上失效恢复 (USPTO Petition to Revive)',
-                standard: '非故意迟延 (Unintentional Delay) 声明制。此时常规延期救济失效，案件被 USPTO 视为 Abandoned 状态。',
-                window: '通常无绝对法定期限，但发现后必须“迅速（Promptly）”提出申请，越拖延越难被认定为“非故意”。',
-                docs: [
-                    '恢复申请请求书 (Petition to Revive an Abandoned Application - Form PTO/SB/64)',
-                    '“整个延迟期皆为非故意”的书面声明书 (Statement of Unintentional Delay)',
-                    '补交针对此前未答复 OA 的完整、合规答辩文书（或提交 RCE / 延续案作为 Reply）',
-                    '补缴超期未缴的常规延期费（如适用）'
-                ],
-                getFees: (entity) => {
-                    let feeMap = { 'large': 2260, 'small': 904, 'micro': 452 };
-                    let cost = feeMap[entity];
-                    return { cost, curr: 'USD', name: '美国失效申请恢复规费 (37 CFR 1.137)' };
-                }
             }
         };
+
         // --- CALENDAR DATE UTILITIES ---
         function addMonths(dateStr, months) {
             if (!dateStr) return new Date();
@@ -593,7 +824,7 @@
             let d = date.getDate();
             date.setMonth(date.getMonth() + months);
             if (date.getDate() !== d) {
-                date.setDate(0);
+                date.setDate(0); 
             }
             return date;
         }
@@ -606,6 +837,7 @@
             return `${y}-${m}-${d}`;
         }
 
+        // --- STREAMING_CHUNK: Managing dates & calculation offsets... ---
         // --- MULTI-ANCHOR SYSTEM LOGIC ---
         function updateCustomDate(anchorType, value) {
             if (anchorType === 'pd') {
@@ -620,12 +852,12 @@
             } else if (anchorType === 'pctd') {
                 state.pctFilingDate = value;
                 document.getElementById('badgePCT').innerText = value ? "手动锁死" : "自动估算";
-                document.getElementById('badgePCT').className = value ? "text-[9px] bg-indigo-50 text-indigo-600 px-1.5 py-0.2 rounded font-mono border border-indigo-100" : "text-[9px] bg-emerald-50 text-emerald-600 px-1.5 py-0.2 rounded font-mono border border-emerald-100/50";
+                document.getElementById('badgePCT').className = value ? "text-[9px] bg-indigo-50 text-indigo-600 px-1.5 py-0.2 rounded font-mono border border-indigo-100" : "text-[9px] bg-emerald-50 text-emerald-600 px-1.5 py-0.2 rounded font-mono border border-emerald-100";
                 document.getElementById('indicatorPCT').className = value ? "h-1.5 w-1.5 rounded-full bg-indigo-500 animate-pulse" : "h-1.5 w-1.5 rounded-full bg-emerald-500";
             } else if (anchorType === 'entryd') {
                 state.nationalEntryDate = value;
                 document.getElementById('badgeEntry').innerText = value ? "手动锁死" : "自动估算";
-                document.getElementById('badgeEntry').className = value ? "text-[9px] bg-indigo-50 text-indigo-600 px-1.5 py-0.2 rounded font-mono border border-indigo-100" : "text-[9px] bg-amber-50 text-amber-600 px-1.5 py-0.2 rounded font-mono border border-amber-100/50";
+                document.getElementById('badgeEntry').className = value ? "text-[9px] bg-indigo-50 text-indigo-600 px-1.5 py-0.2 rounded font-mono border border-indigo-100" : "text-[9px] bg-amber-50 text-amber-600 px-1.5 py-0.2 rounded font-mono border border-amber-100";
                 document.getElementById('indicatorEntry').className = value ? "h-1.5 w-1.5 rounded-full bg-indigo-500 animate-pulse" : "h-1.5 w-1.5 rounded-full bg-amber-500";
             }
 
@@ -638,13 +870,13 @@
             
             document.getElementById('inputPCTD').value = formatDate(addMonths(state.priorityDate, 12));
             document.getElementById('badgePCT').innerText = "自动估算";
-            document.getElementById('badgePCT').className = "text-[9px] bg-emerald-50 text-emerald-600 px-1.5 py-0.2 rounded font-mono border border-emerald-100/50";
+            document.getElementById('badgePCT').className = "text-[9px] bg-emerald-50 text-emerald-600 px-1.5 py-0.2 rounded font-mono border border-emerald-100";
             document.getElementById('indicatorPCT').className = "h-1.5 w-1.5 rounded-full bg-emerald-500";
 
             let normalOffset = state.dest === 'epo' ? 31 : 30;
             document.getElementById('inputEntryD').value = formatDate(addMonths(state.priorityDate, normalOffset));
             document.getElementById('badgeEntry').innerText = "自动估算";
-            document.getElementById('badgeEntry').className = "text-[9px] bg-amber-50 text-amber-600 px-1.5 py-0.2 rounded font-mono border border-amber-100/50";
+            document.getElementById('badgeEntry').className = "text-[9px] bg-amber-50 text-amber-600 px-1.5 py-0.2 rounded font-mono border border-amber-100";
             document.getElementById('indicatorEntry').className = "h-1.5 w-1.5 rounded-full bg-amber-500";
 
             showToast("日期锚点已重置", "全部阶段截止期均已恢复至官方标准的最迟法定期限。");
@@ -662,7 +894,7 @@
             }
 
             let isrBase1 = addMonths(state.priorityDate, 16);
-            let isrBase2 = formatDate(pctd);
+            let isrBase2 = formatDate(pctd); 
             let isrCalculated = addMonths(isrBase2, 9);
             let isr = isrBase1 > isrCalculated ? isrBase1 : isrCalculated;
 
@@ -690,7 +922,7 @@
                     { key: "grant", baseM: 40, title: "授权意向与领证", sub: "Rule 71(3) Grant", desc: "审查员下发拟授权文本。进入最终翻译与领证交费阶段。", checklist: ["Form 1036 (授权文本确认书)", "将英文权利要求书翻译成德文、法文并递交", "缴纳授权与公布规费（最新1115欧元）"], guardrail: "收到 71(3) 之后，有严格的4个月不可延展期限。如果说明书超出35页，在此处需补缴超页附加费。确认无误后即可静候欧洲专利证书颁发！" }
                 ],
                 cnipa: [
-                    { key: "priority", baseM: 0, title: "中国优先权确立", sub: "Priority Date", desc: "在中国递交原始中文专利申请。奠定全球PPH and 国际检索的物质基础。", checklist: ["递交中国中文发明专利申请", "锁定最原始的说明书、附图公开边界"], guardrail: "中国申请人习惯在中文母案中使用“多项从属”权利要求。请注意：在后续翻译进入美国时，不加修改会面临巨额罚款。进入欧洲也需要进行适当权利要求合并。" },
+                    { key: "priority", baseM: 0, title: "中国优先权确立", sub: "Priority Date", desc: "在中国递交原始中文专利申请。奠定全球PPH和国际检索的物质基础。", checklist: ["递交中国中文发明专利申请", "锁定最原始的说明书、附图公开边界"], guardrail: "中国申请人习惯在中文母案中使用“多项从属”权利要求。请注意：在后续翻译进入美国时，不加修改会面临巨额罚款。进入欧洲也需要进行适当权利要求合并。" },
                     { key: "pct_filing", baseM: 12, title: "PCT中文递交", sub: "PCT Filing", desc: "向CNIPA提交中文PCT，指定CNIPA为受理局(RO)及检索局(ISA)。", checklist: ["传送请求书 (RO/CN)", "中文PCT申请说明书、权利要求书、附图"], guardrail: "国际阶段官费仅需12,720元人民币，且不需要立刻翻译成英文，前期沉没成本低。适合技术尚在试水阶段、或主战场在中国的项目。" },
                     { key: "isr", baseM: 16, title: "国际检索(ISR)", sub: "CNIPA ISR & WO-ISA", desc: "CNIPA出具中文国际检索意见。若全绿，这是PPH的最佳中国源文件。", checklist: ["CNIPA 检索报告 (ISR)", "CNIPA 书面意见 (WO-ISA)"], guardrail: "若中国检索意见负面，可利用PCT Art. 19/34 在国际阶段修改。如果中国母案能在Month 30前完成授权，后续进入欧洲即可利用中国授权文本直接向EPO提PPH。" },
                     { key: "entry", baseM: 31, title: "进入欧洲阶段", sub: "EPO Entry", desc: "提交英文翻译，提交Form 1200。因前期选CNIPA检索，必须缴纳1595€检索费！", checklist: ["EPO Form 1200 请求书", "全套说明书、权利要求书、附图、摘要的完整英文译文（含翻译准确性声明）", "进入欧洲基础官费（由于要补做补充检索，规费共计 4460 欧元）"], guardrail: "由于国际阶段是中文，翻译质量将直接决定欧洲答辩是否会超范围。若要利用中国母案授权去走PPH，切记欧洲权利要求必须等同或窄于中国授权范围。" },
@@ -702,9 +934,9 @@
             },
             us: {
                 epo: [
-                    { key: "priority", baseM: 0, title: "优先权确立", sub: "Priority Date", desc: "锁死权利要求，准备全球多国布局。", checklist: ["递交发明专利中国母案（或直接递交欧洲发明）", "锁定最原始的公开范围（以防后续被控 Added Matter）", "准备翻译（若是中文母案递交）"], guardrail: "美国外观/发明极其重视 IDS（信息披露义务）。在 EPO 国际阶段检索到的所有 D1、D2 对比文件，在后续进入美国时必须全面如实披露，绝不可隐瞒。" },
+                    { key: "priority", baseM: 0, title: "优先权确立", sub: "Priority Date", desc: "锁死权利要求，准备全球多国布局。", checklist: ["原始申请文本递交", "锁死公开范围"], guardrail: "美国外观/发明极其重视 IDS（信息披露义务）。在 EPO 国际阶段检索到的所有 D1、D2 对比文件，在后续进入美国时必须全面如实披露，绝不可隐瞒。" },
                     { key: "entry", baseM: 30, title: "进入美国国家阶段", sub: "USPTO Entry", desc: "向USPTO提交进入371国家阶段申请。由于国际阶段是英文，免除全套翻译成本！", checklist: ["Form PTO-1390 进入请求书", "ADS 表格（Form PTO/AIA/14）", "发明人宣言（Oath/Declaration - PTO/AIA/01）", "IDS 披露书 (Form PTO/SB/08)：披露国际检索(ISR)列出的所有对比文件！"], guardrail: "⚠️ 多项从属大坑：中国常采用多项从属权利要求，美国对此征收大实体 $860 的极高罚金！递交进入时，必须做“初步修改（Preliminary Amendment）”，把多项从属拆成单项从属，并精简总项数 <= 20。" },
-                    { key: "accelerate", baseM: 31, title: "加速通道选择", sub: "PPH / Track One", desc: "决定采用 PPH 或付费的 Track One 优先审查程序实现极速授权。", checklist: ["PPH 请求书 (Form PTO/SB/20PCT)（若适用）", "或 Track One 优先审查请求书及额外缴纳大实体 $4200 官费"], guardrail: "美国外观不设 RCE。Track One 提供最高优先级，保证12个月内出最终决定；PPH 为免费通道，只要 EPO 检索正面即可极速入列审查，无需高昂申请费。" },
+                    { key: "accelerate", baseM: 31, title: "加速通道选择", sub: "PPH / Track One", desc: "决定采用 PPH 或付费的 Track One 优先审查程序实现极速授权。", checklist: ["PPH 请求书 (Form PTO/SB/20PCT)（若适用）", "或 Track One 优先审查请求书及额外缴纳大实体 $4200 官费"], guardrail: "⭐ 方案对冲：美国外观不设 RCE。Track One 提供最高优先级，保证12个月内出最终决定；PPH 为免费通道，只要 EPO 检索正面即可极速入列审查，无需高昂申请费。" },
                     { key: "oa", baseM: 35, title: "一期实质审查", sub: "Non-Final OA", desc: "USPTO审查员发出非最终实质审查意见。美国外观通常是112条图纸驳回。", checklist: ["答辩陈述与修改理由（Remarks）", "符合USPTO阴影与虚线规范的 Replacement Sheets 替换图页"], guardrail: "如果遭遇外观112(a)(b)条阴影不清晰、3D空间无法重构驳回，接受审查员建议，直接将被指出部分改为 broken lines（虚线）予以放弃。不要试图去画深浅，否则会因引入 132条 New Matter（新物质）遭遇致命驳回。" },
                     { key: "grant", baseM: 40, title: "授权与领证", sub: "Issue and Grant", desc: "收到 Notice of Allowance 授权通知书，交公告费，专利正式生效。", checklist: ["Form PTO-85B 缴费单", "缴纳公告与公布规费 (大实体 $1290)"], guardrail: "Notice of Allowance 的3个月缴费期限是刚性的，绝对不可申请延期！一旦逾期，案子将不可撤销地宣告失效。收到通知后必须尽快安排打款。" }
                 ],
@@ -718,6 +950,7 @@
             }
         };
 
+        // --- STREAMING_CHUNK: Handling UI elements and responsive toggles... ---
         function setRoute(r) {
             state.route = r;
             document.getElementById('btn-route-epo').className = r === 'epo' ? 'py-2.5 px-3 text-xs font-semibold rounded-md text-center transition-all-300 bg-white text-emerald-600 shadow-sm flex flex-col items-center justify-center gap-1' : 'py-2.5 px-3 text-xs font-semibold rounded-md text-center transition-all-300 text-slate-500 hover:text-slate-800 flex flex-col items-center justify-center gap-1';
@@ -799,7 +1032,7 @@
         function toggleUsPph(checked) {
             state.usPphEnabled = checked;
             if (checked && state.usTrackOneEnabled) {
-                state.usTrackOneEnabled = false;
+                state.usTrackOneEnabled = false; 
                 if (document.getElementById('chk-us-trackone')) document.getElementById('chk-us-trackone').checked = false;
             }
             if (checked) {
@@ -811,7 +1044,7 @@
         function toggleUsTrackOne(checked) {
             state.usTrackOneEnabled = checked;
             if (checked && state.usPphEnabled) {
-                state.usPphEnabled = false;
+                state.usPphEnabled = false; 
                 if (document.getElementById('chk-us-pph')) document.getElementById('chk-us-pph').checked = false;
             }
             if (checked) {
@@ -843,6 +1076,7 @@
             showToast("中欧双向检索路径指南", "【EPO作为ISA】：由EPO直接检索，返华或赴美走PPH畅通无阻，返欧免一千多欧。 【CNIPA作为ISA】：中文PCT进件门槛低，资金压力后推。");
         }
 
+        // --- STREAMING_CHUNK: Rendering toasts and alerts... ---
         function showToast(title, desc) {
             const toast = document.getElementById('customToast');
             document.getElementById('toastTitle').innerText = title;
@@ -905,24 +1139,25 @@
             `;
         }
 
+        // --- STREAMING_CHUNK: Running real-time cost calculation... ---
         function calculateFees() {
             let total = 0;
             let currency = "EUR";
             let breakdown = [];
             
-            let factor = 1.0;
-            if (state.entity === 'small') factor = 0.4;
-            if (state.entity === 'micro') factor = 0.2;
+            let factor = 1.0; 
+            if (state.entity === 'small') factor = 0.4;  
+            if (state.entity === 'micro') factor = 0.2;  
 
             if (state.dest === 'epo') {
                 currency = "EUR";
                 let epoFactor = 1.0;
-                if (state.entity === 'micro') epoFactor = 0.7;
+                if (state.entity === 'micro') epoFactor = 0.7; 
 
                 let filing = Math.round(135 * epoFactor);
                 let designation = Math.round(720 * epoFactor);
                 let exam = Math.round(2010 * epoFactor);
-                let suppSearch = (state.route === 'cnipa') ? 1595 : 0;
+                let suppSearch = (state.route === 'cnipa') ? 1595 : 0; 
 
                 breakdown.push({ name: "欧洲基础申请费 (Filing)", cost: filing, curr: "EUR" });
                 breakdown.push({ name: "欧洲指定费 (Designation)", cost: designation, curr: "EUR" });
@@ -947,7 +1182,7 @@
                 let basic = Math.round(400 * factor);
                 let search = Math.round(770 * factor);
                 let exam = Math.round(880 * factor);
-
+                
                 breakdown.push({ name: "美国基础申请费 (Basic)", cost: basic, curr: "USD" });
                 breakdown.push({ name: "美国检索费 (Search Fee)", cost: search, curr: "USD" });
                 breakdown.push({ name: "美国实审费 (Exam Fee)", cost: exam, curr: "USD" });
@@ -1046,6 +1281,7 @@
             feeBreakdownDetails.innerHTML = html;
         }
 
+        // --- STREAMING_CHUNK: Rendering the tools configurations... ---
         function renderToolboxes() {
             const card1 = document.getElementById('leftToolboxCard1');
             const card2 = document.getElementById('leftToolboxCard2');
@@ -1174,6 +1410,7 @@
             }
         }
 
+        // --- STREAMING_CHUNK: Computing dynamic timeline nodes... ---
         function getTimelineNodesWithDynamicDates() {
             let baseArray = JSON.parse(JSON.stringify(baseMilestones[state.dest][state.route]));
             let anchors = getCalculatedAnchorDates();
@@ -1196,8 +1433,8 @@
             document.getElementById('calcLogicDesc').innerText = calcLogicText;
 
             if (state.dest === 'epo') {
-                let shift12_1 = state.waiver12_1;
-                let shift12_2 = state.waiver12_2;
+                let shift12_1 = state.waiver12_1; 
+                let shift12_2 = state.waiver12_2; 
                 let pace = state.paceEnabled;
                 let pph = state.epoPphEnabled;
 
@@ -1206,28 +1443,28 @@
                     node.diff = 0;
 
                     if (shift12_1 && node.baseM >= 31) {
-                        node.diff += 2;
+                        node.diff += 2; 
                     }
 
                     if (shift12_2) {
                         if (state.route === 'epo') {
                             if (node.key === "r161") { node.skipped = true; }
                             if (node.baseM >= 36) { node.diff += 6; }
-                        } else {
+                        } else { 
                             if (node.key === "r161") { node.skipped = true; }
-                            if (node.key === "sesr") { node.diff += 6; }
-                            if (node.key === "sub_exam_cn") { node.skipped = true; }
-                            if (node.baseM >= 55) { node.diff += 12; }
+                            if (node.key === "sesr") { node.diff += 6; } 
+                            if (node.key === "sub_exam_cn") { node.skipped = true; } 
+                            if (node.baseM >= 55) { node.diff += 12; } 
                         }
                     }
 
                     if (pace && node.key === "grant") {
-                        node.diff += 4;
+                        node.diff += 4; 
                     }
 
                     if (pph && state.route === 'cnipa') {
                         if (node.key === "sub_exam_cn" || node.key === "grant") {
-                            node.diff += 6;
+                            node.diff += 6; 
                         }
                     }
 
@@ -1240,7 +1477,7 @@
                     } else if (node.key === "isr") {
                         node.calendarDate = anchors.isr;
                     } else {
-                        let offsetFromEntry = node.baseM - 31;
+                        let offsetFromEntry = node.baseM - 31; 
                         let finalOffset = offsetFromEntry - node.diff;
                         node.calendarDate = addMonths(formatDate(anchors.ned), finalOffset);
                     }
@@ -1255,17 +1492,17 @@
 
                     if (trackOne) {
                         if (node.key === "oa") {
-                            node.diff += (state.route === 'epo' ? 2 : 10);
+                            node.diff += (state.route === 'epo' ? 2 : 10); 
                         }
                         if (node.key === "grant") {
-                            node.diff += (state.route === 'epo' ? 5 : 12);
+                            node.diff += (state.route === 'epo' ? 5 : 12); 
                         }
                     } else if (pph) {
                         if (node.key === "oa") {
-                            node.diff += (state.route === 'epo' ? 1 : 6);
+                            node.diff += (state.route === 'epo' ? 1 : 6); 
                         }
                         if (node.key === "grant") {
-                            node.diff += (state.route === 'epo' ? 3 : 8);
+                            node.diff += (state.route === 'epo' ? 3 : 8); 
                         }
                     }
 
@@ -1274,7 +1511,7 @@
                     if (node.key === "priority") {
                         node.calendarDate = anchors.pd;
                     } else {
-                        let offsetFromEntry = node.baseM - 30;
+                        let offsetFromEntry = node.baseM - 30; 
                         let finalOffset = offsetFromEntry - node.diff;
                         node.calendarDate = addMonths(formatDate(anchors.ned), finalOffset);
                     }
@@ -1284,6 +1521,7 @@
             return baseArray;
         }
 
+        // --- STREAMING_CHUNK: Rendering the interactive visual timeline maps... ---
         function renderTimeline() {
             const container = document.getElementById('timelineNodesContainer');
             const activeLine = document.getElementById('timelineActiveLine');
@@ -1364,6 +1602,7 @@
             });
 
             container.innerHTML = html;
+
             let activeDateStr = formatDate(activeNode.calendarDate);
             document.getElementById('nodeDetailNum').innerHTML = `M${activeNode.currentM}`;
             document.getElementById('nodeDetailName').innerText = activeNode.title;
@@ -1387,66 +1626,147 @@
             renderTimeline();
         }
 
-        // --- PORTFOLIO DYNAMIC CALCULATOR & PREDICTIONS (UPGRADED) ---
+        // --- STREAMING_CHUNK: Setting up the Portfolio Tracker prediction engine... ---
+        // --- PORTFOLIO DYNAMIC CALCULATOR & PREDICTIONS ---
         function setPortfolioJurisdiction(j) {
             state.portfolioJurisdiction = j;
             document.getElementById('btn-port-us').className = j === 'us' ? 'px-3 py-1 text-xs font-semibold rounded-md transition-all-300 bg-white text-slate-900 shadow-sm' : 'px-3 py-1 text-xs font-semibold rounded-md transition-all-300 text-slate-500 hover:text-slate-900';
             document.getElementById('btn-port-epo').className = j === 'epo' ? 'px-3 py-1 text-xs font-semibold rounded-md transition-all-300 bg-white text-slate-900 shadow-sm' : 'px-3 py-1 text-xs font-semibold rounded-md transition-all-300 text-slate-500 hover:text-slate-900';
             renderPortfolioAll();
+            saveToStorage();
         }
 
         function renderPortfolioTable() {
             const tbody = document.getElementById('portfolioTableBody');
+            const isEPO = state.portfolioJurisdiction === 'epo';
             let html = "";
-            state.portfolioItems.forEach((item, index) => {
-                let accelSelectHtml = "";
-                if (state.portfolioJurisdiction === 'us') {
-                    // Render US Options: Standard, PPH, Track One
-                    let currentVal = item.accelUs || 'none';
-                    accelSelectHtml = `
-                    <select onchange="updatePortfolioItem(${item.id}, 'accelUs', this.value)" class="w-full bg-slate-50 border border-slate-200 rounded px-1.5 py-1 text-[10px] font-medium text-slate-700 outline-none focus:border-indigo-500 cursor-pointer shadow-sm">
-                        <option value="none" ${currentVal === 'none' ? 'selected' : ''}>普通排队</option>
-                        <option value="pph" ${currentVal === 'pph' ? 'selected' : ''}>PPH 快速</option>
-                        <option value="trackone" ${currentVal === 'trackone' ? 'selected' : ''}>Track One</option>
-                    </select>
-                    `;
+
+            // Group items
+            let groups = {};
+            let ungrouped = [];
+            state.portfolioItems.forEach(item => {
+                let g = (item.group || '').trim();
+                if (g) {
+                    if (!groups[g]) groups[g] = [];
+                    groups[g].push(item);
                 } else {
-                    // Render EPO Options: Standard, PACE, PPH, Both
-                    let currentVal = item.accelEpo || 'none';
-                    accelSelectHtml = `
-                    <select onchange="updatePortfolioItem(${item.id}, 'accelEpo', this.value)" class="w-full bg-slate-50 border border-slate-200 rounded px-1.5 py-1 text-[10px] font-medium text-slate-700 outline-none focus:border-emerald-500 cursor-pointer shadow-sm">
-                        <option value="none" ${currentVal === 'none' ? 'selected' : ''}>普通排队</option>
-                        <option value="pace" ${currentVal === 'pace' ? 'selected' : ''}>PACE 加速</option>
-                        <option value="pph" ${currentVal === 'pph' ? 'selected' : ''}>中欧 PPH</option>
-                        <option value="both" ${currentVal === 'both' ? 'selected' : ''}>PACE+PPH</option>
-                    </select>
-                    `;
+                    ungrouped.push(item);
                 }
+            });
+
+            // Render ungrouped items first
+            ungrouped.forEach(item => {
+                html += buildItemRow(item, '', isEPO);
+            });
+
+            // Render each group with header
+            for (let [groupName, items] of Object.entries(groups)) {
+                let foreignCount = items.filter(i => i.pctd || i.entryd).length;
+                let cnTotal = items.reduce((sum, i) => Math.max(sum, i.cnTotal || 0), 0);
+                let ratioPct = cnTotal > 0 ? Math.round((foreignCount / cnTotal) * 100) : 0;
+                let ratioColor = ratioPct >= 80 ? 'text-emerald-600 bg-emerald-50' : ratioPct >= 50 ? 'text-amber-600 bg-amber-50' : ratioPct > 0 ? 'text-rose-500 bg-rose-50' : 'text-slate-400 bg-slate-100';
+
+                let groupId = 'grp_' + groupName.replace(/[^a-zA-Z0-9\u4e00-\u9fff]/g, '_');
+                let firstId = items[0].id;
 
                 html += `
-                <tr class="hover:bg-slate-50/80 transition-all-300">
-                    <td class="px-3 py-2">
-                        <input type="text" value="${item.name}" onchange="updatePortfolioItem(${item.id}, 'name', this.value)" class="w-full bg-transparent outline-none font-medium text-slate-800 text-xs border-b border-transparent hover:border-slate-200 focus:border-indigo-500 focus:bg-white px-1 py-0.5 rounded">
-                    </td>
-                    <td class="px-3 py-2">
-                        <input type="date" value="${item.pd}" onchange="updatePortfolioItem(${item.id}, 'pd', this.value)" class="bg-transparent outline-none text-slate-600 text-xs hover:bg-white focus:bg-white px-1 py-0.5 rounded border border-transparent hover:border-slate-200">
-                    </td>
-                    <td class="px-3 py-2">
-                        <input type="date" value="${item.pctd}" onchange="updatePortfolioItem(${item.id}, 'pctd', this.value)" class="bg-transparent outline-none text-slate-600 text-xs hover:bg-white focus:bg-white px-1 py-0.5 rounded border border-transparent hover:border-slate-200">
-                    </td>
-                    <td class="px-3 py-2">
-                        <input type="date" value="${item.entryd}" onchange="updatePortfolioItem(${item.id}, 'entryd', this.value)" placeholder="未进入(自动预测)" class="bg-transparent placeholder-slate-400 outline-none text-slate-600 text-xs hover:bg-white focus:bg-white px-1 py-0.5 rounded border border-transparent hover:border-slate-200">
-                    </td>
-                    <td class="px-3 py-2 text-center">
-                        ${accelSelectHtml}
-                    </td>
-                    <td class="px-2 py-2 text-center">
-                        <button onclick="deletePortfolioItem(${item.id})" class="text-rose-500 hover:text-rose-700 font-bold text-xs p-1">✕</button>
+                <tr class="bg-slate-100/60 cursor-pointer hover:bg-slate-200/60 transition-all-300" onclick="toggleGroup('${groupId}')">
+                    <td class="px-3 py-2" colspan="7">
+                        <div class="flex items-center gap-3">
+                            <span id="${groupId}_arrow" class="text-[10px] text-slate-500 transition-transform inline-block">▶</span>
+                            <span class="text-[11px] font-bold text-slate-800">
+                                <input type="text" value="${escapeHTML(groupName)}" 
+                                    onclick="event.stopPropagation()"
+                                    onchange="updateGroupName('${escapeHTML(groupName)}', this.value)"
+                                    class="bg-transparent outline-none font-bold text-slate-800 text-[11px] border-b border-dashed border-slate-300 hover:border-indigo-400 focus:border-indigo-500 focus:bg-white px-1 rounded" style="width: auto; min-width: 100px;">
+                            </span>
+                            <span class="text-[9px] text-slate-500">${items.length} 件海外申请</span>
+                            <span class="text-[9px] px-2 py-0.5 rounded-full font-bold ${ratioColor}">
+                                海外转化 ${foreignCount}/${cnTotal} (${ratioPct}%)
+                            </span>
+                            <span class="text-[9px] text-slate-400">
+                                国内申请总数：
+                                <input type="number" value="${cnTotal}" min="0" max="999"
+                                    onclick="event.stopPropagation()"
+                                    onchange="updateGroupCnTotal('${escapeHTML(groupName)}', parseInt(this.value) || 0)"
+                                    class="w-10 text-center bg-white border border-slate-200 rounded text-[9px] outline-none focus:border-indigo-400 px-0.5">
+                            </span>
+                            <span class="flex-grow"></span>
+                            <button onclick="event.stopPropagation(); deleteGroup('${escapeHTML(groupName)}')" 
+                                class="text-[9px] text-rose-400 hover:text-rose-600 font-semibold px-2 py-0.5 rounded hover:bg-rose-50 transition-all-300" 
+                                title="删除整个项目组">
+                                🗑 删除组
+                            </button>
+                        </div>
                     </td>
                 </tr>
-                `;
-            });
+                <tbody id="${groupId}" class="group-body" style="display: none;">`;
+                items.forEach(item => {
+                    html += buildItemRow(item, groupName, isEPO);
+                });
+                html += `</tbody>`;
+            }
+
             tbody.innerHTML = html;
+
+            // Update row count display
+            let countEl = document.getElementById('tableRowCount');
+            if (countEl) {
+                let groupCount = Object.keys(groups).length;
+                let total = state.portfolioItems.length;
+                countEl.textContent = groupCount > 0 ? `共 ${total} 件专利，${groupCount} 个项目组` : `共 ${total} 件专利`;
+            }
+        }
+
+        function buildItemRow(item, groupName, isEPO) {
+            let accelOptions = "";
+            for (let [key, val] of Object.entries(ACCEL_OPTIONS)) {
+                let sel = (item.accel || 'none') === key ? 'selected' : '';
+                accelOptions += `<option value="${key}" ${sel}>${val.short}</option>`;
+            }
+            let waiveChecked = item.waiveR161 ? 'checked' : '';
+            let waiveHTML = isEPO ? `
+                <label class="flex items-center gap-1 mt-1 cursor-pointer" title="Form 1200 放弃 Rule 161/162 通知">
+                    <input type="checkbox" ${waiveChecked} onchange="updatePortfolioItem(${item.id}, 'waiveR161', this.checked)" class="w-3 h-3 rounded border-slate-300 text-amber-500 focus:ring-amber-400">
+                    <span class="text-[9px] text-slate-400 ${item.waiveR161 ? 'text-amber-600 font-semibold' : ''}">放弃R161</span>
+                </label>` : '';
+
+            // Group cell: show group name or empty (for ungrouped) or input for group-less items
+            let groupCell = '';
+            if (groupName) {
+                groupCell = `<span class="text-[10px] text-indigo-600 font-semibold">${escapeHTML(groupName)}</span>`;
+            } else {
+                groupCell = `<input type="text" value="${escapeHTML(item.group || '')}" 
+                    onchange="updatePortfolioItem(${item.id}, 'group', this.value)"
+                    placeholder="输入项目组..."
+                    class="w-full bg-transparent outline-none text-[10px] text-slate-400 placeholder-slate-300 border-b border-dashed border-slate-200 hover:border-indigo-300 focus:border-indigo-500 focus:bg-white px-1 py-0.5 rounded">`;
+            }
+
+            return `
+            <tr class="hover:bg-slate-50/80 transition-all-300">
+                <td class="px-3 py-2">${groupCell}</td>
+                <td class="px-3 py-2">
+                    <input type="text" value="${escapeHTML(item.name)}" onchange="updatePortfolioItem(${item.id}, 'name', this.value)" class="w-full bg-transparent outline-none font-medium text-slate-800 text-xs border-b border-transparent hover:border-slate-200 focus:border-indigo-500 focus:bg-white px-1 py-0.5 rounded">
+                </td>
+                <td class="px-3 py-2">
+                    <input type="date" value="${item.pd}" onchange="updatePortfolioItem(${item.id}, 'pd', this.value)" class="bg-transparent outline-none text-slate-600 text-xs hover:bg-white focus:bg-white px-1 py-0.5 rounded border border-transparent hover:border-slate-200">
+                </td>
+                <td class="px-3 py-2">
+                    <input type="date" value="${item.pctd}" onchange="updatePortfolioItem(${item.id}, 'pctd', this.value)" class="bg-transparent outline-none text-slate-600 text-xs hover:bg-white focus:bg-white px-1 py-0.5 rounded border border-transparent hover:border-slate-200">
+                </td>
+                <td class="px-3 py-2">
+                    <input type="date" value="${item.entryd}" onchange="updatePortfolioItem(${item.id}, 'entryd', this.value)" placeholder="未进入(自动预测)" class="bg-transparent placeholder-slate-400 outline-none text-slate-600 text-xs hover:bg-white focus:bg-white px-1 py-0.5 rounded border border-transparent hover:border-slate-200">
+                </td>
+                <td class="px-3 py-2">
+                    <select onchange="updatePortfolioItem(${item.id}, 'accel', this.value)" class="bg-transparent outline-none text-[10px] text-slate-600 hover:bg-white focus:bg-white px-1 py-0.5 rounded border border-transparent hover:border-slate-200 cursor-pointer">
+                        ${accelOptions}
+                    </select>
+                    ${waiveHTML}
+                </td>
+                <td class="px-2 py-2 text-center">
+                    <button onclick="deletePortfolioItem(${item.id})" class="text-rose-500 hover:text-rose-700 font-bold text-xs p-1">✕</button>
+                </td>
+            </tr>`;
         }
 
         function updatePortfolioItem(id, field, value) {
@@ -1454,6 +1774,11 @@
             if (item) {
                 item[field] = value;
                 renderPortfolioCalculations();
+                // If group field changed, need to re-render table to regroup
+                if (field === 'group') {
+                    renderPortfolioTable();
+                }
+                saveToStorage();
             }
         }
 
@@ -1461,6 +1786,62 @@
             state.portfolioItems = state.portfolioItems.filter(x => x.id !== id);
             renderPortfolioTable();
             renderPortfolioCalculations();
+            saveToStorage();
+        }
+
+        // --- Group management helpers ---
+
+        function toggleGroup(groupId) {
+            let el = document.getElementById(groupId);
+            let arrow = document.getElementById(groupId + '_arrow');
+            if (!el || !arrow) return;
+            if (el.style.display === 'none') {
+                el.style.display = '';
+                arrow.textContent = '▼';
+            } else {
+                el.style.display = 'none';
+                arrow.textContent = '▶';
+            }
+        }
+
+        function updateGroupName(oldName, newName) {
+            if (!newName || !newName.trim()) return;
+            newName = newName.trim();
+            if (oldName === newName) return;
+            state.portfolioItems.forEach(item => {
+                if ((item.group || '').trim() === oldName) {
+                    item.group = newName;
+                }
+            });
+            renderPortfolioTable();
+            renderPortfolioCalculations();
+            saveToStorage();
+        }
+
+        function updateGroupCnTotal(groupName, value) {
+            state.portfolioItems.forEach(item => {
+                if ((item.group || '').trim() === groupName) {
+                    item.cnTotal = value;
+                }
+            });
+            renderPortfolioTable();
+            renderPortfolioCalculations();
+            saveToStorage();
+        }
+
+        function deleteGroup(groupName) {
+            let count = state.portfolioItems.filter(i => (i.group || '').trim() === groupName).length;
+            if (!confirm(`确定删除项目组 "${groupName}" 及其下全部 ${count} 件专利吗？\n\n此操作不可恢复。建议先导出备份。`)) return;
+            state.portfolioItems = state.portfolioItems.filter(i => (i.group || '').trim() !== groupName);
+            renderPortfolioTable();
+            renderPortfolioCalculations();
+            saveToStorage();
+            showToast('已删除项目组', `"${groupName}" 及其 ${count} 件专利已移除。已自动保存。`);
+        }
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
 
         function addEmptyPortfolioRow() {
@@ -1473,77 +1854,212 @@
                 pd: formatDate(pdDate),
                 pctd: '',
                 entryd: '',
-                accelUs: 'none',
-                accelEpo: 'none'
+                accel: 'none',
+                waiveR161: false,
+                group: '',
+                cnTotal: 0
             });
             renderPortfolioTable();
             renderPortfolioCalculations();
+            saveToStorage();
         }
 
         function loadMockPortfolio() {
-            state.portfolioItems = [
-                { id: 1, name: '多孔微孔陶瓷雾化芯(A10)', pd: '2025-01-10', pctd: '2026-01-05', entryd: '2026-06-12', accelUs: 'none', accelEpo: 'none' },
-                { id: 2, name: '感受器侧向对称发热总成', pd: '2025-10-18', pctd: '2026-07-02', entryd: '', accelUs: 'pph', accelEpo: 'pace' },
-                { id: 3, name: '阶梯式风道双腔烟弹防冷凝', pd: '2024-03-22', pctd: '2025-03-15', entryd: '2025-09-20', accelUs: 'trackone', accelEpo: 'both' },
-                { id: 4, name: '磁吸式防漏液超声波震动座', pd: '2025-11-05', pctd: '', entryd: '', accelUs: 'none', accelEpo: 'pph' },
-                { id: 5, name: '温度阻值闭环精准控温电弧', pd: '2023-12-15', pctd: '2024-12-05', entryd: '2024-06-18', accelUs: 'pph', accelEpo: 'none' }
-            ];
+            if (state.portfolioItems.length > 0) {
+                if (!confirm('当前已有 ' + state.portfolioItems.length + ' 条案件数据，加载Demo将覆盖全部数据。\n\n建议先导出备份。是否继续？')) return;
+            }
+            state.portfolioItems = JSON.parse(JSON.stringify(DEMO_ITEMS)); // Deep copy
             renderPortfolioTable();
             renderPortfolioCalculations();
-            showToast("成功装载电子烟Demo数据", "包含五件横跨不同发展阶段的专利。部分项目已自愿启用 PPH 或 Track One 加速通道。");
+            saveToStorage();
+            showToast("成功装载电子烟Demo数据", "包含两个项目组共五件专利，展示分组管理与转化率统计。已自动保存至本地。");
+        }
+
+        // Proper CSV line parser — handles quoted fields and mixed delimiters (, tab, ；)
+        function parseCSVLine(line) {
+            const fields = [];
+            let current = '';
+            let inQuotes = false;
+            for (let i = 0; i < line.length; i++) {
+                const ch = line[i];
+                if (inQuotes) {
+                    if (ch === '"') {
+                        inQuotes = false;
+                    } else {
+                        current += ch;
+                    }
+                } else {
+                    if (ch === '"') {
+                        inQuotes = true;
+                    } else if (ch === ',' || ch === '\t' || ch === '，' || ch === ';' || ch === '；') {
+                        fields.push(current.trim());
+                        current = '';
+                    } else {
+                        current += ch;
+                    }
+                }
+            }
+            if (current !== '' || (fields.length > 0 && line.endsWith(','))) {
+                fields.push(current.trim());
+            }
+            // Trim trailing empty cells
+            while (fields.length > 0 && fields[fields.length - 1] === '') fields.pop();
+            return fields;
+        }
+
+        // Parse a single JS object literal line like: { id: 1, name: 'xx', pd: '2025-01-10', accel: 'pph', waiveR161: false }
+        function parseJSObjectLine(line) {
+            // Strip outer braces and optional trailing comma/semicolon
+            let inner = line.replace(/^\{|\}$/g, '').trim();
+            if (inner.endsWith(',') || inner.endsWith(';')) inner = inner.slice(0, -1).trim();
+
+            // Split by key boundaries: ,  followed by optional spaces and a key name
+            // Strategy: find all "key: value" pairs
+            let pairs = [];
+            // Match key: followed by value (quoted string or unquoted token)
+            let keyValRegex = /(\w+)\s*:\s*(['"])((?:(?!\2).)*)\2/g;
+            let match;
+            let lastIndex = 0;
+            while ((match = keyValRegex.exec(inner)) !== null) {
+                pairs.push({ key: match[1], val: match[3] });
+                lastIndex = match.index + match[0].length;
+            }
+            // Also try unquoted values (false, true, none, numbers)
+            let unquotedRegex = /(\w+)\s*:\s*([^,;]+?)(?=\s*,\s*\w+\s*:|$)/g;
+            while ((match = unquotedRegex.exec(inner)) !== null) {
+                let raw = match[2].trim().replace(/['"]/g, '');
+                // Only add if not already parsed as quoted
+                let exists = pairs.some(p => p.key === match[1]);
+                if (!exists) {
+                    pairs.push({ key: match[1], val: raw });
+                }
+            }
+
+            // Build result
+            let name = '', pd = '', pctd = '', entryd = '', accel = 'none', waiveR161 = false, group = '', cnTotal = 0;
+            pairs.forEach(p => {
+                switch (p.key) {
+                    case 'name': name = p.val; break;
+                    case 'pd': pd = p.val; break;
+                    case 'pctd': pctd = p.val; break;
+                    case 'entryd': entryd = p.val; break;
+                    case 'group': group = p.val; break;
+                    case 'cnTotal': cnTotal = parseInt(p.val) || 0; break;
+                    case 'accel':
+                        let a = p.val.toLowerCase();
+                        if (a.includes('pace')) accel = 'pace';
+                        else if (a.includes('pph')) accel = 'pph';
+                        else if (a.includes('track') || a.includes('trk')) accel = 'trackOne';
+                        else accel = 'none';
+                        break;
+                    case 'waiveR161':
+                        let w = p.val.toLowerCase();
+                        waiveR161 = (w === 'true' || w === '1' || w === '是' || w === 'yes');
+                        break;
+                }
+            });
+
+            // Validate dates
+            let dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+            if (pd && !dateRegex.test(pd)) pd = '';
+            if (pctd && !dateRegex.test(pctd)) pctd = '';
+            if (entryd && !dateRegex.test(entryd)) entryd = '';
+
+            if (!name) return null;
+            return { name, pd, pctd, entryd, accel, waiveR161, group, cnTotal };
+        }
+
+        // Detect whether text is JS object format (contains braces + key:value pairs)
+        function isJSObjectFormat(text) {
+            let lines = text.split('\n').filter(l => l.trim());
+            if (lines.length === 0) return false;
+            // If any line looks like a JS object literal { key: value, ... }
+            return lines.some(l => /\{\s*\w+\s*:/.test(l));
         }
 
         function parsePortfolioPaste() {
             const rawText = document.getElementById('portfolioPasteArea').value.trim();
             if (!rawText) {
-                showToast("解析错误", "请先在文本框内贴入以逗号或Tab键分隔的数据表格。");
+                showToast("解析错误", "请先在文本框内贴入数据。支持两种格式：CSV/Excel制表符 或 JS对象字面量。");
                 return;
             }
 
             try {
-                const lines = rawText.split('\n');
                 let parsedItems = [];
                 let maxId = state.portfolioItems.length > 0 ? Math.max(...state.portfolioItems.map(x => x.id)) : 0;
 
-                lines.forEach((line) => {
-                    if (!line.trim()) return;
-                    let parts = line.split(/[\t,，;；\s]+/);
-                    if (parts.length > 0) {
+                if (isJSObjectFormat(rawText)) {
+                    // --- JS Object Literal Mode ---
+                    const lines = rawText.split('\n');
+                    lines.forEach((line) => {
+                        if (!line.trim()) return;
+                        let obj = parseJSObjectLine(line.trim());
+                        if (obj && obj.name) {
+                            maxId++;
+                            parsedItems.push({ id: maxId, ...obj });
+                        }
+                    });
+                } else {
+                    // --- CSV / TSV Mode (proper quoted-field parsing) ---
+                    const lines = rawText.split('\n');
+                    lines.forEach((line) => {
+                        if (!line.trim()) return;
+                        // Split into field-values; skip lines that start with # (comments)
+                        if (line.trim().startsWith('#')) return;
+                        let parts = parseCSVLine(line);
+                        if (parts.length === 0) return;
+                        // Fill missing columns with '' (allow up to 8 columns)
+                        while (parts.length < 8) parts.push('');
                         let name = parts[0] || `导入项目 ${maxId + 1}`;
                         let pd = parts[1] || '';
                         let pctd = parts[2] || '';
                         let entryd = parts[3] || '';
+                        let accelRaw = (parts[4] || '').toLowerCase();
+                        let accel = 'none';
+                        if (accelRaw.includes('pace')) accel = 'pace';
+                        else if (accelRaw.includes('pph')) accel = 'pph';
+                        else if (accelRaw.includes('track') || accelRaw.includes('trk')) accel = 'trackOne';
 
-                        // Simple date validation
+                        let waiveR161 = false;
+                        let waiveRaw = (parts[5] || '').toLowerCase();
+                        if (waiveRaw.includes('是') || waiveRaw.includes('y') || waiveRaw.includes('true') || waiveRaw.includes('1') || waiveRaw.includes('放弃')) waiveR161 = true;
+
+                        let group = parts[6] || '';
+                        let cnTotal = parseInt(parts[7]) || 0;
+
                         let dateRegex = /^\d{4}-\d{2}-\d{2}$/;
                         if (pd && !dateRegex.test(pd)) pd = '';
                         if (pctd && !dateRegex.test(pctd)) pctd = '';
                         if (entryd && !dateRegex.test(entryd)) entryd = '';
 
                         maxId++;
-                        parsedItems.push({ id: maxId, name, pd, pctd, entryd, accelUs: 'none', accelEpo: 'none' });
-                    }
-                });
+                        parsedItems.push({ id: maxId, name, pd, pctd, entryd, accel, waiveR161, group, cnTotal });
+                    });
+                }
 
                 if (parsedItems.length > 0) {
                     state.portfolioItems = [...state.portfolioItems, ...parsedItems];
                     renderPortfolioTable();
                     renderPortfolioCalculations();
-                    showToast(`成功解析导入 ${parsedItems.length} 件专利`, "数据已无缝合并，默认均设为“普通排队”模式。您可以点击表格单独调整。");
+                    saveToStorage();
+                    showToast(`成功解析导入 ${parsedItems.length} 件专利`, "数据已无缝合并至底部追踪矩阵中进行阶段预测。已自动保存至本地。");
                     document.getElementById('portfolioPasteArea').value = "";
                 } else {
-                    showToast("解析失败", "格式不匹配，请确认为：项目名,YYYY-MM-DD,YYYY-MM-DD,YYYY-MM-DD");
+                    showToast("解析失败", "未识别到有效数据。支持格式：1) CSV/Excel制表符（8列含项目组） 2) JS对象字面量 { name:'xx', group:'xx', ... }。可先下载CSV模板参考格式。");
                 }
             } catch (err) {
                 showToast("解析发生异常", err.toString());
             }
         }
 
+        // --- STREAMING_CHUNK: Core chain logic for USPTO/EPO stage prediction... ---
         // Predict stage of a single item at a given evaluation point (T)
         function predictPatentStage(item, jurisdiction, evalDateStr) {
             let evalDate = new Date(evalDateStr);
             let pd = new Date(item.pd);
-
+            let accel = item.accel || 'none';
+            let waiveR161 = item.waiveR161 || false;
+            
             // Determine Entry Date (Actual or Estimated)
             let entryd;
             if (item.entryd) {
@@ -1553,94 +2069,138 @@
                 entryd = addMonths(item.pd, offset);
             }
 
-            // Extract Case-Specific Accel Choices
-            let accelUs = item.accelUs || 'none';
-            let accelEpo = item.accelEpo || 'none';
+            // Determine PCT date
+            let pctd;
+            if (item.pctd) {
+                pctd = new Date(item.pctd);
+            } else {
+                pctd = addMonths(item.pd, 12);
+            }
 
             if (jurisdiction === 'us') {
-                // US Stages with Case-Specific Offsets
+                // --- US Stages with Acceleration ---
+                // Acceleration compression factors (in months):
+                // Track One: target final disposition in 12 months from entry
+                // PPH: ~50% reduction in examination queue and OA cycle
+
                 // 1. 国际阶段（未进美国）: Eval date is before Entry Date
                 if (evalDate < entryd) {
                     return 1;
                 }
-                // 2. 国家阶段格式初审: Entry to Entry + 2 months
+
+                // 2. 国家阶段格式初审: Entry to Entry + 2 months (same regardless of accel)
                 let limit2 = addMonths(formatDate(entryd), 2);
                 if (evalDate >= entryd && evalDate < limit2) {
                     return 2;
                 }
-                
-                // 3. 审查排队与 PPH/Track-One 决策
-                // Standard: Entry + 2m to Entry + 6m
-                // PPH reduces queuing: Entry + 2m to Entry + 4m
-                // Track One slashes queuing: Entry + 2m to Entry + 3m
-                let queueMonths = 6;
-                if (accelUs === 'pph') queueMonths = 4;
-                if (accelUs === 'trackone') queueMonths = 3;
 
-                let limit3 = addMonths(formatDate(entryd), queueMonths);
+                // 3. 审查排队与 PPH/Track-One 决策
+                //    Normal: Entry + 2m to Entry + 6m (4 months window)
+                //    PPH: Entry + 2m to Entry + 3m (1 month, nearly eliminated)
+                //    Track One: Entry + 2m to Entry + 3m (1 month, docketed immediately)
+                let queueWindow = 4; // months
+                if (accel === 'pph' || accel === 'trackOne') {
+                    queueWindow = 1;
+                }
+                let limit3 = addMonths(formatDate(entryd), 2 + queueWindow);
                 if (evalDate >= limit2 && evalDate < limit3) {
                     return 3;
                 }
-                
-                // 4. 实质审查与 OA 答辩
-                // Standard: Entry + 6m to Entry + 18m
-                // PPH shrinks exam time: Entry + 4m to Entry + 12m
-                // Track One shrinks exam time: Entry + 3m to Entry + 8m
-                let examMonths = 18;
-                if (accelUs === 'pph') examMonths = 12;
-                if (accelUs === 'trackone') examMonths = 8;
 
-                let limit4 = addMonths(formatDate(entryd), examMonths);
+                // 4. 实质审查与 OA 答辩
+                //    Normal: Entry + 6m to Entry + 18m (12 months)
+                //    PPH: Entry + 3m to Entry + 12m (9 months, ~50% faster)
+                //    Track One: Entry + 3m to Entry + 10m (7 months, faster)
+                let examDuration = 12; // months for normal
+                if (accel === 'trackOne') {
+                    examDuration = 7;
+                } else if (accel === 'pph') {
+                    examDuration = 9;
+                }
+                let limit4 = addMonths(formatDate(entryd), 2 + queueWindow + examDuration);
                 if (evalDate >= limit3 && evalDate < limit4) {
                     return 4;
                 }
-                // 5. 授权领证与延续案布局: Entry onwards
+
+                // 5. 授权领证与延续案布局: after substantive examination
                 return 5;
             } else {
-                // EPO Stages with Case-Specific Offsets
+                // --- EPO Stages with Acceleration ---
+                // PACE: each OA cycle compressed from 6-12M to under 3M
+                // PPH (EPO as ISA not possible; but CNIPA→EPO PPH possible)
+                //    Stage 3 (supplementary search): 6-12m → 3-6m
+                //    Stage 4 (substantive exam): 12-30m → 8-18m
+
                 // 1. 国际阶段（未进欧洲）
                 if (evalDate < entryd) {
                     return 1;
                 }
-                // 2. 进入欧洲及 Rule 161 强制答辩
-                // Standard R161: Entry to Entry + 6 months
-                // PACE/PPH skips/compresses waiver time to 2 months
-                let r161Months = 6;
-                if (accelEpo !== 'none') r161Months = 2;
 
-                let limit2 = addMonths(formatDate(entryd), r161Months);
+                // 2. 进入欧洲及 Rule 161 答辩
+                //    Normal (未放弃R161): Entry to Entry + 6 months (6个月自愿/强制修正期)
+                //    Waived R161 (Form 1200勾选放弃): Entry to Entry + 1 month (跳过等待，直接进入下一阶段)
+                let r161Window = waiveR161 ? 1 : 6;
+                let limit2 = addMonths(formatDate(entryd), r161Window);
                 if (evalDate >= entryd && evalDate < limit2) {
                     return 2;
                 }
-                // 3. 补充检索与 ESOP 发文
-                // Standard: Entry + 6m to Entry + 12m
-                // Accelerated: Entry + 2m to Entry + 6m
-                let searchMonths = 12;
-                if (accelEpo !== 'none') searchMonths = 6;
 
-                let limit3 = addMonths(formatDate(entryd), searchMonths);
+                // 3. 补充检索与 ESOP 发文
+                //    Base offset = r161Window (1 or 6 months after entry)
+                //    Normal: +6 months search window
+                //    PACE/PPH: +3 months search window
+                let searchWindow = 6; // months
+                if (accel === 'pace' || accel === 'pph') {
+                    searchWindow = 3;
+                }
+                let limit3 = addMonths(formatDate(entryd), r161Window + searchWindow);
                 if (evalDate >= limit2 && evalDate < limit3) {
                     return 3;
                 }
-                // 4. 实质审查与答辩
-                // Standard: Entry + 12m to Entry + 30m
-                // PACE: Entry + 6m to Entry + 18m
-                // PPH: Entry + 6m to Entry + 20m
-                // Both: Entry + 6m to Entry + 15m
-                let examMonths = 30;
-                if (accelEpo === 'pace') examMonths = 18;
-                if (accelEpo === 'pph') examMonths = 20;
-                if (accelEpo === 'both') examMonths = 15;
 
-                let limit4 = addMonths(formatDate(entryd), examMonths);
+                // 4. 实质审查与答辩
+                //    Normal: +18 months exam window
+                //    PACE/PPH: +9 months exam window
+                let examWindow = 18; // months
+                if (accel === 'pace' || accel === 'pph') {
+                    examWindow = 9;
+                }
+                let limit4 = addMonths(formatDate(entryd), r161Window + searchWindow + examWindow);
                 if (evalDate >= limit3 && evalDate < limit4) {
                     return 4;
                 }
+
                 // 5. 授权与德法意文领证
                 return 5;
             }
         }
 
+        // Estimate grant date for a portfolio item (for timeline display)
+        function estimateGrantDate(item, jurisdiction) {
+            let accel = item.accel || 'none';
+            let waiveR161 = item.waiveR161 || false;
+            let entryd;
+            if (item.entryd) {
+                entryd = new Date(item.entryd);
+            } else {
+                let offset = jurisdiction === 'epo' ? 31 : 30;
+                entryd = addMonths(item.pd, offset);
+            }
+            let formatEntry = formatDate(entryd);
+
+            if (jurisdiction === 'us') {
+                let queueWindow = (accel === 'pph' || accel === 'trackOne') ? 1 : 4;
+                let examDuration = accel === 'trackOne' ? 7 : (accel === 'pph' ? 9 : 12);
+                return formatDate(addMonths(formatEntry, 2 + queueWindow + examDuration));
+            } else {
+                let r161Window = waiveR161 ? 1 : 6;
+                let searchWindow = (accel === 'pace' || accel === 'pph') ? 3 : 6;
+                let examWindow = (accel === 'pace' || accel === 'pph') ? 9 : 18;
+                return formatDate(addMonths(formatEntry, r161Window + searchWindow + examWindow));
+            }
+        }
+
+        // --- STREAMING_CHUNK: Dynamic aggregation for portfolio tracking dashboard... ---
         function renderPortfolioCalculations() {
             const jur = state.portfolioJurisdiction;
             const stages = FIXED_STAGES[jur];
@@ -1669,31 +2229,10 @@
                 counts6M[s6M]++;
                 counts1Y[s1Y]++;
 
-                // Format decorated names with speedup badges for high-fidelity visualization
-                let labelAddon = "";
-                if (jur === 'us') {
-                    let accUs = item.accelUs || 'none';
-                    if (accUs === 'pph') {
-                        labelAddon = `<span class="ml-1.5 px-1 py-0.2 rounded text-[8px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200">PPH</span>`;
-                    } else if (accUs === 'trackone') {
-                        labelAddon = `<span class="ml-1.5 px-1 py-0.2 rounded text-[8px] font-black bg-amber-100 text-amber-800 border border-amber-200">Track One</span>`;
-                    }
-                } else {
-                    let accEpo = item.accelEpo || 'none';
-                    if (accEpo === 'pace') {
-                        labelAddon = `<span class="ml-1.5 px-1 py-0.2 rounded text-[8px] font-black bg-indigo-100 text-indigo-800 border border-indigo-200">PACE</span>`;
-                    } else if (accEpo === 'pph') {
-                        labelAddon = `<span class="ml-1.5 px-1 py-0.2 rounded text-[8px] font-black bg-emerald-100 text-emerald-800 border border-emerald-200">中欧PPH</span>`;
-                    } else if (accEpo === 'both') {
-                        labelAddon = `<span class="ml-1.5 px-1 py-0.2 rounded text-[8px] font-black bg-purple-100 text-purple-800 border border-purple-200">PACE+PPH</span>`;
-                    }
-                }
-
-                let decoratedName = `<span class="inline-flex items-center">${item.name}${labelAddon}</span>`;
-
-                detailsCurrent[sCurr].push(decoratedName);
-                details6M[s6M].push(decoratedName);
-                details1Y[s1Y].push(decoratedName);
+                let displayName = item.group ? `${item.group}/${item.name}` : item.name;
+                detailsCurrent[sCurr].push(displayName);
+                details6M[s6M].push(displayName);
+                details1Y[s1Y].push(displayName);
             });
 
             // Helper to render widget cards inside each column
@@ -1704,11 +2243,32 @@
                 stages.forEach(st => {
                     let count = countsMap[st.id] || 0;
                     let pct = Math.round((count / totalCases) * 100);
-                    let badgeColor = count > 0 ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-slate-100 text-slate-400 border-slate-200";
-                    let barColor = count > 0 ? "bg-emerald-500" : "bg-slate-200";
+                    
+                    // Color-coding by stage risk level
+                    let stageColorMap = {
+                        1: { badge: count > 0 ? "bg-amber-50 text-amber-700 border-amber-200" : "bg-slate-100 text-slate-400 border-slate-200",
+                             bar: count > 0 ? "bg-amber-500" : "bg-slate-200",
+                             tag: count > 0 ? "⏳ 待进入" : "" },
+                        2: { badge: count > 0 ? "bg-sky-50 text-sky-700 border-sky-200" : "bg-slate-100 text-slate-400 border-slate-200",
+                             bar: count > 0 ? "bg-sky-500" : "bg-slate-200",
+                             tag: count > 0 ? "📋 初审中" : "" },
+                        3: { badge: count > 0 ? "bg-indigo-50 text-indigo-700 border-indigo-200" : "bg-slate-100 text-slate-400 border-slate-200",
+                             bar: count > 0 ? "bg-indigo-500" : "bg-slate-200",
+                             tag: count > 0 ? "🔍 排队/决策" : "" },
+                        4: { badge: count > 0 ? "bg-emerald-50 text-emerald-700 border-emerald-200" : "bg-slate-100 text-slate-400 border-slate-200",
+                             bar: count > 0 ? "bg-emerald-500" : "bg-slate-200",
+                             tag: count > 0 ? "⚖ 审查中" : "" },
+                        5: { badge: count > 0 ? "bg-violet-50 text-violet-700 border-violet-200" : "bg-slate-100 text-slate-400 border-slate-200",
+                             bar: count > 0 ? "bg-violet-500" : "bg-slate-200",
+                             tag: count > 0 ? "✅ 授权" : "" }
+                    };
+                    let colors = stageColorMap[st.id];
+                    let badgeColor = colors.badge;
+                    let barColor = colors.bar;
+                    let stageTag = colors.tag;
 
                     let tooltipNames = detailsMap[st.id] && detailsMap[st.id].length > 0 
-                        ? `<div class="mt-1.5 text-[9px] text-slate-400 border-t border-slate-100 pt-1.5 flex flex-col gap-1">🔍 包含: ${detailsMap[st.id].join('、')}</div>` 
+                        ? `<div class="mt-1 text-[9px] text-slate-400 border-t border-slate-100 pt-1">🔍 包含: ${detailsMap[st.id].join(', ')}</div>` 
                         : "";
 
                     html += `
@@ -1718,7 +2278,7 @@
                                 <span class="text-[10px] font-bold text-slate-800 block leading-snug">${st.id}. ${st.name}</span>
                                 <span class="text-[9px] text-slate-400 block mt-0.5 leading-normal">${st.desc}</span>
                             </div>
-                            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${badgeColor}">${count} 件</span>
+                            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${badgeColor}">${count} 件${stageTag ? ' ' + stageTag : ''}</span>
                         </div>
                         <div class="w-full bg-slate-100 h-1.5 rounded-full mt-2 overflow-hidden">
                             <div class="${barColor} h-full transition-all-300" style="width: ${pct}%"></div>
@@ -1733,6 +2293,292 @@
             document.getElementById('agg-port-current').innerHTML = buildColumnHtml(countsCurrent, detailsCurrent);
             document.getElementById('agg-port-6m').innerHTML = buildColumnHtml(counts6M, details6M);
             document.getElementById('agg-port-1y').innerHTML = buildColumnHtml(counts1Y, details1Y);
+
+            // Also render KPI bar and Gantt chart
+            renderKPIBar(countsCurrent, counts6M, counts1Y);
+            renderGanttChart();
+        }
+
+        // --- KPI Summary Bar ---
+        function renderKPIBar(countsCurrent, counts6M, counts1Y) {
+            const container = document.getElementById('kpiBar');
+            if (!container) return;
+            const total = state.portfolioItems.length;
+            const stages = FIXED_STAGES[state.portfolioJurisdiction];
+
+            // Metrics definitions
+            const metrics = [
+                {
+                    label: '总案件',
+                    value: total,
+                    unit: '件',
+                    color: 'indigo',
+                    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>'
+                },
+                {
+                    label: '待进入国家阶段',
+                    value: countsCurrent[1] || 0,
+                    unit: '件',
+                    color: 'amber',
+                    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>'
+                },
+                {
+                    label: '审查/答辩中',
+                    value: (countsCurrent[2] || 0) + (countsCurrent[3] || 0) + (countsCurrent[4] || 0),
+                    unit: '件',
+                    color: 'emerald',
+                    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>'
+                },
+                {
+                    label: '已授权/接近授权',
+                    value: countsCurrent[5] || 0,
+                    unit: '件',
+                    color: 'violet',
+                    icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>'
+                }
+            ];
+
+            // Calculate overseas conversion stats
+            let totalForeign = state.portfolioItems.filter(i => i.pctd || i.entryd).length;
+            let totalCN = 0;
+            let groupsSeen = {};
+            state.portfolioItems.forEach(item => {
+                let g = (item.group || '').trim();
+                if (g && !groupsSeen[g]) {
+                    groupsSeen[g] = true;
+                    totalCN += item.cnTotal || 0;
+                }
+            });
+            let conversionPct = totalCN > 0 ? Math.round((totalForeign / totalCN) * 100) : 0;
+            let convColor = conversionPct >= 80 ? 'emerald' : conversionPct >= 50 ? 'amber' : 'rose';
+            let convBg = {
+                emerald: 'bg-emerald-50 border-emerald-100',
+                amber: 'bg-amber-50 border-amber-100',
+                rose: 'bg-rose-50 border-rose-100'
+            };
+            let convText = { emerald: 'text-emerald-700', amber: 'text-amber-700', rose: 'text-rose-700' };
+
+            metrics.push({
+                label: '海外转化率',
+                value: conversionPct,
+                unit: '%',
+                color: convColor,
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>',
+                suffix: ` (${totalForeign}/${totalCN})`
+            });
+
+            // Also check if any cases are at risk (in stage 1 but approaching entry deadline)
+            let atRisk = 0;
+            const today = new Date('2026-07-15');
+            state.portfolioItems.forEach(item => {
+                if (!item.pd) return;
+                let entryd;
+                if (item.entryd) {
+                    entryd = new Date(item.entryd);
+                } else {
+                    entryd = addMonths(item.pd, state.portfolioJurisdiction === 'epo' ? 31 : 30);
+                }
+                const monthsToEntry = (entryd - today) / (30 * 24 * 60 * 60 * 1000);
+                if (monthsToEntry > 0 && monthsToEntry <= 3) atRisk++;
+            });
+
+            let html = '';
+            metrics.forEach(m => {
+                let bgColors = {
+                    indigo: 'bg-indigo-50 border-indigo-100',
+                    amber: 'bg-amber-50 border-amber-100',
+                    emerald: 'bg-emerald-50 border-emerald-100',
+                    violet: 'bg-violet-50 border-violet-100'
+                };
+                let textColors = {
+                    indigo: 'text-indigo-700',
+                    amber: 'text-amber-700',
+                    emerald: 'text-emerald-700',
+                    violet: 'text-violet-700',
+                    rose: 'text-rose-700'
+                };
+                let suffix = m.suffix || '';
+                html += `
+                <div class="${bgColors[m.color]} rounded-xl p-3 border">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] text-slate-500 font-medium">${m.label}</span>
+                        <svg class="w-3.5 h-3.5 ${textColors[m.color]}" fill="none" stroke="currentColor" viewBox="0 0 24 24">${m.icon}</svg>
+                    </div>
+                    <div class="mt-1 flex items-baseline gap-1">
+                        <span class="text-xl font-black text-slate-900 mono">${m.value}</span>
+                        <span class="text-[10px] text-slate-400">${m.unit}${suffix}</span>
+                    </div>
+                </div>`;
+            });
+
+            // Add risk badge if any cases at risk
+            if (atRisk > 0) {
+                html += `
+                <div class="bg-rose-50 border-rose-100 rounded-xl p-3 border md:col-span-1">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] text-slate-500 font-medium">⚠ 即将到期</span>
+                        <svg class="w-3.5 h-3.5 text-rose-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                    </div>
+                    <div class="mt-1 flex items-baseline gap-1">
+                        <span class="text-xl font-black text-rose-700 mono">${atRisk}</span>
+                        <span class="text-[10px] text-rose-400">件3个月内需进入</span>
+                    </div>
+                </div>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // --- Gantt Chart for Case Progress ---
+        function renderGanttChart() {
+            const container = document.getElementById('ganttChart');
+            if (!container) return;
+            const jur = state.portfolioJurisdiction;
+            if (state.portfolioItems.length === 0) {
+                container.innerHTML = '<div class="text-[10px] text-slate-400 text-center py-4">暂无案件数据</div>';
+                return;
+            }
+
+            // Sort cases: active first (stage 2-4), then stage 1, then stage 5
+            const today = new Date('2026-07-15');
+            let html = '';
+
+            // Color map for stages
+            const stageColors = {
+                1: { bg: 'bg-amber-400', label: '国际阶段' },
+                2: { bg: 'bg-sky-400', label: '格式初审' },
+                3: { bg: 'bg-indigo-400', label: '排队决策' },
+                4: { bg: 'bg-emerald-500', label: '实质审查' },
+                5: { bg: 'bg-violet-500', label: '授权' }
+            };
+
+            state.portfolioItems.forEach(item => {
+                if (!item.pd) return;
+                let pd = new Date(item.pd);
+                let entryd;
+                if (item.entryd) {
+                    entryd = new Date(item.entryd);
+                } else {
+                    entryd = addMonths(item.pd, jur === 'epo' ? 31 : 30);
+                }
+                let grantDate = new Date(estimateGrantDate(item, jur));
+                
+                // Calculate percentage positions on the timeline
+                // Timeline: from PD to estimated grant date
+                let totalDays = (grantDate - pd) / (24 * 60 * 60 * 1000);
+                let todayOffset = ((today - pd) / totalDays) * 100;
+                let entryOffset = ((entryd - pd) / totalDays) * 100;
+                
+                // Clamp values
+                todayOffset = Math.max(0, Math.min(100, todayOffset));
+                entryOffset = Math.max(0, Math.min(100, entryOffset));
+
+                let currentStage = predictPatentStage(item, jur, '2026-07-15');
+                let stageInfo = stageColors[currentStage] || stageColors[1];
+                let accelBadge = '';
+                if (item.accel && item.accel !== 'none') {
+                    let accelInfo = ACCEL_OPTIONS[item.accel];
+                    accelBadge = `<span class="px-1.5 py-0.5 rounded text-[8px] font-bold bg-amber-100 text-amber-700 ml-1">⚡${accelInfo.short}</span>`;
+                }
+
+                let grantDateStr = formatDate(grantDate);
+                let stageLabel = stageInfo.label;
+
+                // Show group prefix if item belongs to a group
+                let displayName = item.name;
+                if (item.group && item.group.trim()) {
+                    displayName = `<span class="text-[8px] text-indigo-400 font-normal">${escapeHTML(item.group)}/</span>${escapeHTML(item.name)}`;
+                } else {
+                    displayName = escapeHTML(displayName);
+                }
+
+                html += `
+                <div class="flex items-center gap-3">
+                    <div class="w-28 shrink-0 text-[10px] font-medium text-slate-700 truncate" title="${escapeHTML(item.name)}">${displayName}${accelBadge}</div>
+                    <div class="flex-grow relative h-5 bg-slate-100 rounded-full overflow-hidden">
+                        <!-- Entry marker -->
+                        <div class="absolute top-0 h-full w-0.5 bg-slate-400" style="left: ${entryOffset}%" title="进入国家阶段"></div>
+                        <!-- Today marker -->
+                        <div class="absolute top-0 h-full w-0.5 bg-rose-500 z-10" style="left: ${todayOffset}%" title="今天">
+                            <div class="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-rose-500 rounded-full border border-white"></div>
+                        </div>
+                        <!-- Stage blocks from PD to today -->
+                        <div class="absolute top-0 h-full ${stageInfo.bg} rounded-full opacity-80" style="left: 0; width: ${todayOffset}%;"></div>
+                    </div>
+                    <div class="w-20 shrink-0 text-right">
+                        <span class="text-[9px] text-slate-400">预计授权</span>
+                        <span class="text-[10px] font-mono font-bold text-slate-700 block">${grantDateStr}</span>
+                    </div>
+                </div>`;
+            });
+
+            // Legend
+            html += `
+            <div class="flex items-center gap-4 text-[8px] text-slate-400 mt-3 pt-2 border-t border-slate-100">
+                <span class="flex items-center gap-1"><span class="w-2 h-2 bg-rose-500 rounded-full"></span> 今天</span>
+                <span class="flex items-center gap-1"><span class="w-0.5 h-2 bg-slate-400"></span> 进入国家阶段</span>
+                <span>深色填充 = 已渡过时间</span>
+            </div>`;
+
+            container.innerHTML = html;
+        }
+
+        // --- Print-friendly Management Report ---
+        function printManagementReport() {
+            // Open a new window with a clean, print-friendly version
+            const w = window.open('', '_blank', 'width=1000,height=800');
+            const jur = state.portfolioJurisdiction;
+            const jurName = jur === 'us' ? '美国 (USPTO)' : '欧洲 (EPO)';
+
+            let rows = '';
+            state.portfolioItems.forEach(item => {
+                if (!item.pd) return;
+                let stage = predictPatentStage(item, jur, '2026-07-15');
+                let stageName = FIXED_STAGES[jur][stage - 1].name;
+                let grantDate = estimateGrantDate(item, jur);
+                let accelLabel = (ACCEL_OPTIONS[item.accel] || ACCEL_OPTIONS['none']).short;
+                rows += `<tr>
+                    <td>${item.name}</td>
+                    <td>${item.pd}</td>
+                    <td>${item.pctd || '-'}</td>
+                    <td>${item.entryd || '未进入(自动预测)'}</td>
+                    <td>${accelLabel}</td>
+                    <td>${stageName}</td>
+                    <td>${grantDate}</td>
+                </tr>`;
+            });
+
+            w.document.write(`
+                <html><head>
+                <meta charset="UTF-8">
+                <title>专利案件追踪报表 - ${new Date().toLocaleDateString('zh-CN')}</title>
+                <style>
+                    body { font-family: 'Microsoft YaHei', sans-serif; padding: 20px; color: #1e293b; }
+                    h1 { font-size: 18px; border-bottom: 2px solid #6366f1; padding-bottom: 8px; }
+                    h2 { font-size: 13px; color: #64748b; margin-top: 5px; font-weight: normal; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 12px; }
+                    th { background: #f1f5f9; text-align: left; padding: 8px 6px; border-bottom: 2px solid #e2e8f0; font-size: 11px; color: #64748b; }
+                    td { padding: 6px; border-bottom: 1px solid #f1f5f9; }
+                    .footer { margin-top: 20px; font-size: 10px; color: #94a3b8; }
+                    @media print { body { padding: 0; } }
+                </style></head><body>
+                <h1>海外专利案件追踪报表</h1>
+                <h2>管辖区域: ${jurName} | 评估日期: 2026-07-15 | 案件总数: ${state.portfolioItems.length} 件</h2>
+                <table>
+                    <thead><tr>
+                        <th>项目名称</th><th>优先权日(PD)</th><th>PCT递交日</th><th>国家进入日</th>
+                        <th>加速程序</th><th>当前阶段</th><th>预计授权日</th>
+                    </tr></thead>
+                    <tbody>${rows}</tbody>
+                </table>
+                <div class="footer">
+                    报表生成时间: ${new Date().toLocaleString('zh-CN')} | 海外专利路线、期限决策跟踪系统
+                </div>
+                </body></html>
+            `);
+            w.document.close();
+            setTimeout(() => w.print(), 500);
+            showToast('报表已生成', '打印窗口已打开，可选择保存为PDF。');
         }
 
         function renderPortfolioAll() {
@@ -1740,6 +2586,7 @@
             renderPortfolioCalculations();
         }
 
+        // --- STREAMING_CHUNK: Bootstrapping application logic... ---
         // --- MASTER CALCULATION AND RENDER ---
         function renderAll() {
             renderFees();
@@ -1759,7 +2606,21 @@
             document.getElementById('inputPCTD').value = formatDate(addMonths(state.priorityDate, 12));
             document.getElementById('inputEntryD').value = formatDate(addMonths(state.priorityDate, 31));
 
-            // Initial render
+            // Load portfolio from localStorage; if none, auto-load demo on first visit
+            const hasSavedData = loadFromStorage();
+            if (!hasSavedData) {
+                // First visit: load demo data and save
+                state.portfolioItems = JSON.parse(JSON.stringify(DEMO_ITEMS)); // Deep copy
+                state.portfolioJurisdiction = 'us';
+                saveToStorage();
+            }
+
+            // Restore jurisdiction toggle UI (without double-rendering)
+            const j = state.portfolioJurisdiction;
+            document.getElementById('btn-port-us').className = j === 'us' ? 'px-3 py-1 text-xs font-semibold rounded-md transition-all-300 bg-white text-slate-900 shadow-sm' : 'px-3 py-1 text-xs font-semibold rounded-md transition-all-300 text-slate-500 hover:text-slate-900';
+            document.getElementById('btn-port-epo').className = j === 'epo' ? 'px-3 py-1 text-xs font-semibold rounded-md transition-all-300 bg-white text-slate-900 shadow-sm' : 'px-3 py-1 text-xs font-semibold rounded-md transition-all-300 text-slate-500 hover:text-slate-900';
+
+            // Initial render (renderAll includes renderPortfolioCalculations)
             renderPortfolioTable();
             renderAll();
         };
